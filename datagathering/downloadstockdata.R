@@ -1,16 +1,19 @@
 library(quantmod)
 
-amex = read.csv('data/exchangedata/amex.csv')  # read csv file
-amexstocks = amex[,1]
-nasdaq = read.csv('data/exchangedata/nasdaq.csv')  # read csv file
-nasdaqstocks = nasdaq[,1]
-nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
-nysestocks = nyse[,1]
+#other useful provided files.
+#amex = read.csv('data/exchangedata/amex.csv')  # read csv file
+#amexstocks = amex[,1]
+#nasdaq = read.csv('data/exchangedata/nasdaq.csv')  # read csv file
+#nasdaqstocks = nasdaq[,1]
+#nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
+#nysestocks = nyse[,1]
+
+#Edit this file to determine what stock list you want to use....
 stocklist = read.csv('data/exchangedata/stockstouse.csv')[,1]
 
 #TODO:  Add logic to update the \^ stocks and strip spaces out of the symbol names
 
-rm(amex,nasdaq,nyse)
+#rm(amex,nasdaq,nyse)
 
 downloaddata <- function(x){
   symbol_name = x
@@ -27,6 +30,8 @@ downloaddata <- function(x){
   write.csv(adjusted, file=writelocation)
 }
 
+
+pullstocklist <- function() {
 stocklist = c(as.vector(stocklist))
 
 count = 0
@@ -38,3 +43,4 @@ for (i in (stocklist))
   downloaddata(i)
 }
 
+}

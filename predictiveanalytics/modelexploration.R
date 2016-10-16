@@ -1,10 +1,13 @@
+modelexplorer <-function()
+{
+
 rm(list=ls()) 
 
-if(!exists("modeltrainer", mode="function")) source("./RScripts/1_modeltrainer_FCNN4R.R")
+if(!exists("modeltrainer", mode="function")) source("./recomendationsystems/1_modeltrainer_FCNN4R.R")
 #this line to pull in the data and structure it
-if(!exists("Combinestocks", mode="function")) source("./RScripts/Combinestocks.R")
+if(!exists("Combinestocks", mode="function")) source("./datasetcreation/Combinestocks.R")
 #this line to construct the training/outputsets
-if(!exists("modelperformance", mode="function")) source("./RScripts/modelperformance.R")
+if(!exists("modelperformance", mode="function")) source("./recomendationsystems/modelperformance.R")
 
 #trainmodel<- function(epocs,netdepth,layer2,layer3,layer4,tol_level,learn_rate,l2reg) 
 
@@ -21,7 +24,7 @@ if(!exists("modelperformance", mode="function")) source("./RScripts/modelperform
 #to Start over from the last place you were at uncomment this line
 #lastresults= tail(read.csv('results.csv'),1)  # read csv file
 
-lastrunresults=tail(read.csv('results.csv'),1)
+#lastrunresults=tail(read.csv('results.csv'),1)
 
 layer3=0
 layer4=0
@@ -30,7 +33,7 @@ layer4=0
 
 #One time run uncomment and modify  run everything including the  next 2 line and above
 report_freq <<- 1
-numberofstockstouse=30
+numberofstockstouse=8
 #sgd specific parameters
 minibatchsz = 100
 lambda = .1
@@ -40,7 +43,10 @@ momentum = .7
 #combinestocksfunction(800)
 #trainmodel(400,5,1600,1600,1600,.05,.01,.05)
 combinestocksfunction(numberofstockstouse)
-trainmodel(minibatchsz,lambda,gamma,momentum,100,5,600,400,200,.05,.01,.03)
+
+#For easy reference
+#trainmodel <- function(numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
+             trainmodel(numberofstockstouse,minibatchsz,lambda,gamma,momentum,                    30,       5,            600,        400,        200,        .05,           .01,            .03)
 
 
 #for (epocs in (c(500))){
@@ -74,3 +80,6 @@ trainmodel(minibatchsz,lambda,gamma,momentum,100,5,600,400,200,.05,.01,.03)
 #              }}}}}}
 #}}
 #    
+
+
+}

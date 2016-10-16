@@ -1,11 +1,16 @@
+#This needs fixed for SA to work....
+#obj_func <- function(){
+#  return mse
+#}
+
 #using FCNN4R for it's ability to copy NNs to each other and stack/run parrellel on the same data, and Pruning on the same set of data.
-trainmodel <- function(minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
+trainmodel <- function(numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
 print("Enteringtrainmodel----------")
 library(FCNN4R)
 
 inputlayersize <<- as.double(diminputpercentagematrix[2])
 
-#Variablize the NN Parameters
+#Variablize the NN Parameters  #SA is preferred due to its quick descent, but obj_func needs fixed before it can be re-enabled.
 nettype = 'sgd' # 'sgd' or 'bp' or 'sa' simulated annealing stochastic gradient descent or Back propogation 
 
 netdepth<<-netdepthparam
@@ -101,5 +106,5 @@ thismodelsperformance=modelperformance(mlpeval_eval)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 #write results to the results file.
 thisrun=paste(nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
-write(thisrun,file="results.csv",append=TRUE)
+#write(thisrun,file="results.csv",append=TRUE)
 }

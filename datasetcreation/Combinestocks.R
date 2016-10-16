@@ -1,24 +1,23 @@
 combinestocksfunction <- function(numbertopullparam){
 print(paste("Combining: ", numbertopullparam,sep = ""))
 numbertopull=numbertopullparam
-#datetoread=Sys.Date()
-datetoread="2016-05-16"
+datetoread=Sys.Date()
+#datetoread="2016-10-16"
 
   library(quantmod)
   library(plyr)
 
   
-  amex = read.csv('data/exchangedata/amex.csv')  # read csv file
-  amexstocks = amex[,1]
-  nasdaq = read.csv('data/exchangedata/nasdaq.csv')  # read csv file
-  nasdaqstocks = nasdaq[,1]
-  nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
-  nysestocks = nyse[,1]
-  
-  #TODO:  Add logic to updat ethe \^ stocks and strip spaces out of the symbol names\
-  
-  rm(amex,nasdaq,nyse)
-  symbolsavailable = list.files(path = 'data/stockdata')
+#  amex = read.csv('data/exchangedata/amex.csv')  # read csv file
+#  amexstocks = amex[,1]
+#  nasdaq = read.csv('data/exchangedata/nasdaq.csv')  # read csv file
+#  nasdaqstocks = nasdaq[,1]
+#  nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
+#  nysestocks = nyse[,1]
+#TODO:  Add logic to updat ethe \^ stocks and strip spaces out of the symbol names\
+#rm(amex,nasdaq,nyse)
+
+   symbolsavailable = list.files(path = 'data/stockdata')
   
   #stocklist = c(as.vector(nysestocks))+*+
   
@@ -27,7 +26,7 @@ datetoread="2016-05-16"
   stocklist <<- head(read.csv('data/exchangedata/stockstouse.csv')[,1],numbertopull)
   #datetoread = '2016-05-10'
   stockstocombine <<- data.frame()
-  rm(percentchangedcombined)
+#  rm(percentchangedcombined)
   percentchangedcombined <<- data.frame()
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
@@ -76,9 +75,9 @@ datetoread="2016-05-16"
   rm(i)
   rm(temprow)
   rm(filetoread)
-  rm(amexstocks)
-  rm(nysestocks)
-  rm(nasdaqstocks)
+#  rm(amexstocks)
+#  rm(nysestocks)
+#  rm(nasdaqstocks)
   trainingmatrix <<- adjustedmatrix
 #  print(paste("COLUMNCHECKmid: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
@@ -111,7 +110,7 @@ datetoread="2016-05-16"
   
   #print(paste("COLUMNCHECKgeneratingtraining: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   diminputpercentagematrix<<-dim(percentchangedcombined)
-  rm(percentchangedcombinedtemp)
+#  rm(percentchangedcombinedtemp)
   percentchangedcombinedtemp <<- merge.data.frame(percentchangedcombined,trainingmatrix, by=0, all = TRUE)
   rownames(percentchangedcombinedtemp)<<-percentchangedcombinedtemp[,1]
   percentchangedcombinedtemp <<- percentchangedcombinedtemp[,-1]   #strip date now that it is the row name
