@@ -1,3 +1,16 @@
+getgloballistofstocks <- function(numbertopullparam){
+  
+  
+}
+
+
+
+
+
+
+
+
+
 combinestocksfunction <- function(numbertopullparam){
 print(paste("Combining: ", numbertopullparam,sep = ""))
 numbertopull=numbertopullparam
