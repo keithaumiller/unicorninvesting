@@ -16,18 +16,20 @@ stocklist = read.csv('data/exchangedata/stockstouse.csv')[,1]
 #rm(amex,nasdaq,nyse)
 
 downloaddata <- function(x){
-  symbol_name = x
-  getSymbols(symbol_name)
-  symbol = get(symbol_name)
-  symbol.name = symbol_name
-  sessionlabel = paste(symbol.name, Sys.Date(), sep = '_', collapse = '_')
-  adjusted = data.frame(adjustOHLC(symbol, symbol.name=symbol.name))
-  writelocationarray = c('data/stockdata/', symbol_name,'/')
-  writelocation = paste(writelocationarray, sep = '/', collapse='')
-  dir.create(writelocation, showWarnings = FALSE, recursive = TRUE, mode = "0777")
-  writelocationarray = c(writelocationarray, sessionlabel)
-  writelocation = paste(writelocationarray, sep = '/', collapse='')
-  write.csv(adjusted, file=writelocation)
+    symbol_name = x
+    getSymbols(symbol_name)
+    symbol = get(symbol_name)
+    sessionlabel = paste(symbol_name, Sys.Date(), sep = '_', collapse = '_')
+
+    adjusted = data.frame(adjustOHLC(symbol, symbol.name=symbol_name))
+
+
+    writelocationarray = c('data/stockdata/', symbol_name,'/')
+    writelocation = paste(writelocationarray, sep = '/', collapse='')
+    dir.create(writelocation, showWarnings = FALSE, recursive = TRUE, mode = "0777")
+    writelocationarray = c(writelocationarray, sessionlabel)
+    writelocation = paste(writelocationarray, sep = '/', collapse='')
+    write.csv(adjusted, file=writelocation)
 }
 
 
@@ -40,7 +42,16 @@ for (i in (stocklist))
   print(count)
   count = count + 1
   print(i)
-  downloaddata(i)
+  tryCatch({
+    downloaddata(i)
+  },
+  error = function(e){
+    cat('ERROR Downloading\n')
+  },
+  warning 
+  )
+#  print("Completing Loop\n")
+}
 }
 
-}
+#pullstocklist()

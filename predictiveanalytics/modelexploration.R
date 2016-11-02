@@ -1,7 +1,8 @@
-modelexplorer <-function()
+modelexplorer <-function(runid, featurelistforNN)
 {
-
-rm(list=ls()) 
+  runid = runid
+  featurelistforNN = featurelistforNN
+#rm(list=ls()) 
 
 if(!exists("modeltrainer", mode="function")) source("./recomendationsystems/1_modeltrainer_FCNN4R.R")
 #this line to pull in the data and structure it
@@ -42,11 +43,11 @@ momentum = .7
 
 #combinestocksfunction(800)
 #trainmodel(400,5,1600,1600,1600,.05,.01,.05)
-combinestocksfunction(numberofstockstouse)
+combinestocksfunction(numberofstockstouse, featurelistforNN)
 
 #For easy reference
 #trainmodel <- function(numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
-             trainmodel(numberofstockstouse,minibatchsz,lambda,gamma,momentum,                    30,       5,            600,        400,        200,        .05,           .01,            .03)
+modelperformance =  trainmodel(runid, numberofstockstouse,minibatchsz,lambda,gamma,momentum,                    30,       5,            600,        400,        200,        .05,           .01,            .03)
 
 
 #for (epocs in (c(500))){
@@ -81,5 +82,5 @@ combinestocksfunction(numberofstockstouse)
 #}}
 #    
 
-
+return(modelperformance)
 }

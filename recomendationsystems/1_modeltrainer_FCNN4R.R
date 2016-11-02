@@ -4,7 +4,7 @@
 #}
 
 #using FCNN4R for it's ability to copy NNs to each other and stack/run parrellel on the same data, and Pruning on the same set of data.
-trainmodel <- function(numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
+trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
 print("Enteringtrainmodel----------")
 library(FCNN4R)
 
@@ -105,6 +105,7 @@ mlpeval_eval <<- mlp_eval(mymlpnet_clean$net,evalmatrix[,1:inputlayersize])
 thismodelsperformance=modelperformance(mlpeval_eval)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 #write results to the results file.
-thisrun=paste(nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
+thisrun=paste(runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
 #write(thisrun,file="results.csv",append=TRUE)
+return(thismodelsperformance)
 }

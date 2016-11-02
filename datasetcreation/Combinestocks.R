@@ -1,17 +1,8 @@
 getgloballistofstocks <- function(numbertopullparam){
   
-  
 }
 
-
-
-
-
-
-
-
-
-combinestocksfunction <- function(numbertopullparam){
+combinestocksfunction <- function(numbertopullparam, featurelistforNN){
 print(paste("Combining: ", numbertopullparam,sep = ""))
 numbertopull=numbertopullparam
 datetoread=Sys.Date()
@@ -30,13 +21,14 @@ datetoread=Sys.Date()
 #TODO:  Add logic to updat ethe \^ stocks and strip spaces out of the symbol names\
 #rm(amex,nasdaq,nyse)
 
-   symbolsavailable = list.files(path = 'data/stockdata')
-  
+  #symbolsavailable = list.files(path = 'data/stockdata')
+  symbolsavailable = featurelistforNN
   #stocklist = c(as.vector(nysestocks))+*+
-  
+   
   
 #  stocklist = head(symbolsavailable,numbertopull)
-  stocklist <<- head(read.csv('data/exchangedata/stockstouse.csv')[,1],numbertopull)
+#  stocklist <<- head(read.csv('data/exchangedata/stockstouse.csv')[,1],numbertopull)
+  stocklist = featurelistforNN
   #datetoread = '2016-05-10'
   stockstocombine <<- data.frame()
 #  rm(percentchangedcombined)
