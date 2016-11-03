@@ -33,8 +33,8 @@ layer4=0
 
 
 #One time run uncomment and modify  run everything including the  next 2 line and above
-report_freq <<- 1
-numberofstockstouse=8
+report_freq <<- 5
+numberofstockstouse=length(featurelistforNN)
 #sgd specific parameters
 minibatchsz = 100
 lambda = .1
@@ -43,11 +43,13 @@ momentum = .7
 
 #combinestocksfunction(800)
 #trainmodel(400,5,1600,1600,1600,.05,.01,.05)
-combinestocksfunction(numberofstockstouse, featurelistforNN)
+#remove any stocks that couldn't get data for and create the base stock dataset
+numberofstockstouse = combinestocksfunction(numberofstockstouse, featurelistforNN)
+#cat("numberofstockstouse:", numberofstockstouse, "\n" )
 
 #For easy reference
-#trainmodel <- function(numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
-modelperformance =  trainmodel(runid, numberofstockstouse,minibatchsz,lambda,gamma,momentum,                    30,       5,            600,        400,        200,        .05,           .01,            .03)
+#trainmodel <- function(runid,              numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
+modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,     lambda,     gamma,     momentum,     30,        3,            600,        400,        200,        .05,           .01,            .03)
 
 
 #for (epocs in (c(500))){

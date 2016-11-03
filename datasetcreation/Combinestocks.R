@@ -23,6 +23,8 @@ datetoread=Sys.Date()
 
   #symbolsavailable = list.files(path = 'data/stockdata')
   symbolsavailable = featurelistforNN
+  numberofstockscombined = length(featurelistforNN)
+  numberofstockscombined_final = numberofstockscombined
   #stocklist = c(as.vector(nysestocks))+*+
    
   
@@ -39,10 +41,20 @@ datetoread=Sys.Date()
   for (i in (stocklist))
   {
     
-    filetoread = paste('data/stockdata/', i, "/", paste(i,datetoread, sep ="_"), sep = "")
-    #  print(filetoread)
-    print(paste("Reading in file :", count, filetoread, sep=' '))
-    tempstockdata = read.csv(filetoread)
+    filetoread = paste('data/stockdata/', i, "/", "stockdata.csv", sep = '') #used to be paste(i,datetoread, sep ="_")
+      #print(filetoread)
+    #print(paste("Reading in file :", count, filetoread, sep=' '))
+    tryCatch({
+      tempstockdata<-0
+      tempstockdata <- read.csv(filetoread)
+    },
+    error = function(e){
+      #cat('ERROR Reading File\n')
+      numberofstockscombined_final <-- numberofstockscombined_final-1
+    },
+    warning 
+    )
+    
     #  print(head(tempstockdata))
     if(is.data.frame(stockstocombine) && nrow(stockstocombine)==0){
       stockstocombine = tempstockdata
@@ -70,7 +82,7 @@ datetoread=Sys.Date()
   percentchangedcombined<<-rbind(percentchangedcombined,temprow)
   percentchangedcombined<<-(percentchangedcombined/stockstocombine -1)
   
-#  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
+  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
   adjustedcolumnnames <<- grep('Adjusted',colnames(percentchangedcombined),value =TRUE)
   adjustedmatrix <<- data.frame()
@@ -108,7 +120,7 @@ datetoread=Sys.Date()
     }
   }
   rm(temptrainingmatrix)
-  
+  print("Training Matrix Completed")
   #This section is to combine the training output matrix with the percentchangedcombined matrix before cleaning it and splitting it for training and evaluation
   
   colnames(trainingmatrix) <<- sub('Adjusted','output',colnames(trainingmatrix))
@@ -141,6 +153,7 @@ datetoread=Sys.Date()
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
   percentchangedcombined_eval <<- head(percentchangedcombined,-seventyfive)
+  print("Exiting Combine Stocks Function")
   
-  
+  return(numberofstockscombined_final)
 }

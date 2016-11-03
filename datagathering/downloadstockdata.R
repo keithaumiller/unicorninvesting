@@ -27,7 +27,7 @@ downloaddata <- function(x){
     writelocationarray = c('data/stockdata/', symbol_name,'/')
     writelocation = paste(writelocationarray, sep = '/', collapse='')
     dir.create(writelocation, showWarnings = FALSE, recursive = TRUE, mode = "0777")
-    writelocationarray = c(writelocationarray, sessionlabel)
+    writelocationarray = c(writelocationarray, "stockdata.csv")# removing to reduce, sessionlabel)
     writelocation = paste(writelocationarray, sep = '/', collapse='')
     write.csv(adjusted, file=writelocation)
 }

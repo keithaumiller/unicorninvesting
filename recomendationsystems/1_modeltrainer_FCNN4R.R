@@ -1,17 +1,16 @@
-#This needs fixed for SA to work....
-#obj_func <- function(){
-#  return mse
-#}
 
 #using FCNN4R for it's ability to copy NNs to each other and stack/run parrellel on the same data, and Pruning on the same set of data.
 trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
-print("Enteringtrainmodel----------")
-library(FCNN4R)
+#print("Enteringtrainmodel----------")
+#cat("NETDEPTH:", netdepthparam, "\n")
 
+
+library(FCNN4R)
 inputlayersize <<- as.double(diminputpercentagematrix[2])
+#cat("INPUTLAYERSIZE", inputlayersize, "\n")
 
 #Variablize the NN Parameters  #SA is preferred due to its quick descent, but obj_func needs fixed before it can be re-enabled.
-nettype = 'sgd' # 'sgd' or 'bp' or 'sa' simulated annealing stochastic gradient descent or Back propogation 
+nettype = 'sa' # 'sgd' or 'bp' or 'sa' simulated annealing stochastic gradient descent or Back propogation 
 
 netdepth<<-netdepthparam
 #print(netdepth)
@@ -42,10 +41,13 @@ u = 1.2
 d = 0.5 
 gmax = 50 
 gmin = 1e-06
-report_freq <<- 1
+report_freq <<- 10
 input <<- as.matrix(percentchangedcombined_train[,1:inputlayersize])
 
 output <<- as.matrix(percentchangedcombined_train[,(inputlayersize+1):(dim(percentchangedcombined)[2])])
+#cat("Output Dims", dim(output), "\n")
+ouputlayer = dim(output)[2]
+
 evalmatrix <<- as.matrix(percentchangedcombined_eval)
 slope = .3
 
@@ -71,8 +73,8 @@ if (netdepth==4){
 }
 
 if (netdepth==3){
-  print("Netdepth Is 3")
-  print(paste("layer2count: ", layer2,sep=''))
+#  print("Netdepth Is 3")
+#  print(paste("layer2count: ", layer2,sep=''))
   mymlpnet <<- mlp_net(c(inputlayer,layer2,ouputlayer))
   layer4=0
   layer3=0
@@ -94,18 +96,32 @@ if (nettype=='sgd'){
   mymlpnet_trained <<- mlp_teach_sgd(mymlpnet, input, output, tol_level, max_epochs, learn_rate, l2reg, minibatchsz, lambda, gamma, momentum, report_freq)
 }
 if (nettype=='sa'){
+  #This needs fixed for SA to work....
+  timerstart = 0
+  timer = timerstart
+  obj_func <- function(net)
+  {
+    #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
+    timer <<- timer+1
+    if(timer > timerstart+50){return (-10000)}
+    #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
+    return(mlp_mse(mymlpnet, input, output))
+  }
+  for(i in 1){
   mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 1, max_epochs, report_freq, report_action = NULL)
+  }
 }
+cat("MyMlpNet Trained\n")
 
 #clean the net
 mymlpnet_clean <<- mlp_rm_input_neurons(mymlpnet_trained$net, report = TRUE)
 
 mlpeval_eval <<- mlp_eval(mymlpnet_clean$net,evalmatrix[,1:inputlayersize])
-
+cat("MyMlpNet Evaluated\n")
 thismodelsperformance=modelperformance(mlpeval_eval)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 #write results to the results file.
 thisrun=paste(runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
-#write(thisrun,file="results.csv",append=TRUE)
+write(thisrun,file="data/results.csv",append=TRUE)
 return(thismodelsperformance)
 }
