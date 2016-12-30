@@ -54,4 +54,9 @@ for (i in (stocklist))
 }
 }
 
-#pullstocklist()
+#loadportfoliolist()
+loadportfoliolist <- function(){
+  portfoliolist <- read.csv('data/exchangedata/portfolio.csv')[,1]
+  portfoliolist <- levels(portfoliolist)
+  return(portfoliolist)
+}

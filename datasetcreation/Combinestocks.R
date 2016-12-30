@@ -3,8 +3,8 @@ getgloballistofstocks <- function(numbertopullparam){
 }
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN){
-print(paste("Combining: ", numbertopullparam,sep = ""))
-numbertopull=numbertopullparam
+print(paste("Combining Stocks"))
+#numbertopull=numbertopullparam
 datetoread=Sys.Date()
 #datetoread="2016-10-16"
 
@@ -22,7 +22,9 @@ datetoread=Sys.Date()
 #rm(amex,nasdaq,nyse)
 
   #symbolsavailable = list.files(path = 'data/stockdata')
-  symbolsavailable = featurelistforNN
+  portfoliolist = loadportfoliolist()
+  featurelistforNN <<- unique(c(portfoliolist,featurelistforNN))
+  symbolsavailable <<- featurelistforNN
   numberofstockscombined = length(featurelistforNN)
   numberofstockscombined_final = numberofstockscombined
   #stocklist = c(as.vector(nysestocks))+*+
@@ -30,7 +32,9 @@ datetoread=Sys.Date()
   
 #  stocklist = head(symbolsavailable,numbertopull)
 #  stocklist <<- head(read.csv('data/exchangedata/stockstouse.csv')[,1],numbertopull)
-  stocklist = featurelistforNN
+  stocklist <<- featurelistforNN
+  
+  
   #datetoread = '2016-05-10'
   stockstocombine <<- data.frame()
 #  rm(percentchangedcombined)
@@ -49,7 +53,7 @@ datetoread=Sys.Date()
       tempstockdata <- read.csv(filetoread)
     },
     error = function(e){
-      #cat('ERROR Reading File\n')
+      warning('ERROR Reading File\n', call. = TRUE)
       numberofstockscombined_final <-- numberofstockscombined_final-1
     },
     warning 
@@ -62,16 +66,15 @@ datetoread=Sys.Date()
     stockstocombine = merge.data.frame(stockstocombine,tempstockdata, all = TRUE)
     count = count + 1
     #  print(i)
-    
-    
+
     #  print(head(tempsymbolholder))
     #  print(is.data.frame(tempsymbolholder))
     #  stockstocombine[i] <- cbind.data.frame(tempsymbolholder)
   }
 
-  print("Stock Frames Combined")
+#  print("Stock Frames Combined")
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
-  
+
   names(stockstocombine)[names(stockstocombine)=="X"] <- "Date"
   row.names(stockstocombine)<- stockstocombine$Date
   stockstocombine = stockstocombine[,-1]   #strip date now that it is the row name
@@ -82,12 +85,24 @@ datetoread=Sys.Date()
   percentchangedcombined<<-rbind(percentchangedcombined,temprow)
   percentchangedcombined<<-(percentchangedcombined/stockstocombine -1)
   
-  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
-  
+
+#  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
+
   adjustedcolumnnames <<- grep('Adjusted',colnames(percentchangedcombined),value =TRUE)
+  portfoliolistcolumnnames <<- vector()
+
+    for (portfoliostock in (portfoliolist)){
+    portfoliolistcolumnnames <<- c(portfoliolistcolumnnames,grep(portfoliostock,adjustedcolumnnames,value =TRUE))
+  }
+
+    adjustedcolumnnames <<- portfoliolistcolumnnames
+  
+#    portfoliolistcolumnnames <<- grep(portfoliolist,adjustedcolumnnames,value =TRUE)
+  
   adjustedmatrix <<- data.frame()
   adjustedmatrix <<- percentchangedcombined[,adjustedcolumnnames]
-  
+#  print(head(adjustedmatrix))
+
   rm(tempstockdata)
   rm(i)
   rm(temprow)
@@ -95,13 +110,20 @@ datetoread=Sys.Date()
 #  rm(amexstocks)
 #  rm(nysestocks)
 #  rm(nasdaqstocks)
-  trainingmatrix <<- adjustedmatrix
 #  print(paste("COLUMNCHECKmid: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
-  trainingmatrix <<- adjustedmatrix
+#  trainingmatrix <<- adjustedmatrix
+  
+  #This is the output matrix utilized for training the neural net.... I think this needs to move to the performance function somehow.
   #setting this really low so that it causes the MSE for allocations to really hit those bad allocations hard.
-  trainingmatrix[]<<--10
+  trainingmatrix <<- matrix(data = -10, nrow=dim(adjustedmatrix)[1], ncol=dim(adjustedmatrix)[2])
+  colnames(trainingmatrix) <<- colnames(adjustedmatrix)
   temptrainingmatrix <<- adjustedmatrix
+#  print(dim(trainingmatrix))
+  
+  
+  
+  #I think I'll need to move the portion of this that generates the output over to the performance function since really this impacts that heavily.
   #originally I was just trying to make it bet on the best stock...penalizing more extreamly for placing bets on secondary etc. but that wasn't having a positive result. still was -.02 return
   #Now I'm thinking I do the same kind of calculation I do for the performance() function
   #This is the "Given what I know, what should I have been allocated in function....
@@ -115,15 +137,19 @@ datetoread=Sys.Date()
     #this logic sucks, but for now...
     for(a in (allocation)){
       placetosetintrainingset<<-which.max(temptrainingmatrix[i,])
-      trainingmatrix[i,placetosetintrainingset]<<-a
+      trainingmatrix[i,placetosetintrainingset] = a
       temptrainingmatrix[i,placetosetintrainingset]<--5000
     }
   }
-  rm(temptrainingmatrix)
-  print("Training Matrix Completed")
+#  rm(temptrainingmatrix)
+  print("Training Matrix Completed:")
+  
+  
+  
   #This section is to combine the training output matrix with the percentchangedcombined matrix before cleaning it and splitting it for training and evaluation
   
-  colnames(trainingmatrix) <<- sub('Adjusted','output',colnames(trainingmatrix))
+  colnames(trainingmatrix) = sub('Adjusted','output',colnames(trainingmatrix))
+  print(head(trainingmatrix))
   
   #print(paste("COLUMNCHECKgeneratingtraining: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   diminputpercentagematrix<<-dim(percentchangedcombined)
@@ -153,7 +179,7 @@ datetoread=Sys.Date()
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
   percentchangedcombined_eval <<- head(percentchangedcombined,-seventyfive)
-  print("Exiting Combine Stocks Function")
+#  print("Exiting Combine Stocks Function")
   
   return(numberofstockscombined_final)
 }

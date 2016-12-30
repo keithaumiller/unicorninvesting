@@ -18,7 +18,8 @@ inputlayer <<- inputlayersize
 layer2 <<- layer2param
 layer3 <<- layer3param
 layer4 <<- layer4param
-ouputlayer <<- numberofstockstouse
+portfoliolist = loadportfoliolist()
+ouputlayer <<- length(portfoliolist)
 
 #BPparameters
 tol_level <<- tol_levelparam
@@ -103,12 +104,12 @@ if (nettype=='sa'){
   {
     #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
     timer <<- timer+1
-    if(timer > timerstart+50){return (-10000)}
+    if(timer > timerstart+50){return (-100000)}
     #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
     return(mlp_mse(mymlpnet, input, output))
   }
   for(i in 1){
-  mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 1, max_epochs, report_freq, report_action = NULL)
+  mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 5000, max_epochs, report_freq, report_action = NULL)
   }
 }
 cat("MyMlpNet Trained\n")

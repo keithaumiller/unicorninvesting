@@ -13,7 +13,7 @@ featureslist <- read.csv('data/features/featureslist.csv')[,1]
 totalsearchspacelength = length(levels(featureslist))
 binaryresults = seq(1, totalsearchspacelength, by=1)
 binaryresults[] = 0
-numberofstockstouse=8
+numberofstockstouse=20
 bestperformance<<- -100000
 
 
@@ -27,7 +27,8 @@ fitnesfunction<-function(x){
   if (performance>bestperformance){
     bestperformance<<-performance
     temporarystring = paste(featurelistforNN, collapse = ',')
-    thisGARun=paste(runid, performance, temporarystring,sep = ",")
+    portfolioid = 1
+    thisGARun=paste(runid, performance, portfolioid, temporarystring,sep = ",")
     write(thisGARun,file="data/GAResults.csv",append=TRUE)
   }
   return(performance)
@@ -52,4 +53,4 @@ monitor <- function(obj)
 }
 
 cat("Features to use:", length(featureslist))
-GA<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = 5, run = 20) #type = c("binary", "real-valued", "permutation")
+GA<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = 30, run = 5) #type = c("binary", "real-valued", "permutation")

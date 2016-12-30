@@ -33,7 +33,7 @@ layer4=0
 
 
 #One time run uncomment and modify  run everything including the  next 2 line and above
-report_freq <<- 5
+report_freq <<- 20
 numberofstockstouse=length(featurelistforNN)
 #sgd specific parameters
 minibatchsz = 100
@@ -49,7 +49,7 @@ numberofstockstouse = combinestocksfunction(numberofstockstouse, featurelistforN
 
 #For easy reference
 #trainmodel <- function(runid,              numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
-modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,     lambda,     gamma,     momentum,     30,        3,            600,        400,        200,        .05,           .01,            .03)
+modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,     lambda,     gamma,     momentum,     10,        3,            1000,        400,        200,        .05,           .01,            .03)
 
 
 #for (epocs in (c(500))){

@@ -19,3 +19,8 @@ vignettes/*.pdf
 .httr-oauth
 
 data/stockdata/*
+.Rproj.user
+data/results.csv
+data/GAResults.csv
+unicorninvesting.Rproj.RData
+unicorn.RData
