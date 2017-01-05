@@ -3,22 +3,35 @@
 
 #clean your environment
 rm(list = ls())
+setwd("./")
 
+
+if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
+#if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
 if(!exists("pullstocklist", mode="function")) source("./datagathering/downloadstockdata.R")
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 if(!exists("loadportfoliolist", mode="function")) source("./datagathering/downloadstockdata.R")
+if(!exists("loadfeaturelist", mode="function")) source("./datagathering/downloadstockdata.R")
+if(!exists("generatetrainingmatrix", mode="function")) source("./recomendationsystems/modelperformance.R")
+if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R")
 
-#downloads the 8 stocks that are default in the stocklist.csv
+
+#downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
-pullstocklist()
+#pullstocklist()
 
+#loads your list of features from data/features/featurelist.csv
+#Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
+featurelist <<- loadfeaturelist()
+#loads your portfoliolist from data/exchangedata/portfolio.csv
+#just a list of stock assets... These will also be added to the featurelist if not already in there.
+portfoliolist <<- loadportfoliolist()
+portfolionickname <<- 'Energyportfolio1'
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
 #to play around with the NN model. i.e. add or remove layers, 
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
-featurelist = c('AST','ATNM','AUMN','AWX','AXN','BAA','AAMC')
-portfoliolist = loadportfoliolist()
-featurelist = unique(c(portfoliolist,featurelist))
+
 modelexplorer(1,featurelist)
 

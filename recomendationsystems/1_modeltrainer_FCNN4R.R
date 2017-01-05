@@ -112,17 +112,20 @@ if (nettype=='sa'){
   mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 5000, max_epochs, report_freq, report_action = NULL)
   }
 }
-cat("MyMlpNet Trained\n")
+mydebug("MyMlpNet Trained")
 
 #clean the net
 mymlpnet_clean <<- mlp_rm_input_neurons(mymlpnet_trained$net, report = TRUE)
 
 mlpeval_eval <<- mlp_eval(mymlpnet_clean$net,evalmatrix[,1:inputlayersize])
-cat("MyMlpNet Evaluated\n")
+mydebug("MyMlpNet Evaluated")
 thismodelsperformance=modelperformance(mlpeval_eval)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
+
 #write results to the results file.
-thisrun=paste(runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
-write(thisrun,file="data/results.csv",append=TRUE)
+thisrun=paste(portfolionickname,runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
+NNresultsfilenoutputname = paste("data/results/runs/", portfolionickname, "/NNresults.csv", sep = "")
+print(NNresultsfilenoutputname)
+write(thisrun,file=NNresultsfilenoutputname,append=TRUE,)
 return(thismodelsperformance)
 }

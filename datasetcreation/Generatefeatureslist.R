@@ -1,3 +1,4 @@
+# Depricating this for now.  Manually maintain the featureslist.csv instead.
 
 rebuildstocklistfeatures <- function() {
   stocklist <- read.csv('data/exchangedata/stockstouse.csv')[,1]

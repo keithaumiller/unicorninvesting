@@ -8,8 +8,6 @@ library(quantmod)
 #nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
 #nysestocks = nyse[,1]
 
-#Edit this file to determine what stock list you want to use....
-stocklist = read.csv('data/exchangedata/stockstouse.csv')[,1]
 
 #TODO:  Add logic to update the \^ stocks and strip spaces out of the symbol names
 
@@ -19,7 +17,7 @@ downloaddata <- function(x){
     symbol_name = x
     getSymbols(symbol_name)
     symbol = get(symbol_name)
-    sessionlabel = paste(symbol_name, Sys.Date(), sep = '_', collapse = '_')
+    #sessionlabel = paste(symbol_name, Sys.Date(), sep = '_', collapse = '_')
 
     adjusted = data.frame(adjustOHLC(symbol, symbol.name=symbol_name))
 
@@ -39,9 +37,9 @@ stocklist = c(as.vector(stocklist))
 count = 0
 for (i in (stocklist))
 {
-  print(count)
+  print(paste(count, "of", length(stocklist), sep = " "))
   count = count + 1
-  print(i)
+#  print(i)
   tryCatch({
     downloaddata(i)
   },
@@ -58,5 +56,20 @@ for (i in (stocklist))
 loadportfoliolist <- function(){
   portfoliolist <- read.csv('data/exchangedata/portfolio.csv')[,1]
   portfoliolist <- levels(portfoliolist)
+  portfoliolist <- gsub(" ", "", portfoliolist)
   return(portfoliolist)
 }
+
+#loadfeaturelist()
+loadfeaturelist <- function(){
+  featurelist <- read.csv('data/features/featurelist.csv')[,1]
+  featurelist <- levels(featurelist)
+  portfoliolist <<- loadportfoliolist()
+  featurelist <<- unique(c(portfoliolist,featurelist))
+  featurelist <<- gsub(" ", "", featurelist)
+  return(featurelist)
+}
+
+
+#Edit this file to determine what stock list you want to use....
+stocklist = loadfeaturelist()
