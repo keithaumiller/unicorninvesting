@@ -2,16 +2,26 @@
 # Currently modelperformance is simplistic at best and is heavily dicted by how the training output is structured.
 # I'm not a fan of rollup metrics like "Risk Level" but it could be a good feature.
 
-modelperformance <- function(mlpeval_eval) {
+modelperformance <- function(mlpeval_eval){
+  
+#these three lines just establish the % allocate for each stock given the output from the NN
 adjustedmatrix_eval<-evalmatrix[,portfoliolistcolumnnames]
-#merge.data.frame(percentchangedcombined,trainingmatrix, by=0, all = TRUE
-#temptotalls=as.data.frame(rowSums(mlpeval_bp))
-#tempactualallocation=merge.data.frame(mlpeval_bp,temptotalls,by=0,all=TRUE)
-modelallocation=mlpeval_eval
-modelallocation[]=(mlpeval_eval[]/rowSums(mlpeval_eval))
-modelallocation=modelallocation*adjustedmatrix_eval
-evalperformance=modelallocation*mlpeval_eval
-performance=sum(evalperformance)
+modelallocation<-mlpeval_eval
+modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
+
+#now that I have the portfolio allocation I need to bounce it against what the market actually did that day and give a Total return on the day.
+# formula for return = allocation * % change in a day * amount invested.
+
+#modelallocation<-modelallocation*adjustedmatrix_eval
+evalperformance<-modelallocation*adjustedmatrix_eval
+
+#So this is the old method of just totaling everything in the matrix and considering it the performance....
+# I think instead I'll div by number of rows to give better pic of the per day average return.
+# In theory if that is positive you are good... but in reality order matters.
+#rowSums(evalperformance)
+
+performance=sum(evalperformance)/nrow(mlpeval_eval)
+
 paste("Performance: ",performance)
 return(performance)
 }

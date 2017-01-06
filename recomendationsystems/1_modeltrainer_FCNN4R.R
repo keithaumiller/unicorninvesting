@@ -115,17 +115,24 @@ if (nettype=='sa'){
 mydebug("MyMlpNet Trained")
 
 #clean the net
-mymlpnet_clean <<- mlp_rm_input_neurons(mymlpnet_trained$net, report = TRUE)
+mymlpnet_clean <<- mlp_rm_input_neurons(mymlpnet_trained$net, report = FALSE)
 
+#This is where the magic happens.  You take the input for the evalmatrix and pump it into the net to see what it spits out.
 mlpeval_eval <<- mlp_eval(mymlpnet_clean$net,evalmatrix[,1:inputlayersize])
 mydebug("MyMlpNet Evaluated")
+
+#I know I'm going to make it difficult to debug by doing stupid shit like this but oh well, deal with that later.
+rownames(mlpeval_eval) <<- rownames(evalmatrix)
+colnames(mlpeval_eval) <<- grep('.output',colnames(evalmatrix),value = TRUE)
+
+#take the output from the evaluation and see how well it did...
 thismodelsperformance=modelperformance(mlpeval_eval)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 
 #write results to the results file.
 thisrun=paste(portfolionickname,runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
 NNresultsfilenoutputname = paste("data/results/runs/", portfolionickname, "/NNresults.csv", sep = "")
-print(NNresultsfilenoutputname)
-write(thisrun,file=NNresultsfilenoutputname,append=TRUE,)
+#print(NNresultsfilenoutputname)
+write(thisrun,file=NNresultsfilenoutputname,append=TRUE)
 return(thismodelsperformance)
 }

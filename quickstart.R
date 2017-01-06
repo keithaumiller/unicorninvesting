@@ -3,7 +3,7 @@
 
 #clean your environment
 rm(list = ls())
-setwd("./")
+setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")

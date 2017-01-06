@@ -1,3 +1,7 @@
+#not sure I need these still, but meh.
+is.nan.data.frame <- function(x){do.call(cbind, lapply(x, is.nan))}
+is.na.data.frame <- function(x){do.call(cbind, lapply(x, is.na))}
+is.infinite.data.frame <- function(x){do.call(cbind, lapply(x, is.infinite))}
 
 getgloballistofstocks <- function(numbertopullparam){
 }
@@ -41,14 +45,22 @@ mydebug("Combining Stocks")
 #    print(paste("Reading in file :", filetoread, sep=' '))
     tryCatch({
       tempstockdata<-0
-      tempstockdata <- read.csv(filetoread)
+#      print(paste(count, filetoread))
+      tempstockdata <- read.csv(filetoread, row.names=1, header = TRUE)
 #      print(paste(colnames(tempstockdata)))
 #      print(paste(colnames(stockstocombine)))    
       if(is.data.frame(stockstocombine) && nrow(stockstocombine)==0){
-      stockstocombine <<- tempstockdata
-      }
+        stockstocombine <<- tempstockdata
+        }
+      else{
+#          print(dim(stockstocombine))
+          stockstocombine <<- merge.data.frame(stockstocombine,tempstockdata, by="row.names", all.x = TRUE, all.y = TRUE)
+          rownames(stockstocombine) <<- stockstocombine[,1]
+          stockstocombine <<-stockstocombine[,-1]
+#          print(dim(stockstocombine))
+          }
+#      print(paste("rownames: ", head(rownames(stockstocombine))))
 
-      stockstocombine <<- merge.data.frame(stockstocombine,tempstockdata, all = TRUE)
     },
     error = function(e){
       warning('ERROR Reading File\n', call. = TRUE)
@@ -74,14 +86,24 @@ mydebug("Combining Stocks")
     #  print(is.data.frame(tempsymbolholder))
     #  stockstocombine[i] <- cbind.data.frame(tempsymbolholder)
   }
+  
+#  Cleaning out all of the NA/Infinite/Nan so that when I generate the percent changed they are accurate.
 
+
+
+    stockstocombine[is.nan(stockstocombine)] <<- 0
+  stockstocombine[is.na(stockstocombine)] <<- 0
+  stockstocombine[is.infinite(stockstocombine)] <<- 0
+  
 #  print("Stock Frames Combined")
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
 
-  names(stockstocombine)[names(stockstocombine)=="X"] <<- "Date"
-  row.names(stockstocombine)<<- stockstocombine$Date
-  stockstocombine <<- stockstocombine[,-1]   #strip date now that it is the row name
-  percentchangedcombined <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
+#  Moving this logic into the loop so that the merg works right.
+#  names(stockstocombine)[names(stockstocombine)=="X"] <<- "Date"
+#  row.names(stockstocombine)<<- stockstocombine$Date
+#  stockstocombine <<- stockstocombine[,-1]   #strip date now that it is the row name
+
+    percentchangedcombined <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
   combinedstockdatadimensions <<- dim(stockstocombine)
   #add a dummy record to the end of the percentchangematrix
  temprow <- c(1:combinedstockdatadimensions[2])
@@ -142,24 +164,19 @@ mydebug("Combining Stocks")
   percentchangedcombined <<- head(percentchangedcombined,-1)    #strip last row since it is crap
   #print(paste("COLUMNCHECKgeneratingtraining2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   seventyfive=as.integer(nrow(percentchangedcombined)*.75)
-  
-  is.nan.data.frame <- function(x){
-    do.call(cbind, lapply(x, is.nan))
-  }
-  
-  is.na.data.frame <- function(x){
-    do.call(cbind, lapply(x, is.na))
-  }
-  
-  is.infinite.data.frame <- function(x){
-    do.call(cbind, lapply(x, is.infinite))
-  }
-  percentchangedcombined[is.nan.data.frame(percentchangedcombined)] <- -10
-  percentchangedcombined[is.na.data.frame(percentchangedcombined)] <- -10
-  percentchangedcombined[is.infinite.data.frame(percentchangedcombined)] <- -10
+  twentyfive=as.integer(nrow(percentchangedcombined)-seventyfive)
+ 
+# Originally I didn't want to handle the strange data scenarios data so I did this.  
+# In order to get rid of this we'll need to come up with a beter obj_func for the training of the NN
+# Currently the MSE calculation craps out when it runs into non numbers.
+# Hopefully setting to 0 will have minimal impact in other functions but still serve our purpose for now.
+# Maybe if I do this up front to the original combined instead?
+ percentchangedcombined[is.nan(percentchangedcombined)] <- 0
+ percentchangedcombined[is.na(percentchangedcombined)] <- 0
+ percentchangedcombined[is.infinite(percentchangedcombined)] <- 0
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
-  percentchangedcombined_eval <<- head(percentchangedcombined,-seventyfive)
+  percentchangedcombined_eval <<- tail(percentchangedcombined, twentyfive)
 #  print("Exiting Combine Stocks Function")
   
   return(numberofstockscombined_final)
