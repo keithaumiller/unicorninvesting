@@ -61,10 +61,16 @@ monitor <- function(obj)
 {
   mydebug("GA Monitor Called")
   plot(obj)#, main = paste(obj@iter))
+
+  summarymean = obj@summary[,"mean"]
+  tempx = c(1:length(summarymean))
+  points(tempx, summarymean, pch = 4, col = 9)
+  
   tempx = c(1:length(obj@fitness))
   tempx[] = obj@iter
   points(tempx, obj@fitness, pch = 20, col = 2)
   rug(obj@population, col = 2)
+
   Sys.sleep(0.05)
 }
 
@@ -93,7 +99,9 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 NNrunid=0
 populationsize=50
 maxiter=50
-run=5
+run=50
+averagefitnessbyiteration = c(seq(1:maxiter))
+averagefitnessbyiteration[] = 0
 totalsearchspacelength <- length(featureslist)
 #binaryresults = seq(1, totalsearchspacelength, by=1)
 
@@ -128,7 +136,7 @@ if(exists("GA")){suggestions = GA@population}
 cat("Total Features:", length(featureslist))
 #FYI, don't turn on the multi-core/multi-processor functionality.  It tries splitting it up and then craps out.... :)
 # I'm thinking I just save the phone GA to a file and let multiple machines pick it up and fire it back of again on their own with periodic checks to see if they have a better "Best"
-GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = maxiter, run = run, optim = TRUE, popSize = populationsize, keepBest = TRUE, parallel = FALSE, postFitness = postFitness, suggestions = suggestions) #type = c("binary", "real-valued", "permutation")
+GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = maxiter, run = run, optim = TRUE, popSize = populationsize, keepBest = TRUE, parallel = FALSE, postFitness = postFitness, suggestions = suggestions, pmutation = .2) #type = c("binary", "real-valued", "permutation")
 # if you get this error:
 ####Error in ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength,  : 
 ####Provided suggestions (ncol) matrix do not match number of variables of the problem!
