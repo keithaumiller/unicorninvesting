@@ -13,16 +13,28 @@ modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
 # formula for return = allocation * % change in a day * amount invested.
 
 #modelallocation<-modelallocation*adjustedmatrix_eval
+daystouse = 365 # make sure you are only using X days for the total return calculation
+seedmoney = 1000
+runningtotal <- seedmoney #seed money
 evalperformance<-modelallocation*adjustedmatrix_eval
+evalperformance <- tail(evalperformance,daystouse) 
+
+for (daysreturn in evalperformance){
+  runningtotal <- runningtotal + (daysreturn * runningtotal)
+#  print(paste("Daysreturn: ", daysreturn, " Runningtotal: ", runningtotal, sep = ''))
+  
+}
+
 
 #So this is the old method of just totaling everything in the matrix and considering it the performance....
 # I think instead I'll div by number of rows to give better pic of the per day average return.
 # In theory if that is positive you are good... but in reality order matters.
 #rowSums(evalperformance)
 
-performance=sum(evalperformance)/nrow(mlpeval_eval)
-
+#performance=sum(evalperformance)/nrow(mlpeval_eval)
+performance = runningtotal
 paste("Performance: ",performance)
+print(paste("Total return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
 return(performance)
 }
 

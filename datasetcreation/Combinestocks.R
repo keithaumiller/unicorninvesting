@@ -26,7 +26,7 @@ mydebug("Combining Stocks")
 #rm(amex,nasdaq,nyse)
 
   #symbolsavailable = list.files(path = 'data/stockdata')
-  portfoliolist = loadportfoliolist()
+#  portfoliolist = loadportfoliolist()
   stocklist <<- unique(c(portfoliolist,featurelistforNN))
   numberofstockscombined <<- length(stocklist)
   numberofstockscombined_final <<- numberofstockscombined
@@ -148,7 +148,7 @@ mydebug("Combining Stocks")
   trainingmatrix <<- adjustedmatrix
   colnames(trainingmatrix) <<- colnames(adjustedmatrix)
   trainingmatrix <<- generatetrainingmatrix(adjustedmatrix)
-  print("Training Matrix Completed:")
+  mydebug("Training Matrix Completed:")
   
   #This section is to combine the training output matrix with the percentchangedcombined matrix before cleaning it and splitting it for training and evaluation
   colnames(trainingmatrix) = sub('Adjusted','output',colnames(trainingmatrix))

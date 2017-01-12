@@ -18,7 +18,7 @@ inputlayer <<- inputlayersize
 layer2 <<- layer2param
 layer3 <<- layer3param
 layer4 <<- layer4param
-portfoliolist = loadportfoliolist()
+#portfoliolist = loadportfoliolist()
 ouputlayer <<- length(portfoliolist)
 
 #BPparameters
@@ -42,7 +42,7 @@ u = 1.2
 d = 0.5 
 gmax = 50 
 gmin = 1e-06
-report_freq <<- 10
+report_freq <<- 0
 input <<- as.matrix(percentchangedcombined_train[,1:inputlayersize])
 
 output <<- as.matrix(percentchangedcombined_train[,(inputlayersize+1):(dim(percentchangedcombined)[2])])

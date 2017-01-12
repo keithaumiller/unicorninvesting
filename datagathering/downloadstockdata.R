@@ -53,18 +53,22 @@ for (i in (stocklist))
 }
 
 #loadportfoliolist()
-loadportfoliolist <- function(){
-  portfoliolist <- read.csv('data/exchangedata/portfolio.csv')[,1]
+loadportfoliolist <- function(x){
+#  print(paste("loadportfoliolist: ", x ))
+  filetoread = paste(x, 'portfolio.csv', sep = '/')
+  portfoliolist <- read.csv(filetoread)[,1]
   portfoliolist <- levels(portfoliolist)
   portfoliolist <- gsub(" ", "", portfoliolist)
   return(portfoliolist)
 }
 
 #loadfeaturelist()
-loadfeaturelist <- function(){
-  featurelist <- read.csv('data/features/featurelist.csv')[,1]
+loadfeaturelist <- function(x){
+#  print(paste("loadfeaturelist: ", x ))
+  filetoread = paste(x, 'featurelist.csv', sep = '/')
+  featurelist <- read.csv(filetoread)[,1]
   featurelist <- levels(featurelist)
-  portfoliolist <<- loadportfoliolist()
+  portfoliolist <<- loadportfoliolist(x)
   featurelist <<- unique(c(portfoliolist,featurelist))
   featurelist <<- gsub(" ", "", featurelist)
   return(featurelist)
@@ -72,4 +76,4 @@ loadfeaturelist <- function(){
 
 
 #Edit this file to determine what stock list you want to use....
-stocklist = loadfeaturelist()
+#stocklist = loadfeaturelist()
