@@ -3,6 +3,10 @@
 
 #clean your environment
 rm(list = ls())
+
+#While I'm playing with performance... good to chart it on each call
+
+
 setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 
@@ -35,5 +39,6 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
 
+for (i in 1:20){
 modelexplorer(1,featurelist)
-
+}

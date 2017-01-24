@@ -11,18 +11,20 @@ modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
 
 #now that I have the portfolio allocation I need to bounce it against what the market actually did that day and give a Total return on the day.
 # formula for return = allocation * % change in a day * amount invested.
-
 #modelallocation<-modelallocation*adjustedmatrix_eval
 daystouse = 365 # make sure you are only using X days for the total return calculation
 seedmoney = 1000
-runningtotal <- seedmoney #seed money
+runningtotal <<- seedmoney #seed money
 evalperformance<-modelallocation*adjustedmatrix_eval
-evalperformance <- tail(evalperformance,daystouse) 
+matrixed_evalperformance <- tail(evalperformance,daystouse) 
+summedtoaday_evalperformance <- (rowSums(matrixed_evalperformance))
 
-for (daysreturn in evalperformance){
-  runningtotal <- runningtotal + (daysreturn * runningtotal)
-#  print(paste("Daysreturn: ", daysreturn, " Runningtotal: ", runningtotal, sep = ''))
-  
+#this takes the "Daystouse" and calculates what the investment of seed money would look like at the end of that run using this model...
+for (daysreturn in summedtoaday_evalperformance){
+  oldrunningtotal = runningtotal
+  runningtotal <<- (daysreturn * runningtotal)
+  NNperformancechart <<- c(NNperformancechart,runningtotal)
+  #  print(paste(daysreturn, runningtotal,(daysreturn * runningtotal), sep = ' ')) 
 }
 
 
@@ -34,7 +36,9 @@ for (daysreturn in evalperformance){
 #performance=sum(evalperformance)/nrow(mlpeval_eval)
 performance = runningtotal
 paste("Performance: ",performance)
-print(paste("Total return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
+print(paste("Total dollar return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
+
+NNperformancechart <<- c(NNperformancechart,runningtotal)
 return(performance)
 }
 
@@ -65,4 +69,10 @@ generatetrainingmatrix <-function(trainingmatrix){
     }
   }
   return(temptrainingmatrix)
+}
+
+
+trainingobjectivefunction <- function(nettotrain,inputmatrix,outputmatrix){
+  
+  return(score)
 }

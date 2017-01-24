@@ -100,14 +100,19 @@ if (nettype=='sa'){
   #This needs fixed for SA to work....
   timerstart = 0
   timer = timerstart
+  
   obj_func <- function(net)
   {
     #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
     timer <<- timer+1
     if(timer > timerstart+50){return (-100000)}
     #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
-    return(mlp_mse(mymlpnet, input, output))
+#    returnscore = trainingobjectivefunction(mymlpnet, input, output)
+    returnscore = mlp_mse(mymlpnet, input, output)
+    
+    return(returnscore)
   }
+  
   for(i in 1){
   mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 5000, max_epochs, report_freq, report_action = NULL)
   }

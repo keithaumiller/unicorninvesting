@@ -1,5 +1,6 @@
 modelexplorer <-function(runid, featurelistforNN)
 {
+  NNperformancechart <<- 1000
   runid = runid
   featurelistforNN = featurelistforNN
 #rm(list=ls()) 
@@ -84,5 +85,6 @@ modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,    
 #}}
 #    
 
+plot(NNperformancechart)
 return(modelperformance)
 }

@@ -91,9 +91,9 @@ mydebug("Combining Stocks")
 
 
 
-    stockstocombine[is.nan(stockstocombine)] <<- 0
+  stockstocombine[is.nan(stockstocombine)] <<- 0
   stockstocombine[is.na(stockstocombine)] <<- 0
-  stockstocombine[is.infinite(stockstocombine)] <<- 0
+  stockstocombine[is.infinite(stockstocombine)] <<- 1
   
 #  print("Stock Frames Combined")
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
@@ -103,12 +103,13 @@ mydebug("Combining Stocks")
 #  row.names(stockstocombine)<<- stockstocombine$Date
 #  stockstocombine <<- stockstocombine[,-1]   #strip date now that it is the row name
 
-    percentchangedcombined <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
+  stockstocombine_shiftedonedayearlier <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
   combinedstockdatadimensions <<- dim(stockstocombine)
   #add a dummy record to the end of the percentchangematrix
- temprow <- c(1:combinedstockdatadimensions[2])
-  percentchangedcombined<<-rbind(percentchangedcombined,temprow)
-  percentchangedcombined<<-(percentchangedcombined/stockstocombine -1)
+  temprow <- c(1:combinedstockdatadimensions[2])
+  stockstocombine_shiftedonedayearlier<<-rbind(stockstocombine_shiftedonedayearlier,temprow)
+  percentchangedcombined <<- stockstocombine_shiftedonedayearlier
+  percentchangedcombined<<-(percentchangedcombined/stockstocombine)
   
 
 #  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
