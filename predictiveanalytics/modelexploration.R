@@ -1,6 +1,6 @@
 modelexplorer <-function(runid, featurelistforNN)
 {
-  NNperformancechart <<- 1000
+  NNperformancechart <<-1000
   runid = runid
   featurelistforNN = featurelistforNN
 #rm(list=ls()) 

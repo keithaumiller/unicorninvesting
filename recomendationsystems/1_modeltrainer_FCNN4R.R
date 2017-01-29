@@ -104,13 +104,33 @@ if (nettype=='sa'){
   obj_func <- function(net)
   {
     #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
-    timer <<- timer+1
-    if(timer > timerstart+50){return (-100000)}
+#    timer <<- timer+1
+#    if(timer > timerstart+50){return (-100000)}
     #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
 #    returnscore = trainingobjectivefunction(mymlpnet, input, output)
-    returnscore = mlp_mse(mymlpnet, input, output)
+    #returnscore = mlp_mse(mymlpnet, input, output)
     
-    return(returnscore)
+    #Oldshit using mse is above this line, new version geared towards evaluation is below this line...
+    # new version of the function
+    # evaluate the net
+    # take the evaluation and pump it into the performance function
+    # return that as the objective measurement
+    
+    objectivefunctionnetoutput = mlp_eval(net,input)
+    rownames(objectivefunctionnetoutput) <- rownames(input)
+    returnscore=modelperformance(objectivefunctionnetoutput,input[,portfoliolistcolumnnames],FALSE)
+    
+    
+#    print(paste("NNoutput: ", dim(objectivefunctionnetoutput)), sep="")
+#    print(paste("Input: ", dim(input[,portfoliolistcolumnnames])), sep="")
+    
+    
+#    modelperformance(objectivefunctionnetoutput)
+
+    ######################
+     
+    #SA targets lower scores, so just flip it.
+        return(returnscore * -1)
   }
   
   for(i in 1){
@@ -131,7 +151,7 @@ rownames(mlpeval_eval) <<- rownames(evalmatrix)
 colnames(mlpeval_eval) <<- grep('.output',colnames(evalmatrix),value = TRUE)
 
 #take the output from the evaluation and see how well it did...
-thismodelsperformance=modelperformance(mlpeval_eval)
+thismodelsperformance=modelperformance(mlpeval_eval,evalmatrix[,portfoliolistcolumnnames],TRUE)
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 
 #write results to the results file.

@@ -1,3 +1,61 @@
+generatestockstocombine <- function(stocklist){
+  count = 0
+  for (i in (stocklist))
+  {
+    
+    filetoread = paste('data/stockdata/', i, "/", "stockdata.csv", sep = '') #used to be paste(i,datetoread, sep ="_")
+    #    print(paste(count, "of", numberofstockscombined, "loaded", sep = " "))
+    #    print(paste("Reading in file :", filetoread, sep=' '))
+    tryCatch({
+      tempstockdata<-0
+      #      print(paste(count, filetoread))
+      tempstockdata <- read.csv(filetoread, row.names=1, header = TRUE)
+      #      print(paste(colnames(tempstockdata)))
+      #      print(paste(colnames(stockstocombine)))    
+      if(is.data.frame(stockstocombine) && nrow(stockstocombine)==0){
+        stockstocombine <- tempstockdata
+      }
+      else{
+        #          print(dim(stockstocombine))
+        stockstocombine <- merge.data.frame(stockstocombine,tempstockdata, by="row.names", all.x = TRUE, all.y = TRUE)
+        rownames(stockstocombine) <- stockstocombine[,1]
+        stockstocombine <-stockstocombine[,-1]
+        #          print(dim(stockstocombine))
+      }
+      #      print(paste("rownames: ", head(rownames(stockstocombine))))
+      
+    },
+    error = function(e){
+      warning('ERROR Reading File\n', call. = TRUE)
+#      numberofstockscombined_final <<- numberofstockscombined_final-1
+
+      # remove stock i from both featurelist and portfolio list since we don't have the data
+      portfoliolist <<- portfoliolist[portfoliolist != i]
+      featurelist <<- featurelist[featurelist != i]
+    },
+    warning 
+    )
+    
+    #  print(head(tempstockdata))
+    #      print(combined)
+    count = count + 1
+    #  print(i)
+    
+    #  print(head(tempsymbolholder))
+    #  print(is.data.frame(tempsymbolholder))
+    #  stockstocombine[i] <- cbind.data.frame(tempsymbolholder)
+  }
+  
+  #  Cleaning out all of the NA/Infinite/Nan so that when I generate the percent changed they are accurate.
+  stockstocombine[is.nan(stockstocombine)] <- 0
+  stockstocombine[is.na(stockstocombine)] <- 0
+  stockstocombine[is.infinite(stockstocombine)] <- 1
+  
+  return(stockstocombine)
+}
+
+
+
 #not sure I need these still, but meh.
 is.nan.data.frame <- function(x){do.call(cbind, lapply(x, is.nan))}
 is.na.data.frame <- function(x){do.call(cbind, lapply(x, is.na))}
@@ -8,6 +66,15 @@ getgloballistofstocks <- function(numbertopullparam){
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN){
 mydebug("Combining Stocks")
+#listofobjects that get set globally in this function.... I know, shut up....  
+#stocklist
+#portfoliolist
+#featurelist
+#stockstocombine
+#percentchangedcombined
+#portfoliolistcolumnnames
+  
+
 #numbertopull=numbertopullparam
 #datetoread=Sys.Date()
 #datetoread="2016-10-16"
@@ -27,74 +94,18 @@ mydebug("Combining Stocks")
 
   #symbolsavailable = list.files(path = 'data/stockdata')
 #  portfoliolist = loadportfoliolist()
-  stocklist <<- unique(c(portfoliolist,featurelistforNN))
-  numberofstockscombined <<- length(stocklist)
-  numberofstockscombined_final <<- numberofstockscombined
+  stocklist = unique(c(portfoliolist,featurelistforNN))
+  numberofstockscombined = length(stocklist)
+  numberofstockscombined_final = numberofstockscombined
 
   stockstocombine <<- data.frame()
-#  rm(percentchangedcombined)
+  stockstocombine <<- generatestockstocombine(stocklist)
+
+  #  rm(percentchangedcombined)
   percentchangedcombined <<- data.frame()
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
-  
-  count = 0
-  for (i in (stocklist))
-  {
-    
-    filetoread = paste('data/stockdata/', i, "/", "stockdata.csv", sep = '') #used to be paste(i,datetoread, sep ="_")
-#    print(paste(count, "of", numberofstockscombined, "loaded", sep = " "))
-#    print(paste("Reading in file :", filetoread, sep=' '))
-    tryCatch({
-      tempstockdata<-0
-#      print(paste(count, filetoread))
-      tempstockdata <- read.csv(filetoread, row.names=1, header = TRUE)
-#      print(paste(colnames(tempstockdata)))
-#      print(paste(colnames(stockstocombine)))    
-      if(is.data.frame(stockstocombine) && nrow(stockstocombine)==0){
-        stockstocombine <<- tempstockdata
-        }
-      else{
-#          print(dim(stockstocombine))
-          stockstocombine <<- merge.data.frame(stockstocombine,tempstockdata, by="row.names", all.x = TRUE, all.y = TRUE)
-          rownames(stockstocombine) <<- stockstocombine[,1]
-          stockstocombine <<-stockstocombine[,-1]
-#          print(dim(stockstocombine))
-          }
-#      print(paste("rownames: ", head(rownames(stockstocombine))))
-
-    },
-    error = function(e){
-      warning('ERROR Reading File\n', call. = TRUE)
-      numberofstockscombined_final <-- numberofstockscombined_final-1
-
-      # remove stock i from both featurelist and portfolio list since we don't have the data
-      mydebug(length(portfoliolist))
-      mydebug(length(featurelist))
-      portfoliolist <<- portfoliolist[portfoliolist != i]
-      featurelist <<- featurelist[featurelist != i]
-      mydebug(length(portfoliolist))
-      mydebug(length(featurelist))
-    },
-    warning 
-    )
-    
-    #  print(head(tempstockdata))
-#      print(combined)
-    count = count + 1
-    #  print(i)
-
-    #  print(head(tempsymbolholder))
-    #  print(is.data.frame(tempsymbolholder))
-    #  stockstocombine[i] <- cbind.data.frame(tempsymbolholder)
-  }
-  
-#  Cleaning out all of the NA/Infinite/Nan so that when I generate the percent changed they are accurate.
-
-
-
-  stockstocombine[is.nan(stockstocombine)] <<- 0
-  stockstocombine[is.na(stockstocombine)] <<- 0
-  stockstocombine[is.infinite(stockstocombine)] <<- 1
-  
+ 
+ 
 #  print("Stock Frames Combined")
 #  print(paste("COLUMNCHECK: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
 
@@ -103,18 +114,18 @@ mydebug("Combining Stocks")
 #  row.names(stockstocombine)<<- stockstocombine$Date
 #  stockstocombine <<- stockstocombine[,-1]   #strip date now that it is the row name
 
-  stockstocombine_shiftedonedayearlier <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
-  combinedstockdatadimensions <<- dim(stockstocombine)
+  stockstocombine_shiftedonedayearlier = stockstocombine[-1,]  # strip the first record for the percentchanged matrix
+  combinedstockdatadimensions = dim(stockstocombine)
   #add a dummy record to the end of the percentchangematrix
-  temprow <- c(1:combinedstockdatadimensions[2])
-  stockstocombine_shiftedonedayearlier<<-rbind(stockstocombine_shiftedonedayearlier,temprow)
+  temprow =  c(1:combinedstockdatadimensions[2])
+  stockstocombine_shiftedonedayearlier = rbind(stockstocombine_shiftedonedayearlier,temprow)
   percentchangedcombined <<- stockstocombine_shiftedonedayearlier
-  percentchangedcombined<<-(percentchangedcombined/stockstocombine)
+  percentchangedcombined <<-(percentchangedcombined/stockstocombine)
   
 
 #  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
 
-  adjustedcolumnnames <<- grep('Adjusted',colnames(percentchangedcombined),value =TRUE)
+#  adjustedcolumnnames <<- grep('Adjusted',colnames(percentchangedcombined),value =TRUE)
 # print(length(adjustedcolumnnames))
   portfoliolistcolumnnames <<- vector()
 

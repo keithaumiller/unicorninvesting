@@ -1,8 +1,49 @@
+
+#tried to adjust the old one, but realized they are just too different to reuse functionality, so wrote a new one.
+#too much bagage on the old one.
+#mlpeval_eval is the output of the NN, adjustedinput is the "Adjusted" values for the stock
+
+modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
+{
+#  print("In new model performance")
+  # these three rows establish %allocated
+  adjustedmatrix_eval<-adjustedinput
+  modelallocation<-mlpeval_eval
+  
+  modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
+  
+  daystouse = 365 # make sure you are only using X days for the total return calculation
+  seedmoney = 1000
+  runningtotal <<- seedmoney #seed money
+  evalperformance<-modelallocation*adjustedmatrix_eval
+  
+  matrixed_evalperformance <- tail(evalperformance,daystouse) 
+  summedtoaday_evalperformance <- (rowSums(matrixed_evalperformance))
+  
+  for (daysreturn in summedtoaday_evalperformance){
+    oldrunningtotal = runningtotal
+    runningtotal <<- (daysreturn * runningtotal)
+    if(saveit == TRUE)
+      {
+      NNperformancechart <<- c(NNperformancechart,runningtotal) 
+      }
+  }
+  
+  thisfunctionsperformance = runningtotal
+#  paste("Performance: ",thisfunctionsperformance)
+#  print(paste("Total dollar return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
+#  NNperformancechart <<- c(NNperformancechart,runningtotal)
+#  print("Exiting new model performance")
+  return(thisfunctionsperformance)  
+}
+
+
+
 # This is where I will need to implement: https://en.wikipedia.org/wiki/Modern_portfolio_theory
 # Currently modelperformance is simplistic at best and is heavily dicted by how the training output is structured.
 # I'm not a fan of rollup metrics like "Risk Level" but it could be a good feature.
 
-modelperformance <- function(mlpeval_eval){
+modelperformance_defunct <- function(mlpeval_eval){
   
 #these three lines just establish the % allocate for each stock given the output from the NN
 adjustedmatrix_eval<-evalmatrix[,portfoliolistcolumnnames]
@@ -76,3 +117,6 @@ trainingobjectivefunction <- function(nettotrain,inputmatrix,outputmatrix){
   
   return(score)
 }
+
+
+
