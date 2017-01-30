@@ -85,6 +85,6 @@ modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,    
 #}}
 #    
 
-plot(NNperformancechart)
+#plot(NNperformancechart)
 return(modelperformance)
 }

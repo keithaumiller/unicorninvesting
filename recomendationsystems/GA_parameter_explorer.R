@@ -20,7 +20,7 @@ fitnesfunction<-function(x){
   print(paste("NNrunID:", NNrunid))
   mydebug("GA Fitnessfunction Called")
   featurelistforNN <<- convertobjecttonetinputlist(x)
-  
+  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
   # this limits the number of features to 350 because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
   mydebug(paste("Number of Features used on this NN: ", length(featurelistforNN)))
   if((length(featurelistforNN) > 350)) {return((length(featurelistforNN) * -1)-10000)}
@@ -29,6 +29,13 @@ fitnesfunction<-function(x){
   performance <<- modelexplorer(runid, featurelistforNN)
   #comment out line above and uncomment this line below to play with the GA feature selector.
   #  performance <<- sum(x)
+  
+  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance", sep = '')
+  if(performance > 2){
+    png(filename = myfilesavelocation, width = 900, height = 900)
+    plot(NNperformancechart)
+    dev.off()
+  }
   
   thisGARun=paste(portfolionickname,NNrunid, runid, performance,sep = ",")
   GARunresultsfile = paste(outputdirectory, 'GAResults.csv', sep = "/")
@@ -56,10 +63,12 @@ convertobjecttonetinputlist <- function(XX){
   return(convertedlist)
 }
 
-
 monitor <- function(obj)
 {
   mydebug("GA Monitor Called")
+
+ myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, ".png", sep = '')
+  png(filename = myfilesavelocation, width = 900, height = 900)
   plot(obj)#, main = paste(obj@iter))
 
   summarymean = obj@summary[,"mean"]
@@ -70,7 +79,7 @@ monitor <- function(obj)
   tempx[] = obj@iter
   points(tempx, obj@fitness, pch = 20, col = 2)
   rug(obj@population, col = 2)
-
+  dev.off()
   Sys.sleep(0.05)
 }
 
@@ -97,7 +106,7 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #binaryresults[] = 0
 #numberofstockstouse=20
 NNrunid=0
-populationsize=50
+populationsize=10
 maxiter=50
 run=50
 averagefitnessbyiteration = c(seq(1:maxiter))
@@ -109,6 +118,13 @@ totalsearchspacelength <- length(featureslist)
 #set up your running directory so you can save/restore/restart.
 if (!dir.exists(outputdirectory)){dir.create(outputdirectory)}
 gaoutputlocation <<- paste(outputdirectory, "/", "GA", sep="")
+
+# if plot direcotry isn't there, create it
+plotdir = paste(outputdirectory, "/plots", sep = '')
+if (!dir.exists(plotdir)){dir.create(plotdir)}
+
+gaoutputlocation <<- paste(outputdirectory, "/", "GA", sep="")
+
 if(file.exists(gaoutputlocation)){
   print("GA File Found. LOADING IT")
   load(gaoutputlocation)}

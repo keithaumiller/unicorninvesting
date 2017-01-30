@@ -43,7 +43,7 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 # Currently modelperformance is simplistic at best and is heavily dicted by how the training output is structured.
 # I'm not a fan of rollup metrics like "Risk Level" but it could be a good feature.
 
-modelperformance_defunct <- function(mlpeval_eval){
+deprecated_modelperformance_defunct <- function(mlpeval_eval){
   
 #these three lines just establish the % allocate for each stock given the output from the NN
 adjustedmatrix_eval<-evalmatrix[,portfoliolistcolumnnames]
