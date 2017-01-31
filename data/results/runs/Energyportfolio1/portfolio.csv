@@ -1,15 +1,16 @@
-"Symbol","Name","LastSale","MarketCap","ADR TSO","IPOyear","Sector","Industry","Summary Quote",
-"ADSW","Advanced Disposal Services, Inc.","22.46","1970201015.02","n/a","2016","Public Utilities","Environmental Services","http://www.nasdaq.com/symbol/adsw",
-"ALP^O","Alabama Power Company","25.85","0","n/a","n/a","Public Utilities","Electric Utilities: Central","http://www.nasdaq.com/symbol/alp^o",
-"AQN","Algonquin Power & Utilities Corp.","8.35","2288490729.1","n/a","2016","Public Utilities","Electric Utilities: Central","http://www.nasdaq.com/symbol/aqn",
-"ALE","Allete, Inc.","63.66","3148795482","n/a","n/a","Public Utilities","Power Generation","http://www.nasdaq.com/symbol/ale",
-"LNT","Alliant Energy Corporation","37.93","8629091234.04","n/a","n/a","Public Utilities","Power Generation","http://www.nasdaq.com/symbol/lnt",
-"AEE","Ameren Corporation","52.38","12709210719.24","n/a","n/a","Public Utilities","Power Generation","http://www.nasdaq.com/symbol/aee",
-"AMOV","America Movil, S.A.B. de C.V.","12.58","41239756000","n/a","n/a","Public Utilities","Telecommunications Equipment","http://www.nasdaq.com/symbol/amov",
-"AMX","America Movil, S.A.B. de C.V.","12.8","41960960000","n/a","n/a","Public Utilities","Telecommunications Equipment","http://www.nasdaq.com/symbol/amx",
-"AEP","American Electric Power Company, Inc.","62.76","30859815811.08","n/a","n/a","Public Utilities","Electric Utilities: Central","http://www.nasdaq.com/symbol/aep",
-"AMID","American Midstream Partners, LP","18.2","760714154.2","n/a","2011","Public Utilities","Natural Gas Distribution","http://www.nasdaq.com/symbol/amid",
-"AWR","American States Water Company","44.95","1643810082.7","n/a","n/a","Public Utilities","Water Supply","http://www.nasdaq.com/symbol/awr",
-"AWK","American Water Works","72.25","12860743265.75","n/a","2008","Public Utilities","Water Supply","http://www.nasdaq.com/symbol/awk",
-"AM","Antero Midstream Partners LP","30.57","5420037980.79","n/a","2014","Public Utilities","Natural Gas Distribution","http://www.nasdaq.com/symbol/am",
-"WTR","Aqua America, Inc.","29.98","5317200544.86","n/a","n/a","Public Utilities","Water Supply","http://www.nasdaq.com/symbol/wtr",
+"AAV","Advantage Oil & Gas Ltd","5.19","957041901.03","n/a","n/a","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/aav",
+"CVE","Cenovus Energy Inc","12.77","10639892602.93","n/a","n/a","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/cve",
+"ENLC","EnLink Midstream, LLC","19.2","3456935116.8","n/a","n/a","Public Utilities","Natural Gas Distribution","http://www.nasdaq.com/symbol/enlc",
+"NFX","Newfield Exploration Company","32.63","5339355590.53","n/a","1993","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/nfx",
+"PDS","Precision Drilling Corporation","4.13","1209726931.7","n/a","n/a","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/pds",
+"PE","Parsley Energy, Inc.","22.84","3854677176.52","n/a","2014","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/pe",
+"SDR","SandRidge Mississippian Trust II","1.73","86024250","n/a","2012","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/sdr",
+"SDRL","Seadrill Limited","3.14","1547266211.6","n/a","n/a","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/sdrl",
+"TEGP","Tallgrass Energy GP, LP","26.01","4089537734.4","n/a","2015","Public Utilities","Natural Gas Distribution","http://www.nasdaq.com/symbol/tegp",
+"VNRAP","Vanguard Natural Resources LLC","4.08","0","n/a","n/a","Energy","Oil & Gas Production","http://www.nasdaq.com/symbol/vnrap",
+CKX,"CKX Lands, Inc.",10.5,20396197.5,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/ckx
+MXC,Mexco Energy Corporation,2.4275,4945463.215,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/mxc
+NOG,"Northern Oil and Gas, Inc.",3.82,241173606.6,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/nog
+TAT,Transatlantic Petroleum Ltd,0.6901,28364136.18,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/tat
+TPLM,Triangle Petroleum Corporation,0.5035,38121547.86,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/tplm
+YUMA,"Yuma Energy, Inc.",0.21,15101385.81,n/a,n/a,Energy,Oil & Gas Production,http://www.nasdaq.com/symbol/yuma

@@ -53,6 +53,14 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
       #  * the runningtotal 
       # and then Sum them all up
       thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal)) 
+#       if (thisdaysreturn/runningtotal > 1.01)
+#       {
+#         print("Thisdays cals")
+#         print(paste("thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal))"))
+#         print(paste("thisdaysreturn:", thisdaysreturn))
+#         print(paste("Altthisdaysreturn:", sum((portfolioweightwithpercentchanged[x,])) * (runningtotal)))
+#         print(paste("portfolioweightwithpercentchanged: ", sum(portfolioweightwithpercentchanged[x,]), "runningtotal:", runningtotal))
+#       }
       #update the running total for the next iteration in the loop
       runningtotal = thisdaysreturn
 #      print(paste("X: ", x, " Thisdaysreturn: ", thisdaysreturn,  " Runningtotal: ", runningtotal, sep = ''))
@@ -70,49 +78,6 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 
 
 
-# This is where I will need to implement: https://en.wikipedia.org/wiki/Modern_portfolio_theory
-# Currently modelperformance is simplistic at best and is heavily dicted by how the training output is structured.
-# I'm not a fan of rollup metrics like "Risk Level" but it could be a good feature.
-
-deprecated_modelperformance_defunct <- function(mlpeval_eval){
-  
-#these three lines just establish the % allocate for each stock given the output from the NN
-adjustedmatrix_eval<-evalmatrix[,portfoliolistcolumnnames]
-modelallocation<-mlpeval_eval
-modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
-
-#now that I have the portfolio allocation I need to bounce it against what the market actually did that day and give a Total return on the day.
-# formula for return = allocation * % change in a day * amount invested.
-#modelallocation<-modelallocation*adjustedmatrix_eval
-daystouse = 365 # make sure you are only using X days for the total return calculation
-seedmoney = 1000
-runningtotal <<- seedmoney #seed money
-evalperformance<-modelallocation*adjustedmatrix_eval
-matrixed_evalperformance <- tail(evalperformance,daystouse) 
-summedtoaday_evalperformance <- (rowSums(matrixed_evalperformance))
-
-#this takes the "Daystouse" and calculates what the investment of seed money would look like at the end of that run using this model...
-# for (daysreturn in summedtoaday_evalperformance){
-#   oldrunningtotal = runningtotal
-#   runningtotal <<- (daysreturn * runningtotal)
-#   NNperformancechart <<- c(NNperformancechart,runningtotal)
-#   #  print(paste(daysreturn, runningtotal,(daysreturn * runningtotal), sep = ' ')) 
-# }
-
-
-#So this is the old method of just totaling everything in the matrix and considering it the performance....
-# I think instead I'll div by number of rows to give better pic of the per day average return.
-# In theory if that is positive you are good... but in reality order matters.
-#rowSums(evalperformance)
-
-#performance=sum(evalperformance)/nrow(mlpeval_eval)
-performance = runningtotal
-paste("Performance: ",performance)
-print(paste("Total dollar return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
-
-NNperformancechart <<- c(NNperformancechart,runningtotal)
-return(performance)
-}
 
 #Why this is important... This is the function that your Neural Net is evaluated based off of.
 #Take the input of X features, and output a matix of actions that the net should have taken given that input.
@@ -122,7 +87,9 @@ return(performance)
 #this output should be what % of the portfolio should be allocated to that stock that is in the portfolio
 
 generatetrainingmatrix <-function(trainingmatrix){
-  temptrainingmatrix <<- trainingmatrix
+  ###THIS doesn't get used anymore, but I just haven't removed it from datasets because it's a pain in the ass
+
+    temptrainingmatrix <<- trainingmatrix
   temptrainingmatrix[,] <<- NA
   #more complex trading methodology will yield better results.... 
   #I need more levers and this is how they get fed back into the training

@@ -70,7 +70,7 @@ getgloballistofstocks <- function(numbertopullparam){
 }
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN){
-print("Combining Stocks")
+#print("Combining Stocks")
 #listofobjects that get set globally in this function.... I know, shut up....  
 #stocklist
 #portfoliolist
@@ -193,7 +193,7 @@ print("Combining Stocks")
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
   percentchangedcombined_eval <<- tail(percentchangedcombined, twentyfive)
-  print("Exiting Combine Stocks Function")
+#  print("Exiting Combine Stocks Function")
   
   return(numberofstockscombined_final)
 }

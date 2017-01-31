@@ -40,5 +40,20 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 # I would like to put this in a config script at some point, but not worth it currently.
 
 for (i in 1:20){
-modelexplorer(1,featurelist)
+performance = modelexplorer(1,featurelist)
+  
+
+#check the plots directory for your charts.
+
+  myfilesavelocation = paste("./", outputdirectory, "/plots/NNrunid-" , i , "-netperformance.png", sep = '')
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(NNperformancechart)
+  # Create a title with a red, bold/italic font
+  maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelist), " features!", sep = '')
+  title(main=maintitle, col.main="Blue", font.main=4)
+  # Label the x and y axes with dark green text
+  title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
+  #    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
+  dev.off()
+  
 }

@@ -20,7 +20,7 @@ fitnesfunction<-function(x){
   print(paste("NNrunID:", NNrunid))
   mydebug("GA Fitnessfunction Called")
   featurelistforNN <<- convertobjecttonetinputlist(x)
-  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
+#  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
   # this limits the number of features to 350 because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
   mydebug(paste("Number of Features used on this NN: ", length(featurelistforNN)))
   if((length(featurelistforNN) > 100)) {return((length(featurelistforNN)*-.0001))}
@@ -155,7 +155,7 @@ if(exists("GA")){suggestions = GA@population}
 #if there is a previous run started on this, use it's best as a starting point.
 #Don't be a dummy, don't start over every time. ;)
 
-cat("Total Features:", length(featureslist))
+print(paste("Total Features:", length(featureslist)))
 #FYI, don't turn on the multi-core/multi-processor functionality.  It tries splitting it up and then craps out.... :)
 # I'm thinking I just save the phone GA to a file and let multiple machines pick it up and fire it back of again on their own with periodic checks to see if they have a better "Best"
 GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = maxiter, run = run, optim = TRUE, popSize = populationsize, keepBest = TRUE, parallel = FALSE, postFitness = postFitness, suggestions = suggestions, pmutation = .2) #type = c("binary", "real-valued", "permutation")
