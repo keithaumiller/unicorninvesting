@@ -35,6 +35,8 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #to play around with the NN model. i.e. add or remove layers, 
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
+for (i in 1:200){
 launchaGAportfolio()
+}
 #modelexplorer(1,featurelist)
 

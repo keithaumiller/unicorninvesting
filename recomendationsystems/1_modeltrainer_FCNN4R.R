@@ -97,15 +97,19 @@ if (nettype=='sgd'){
   mymlpnet_trained <<- mlp_teach_sgd(mymlpnet, input, output, tol_level, max_epochs, learn_rate, l2reg, minibatchsz, lambda, gamma, momentum, report_freq)
 }
 if (nettype=='sa'){
-  #This needs fixed for SA to work....
-  timerstart = 0
-  timer = timerstart
+  #timer to track how long it's trying to build this net
+  timerstart = proc.time()
+  timer = 0
   
   obj_func <- function(net)
   {
-    #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
-#    timer <<- timer+1
-#    if(timer > timerstart+50){return (-100000)}
+    timelapse = round(((proc.time() - timerstart)[3]),2)
+#    print(paste(timer, "Objective Function:", timelapse))
+
+        #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
+    timer <<- timer+1
+    
+#    if(timelapse > 300){return (timelapse * -1)}
     #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
 #    returnscore = trainingobjectivefunction(mymlpnet, input, output)
     #returnscore = mlp_mse(mymlpnet, input, output)
@@ -116,11 +120,10 @@ if (nettype=='sa'){
     # take the evaluation and pump it into the performance function
     # return that as the objective measurement
     
-    objectivefunctionnetoutput = mlp_eval(net,input)
+    objectivefunctionnetoutput <<- mlp_eval(net,input)
     rownames(objectivefunctionnetoutput) <- rownames(input)
     returnscore=modelperformance(objectivefunctionnetoutput,input[,portfoliolistcolumnnames],FALSE)
-    
-    
+
 #    print(paste("NNoutput: ", dim(objectivefunctionnetoutput)), sep="")
 #    print(paste("Input: ", dim(input[,portfoliolistcolumnnames])), sep="")
     
@@ -130,11 +133,20 @@ if (nettype=='sa'){
     ######################
      
     #SA targets lower scores, so just flip it.
-        return(returnscore * -1)
+#    print(paste(timer, " Score: ", returnscore, sep = " "))
+    returnscore = 10000-returnscore
+        return(returnscore)
   }
   
+  reportaction <- function(net){
+    timelapse = round(((proc.time() - timerstart)[3]),2)
+    print(paste(timer, "Net Reporting Function:", timelapse))
+    Sys.sleep(5)
+    
+  }
+    
   for(i in 1){
-  mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 5000, max_epochs, report_freq, report_action = NULL)
+  mymlpnet_trained <<- mlp_teach_sa(mymlpnet, obj_func, Tinit = 1, 10, report_freq, report_action = NULL)
   }
 }
 mydebug("MyMlpNet Trained")
@@ -159,5 +171,9 @@ thisrun=paste(portfolionickname,runid, nettype,max_epochs,netdepth,inputlayer,la
 NNresultsfilenoutputname = paste("data/results/runs/", portfolionickname, "/NNresults.csv", sep = "")
 #print(NNresultsfilenoutputname)
 write(thisrun,file=NNresultsfilenoutputname,append=TRUE)
+
+#this adds a penalty for length of execution
+#slownesspenalty = .001 * round(((proc.time() - timerstart)[3]),2)
+
 return(thismodelsperformance)
 }

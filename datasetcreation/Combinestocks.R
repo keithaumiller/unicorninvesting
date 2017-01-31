@@ -1,11 +1,12 @@
 generatestockstocombine <- function(stocklist){
   count = 0
+#  timerstart = proc.time()
+  
   for (i in (stocklist))
   {
-    
     filetoread = paste('data/stockdata/', i, "/", "stockdata.csv", sep = '') #used to be paste(i,datetoread, sep ="_")
-    #    print(paste(count, "of", numberofstockscombined, "loaded", sep = " "))
-    #    print(paste("Reading in file :", filetoread, sep=' '))
+ #       print(paste(count, "loaded", sep = " "))
+ #       print(paste("Reading in file :", filetoread, sep=' '))
     tryCatch({
       tempstockdata<-0
       #      print(paste(count, filetoread))
@@ -44,13 +45,17 @@ generatestockstocombine <- function(stocklist){
     #  print(head(tempsymbolholder))
     #  print(is.data.frame(tempsymbolholder))
     #  stockstocombine[i] <- cbind.data.frame(tempsymbolholder)
+#    print(paste(count, "Combiningtime:" , round(((proc.time() - timerstart)[3]),2)))
+#    timerstart = proc.time()
+ #   if((proc.time() - timerstart)[3] > 1){return(stockstocombine)}
+    
   }
   
   #  Cleaning out all of the NA/Infinite/Nan so that when I generate the percent changed they are accurate.
   stockstocombine[is.nan(stockstocombine)] <- 0
   stockstocombine[is.na(stockstocombine)] <- 0
-  stockstocombine[is.infinite(stockstocombine)] <- 1
-  
+  stockstocombine[is.infinite(stockstocombine)] <- 0
+  print("Stocks Combined")
   return(stockstocombine)
 }
 
@@ -65,7 +70,7 @@ getgloballistofstocks <- function(numbertopullparam){
 }
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN){
-mydebug("Combining Stocks")
+print("Combining Stocks")
 #listofobjects that get set globally in this function.... I know, shut up....  
 #stocklist
 #portfoliolist
@@ -143,24 +148,18 @@ mydebug("Combining Stocks")
   adjustedmatrix <<- percentchangedcombined[,portfoliolistcolumnnames]
 #  print(head(adjustedmatrix))
 
-  rm(tempstockdata)
-  rm(i)
   rm(temprow)
-  rm(filetoread)
-#  rm(amexstocks)
-#  rm(nysestocks)
-#  rm(nasdaqstocks)
 #  print(paste("COLUMNCHECKmid: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
 #  trainingmatrix <<- adjustedmatrix
   
   #This is the output matrix utilized for training the neural net.... I think this needs to move to the performance function somehow.
   #setting this really low so that it causes the MSE for allocations to really hit those bad allocations hard.
-#  temp = dim(adjustedmatrix)[1]
+  temp = dim(adjustedmatrix)[1]
   trainingmatrix <<- adjustedmatrix
   colnames(trainingmatrix) <<- colnames(adjustedmatrix)
   trainingmatrix <<- generatetrainingmatrix(adjustedmatrix)
-  mydebug("Training Matrix Completed:")
+ # mydebug("Training Matrix Completed:")
   
   #This section is to combine the training output matrix with the percentchangedcombined matrix before cleaning it and splitting it for training and evaluation
   colnames(trainingmatrix) = sub('Adjusted','output',colnames(trainingmatrix))
@@ -169,7 +168,8 @@ mydebug("Combining Stocks")
   #print(paste("COLUMNCHECKgeneratingtraining: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   diminputpercentagematrix<<-dim(percentchangedcombined)
 #  rm(percentchangedcombinedtemp)
-  percentchangedcombinedtemp <<- merge.data.frame(percentchangedcombined,trainingmatrix, by=0, all = TRUE)
+#  percentchangedcombinedtemp <<- percentchangedcombined
+ percentchangedcombinedtemp <<- merge.data.frame(percentchangedcombined,trainingmatrix, by=0, all = TRUE)
   rownames(percentchangedcombinedtemp)<<-percentchangedcombinedtemp[,1]
   percentchangedcombinedtemp <<- percentchangedcombinedtemp[,-1]   #strip date now that it is the row name
   percentchangedcombined <<- percentchangedcombinedtemp
@@ -183,13 +183,17 @@ mydebug("Combining Stocks")
 # Currently the MSE calculation craps out when it runs into non numbers.
 # Hopefully setting to 0 will have minimal impact in other functions but still serve our purpose for now.
 # Maybe if I do this up front to the original combined instead?
- percentchangedcombined[is.nan(percentchangedcombined)] <- 0
- percentchangedcombined[is.na(percentchangedcombined)] <- 0
- percentchangedcombined[is.infinite(percentchangedcombined)] <- 0
+ percentchangedcombined[is.nan(percentchangedcombined)] <<- 1
+ percentchangedcombined[is.na(percentchangedcombined)] <<- 1
+ percentchangedcombined[is.infinite(percentchangedcombined)] <<- 1
+ 
+  #strip the last record off because you don't have the complete data to create that record
+ percentchangedcombined <<- head(percentchangedcombined,-1)
+ 
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
   percentchangedcombined_eval <<- tail(percentchangedcombined, twentyfive)
-#  print("Exiting Combine Stocks Function")
+  print("Exiting Combine Stocks Function")
   
   return(numberofstockscombined_final)
 }

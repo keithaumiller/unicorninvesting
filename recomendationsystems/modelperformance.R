@@ -1,39 +1,36 @@
+library(taRifx) # adds shift() functionality
+library(PerformanceAnalytics)  # will be used at some point in the future... after I learn it.
 
-#tried to adjust the old one, but realized they are just too different to reuse functionality, so wrote a new one.
-#too much bagage on the old one.
 #mlpeval_eval is the output of the NN, adjustedinput is the "Adjusted" values for the stock
-
 modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 {
 #  print("In new model performance")
-  # these three rows establish %allocated
-  adjustedmatrix_eval<-adjustedinput
-  modelallocation<-mlpeval_eval
-  
-  modelallocation[]<-(mlpeval_eval[]/rowSums(mlpeval_eval))
-  
-  daystouse = 365 # make sure you are only using X days for the total return calculation
+#  mlpeval_eval = objectivefunctionnetoutput
+#  adjustedinput = input[,portfoliolistcolumnnames]
+  datasetlength <- dim(adjustedinput)[1]
+  balance <<- vector(mode = "double", length = datasetlength)
+  daystouse = 252 #252
   seedmoney = 1000
-  runningtotal <<- seedmoney #seed money
-  evalperformance<-modelallocation*adjustedmatrix_eval
+  runningtotal = seedmoney
+  adjustedmatrix_eval<-adjustedinput # our matrix of % change values for the day
+  modelallocation<-mlpeval_eval # our alogrithms output how it wants money allocated at the end of the day
+  modelallocation[]<-round(mlpeval_eval[]/rowSums(mlpeval_eval),3)
   
-  matrixed_evalperformance <- tail(evalperformance,daystouse) 
-  summedtoaday_evalperformance <- (rowSums(matrixed_evalperformance))
-  
-  for (daysreturn in summedtoaday_evalperformance){
-    oldrunningtotal = runningtotal
-    runningtotal <<- (daysreturn * runningtotal)
-    if(saveit == TRUE)
-      {
-      NNperformancechart <<- c(NNperformancechart,runningtotal) 
-      }
-  }
-  
+  portfolioweightwithpercentchanged <- (modelallocation[1:datasetlength-1,]) * (adjustedmatrix_eval[2:datasetlength,])
+  portfolioweightwithpercentchanged <- tail(portfolioweightwithpercentchanged,daystouse)
+    for (x in 1:dim(portfolioweightwithpercentchanged)[1]){
+      thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal)) 
+#      print(thisdaysreturn)
+      runningtotal = thisdaysreturn
+#      print(paste("X: ", x, " Thisdaysreturn: ", thisdaysreturn,  " Runningtotal: ", runningtotal, sep = ''))
+      saveit = TRUE
+      if(saveit == TRUE)
+         {
+             NNperformancechart <<- c(NNperformancechart,runningtotal) 
+       }
+    }
+#  plot(NNperformancechart)
   thisfunctionsperformance = runningtotal
-#  paste("Performance: ",thisfunctionsperformance)
-#  print(paste("Total dollar return on ", seedmoney, " after ", daystouse, " : ", runningtotal, sep = ''))
-#  NNperformancechart <<- c(NNperformancechart,runningtotal)
-#  print("Exiting new model performance")
   return(thisfunctionsperformance)  
 }
 
@@ -61,12 +58,12 @@ matrixed_evalperformance <- tail(evalperformance,daystouse)
 summedtoaday_evalperformance <- (rowSums(matrixed_evalperformance))
 
 #this takes the "Daystouse" and calculates what the investment of seed money would look like at the end of that run using this model...
-for (daysreturn in summedtoaday_evalperformance){
-  oldrunningtotal = runningtotal
-  runningtotal <<- (daysreturn * runningtotal)
-  NNperformancechart <<- c(NNperformancechart,runningtotal)
-  #  print(paste(daysreturn, runningtotal,(daysreturn * runningtotal), sep = ' ')) 
-}
+# for (daysreturn in summedtoaday_evalperformance){
+#   oldrunningtotal = runningtotal
+#   runningtotal <<- (daysreturn * runningtotal)
+#   NNperformancechart <<- c(NNperformancechart,runningtotal)
+#   #  print(paste(daysreturn, runningtotal,(daysreturn * runningtotal), sep = ' ')) 
+# }
 
 
 #So this is the old method of just totaling everything in the matrix and considering it the performance....

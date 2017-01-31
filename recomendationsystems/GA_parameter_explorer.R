@@ -23,17 +23,23 @@ fitnesfunction<-function(x){
   print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
   # this limits the number of features to 350 because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
   mydebug(paste("Number of Features used on this NN: ", length(featurelistforNN)))
-  if((length(featurelistforNN) > 350)) {return((length(featurelistforNN) * -1)-10000)}
+  if((length(featurelistforNN) > 100)) {return((length(featurelistforNN)*-.0001))}
   
   #Generate trainNN
   performance <<- modelexplorer(runid, featurelistforNN)
   #comment out line above and uncomment this line below to play with the GA feature selector.
   #  performance <<- sum(x)
   
-  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance", sep = '')
-  if(performance > 2){
+  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
+  if(performance > 1){
     png(filename = myfilesavelocation, width = 900, height = 900)
     plot(NNperformancechart)
+    # Create a title with a red, bold/italic font
+    maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelistforNN), " features!", sep = '')
+    title(main=maintitle, col.main="Blue", font.main=4)
+    # Label the x and y axes with dark green text
+    title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
+#    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
     dev.off()
   }
   
@@ -106,9 +112,9 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #binaryresults[] = 0
 #numberofstockstouse=20
 NNrunid=0
-populationsize=10
-maxiter=50
-run=50
+populationsize=20
+maxiter=30
+run=30
 averagefitnessbyiteration = c(seq(1:maxiter))
 averagefitnessbyiteration[] = 0
 totalsearchspacelength <- length(featureslist)
@@ -138,7 +144,7 @@ if(file.exists(bestperformancefile)){bestperformance <<- load(bestperformancefil
 
 
 #initialize the suggested population towards the low side so we don't get too bogged down in giant nets... Once it is scaled this won't be needed for that, but it'll be used for re-loading previously successful runs.
-suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = .25),nrow = populationsize, ncol = totalsearchspacelength))
+suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = .01),nrow = populationsize, ncol = totalsearchspacelength))
 #load previous GA run if available
 if(exists("GA")){suggestions = GA@population}
 
