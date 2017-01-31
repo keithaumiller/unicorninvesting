@@ -31,7 +31,7 @@ fitnesfunction<-function(x){
   #  performance <<- sum(x)
   
   myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
-  if(performance > 1){
+  if(performance > 0){
     png(filename = myfilesavelocation, width = 900, height = 900)
     plot(NNperformancechart)
     # Create a title with a red, bold/italic font

@@ -7,29 +7,63 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 #  print("In new model performance")
 #  mlpeval_eval = objectivefunctionnetoutput
 #  adjustedinput = input[,portfoliolistcolumnnames]
-  datasetlength <- dim(adjustedinput)[1]
-  balance <<- vector(mode = "double", length = datasetlength)
-  daystouse = 252 #252
-  seedmoney = 1000
-  runningtotal = seedmoney
-  adjustedmatrix_eval<-adjustedinput # our matrix of % change values for the day
-  modelallocation<-mlpeval_eval # our alogrithms output how it wants money allocated at the end of the day
-  modelallocation[]<-round(mlpeval_eval[]/rowSums(mlpeval_eval),3)
   
+  #parameters Explained
+  #mlpeval_eval  ---- this is a matrix of the output from the NN i.e.
+  #          Stock.IBM.Weight    Stock.Yahoo.Weight
+  #Day 1         .8                     .6
+  #Day 2         .7                     .9
+  #Day 3         .7                     .2
+  #adjustedinput  --------this is the matrix of the % change for the stocks from the previous day
+  #             IBM.Adjusted           Yahoo.Adjusted
+  #Day 1         1.02                   1.03
+  #Day 2         1.03                   .90
+  #Day 3         .98                    .94
+  #
+  #saveit   ----parameter on if to save the progression of the nets performance over the days
+  #--- I disable it for training
+  
+  
+  datasetlength <- dim(adjustedinput)[1]  # how many days of data do I have
+  balance <<- vector(mode = "double", length = datasetlength)  # not used
+  daystouse = 252 #252  # use only the final X days... shortens the execution, 252 is how many exchange days there are in a year
+  seedmoney = 1000  # money to invest 
+  runningtotal = seedmoney  # updated daily in the loop to show how much there is to spread the next day
+
+  adjustedmatrix_eval<-adjustedinput # our matrix of % change values for the day
+  modelallocation<-mlpeval_eval # our alogrithms output how it wants money allocated at the beginning of the next day
+
+  #adjusted the modelallocation to make sure that each row sums up to 100% allocation and not more than 100%
+   modelallocation[]<-mlpeval_eval[]/rowSums(mlpeval_eval)
+  
+   # calculate the portfolio weight percent changed matrix  
+   #using the previous EOD allocations with current days final numbers 
+   #to get the % change on on the previous EOD balance
   portfolioweightwithpercentchanged <- (modelallocation[1:datasetlength-1,]) * (adjustedmatrix_eval[2:datasetlength,])
+
+  # trim the matrix down to the last X days you want to measure performance on.  
+  # maybe I should do this when constructing the datasets upfront..
   portfolioweightwithpercentchanged <- tail(portfolioweightwithpercentchanged,daystouse)
-    for (x in 1:dim(portfolioweightwithpercentchanged)[1]){
+
+  #loop through to update the runningbalance for the portfolio during the timeperiod
+  #can't do this as a matrix calcuation since each row is dependant on the previous days results
+      for (x in 1:dim(portfolioweightwithpercentchanged)[1]){
+      # each day's return is each stocks 
+      # portfolioweightwithpercentchange from above, 
+      #  * the runningtotal 
+      # and then Sum them all up
       thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal)) 
-#      print(thisdaysreturn)
+      #update the running total for the next iteration in the loop
       runningtotal = thisdaysreturn
 #      print(paste("X: ", x, " Thisdaysreturn: ", thisdaysreturn,  " Runningtotal: ", runningtotal, sep = ''))
 #      saveit = TRUE
+#      If this is a performance test and not training, it'll save it to this vector and plot it later'
       if(saveit == TRUE)
          {
              NNperformancechart <<- c(NNperformancechart,runningtotal) 
        }
     }
-#  plot(NNperformancechart)
+
   thisfunctionsperformance = runningtotal
   return(thisfunctionsperformance)  
 }
