@@ -33,6 +33,12 @@ outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
 portfoliolist <<- loadportfoliolist(outputdirectory)
 
+#downloads the stocks that are default in the featurelist.csv
+#this saves the stock data to the data/stockdata directory structure for reference
+#I would comment this out after the first run. ;)
+stocklist <<- featurelist
+pullstocklist()
+
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
 #to play around with the NN model. i.e. add or remove layers, 
@@ -55,5 +61,4 @@ performance = modelexplorer(1,featurelist)
   title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
   #    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
   dev.off()
-  
 }

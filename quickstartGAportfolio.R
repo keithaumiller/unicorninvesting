@@ -3,7 +3,7 @@
 
 #clean your environment
 rm(list = ls())
-setwd("/home/keith/unicorninvesting/unicorninvesting")
+#setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
@@ -17,9 +17,6 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystems/GA_parameter_explorer.R")
 
 
-#downloads the stocks that are default in the featurelist.csv
-#this saves the stock data to the data/stockdata directory structure for reference
-#pullstocklist()
 
 #loads your list of features from data/features/featurelist.csv
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
@@ -30,6 +27,11 @@ outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
 portfoliolist <<- loadportfoliolist(outputdirectory)
 
+#downloads the stocks that are default in the featurelist.csv
+#this saves the stock data to the data/stockdata directory structure for reference
+#I would comment this out after the first run. ;)
+stocklist <<- featurelist
+pullstocklist()
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
 #to play around with the NN model. i.e. add or remove layers, 
