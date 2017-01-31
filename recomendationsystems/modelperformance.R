@@ -5,8 +5,8 @@ library(PerformanceAnalytics)  # will be used at some point in the future... aft
 modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 {
 #  print("In new model performance")
-#  mlpeval_eval = objectivefunctionnetoutput
-#  adjustedinput = input[,portfoliolistcolumnnames]
+  mlpeval_eval = objectivefunctionnetoutput
+  adjustedinput = input[,portfoliolistcolumnnames]
   
   #parameters Explained
   #mlpeval_eval  ---- this is a matrix of the output from the NN i.e.
@@ -28,7 +28,7 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
   balance <<- vector(mode = "double", length = datasetlength)  # not used
   daystouse = 252 #252  # use only the final X days... shortens the execution, 252 is how many exchange days there are in a year
   seedmoney = 1000  # money to invest 
-  runningtotal = seedmoney  # updated daily in the loop to show how much there is to spread the next day
+  runningtotal <<- seedmoney  # updated daily in the loop to show how much there is to spread the next day
 
   adjustedmatrix_eval<-adjustedinput # our matrix of % change values for the day
   modelallocation<-mlpeval_eval # our alogrithms output how it wants money allocated at the beginning of the next day
@@ -41,28 +41,40 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
    #to get the % change on on the previous EOD balance
   portfolioweightwithpercentchanged <- (modelallocation[1:datasetlength-1,]) * (adjustedmatrix_eval[2:datasetlength,])
 
-  # trim the matrix down to the last X days you want to measure performance on.  
+  # trim the matrix down to the last X days you want to measure performance on when doing X validation
   # maybe I should do this when constructing the datasets upfront..
-  portfolioweightwithpercentchanged <- tail(portfolioweightwithpercentchanged,daystouse)
+    if(saveit ==TRUE){
+      portfolioweightwithpercentchanged <- tail(portfolioweightwithpercentchanged,daystouse)
+    }
 
   #loop through to update the runningbalance for the portfolio during the timeperiod
   #can't do this as a matrix calcuation since each row is dependant on the previous days results
       for (x in 1:dim(portfolioweightwithpercentchanged)[1]){
+ #     print(paste(dim(portfolioweightwithpercentchanged)[1]))
       # each day's return is each stocks 
       # portfolioweightwithpercentchange from above, 
       #  * the runningtotal 
       # and then Sum them all up
-      thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal)) 
+#        portfolioweightwithpercentchanged
+        sumofpwwpc <<- sum((portfolioweightwithpercentchanged[x,]))
+        thisdaysreturn <<- sumofpwwpc * runningtotal
 #       if (thisdaysreturn/runningtotal > 1.01)
 #       {
-#         print("Thisdays cals")
-#         print(paste("thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal))"))
-#         print(paste("thisdaysreturn:", thisdaysreturn))
-#         print(paste("Altthisdaysreturn:", sum((portfolioweightwithpercentchanged[x,])) * (runningtotal)))
-#         print(paste("portfolioweightwithpercentchanged: ", sum(portfolioweightwithpercentchanged[x,]), "runningtotal:", runningtotal))
-#       }
+#           print("Thisdays calcs")
+#           print(paste("thisdaysreturn = sum((portfolioweightwithpercentchanged[x,]) * (runningtotal))"))
+#            print(paste("runningtotal:", runningtotal))
+#            print(paste("sumofpwwpc:", sumofpwwpc))
+#            print(paste("THISDAYSRETURN:", thisdaysreturn))
+
+#            print(paste(dim(portfolioweightwithpercentchanged)[1])))
+
+#           print(paste("portfolioweightwithpercentchanged: ", sum(portfolioweightwithpercentchanged[x,]), "runningtotal:", runningtotal))
+#           print(paste(portfolioweightwithpercentchanged[x,]))
+#           print(paste("model:",modelallocation[x,]))
+#           print(paste("adjustedmatrix:", adjustedmatrix_eval[x+1,]))
+#      }
       #update the running total for the next iteration in the loop
-      runningtotal = thisdaysreturn
+      runningtotal <<- thisdaysreturn
 #      print(paste("X: ", x, " Thisdaysreturn: ", thisdaysreturn,  " Runningtotal: ", runningtotal, sep = ''))
 #      saveit = TRUE
 #      If this is a performance test and not training, it'll save it to this vector and plot it later'

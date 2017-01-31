@@ -37,6 +37,13 @@ pullstocklist()
 #to play around with the NN model. i.e. add or remove layers, 
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
+
+############################################################################
+#Beautiful thing about how I've set this up is that you can ################
+#kill it at any time and it'll pick up from the last generation ############
+#as long as you didn''t change the porfolio.csv or features.csv#############
+############################################################################
+
 for (i in 1:200){
 launchaGAportfolio()
 }

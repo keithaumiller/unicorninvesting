@@ -52,10 +52,14 @@ generatestockstocombine <- function(stocklist){
   }
   
   #  Cleaning out all of the NA/Infinite/Nan so that when I generate the percent changed they are accurate.
-  stockstocombine[is.nan(stockstocombine)] <- 0
-  stockstocombine[is.na(stockstocombine)] <- 0
-  stockstocombine[is.infinite(stockstocombine)] <- 0
+  
+
+  
+#  stockstocombine[is.nan(stockstocombine)] <- 0
+#  stockstocombine[is.na(stockstocombine)] <- 0
+#  stockstocombine[is.infinite(stockstocombine)] <- 0
   print("Stocks Combined")
+#  print(stockstocombine)
   return(stockstocombine)
 }
 
@@ -119,14 +123,18 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
 #  row.names(stockstocombine)<<- stockstocombine$Date
 #  stockstocombine <<- stockstocombine[,-1]   #strip date now that it is the row name
 
-  stockstocombine_shiftedonedayearlier = stockstocombine[-1,]  # strip the first record for the percentchanged matrix
-  combinedstockdatadimensions = dim(stockstocombine)
+  stockstocombine_shiftedbyaday <<- stockstocombine[-1,]  # strip the first record for the percentchanged matrix
+  combinedstockdatadimensions <<- dim(stockstocombine)
   #add a dummy record to the end of the percentchangematrix
-  temprow =  c(1:combinedstockdatadimensions[2])
-  stockstocombine_shiftedonedayearlier = rbind(stockstocombine_shiftedonedayearlier,temprow)
-  percentchangedcombined <<- stockstocombine_shiftedonedayearlier
-  percentchangedcombined <<-(percentchangedcombined/stockstocombine)
+  temprow <<-  c(1:combinedstockdatadimensions[2])
+  temprow[] <<- 1
+  stockstocombine_shiftedbyaday <<- rbind(stockstocombine_shiftedbyaday,temprow)
+  percentchangedcombined <<- stockstocombine_shiftedbyaday
+  percentchangedcombined <<-(stockstocombine_shiftedbyaday/stockstocombine)
   
+#  print(stockstocombine[1000,])
+#  print(stockstocombine_shiftedbyaday[1000,])
+#  print(paste("SanityCheck:", stockstocombine_shiftedbyaday[1000,10], stockstocombine[1000,10], percentchangedcombined[1000,10]))
 
 #  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
 
@@ -183,9 +191,19 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
 # Currently the MSE calculation craps out when it runs into non numbers.
 # Hopefully setting to 0 will have minimal impact in other functions but still serve our purpose for now.
 # Maybe if I do this up front to the original combined instead?
+
+  # percentchangedcombined[percentchangedcombined == 0 ] <<- 1
+
+
  percentchangedcombined[is.nan(percentchangedcombined)] <<- 1
  percentchangedcombined[is.na(percentchangedcombined)] <<- 1
  percentchangedcombined[is.infinite(percentchangedcombined)] <<- 1
+ 
+ for(i in 1:ncol(percentchangedcombined)){
+#   print(paste("Cleaning", i))
+   colomnmean = mean(percentchangedcombined[percentchangedcombined != 1 ,i], na.rm = TRUE)
+   percentchangedcombined[(percentchangedcombined[,i] == 1), i] <<- colomnmean
+ }
  
   #strip the last record off because you don't have the complete data to create that record
  percentchangedcombined <<- head(percentchangedcombined,-1)
