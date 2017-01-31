@@ -23,7 +23,7 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 #      print(thisdaysreturn)
       runningtotal = thisdaysreturn
 #      print(paste("X: ", x, " Thisdaysreturn: ", thisdaysreturn,  " Runningtotal: ", runningtotal, sep = ''))
-      saveit = TRUE
+#      saveit = TRUE
       if(saveit == TRUE)
          {
              NNperformancechart <<- c(NNperformancechart,runningtotal) 
