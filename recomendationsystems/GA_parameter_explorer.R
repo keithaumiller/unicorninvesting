@@ -31,7 +31,7 @@ fitnesfunction<-function(x){
   #  performance <<- sum(x)
   
   myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
-  if(performance > 0){
+  if(performance > 1400){
     png(filename = myfilesavelocation, width = 900, height = 900)
     plot(NNperformancechart)
     # Create a title with a red, bold/italic font
@@ -50,10 +50,13 @@ fitnesfunction<-function(x){
    if (performance>bestperformance){
      bestperformance<<-performance
      featurelistfilename = "bestfeaturelist.csv"
-     backupoffeaturelist = paste(outputdirectory, featurelistfilename, sep = "/")
+     backupoffeaturelist = paste(outputdirectory,"portfoliosbest", featurelistfilename, sep = "/")
      write(featurelistforNN, file = backupoffeaturelist)
-     save(bestperformance, ascii=FALSE, file=bestperformancefile)
-#     save(GA, ascii=FALSE, file=gaoutputlocation)
+     save(bestperformance, ascii=TRUE, file=bestperformancefile)
+     if(exists('GA')){
+       save(GA, ascii=FALSE, file=gaoutputlocation)
+       save(mymlpnet_clean, ascii=FALSE, file=bestnetfile)
+     }
    }
    
   return(performance)
@@ -73,7 +76,7 @@ monitor <- function(obj)
 {
   mydebug("GA Monitor Called")
 
- myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, ".png", sep = '')
+ myfilesavelocation = paste("./", outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(obj)#, main = paste(obj@iter))
 
@@ -123,28 +126,30 @@ totalsearchspacelength <- length(featureslist)
 
 #set up your running directory so you can save/restore/restart.
 if (!dir.exists(outputdirectory)){dir.create(outputdirectory)}
-gaoutputlocation <<- paste(outputdirectory, "/", "GA", sep="")
+
+gaoutputlocation <<- paste(outputdirectory, "/portfoliosbest/GA", sep="")
 
 # if plot direcotry isn't there, create it
 plotdir = paste(outputdirectory, "/plots", sep = '')
 if (!dir.exists(plotdir)){dir.create(plotdir)}
 
-gaoutputlocation <<- paste(outputdirectory, "/", "GA", sep="")
 
 if(file.exists(gaoutputlocation)){
   print("GA File Found. LOADING IT")
   load(gaoutputlocation)}
 
+#Where to put the "Best Net" created.... for in theory use of trade management...
+bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
 
 #Load your best performance ever for reference
-bestperformancefile <<- paste(outputdirectory, "bestperformance", sep = "/")
+bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
 bestperformance <<- -1000
 if(file.exists(bestperformancefile)){bestperformance <<- load(bestperformancefile)}
 
 
 
 #initialize the suggested population towards the low side so we don't get too bogged down in giant nets... Once it is scaled this won't be needed for that, but it'll be used for re-loading previously successful runs.
-suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = .01),nrow = populationsize, ncol = totalsearchspacelength))
+suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = .10),nrow = populationsize, ncol = totalsearchspacelength))
 #load previous GA run if available
 if(exists("GA")){suggestions = GA@population}
 

@@ -31,8 +31,8 @@ downloaddata <- function(x){
 }
 
 
-pullstocklist <- function() {
-stocklist = c(as.vector(stocklist))
+pullstocklist <- function(x) {
+stocklist = c(as.vector(x))
 
 count = 0
 for (i in (stocklist))
@@ -66,11 +66,11 @@ loadportfoliolist <- function(x){
 loadfeaturelist <- function(x){
 #  print(paste("loadfeaturelist: ", x ))
   filetoread = paste(x, 'featurelist.csv', sep = '/')
-  featurelist <- read.csv(filetoread)[,1]
-  featurelist <- levels(featurelist)
-  portfoliolist <<- loadportfoliolist(x)
-  featurelist <<- unique(c(portfoliolist,featurelist))
-  featurelist <<- gsub(" ", "", featurelist)
+  featurelist = read.csv(filetoread)[,1]
+  featurelist = levels(featurelist)
+  portfoliolist = loadportfoliolist(x)
+  featurelist = unique(c(portfoliolist,featurelist))
+  featurelist = gsub(" ", "", featurelist)
   return(featurelist)
 }
 

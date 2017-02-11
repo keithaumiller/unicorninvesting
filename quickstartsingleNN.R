@@ -7,7 +7,7 @@ rm(list = ls())
 #While I'm playing with performance... good to chart it on each call
 
 
-setwd("/home/keith/unicorninvesting/unicorninvesting")
+#setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
@@ -37,7 +37,7 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #this saves the stock data to the data/stockdata directory structure for reference
 #I would comment this out after the first run. ;)
 stocklist <<- featurelist
-pullstocklist()
+pullstocklist(stocklist)
 
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
@@ -51,7 +51,8 @@ performance = modelexplorer(1,featurelist)
 
 #check the plots directory for your charts.
 
-  myfilesavelocation = paste("./", outputdirectory, "/plots/NNrunid-" , i , "-netperformance.png", sep = '')
+  runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
+  myfilesavelocation = paste("./", outputdirectory, "/plots/NNrunid-" ,runid, i , "-netperformance.png", sep = '')
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(NNperformancechart)
   # Create a title with a red, bold/italic font

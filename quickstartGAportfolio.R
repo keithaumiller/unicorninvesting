@@ -5,7 +5,6 @@
 rm(list = ls())
 #setwd("/home/keith/unicorninvesting/unicorninvesting")
 
-
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 #if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
 if(!exists("pullstocklist", mode="function")) source("./datagathering/downloadstockdata.R")
@@ -31,7 +30,7 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #this saves the stock data to the data/stockdata directory structure for reference
 #I would comment this out after the first run. ;)
 stocklist <<- featurelist
-pullstocklist()
+#pullstocklist(stocklist)
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
 #to play around with the NN model. i.e. add or remove layers, 

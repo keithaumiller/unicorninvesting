@@ -102,7 +102,9 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
 #rm(amex,nasdaq,nyse)
 
   #symbolsavailable = list.files(path = 'data/stockdata')
-#  portfoliolist = loadportfoliolist()
+  portfoliolist <<- loadportfoliolist(outputdirectory)
+
+    #featurelist is not the whole featurelist for the portfolio, it is just the featurelist for this specific net
   stocklist = unique(c(portfoliolist,featurelistforNN))
   numberofstockscombined = length(stocklist)
   numberofstockscombined_final = numberofstockscombined
@@ -145,12 +147,12 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
     for (portfoliostock in (portfoliolist)){
     portfoliostockdot = paste(portfoliostock, '.', 'Adjusted', sep = '')
     portfoliolistcolumnnames <<- c(portfoliolistcolumnnames,portfoliostockdot)
-    mydebug(portfoliostock)
+#    mydebug(portfoliostock)
     #print(length(portfoliolistcolumnnames))
     #print(portfoliolistcolumnnames)
     }
-  mydebug(length(portfoliolistcolumnnames))
-  mydebug(portfoliolistcolumnnames)
+#  mydebug(length(portfoliolistcolumnnames))
+#  mydebug(portfoliolistcolumnnames)
   
   adjustedmatrix <<- data.frame()
   adjustedmatrix <<- percentchangedcombined[,portfoliolistcolumnnames]
@@ -181,7 +183,7 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
   rownames(percentchangedcombinedtemp)<<-percentchangedcombinedtemp[,1]
   percentchangedcombinedtemp <<- percentchangedcombinedtemp[,-1]   #strip date now that it is the row name
   percentchangedcombined <<- percentchangedcombinedtemp
-  percentchangedcombined <<- head(percentchangedcombined,-1)    #strip last row since it is crap
+#  percentchangedcombined <<- head(percentchangedcombined,-1)    #strip last row since it is crap
   #print(paste("COLUMNCHECKgeneratingtraining2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   seventyfive=as.integer(nrow(percentchangedcombined)*.75)
   twentyfive=as.integer(nrow(percentchangedcombined)-seventyfive)
@@ -210,7 +212,7 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
  
   
   percentchangedcombined_train <<- head(percentchangedcombined,seventyfive)
-  percentchangedcombined_eval <<- tail(percentchangedcombined, twentyfive)
+  percentchangedcombined_eval <<- tail(percentchangedcombined, (twentyfive)-1)
 #  print("Exiting Combine Stocks Function")
   
   return(numberofstockscombined_final)
