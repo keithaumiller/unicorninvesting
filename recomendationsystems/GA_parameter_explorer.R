@@ -49,7 +49,9 @@ fitnesfunction<-function(x){
   
    if (performance>bestperformance){
      bestperformance<<-performance
-     featurelistfilename = "bestfeaturelist.csv"
+     featurelistfilename = "featurelist.csv"
+     portfoliolistfilename = "portfolio.csv"
+     file.copy(paste("data/results/runs/",portfolionickname,"/portfolio.csv", sep = ""), paste("data/results/runs/",portfolionickname,"/portfoliosbest/portfolio.csv", sep = ""))
      backupoffeaturelist = paste(outputdirectory,"portfoliosbest", featurelistfilename, sep = "/")
      write(featurelistforNN, file = backupoffeaturelist)
      save(bestperformance, ascii=TRUE, file=bestperformancefile)

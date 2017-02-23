@@ -73,7 +73,7 @@ is.infinite.data.frame <- function(x){do.call(cbind, lapply(x, is.infinite))}
 getgloballistofstocks <- function(numbertopullparam){
 }
 
-combinestocksfunction <- function(numbertopullparam, featurelistforNN){
+combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdirectory){
 #print("Combining Stocks")
 #listofobjects that get set globally in this function.... I know, shut up....  
 #stocklist
@@ -158,7 +158,7 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN){
   adjustedmatrix <<- percentchangedcombined[,portfoliolistcolumnnames]
 #  print(head(adjustedmatrix))
 
-  rm(temprow)
+#  rm(temprow)
 #  print(paste("COLUMNCHECKmid: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
   
 #  trainingmatrix <<- adjustedmatrix

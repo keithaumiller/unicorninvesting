@@ -45,7 +45,7 @@ momentum = .7
 #combinestocksfunction(800)
 #trainmodel(400,5,1600,1600,1600,.05,.01,.05)
 #remove any stocks that couldn't get data for and create the base stock dataset
-numberofstockstouse = combinestocksfunction(numberofstockstouse, featurelistforNN)
+numberofstockstouse = combinestocksfunction(numberofstockstouse, featurelistforNN, outputdirectory)
 #cat("numberofstockstouse:", numberofstockstouse, "\n" )
 
 #For easy reference
