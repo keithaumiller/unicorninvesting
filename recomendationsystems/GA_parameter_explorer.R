@@ -21,26 +21,34 @@ fitnesfunction<-function(x){
   mydebug("GA Fitnessfunction Called")
   featurelistforNN <<- convertobjecttonetinputlist(x)
 #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
-  # this limits the number of features to 350 because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
+  # this limits the number of features to 30 stocks because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
   mydebug(paste("Number of Features used on this NN: ", length(featurelistforNN)))
-  if((length(featurelistforNN) > 100)) {return((length(featurelistforNN)*-.0001))}
+  if((length(featurelistforNN) > 40)) {
+    print(paste("TOO LONG: ", length(featurelistforNN), sep=''))
+    return((length(featurelistforNN)*-.0001))
+    }
   
   #Generate trainNN
   performance <<- modelexplorer(runid, featurelistforNN)
   #comment out line above and uncomment this line below to play with the GA feature selector.
   #  performance <<- sum(x)
   
-  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
+plotmyNN <- function(myfilesavelocation,performance){
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(NNperformancechart)
+  # Create a title with a red, bold/italic font
+  maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelistforNN), " features!", sep = '')
+  title(main=maintitle, col.main="Blue", font.main=4)
+  # Label the x and y axes with dark green text
+  title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
+  #    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
+  dev.off()
+}
+  
+myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
+bestNNfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
   if(performance > 1400){
-    png(filename = myfilesavelocation, width = 900, height = 900)
-    plot(NNperformancechart)
-    # Create a title with a red, bold/italic font
-    maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelistforNN), " features!", sep = '')
-    title(main=maintitle, col.main="Blue", font.main=4)
-    # Label the x and y axes with dark green text
-    title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
-#    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
-    dev.off()
+    plotmyNN(myfilesavelocation,performance)
   }
   
   thisGARun=paste(portfolionickname,NNrunid, runid, performance,sep = ",")
@@ -48,6 +56,8 @@ fitnesfunction<-function(x){
   write(thisGARun,file=GARunresultsfile,append=TRUE)
   
    if (performance>bestperformance){
+     plotmyNN(myfilesavelocation,performance)
+     file.copy(myfilesavelocation,bestNNfilesavelocation)
      bestperformance<<-performance
      featurelistfilename = "featurelist.csv"
      portfoliolistfilename = "portfolio.csv"
@@ -151,9 +161,20 @@ if(file.exists(bestperformancefile)){bestperformance <<- load(bestperformancefil
 
 
 #initialize the suggested population towards the low side so we don't get too bogged down in giant nets... Once it is scaled this won't be needed for that, but it'll be used for re-loading previously successful runs.
-suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = .10),nrow = populationsize, ncol = totalsearchspacelength))
 #load previous GA run if available
-if(exists("GA")){suggestions = GA@population}
+
+#Initialize it so roughly this many are set as features... 
+probability = 10/totalsearchspacelength
+if(exists("GA"))
+  {
+  suggestionsadd = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = probability),nrow = populationsize, ncol = totalsearchspacelength-dim(GA@population)[2]))
+  suggestions = GA@population
+  suggestions = cbind(suggestions,suggestionsadd)
+  }
+  else
+  {
+    suggestions = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = probability),nrow = populationsize, ncol = totalsearchspacelength))
+  }
 
 #previousbests = tail(GA@bestSol,populationsize)
 #previousbests = as.data.frame(matrix(unlist(previousbests),nrow=length(GA@bestSol)))

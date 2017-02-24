@@ -31,13 +31,14 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 portfolionickname <<- 'Energyportfolio1'
 outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
+featurelist <<- head(featurelist,20)
 portfoliolist <<- loadportfoliolist(outputdirectory)
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
 #I would comment this out after the first run. ;)
 stocklist <<- featurelist
-pullstocklist(stocklist)
+#pullstocklist(stocklist)
 
 
 # This is the model explorer script.  Modify this function in modelexploration.R 
