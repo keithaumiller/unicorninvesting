@@ -1,5 +1,5 @@
 #GA Implementation to expore the network parameter space
-launchaGAportfolio <- function(){
+launchaGAportfolio <- function(portfolionickname){
   library(GA)
 
 rm(list = ls())
@@ -22,7 +22,7 @@ fitnesfunction<-function(x){
   featurelistforNN <<- convertobjecttonetinputlist(x)
 #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
   # this limits the number of features to 30 stocks because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
-  mydebug(paste("Number of Features used on this NN: ", length(featurelistforNN)))
+  print(paste("Number of Features used on this NN: ", length(featurelistforNN)))
   if((length(featurelistforNN) > 40)) {
     print(paste("TOO LONG: ", length(featurelistforNN), sep=''))
     return((length(featurelistforNN)*-.0001))
@@ -47,7 +47,7 @@ plotmyNN <- function(myfilesavelocation,performance){
   
 myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
 bestNNfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
-  if(performance > 1400){
+  if(performance > 1500){
     plotmyNN(myfilesavelocation,performance)
   }
   
@@ -63,6 +63,8 @@ bestNNfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperforma
      portfoliolistfilename = "portfolio.csv"
      file.copy(paste("data/results/runs/",portfolionickname,"/portfolio.csv", sep = ""), paste("data/results/runs/",portfolionickname,"/portfoliosbest/portfolio.csv", sep = ""))
      backupoffeaturelist = paste(outputdirectory,"portfoliosbest", featurelistfilename, sep = "/")
+     if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
+       {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''))}
      write(featurelistforNN, file = backupoffeaturelist)
      save(bestperformance, ascii=TRUE, file=bestperformancefile)
      if(exists('GA')){
@@ -119,7 +121,7 @@ postFitness <- function(theGA){
 #decimal2binary(x,length)
 #allstocklist <<- head(read.csv('data/exchangedata/all_stocks.csv')[,1])
 clear()
-portfolionickname <<- 'Energyportfolio1'
+portfolionickname <<- portfolionickname
 outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
 runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
 featureslist <<- loadfeaturelist(outputdirectory)

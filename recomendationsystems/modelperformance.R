@@ -1,12 +1,145 @@
 library(taRifx) # adds shift() functionality
 library(PerformanceAnalytics)  # will be used at some point in the future... after I learn it.
 
+conversionlookup <- function(fromcurency,tocurrency,date){
+  transactiontype = paste(fromcurency,tocurrency,".Adjusted",sep = '')
+  conversionrate = stockstocombine[date,transactiontype]
+  return(conversionrate)
+}
+
+convertportfoliotoUSD <- function(portfolio,date,currencylist){
+  
+  #      print("Finalday")
+  #      print(balancematrix[i,])
+#  portfolio = balancematrix[i,]
+#  date = "2016-10-29"
+  tempbalance = portfolio
+  tocurrency = "USD"
+  for(eachcurrency in currencylist)
+  {
+    #        print(eachcurrency)
+    fromcurrency = eachcurrency
+    conversionrate = conversionlookup(fromcurrency,tocurrency,date)
+    amounttotransferfrom = (as.double(portfolio[fromcurrency])) 
+    amounttotransferto = amounttotransferfrom * as.double(conversionrate)
+    tempbalance[fromcurrency] <- tempbalance[fromcurrency] - amounttotransferfrom
+    tempbalance[tocurrency] <- tempbalance[tocurrency] + amounttotransferto
+#    print(tempbalance)
+  }
+#  print(tempbalance)
+  return(tempbalance[tocurrency])
+}
+
+forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
+
+#  mlpeval_eval = objectivefunctionnetoutput
+#  adjustedinput = input[,portfoliolistcolumnnames]
+#  saveit = FALSE
+
+#  conversionmatrix = 
+  
+  datasetlength <- dim(adjustedinput)[1]  # how many days of data do I have
+  daystouse = 252 #252  # use only the final X days... shortens the execution, 252 is how many exchange days there are in a year
+  if(daystouse > datasetlength)
+  {
+    daystouse = datasetlength
+  }
+
+  seedmoney = 1000  # money to invest
+  
+  # portfolio.csv will have the full list of curency combinations in it.
+  #So....the actual values of "stockstocombine" contains the currency conversion info
+  #first three letters are the from currency
+  #second three letters are the to currency
+  #so these pairs are representative of a transaction type, not a holding
+  #translate the transaction transaction types to a currency holding by starting with USD Base
+  #Convert to other currencies
+  #Generate currency portfoliolist
+  
+  currencylist = unique(c(substr(portfoliolistcolumnnames,4,6), substr(portfoliolistcolumnnames,1,3)))
+  transactionslist = unique(substr(colnames(stockstocombine),1,6))
+  balancematrix = matrix(0,nrow=daystouse,ncol=length(currencylist))
+  colnames(balancematrix) <- currencylist
+  rownames(balancematrix) <- tail(rownames(adjustedinput),daystouse)
+  balancematrix[1,'USD'] = seedmoney
+  currencypairs = substr(portfoliolistcolumnnames,1,6)
+  currencypairpushratios = currencypairs
+  currencypairpushratios[] = 0
+  allocation = tail(mlpeval_eval,daystouse)
+  colnames(allocation)<- currencypairs
+  
+  #normalize the allocations per day
+#  normalizedallocation = allocation
+#  normalizedallocation[] = normalizedallocation[]/rowSums(allocation)
+
+  for (i in 1:dim(balancematrix)[1]){
+#    i=1
+    cppad = currencypairs # currencypairpercentpushanddirectionholder
+    if (i==1){
+      tempbalance = balancematrix[i,]
+    }
+    else{
+      tempbalance = balancematrix[i-1,]
+    }
+#    print("NEXTROW")
+#    print("###################")
+    
+    for (j in 1:length(currencypairs)){
+#      print(tempbalance)
+      thistransaction = currencypairs[j]
+      fromcurrency = substr(thistransaction,1,3)
+      tocurrency = substr(thistransaction,4,6)
+      inversetransaction =  paste(tocurrency,fromcurrency,sep='')
+#      print(inversetransaction)
+      cppad[j]= allocation[1,thistransaction] - allocation[1,inversetransaction]
+      if (as.double(cppad[j]) < 0){
+        cppad[j] = 0
+      }
+#      print(cppad[j])
+#      print(rownames(balancematrix)[i]) # date we are doing...
+      conversionrate = conversionlookup(fromcurrency,tocurrency,rownames(balancematrix)[i])
+#      print(paste("converstionrate: ", conversionrate, sep = ''))
+      amounttotransferfrom = (as.double(cppad[j]) * as.double(balancematrix[i,fromcurrency])) 
+      amounttotransferto = amounttotransferfrom * as.double(conversionrate)
+      tempbalance[fromcurrency] = tempbalance[fromcurrency] - amounttotransferfrom
+      tempbalance[tocurrency] = tempbalance[tocurrency] + amounttotransferto
+      balancematrix[i,] <- tempbalance
+          #        if (i == 1){
+          # print(thistransaction)
+          # print(paste("Currency pair push and direction: ",as.double(cppad[j]),sep = ''))
+          # print(paste("Converstion rate: ", as.double(conversionrate), sep = ""))
+          # print(paste(fromcurrency, tempbalance[fromcurrency], sep = ':'))
+          # print(paste(tocurrency, tempbalance[tocurrency], sep = ':'))#        } 
+    }
+    if(saveit == TRUE)
+    {
+      NNperformancechart <<- c(NNperformancechart,convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)) 
+    }
+#    print(i)
+#    print(dim(balancematrix)[1])
+    if (i == dim(balancematrix)[1])
+    {
+      balancematrix[i,] = convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)
+    }
+  }
+#  print(tail(balancematrix))
+  USDvaluetoreturn = tail(balancematrix[,"USD"],1)
+  return(USDvaluetoreturn)
+}
+
 #mlpeval_eval is the output of the NN, adjustedinput is the "Adjusted" values for the stock
 modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 {
+  #if this is a forex portfolio...different performance eval than normal
+  if (file.exists(paste(outputdirectory,"/isforex",sep = '')))
+  {
+    returnthis = forexperformance(mlpeval_eval,adjustedinput,saveit)
+    return(returnthis)
+  }
+  
 #  print("In new model performance")
-  mlpeval_eval = objectivefunctionnetoutput
-  adjustedinput = input[,portfoliolistcolumnnames]
+#  mlpeval_eval = objectivefunctionnetoutput
+#  adjustedinput = input[,portfoliolistcolumnnames]
   
   #parameters Explained
   #mlpeval_eval  ---- this is a matrix of the output from the NN i.e.

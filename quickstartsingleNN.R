@@ -9,7 +9,6 @@ rm(list = ls())
 
 #setwd("/home/keith/unicorninvesting/unicorninvesting")
 
-
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 #if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
 if(!exists("pullstocklist", mode="function")) source("./datagathering/downloadstockdata.R")
@@ -28,10 +27,10 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
-portfolionickname <<- 'Energyportfolio1'
+portfolionickname <<- 'forex1'
 outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
-featurelist <<- head(featurelist,20)
+featurelist <<- head(featurelist,40)
 portfoliolist <<- loadportfoliolist(outputdirectory)
 
 #downloads the stocks that are default in the featurelist.csv
@@ -53,6 +52,8 @@ performance = modelexplorer(1,featurelist)
 #check the plots directory for your charts.
 
   runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
+  plotsdirectory = paste(outputdirectory,"/plots",sep = '')
+  dir.create(plotsdirectory)
   myfilesavelocation = paste("./", outputdirectory, "/plots/NNrunid-" ,runid, i , "-netperformance.png", sep = '')
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(NNperformancechart)
