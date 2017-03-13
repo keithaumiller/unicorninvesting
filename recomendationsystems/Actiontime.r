@@ -1,4 +1,5 @@
 rm(list = ls())
+library(FCNN4R)
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 #if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
@@ -11,11 +12,13 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 if(!exists("combinestocksfunction", mode="function")) source("./datasetcreation/Combinestocks.R")
 
 convertnetresultsintoaction <- function(userid,portfolio){
-#  userid = 1
-#  portfolio = 'Energyportfolio1'
+#  print("WTF")
   portfolionickname <<- portfolio
-  outputdirectory = paste("data/results/runs/", portfolionickname, "/portfoliosbest", sep = "")
+    userid = "runs"
+    portfolionickname = 'Energyportfolio1'
+  outputdirectory = paste("data/results/",userid,"/", portfolionickname, "/portfoliosbest", sep = "")
   neuralnetfile = paste(outputdirectory, '/bestnetfile', sep = "")
+  print(neuralnetfile)
   if(file.exists(neuralnetfile)){
     print("NN File Found. LOADING IT")
     load(neuralnetfile)   #loads(mymlpnet_clean)
@@ -25,16 +28,18 @@ convertnetresultsintoaction <- function(userid,portfolio){
   }
   
   #Logic needs to improve to pull based off date instead of position in file.
-  allocationmatrix =loadallocationfile(portfolionickname)
+  allocationmatrix = loadallocationfile(portfolionickname)
   allocationmatrix = allocationmatrix[,2:length(allocationmatrix)]
+  
   yesterdaysallocation = round(tail(allocationmatrix,1),5)
   #if yesterdaysallocation == 100 then this is the first run...
 
-  thisportfoliodailydata = loadthisportfoliodailydata(portfolio)
+  thisportfoliodailydata = loadthisportfoliodailydata(userid,portfolio)
   thisportfoliodailydata = thisportfoliodailydata[,grep('.output',colnames(thisportfoliodailydata),value = TRUE, invert = TRUE)]
-  todaysallocation = round(createdailyallocation(mymlpnet_clean$net,thisportfoliodailydata),5) 
-
   
+  todaysallocation = createdailyallocation(userid,mymlpnet_clean$net,thisportfoliodailydata)
+
+#  print("DOING STUFF")
 #First time?  This'll finish you  
   if(length(allocationmatrix) == 1)
   {
@@ -68,14 +73,20 @@ Endofdayprocessing<- function(){
   }
   setwd("../../")
   
-  pullstocklist(stocklist)
-  
-  for (userid in list.files("./data/results"))
+#  pullstocklist(stocklist)
+  userids = list.files("./data/results")
+  for (userid in userids)
   {
-    for (portfolio in list.files(paste("./data/results/", userid, sep = "")))
-      print(paste("DailyCalculations started for User: ", userid, " Portfolio: ", portfolio, sep = ''))
+    print(userid)
+    portfolios = list.files(paste("./data/results/", userid, sep = ""))
+    for (portfolio in portfolios)
+    {
+    print(portfolio)
+    print(paste("DailyCalculations started for User: ", userid, " Portfolio: ", portfolio, sep = ''))
     thisallocation = convertnetresultsintoaction(userid,portfolio)
+    print("DONEwiththis")
     print(thisallocation)
+    }
   }
 
 
@@ -90,7 +101,9 @@ loadallocationfile <- function(portfolionickname){
 #    historicalallocation <- read.csv(allocationfile, row.names=1, header = TRUE)
     historicalallocation <- read.csv(allocationfile, header = TRUE)
     return(historicalallocation)
-  } else{ return(100)}
+  } else{
+    historicalallocation = data.frame(date=100,holder=100)
+    return(historicalallocation)}
 }
 
 #take a NN and run a record through it to get the output... then output that record to the portfolios record keeping
@@ -98,11 +111,11 @@ loadallocationfile <- function(portfolionickname){
 #our base assumption in this function is that all portfolio members are valid.
 #I know from earlier experience that isn't always true.
 # perhaps a check on the Frontend to make sure only valid portfolio member choicess are made
-createdailyallocation <- function(neuralnet, dailydata){
+createdailyallocation <- function(userid,neuralnet, dailydata){
   #dothe evaluation
 #  dailydata = thisportfoliodailydata
 #  neuralnet = mymlpnet_clean$net
-  portfoliohome = paste("data/results/runs/", portfolionickname, sep ='')
+  portfoliohome = paste("data/results/",userid,"/", portfolionickname, sep ='')
   outputdirectory <<- paste(portfoliohome, "/portfoliosbest", sep = "")
 
     portfoliolist =     loadportfoliolist(portfoliohome)
@@ -137,12 +150,12 @@ createdailyallocation <- function(neuralnet, dailydata){
 
 
 #This will only work after market close.  Otherwise you get all NAs
-loadthisportfoliodailydata <- function(portfolio){
+loadthisportfoliodailydata <- function(userid, portfolio){
 
   #this pulls down the latest data for this portfolio... We need to fix this.. very inefficient. another terrible global function
   # We are going to want to add some error checking to make sure that before we return the "Current Day" that the dat ain that dataset is "Current day"
   # For now I'm doing happy path coding.
-  outputdirectory = paste("data/results/runs/", portfolio, "/portfoliosbest", sep = '')
+  outputdirectory = paste("data/results/", userid,"/", portfolio, "/portfoliosbest", sep = '')
   
   #This whole function is crap and sets a bunch of global variables and constructs some data sets...
   #makes me sick to go through
@@ -155,10 +168,12 @@ loadthisportfoliodailydata <- function(portfolio){
   numberofstockscombined = combinestocksfunction(numbertopullparam, featurelistforNN, outputdirectory)
 
   #global variables are defined now. ugh
-  currentdate = Sys.Date()
+#  currentdate = Sys.Date()
   # comment out this line when running in prod.  because current day data isn't available until after Eod close for markets
-  currentdate = currentdate-1
-  todaysdata = percentchangedcombined[rownames(percentchangedcombined) == currentdate,]
+#  currentdate = currentdate-1
+#  todaysdata = percentchangedcombined[rownames(percentchangedcombined) == currentdate,]
+   todaysdata = tail(percentchangedcombined,1)
+  
   return(todaysdata)
 }
 

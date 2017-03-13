@@ -6,7 +6,6 @@ rm(list = ls())
 
 #While I'm playing with performance... good to chart it on each call
 
-
 #setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
@@ -27,11 +26,14 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
-portfolionickname <<- 'forex1'
-outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
+#portfolionickname <<- 'forex1'
+userid='runs'
+portfolionickname <<- 'Energyportfolio1'
+outputdirectory <<- paste("data/results/", userid,"/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
 featurelist <<- head(featurelist,40)
 portfoliolist <<- loadportfoliolist(outputdirectory)
+NNperformancechart <<- 1000
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
@@ -46,7 +48,8 @@ stocklist <<- featurelist
 # I would like to put this in a config script at some point, but not worth it currently.
 
 for (i in 1:20){
-performance = modelexplorer(1,featurelist)
+  print(Sys.time())
+  performance = modelexplorer(userid,featurelist,outputdirectory)
   
 
 #check the plots directory for your charts.

@@ -26,7 +26,7 @@ convertportfoliotoUSD <- function(portfolio,date,currencylist){
     tempbalance[tocurrency] <- tempbalance[tocurrency] + amounttotransferto
 #    print(tempbalance)
   }
-#  print(tempbalance)
+#  print(tempbalance[tocurrency])
   return(tempbalance[tocurrency])
 }
 
@@ -117,13 +117,28 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
     }
 #    print(i)
 #    print(dim(balancematrix)[1])
-    if (i == dim(balancematrix)[1])
+    if (i == daystouse)
     {
-      balancematrix[i,] = convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)
+      finalUSDValue = convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)
+      balancematrix[i,] = 0
+      balancematrix[i,"USD"] = finalUSDValue
+      #  print(tail(balancematrix,5))
+      USDvaluetoreturn = tail(balancematrix[,"USD"],1)
+        if (USDvaluetoreturn == 1000)
+        {
+ #         print(paste("Finalday:", daystouse,Sys.time(),USDvaluetoreturn,saveit, sep = ' '))
+          return(900)
+#          print(tail(balancematrix))
+#          print(head(balancematrix))
+#          print(head(mlpeval_eval))
+#          print(head(adjustedinput))
+        }
+      return(USDvaluetoreturn)
     }
   }
-#  print(tail(balancematrix))
+#  print(tail(balancematrix,5))
   USDvaluetoreturn = tail(balancematrix[,"USD"],1)
+#  print(paste(Sys.time(),USDvaluetoreturn,saveit, sep = ' '))
   return(USDvaluetoreturn)
 }
 

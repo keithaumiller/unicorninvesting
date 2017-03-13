@@ -1,6 +1,6 @@
-modelexplorer <-function(runid, featurelistforNN)
+modelexplorer <-function(runid, featurelistforNN,outputdirectory)
 {
-  NNperformancechart <<-1000
+#  NNperformancechart <<-1000
   runid = runid
   featurelistforNN = featurelistforNN
 #rm(list=ls()) 
@@ -50,7 +50,7 @@ numberofstockstouse = combinestocksfunction(numberofstockstouse, featurelistforN
 
 #For easy reference
 #trainmodel <- function(runid,              numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam)
-modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,     lambda,     gamma,     momentum,     10,        3,            1000,        400,        200,        .05,           .01,            .03)
+modelperformance =  trainmodel(runid, numberofstockstouse,      minibatchsz,     lambda,     gamma,     momentum,     10,        3,            1000,        400,        200,        .05,           .01,            .03, outputdirectory)
 
 
 #for (epocs in (c(500))){

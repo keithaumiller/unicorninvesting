@@ -1,5 +1,18 @@
 #GA Implementation to expore the network parameter space
-launchaGAportfolio <- function(portfolionickname){
+
+plotmyNN <- function(myfilesavelocation,performance){
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(NNperformancechart)
+  # Create a title with a red, bold/italic font
+  maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelistforNN), " features!", sep = '')
+  title(main=maintitle, col.main="Blue", font.main=4)
+  # Label the x and y axes with dark green text
+  title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
+  #    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
+  dev.off()
+}
+
+launchaGAportfolio <- function(userid, portfolionickname, outputdirectory){
   library(GA)
 
 rm(list = ls())
@@ -16,38 +29,48 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 clear <- function() cat("\014")
 
 fitnesfunction<-function(x){
+  NNperformancechart<<- 1000
   NNrunid<<-NNrunid+1
   print(paste("NNrunID:", NNrunid))
-  mydebug("GA Fitnessfunction Called")
-  featurelistforNN <<- convertobjecttonetinputlist(x)
-#  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
+  print(Sys.time())
+  #Load your best performance ever for reference
+  bestperformance <<- -1000
+  
+  if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
+  {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''))}
+  #Where to put the "Best Net" created.... for in theory use of trade management...
+  bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
+  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
+  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
+  bestNNplotfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
+  
+  
+
+  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
+  print("bestperformance fileloaded")
+  print(bestperformance)
+
+    featurelistforNN <<- convertobjecttonetinputlist(x)
+  #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
   # this limits the number of features to 30 stocks because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
+
   print(paste("Number of Features used on this NN: ", length(featurelistforNN)))
-  if((length(featurelistforNN) > 40)) {
+  
+  maxfeatureslimit = 40
+  isforex = file.exists(paste(outputdirectory,"/isforex",sep = ''))
+
+  if(isforex == TRUE){maxfeatureslimit = 1200 }
+  
+  if((length(featurelistforNN) > maxfeatureslimit)) {
     print(paste("TOO LONG: ", length(featurelistforNN), sep=''))
     return((length(featurelistforNN)*-.0001))
     }
   
   #Generate trainNN
-  performance <<- modelexplorer(runid, featurelistforNN)
+  performance <<- modelexplorer(runid, featurelistforNN,outputdirectory)
   #comment out line above and uncomment this line below to play with the GA feature selector.
   #  performance <<- sum(x)
-  
-plotmyNN <- function(myfilesavelocation,performance){
-  png(filename = myfilesavelocation, width = 900, height = 900)
-  plot(NNperformancechart)
-  # Create a title with a red, bold/italic font
-  maintitle = paste("From $1000 to $", round(performance,2), " with ", length(featurelistforNN), " features!", sep = '')
-  title(main=maintitle, col.main="Blue", font.main=4)
-  # Label the x and y axes with dark green text
-  title(xlab= "          Days 1:365", col.lab=rgb(0,0.5,0))
-  #    title(ylab= "Total bankroll if starting with 1000$", col.lab=rgb(0,0.5,0))
-  dev.off()
-}
-  
-myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
-bestNNfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
-  if(performance > 1500){
+ if(performance > 1500){
     plotmyNN(myfilesavelocation,performance)
   }
   
@@ -57,20 +80,20 @@ bestNNfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperforma
   
    if (performance>bestperformance){
      plotmyNN(myfilesavelocation,performance)
-     file.copy(myfilesavelocation,bestNNfilesavelocation)
-     bestperformance<<-performance
+     file.copy(myfilesavelocation,bestNNplotfilesavelocation,overwrite = TRUE)
+     bestperformance = performance
      featurelistfilename = "featurelist.csv"
      portfoliolistfilename = "portfolio.csv"
-     file.copy(paste("data/results/runs/",portfolionickname,"/portfolio.csv", sep = ""), paste("data/results/runs/",portfolionickname,"/portfoliosbest/portfolio.csv", sep = ""))
-     backupoffeaturelist = paste(outputdirectory,"portfoliosbest", featurelistfilename, sep = "/")
-     if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
-       {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''))}
+     file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
+     backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
      write(featurelistforNN, file = backupoffeaturelist)
-     save(bestperformance, ascii=TRUE, file=bestperformancefile)
+     print("saving bestperformance")
+     print(bestperformance)
+     saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
      if(exists('GA')){
-       save(GA, ascii=FALSE, file=gaoutputlocation)
-       save(mymlpnet_clean, ascii=FALSE, file=bestnetfile)
+       saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
      }
+     saveRDS(mymlpnet_clean, ascii=FALSE, file=bestnetfile,refhook ='mymlpnet_clean')
    }
    
   return(performance)
@@ -90,7 +113,7 @@ monitor <- function(obj)
 {
   mydebug("GA Monitor Called")
 
- myfilesavelocation = paste("./", outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
+ myfilesavelocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(obj)#, main = paste(obj@iter))
 
@@ -110,7 +133,7 @@ postFitness <- function(theGA){
 #  print("IN THE POST FITNESS FUNCTION")
     GA = theGA
     
-    save(GA, ascii=FALSE, file=gaoutputlocation)
+    saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
 
   return(GA)
 }
@@ -121,8 +144,9 @@ postFitness <- function(theGA){
 #decimal2binary(x,length)
 #allstocklist <<- head(read.csv('data/exchangedata/all_stocks.csv')[,1])
 clear()
+NNperformancechart<<- 1000
 portfolionickname <<- portfolionickname
-outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
+outputdirectory = outputdirectory
 runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
 featureslist <<- loadfeaturelist(outputdirectory)
 portfoliolist <<- loadportfoliolist(outputdirectory)
@@ -150,15 +174,8 @@ if (!dir.exists(plotdir)){dir.create(plotdir)}
 
 if(file.exists(gaoutputlocation)){
   print("GA File Found. LOADING IT")
-  load(gaoutputlocation)}
+  GA = readRDS(gaoutputlocation)}
 
-#Where to put the "Best Net" created.... for in theory use of trade management...
-bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
-
-#Load your best performance ever for reference
-bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
-bestperformance <<- -1000
-if(file.exists(bestperformancefile)){bestperformance <<- load(bestperformancefile)}
 
 
 
@@ -196,5 +213,5 @@ GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelengt
 #
 ############
 #Save the last version of the GA.
-save(GA, ascii=FALSE, file=gaoutputlocation)
+saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
 }

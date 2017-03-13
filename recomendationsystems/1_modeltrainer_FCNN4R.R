@@ -1,6 +1,6 @@
 
 #using FCNN4R for it's ability to copy NNs to each other and stack/run parrellel on the same data, and Pruning on the same set of data.
-trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam) {
+trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam, outputdirectory) {
 #print("Enteringtrainmodel----------")
 #cat("NETDEPTH:", netdepthparam, "\n")
 
@@ -109,7 +109,9 @@ if (nettype=='sa'){
         #This timer is to keep the trainer from getting into some sort of loop.  There must be a bug somewhere in the mlp_mse function
     timer <<- timer+1
     
-#    if(timelapse > 300){return (timelapse * -1)}
+    if(timelapse > 60){
+ #     print(paste("Timing Safeguard: ", timer,sep = ""))
+      return (timelapse * -1)}
     #cat(timer, "IN obj_func, breaking at 50\n", sep = ':')
 #    returnscore = trainingobjectivefunction(mymlpnet, input, output)
     #returnscore = mlp_mse(mymlpnet, input, output)
@@ -168,7 +170,7 @@ print(paste("Performance: ", thismodelsperformance, sep = ''))
 
 #write results to the results file.
 thisrun=paste(portfolionickname,runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
-NNresultsfilenoutputname = paste("data/results/runs/", portfolionickname, "/NNresults.csv", sep = "")
+NNresultsfilenoutputname = paste(outputdirectory, "/NNresults.csv", sep = "")
 #print(NNresultsfilenoutputname)
 write(thisrun,file=NNresultsfilenoutputname,append=TRUE)
 

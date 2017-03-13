@@ -111,7 +111,7 @@ write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 #loadportfoliolist()
 loadportfoliolist <- function(x){
 #  print(paste("loadportfoliolist: ", x ))
-  filetoread = paste(x, 'portfolio.csv', sep = '/')
+  filetoread = paste(x, '/portfolio.csv', sep = '/')
   portfoliolist <- read.csv(filetoread)[,1]
   portfoliolist <- levels(portfoliolist)
   portfoliolist <- gsub(" ", "", portfoliolist)
@@ -121,7 +121,7 @@ loadportfoliolist <- function(x){
 #loadfeaturelist()
 loadfeaturelist <- function(x){
 #  print(paste("loadfeaturelist: ", x ))
-  filetoread = paste(x, 'featurelist.csv', sep = '/')
+  filetoread = paste(x, '/featurelist.csv', sep = '/')
   featurelist = read.csv(filetoread)[,1]
   featurelist = levels(featurelist)
   portfoliolist = loadportfoliolist(x)

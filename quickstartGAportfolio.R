@@ -23,7 +23,8 @@ if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystem
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
 #portfolionickname <<- 'Energyportfolio1'
 portfolionickname <<- 'forex1'
-outputdirectory <<- paste("data/results/runs/", portfolionickname, sep = "")
+userid='runs'
+outputdirectory <<- paste("data/results/",userid,"/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(outputdirectory)
 portfoliolist <<- loadportfoliolist(outputdirectory)
 
@@ -45,7 +46,7 @@ stocklist <<- featurelist
 ############################################################################
 
 for (i in 1:200){
-launchaGAportfolio(portfolionickname)
+launchaGAportfolio(userid,portfolionickname,outputdirectory)
 }
 #modelexplorer(1,featurelist)
 
