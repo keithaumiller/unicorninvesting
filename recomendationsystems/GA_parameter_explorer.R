@@ -86,7 +86,8 @@ fitnesfunction<-function(x){
      portfoliolistfilename = "portfolio.csv"
      file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
      backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
-     write(featurelistforNN, file = backupoffeaturelist)
+     write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
+#     saveRDS(featurelistforNN, file = backupoffeaturelist)
      print("saving bestperformance")
      print(bestperformance)
      saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')

@@ -14,14 +14,14 @@ if(!exists("combinestocksfunction", mode="function")) source("./datasetcreation/
 convertnetresultsintoaction <- function(userid,portfolio){
 #  print("WTF")
   portfolionickname <<- portfolio
-    userid = "runs"
-    portfolionickname = 'Energyportfolio1'
+#    userid = "runs"
+#    portfolionickname = 'Energyportfolio1'
   outputdirectory = paste("data/results/",userid,"/", portfolionickname, "/portfoliosbest", sep = "")
   neuralnetfile = paste(outputdirectory, '/bestnetfile', sep = "")
   print(neuralnetfile)
   if(file.exists(neuralnetfile)){
     print("NN File Found. LOADING IT")
-    load(neuralnetfile)   #loads(mymlpnet_clean)
+    mymlpnet_clean = readRDS(neuralnetfile)   #loads(mymlpnet_clean)
   } else {
     print("NN File Not Found")
     return(1)
@@ -77,14 +77,14 @@ Endofdayprocessing<- function(){
   userids = list.files("./data/results")
   for (userid in userids)
   {
-    print(userid)
+#    print(userid)
     portfolios = list.files(paste("./data/results/", userid, sep = ""))
     for (portfolio in portfolios)
     {
-    print(portfolio)
+#    print(portfolio)
     print(paste("DailyCalculations started for User: ", userid, " Portfolio: ", portfolio, sep = ''))
     thisallocation = convertnetresultsintoaction(userid,portfolio)
-    print("DONEwiththis")
+#    print("DONEwiththis")
     print(thisallocation)
     }
   }
@@ -115,8 +115,10 @@ createdailyallocation <- function(userid,neuralnet, dailydata){
   #dothe evaluation
 #  dailydata = thisportfoliodailydata
 #  neuralnet = mymlpnet_clean$net
+#  userid="runs" 
+#  portfolio="Energyportfolio1"
   portfoliohome = paste("data/results/",userid,"/", portfolionickname, sep ='')
-  outputdirectory <<- paste(portfoliohome, "/portfoliosbest", sep = "")
+  outputdirectory = paste(portfoliohome, "/portfoliosbest", sep = "")
 
     portfoliolist =     loadportfoliolist(portfoliohome)
   
@@ -128,25 +130,16 @@ createdailyallocation <- function(userid,neuralnet, dailydata){
   
   
   outputableallocation = paste(rownames(todaysallocation),paste(todaysallocation,collapse= ","),sep = ',')
-  #write it to a file. It'simportant that this file only contain data for days that the net adding to it did not get trained on.
-  #otherwise, the results will be skewed
-  bestNNallocationrecordfile = paste(outputdirectory,"/bestNNallocationrecordfile.csv", sep = '')
-  translatedtototalpercentperasset = convertNNoutputtoallocation(todaysallocation)
-  
-  if(file.exists(bestNNallocationrecordfile)){
-    print("Allocation File Found")
-  } else {
-    print("Allocation File Not Found")
-    headerrow = paste('Date',paste(colnames(todaysallocation), collapse = ','),sep = ',')
-    write(headerrow,bestNNallocationrecordfile,append = FALSE)
-  }
- write(outputableallocation,file=bestNNallocationrecordfile,append=TRUE)
- 
- 
- 
+
  return(todaysallocation)
 }
 
+generateallocationfile <- function(allocation){
+  success = FALSE
+  #  bestNNallocationrecordfile.csv
+
+  return(success)
+}
 
 
 #This will only work after market close.  Otherwise you get all NAs
@@ -161,11 +154,12 @@ loadthisportfoliodailydata <- function(userid, portfolio){
   #makes me sick to go through
   #rather than fix it right now, I'm just going to call it, swallow my pride and use the globals.
   numbertopull = 0 #this doesn't even get used int he function anymore...
-  featurelistforNN = loadfeaturelist(outputdirectory)
-  
+#  featurelist<<-  loadfeaturelist(outputdirectory)
+  featurelist<<- load_unicorn_best_featurelist(userid,portfolio)
+
   #make sure the data is updated...this needs to be removed soon and put in a batch job that pulls all needed data in one job...
 #  pullstocklist(featurelistforNN)
-  numberofstockscombined = combinestocksfunction(numbertopullparam, featurelistforNN, outputdirectory)
+  numberofstockscombined = combinestocksfunction(numbertopullparam, featurelist, outputdirectory)
 
   #global variables are defined now. ugh
 #  currentdate = Sys.Date()

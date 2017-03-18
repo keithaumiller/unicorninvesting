@@ -1,4 +1,9 @@
 library(quantmod)
+library(RMySQL)
+
+#You have to create a mysql server instance with a db named unicorn for this line to work.
+mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
+
 
 #other useful provided files.
 #amex = read.csv('data/exchangedata/amex.csv')  # read csv file
@@ -112,24 +117,85 @@ write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 loadportfoliolist <- function(x){
 #  print(paste("loadportfoliolist: ", x ))
   filetoread = paste(x, '/portfolio.csv', sep = '/')
-  portfoliolist <- read.csv(filetoread)[,1]
+  portfoliolist <- read.csv(filetoread,header = FALSE)[,1]
   portfoliolist <- levels(portfoliolist)
   portfoliolist <- gsub(" ", "", portfoliolist)
+  portfoliolist <- sort(portfoliolist)
   return(portfoliolist)
 }
+
 
 #loadfeaturelist()
 loadfeaturelist <- function(x){
 #  print(paste("loadfeaturelist: ", x ))
   filetoread = paste(x, '/featurelist.csv', sep = '/')
-  featurelist = read.csv(filetoread)[,1]
+  featurelist = read.csv(filetoread,header = FALSE)[,1]
+#  print(featurelist)
+#  featurelist = readRDS(filetoread)
   featurelist = levels(featurelist)
   portfoliolist = loadportfoliolist(x)
   featurelist = unique(c(portfoliolist,featurelist))
   featurelist = gsub(" ", "", featurelist)
+  featurelist = sort(featurelist)
   return(featurelist)
 }
 
 
 #Edit this file to determine what stock list you want to use....
 #stocklist = loadfeaturelist()
+
+#convertportfoliolisttodbformat takes something like this and converts it to an object for inserting into the DB
+# loadportfoliolist("data/results/runs/Energyportfolio1")
+# [1] "AAV"   "CKX"   "CVE"   "ENLC"  "MXC"   "NFX"   "NOG"   "PDS"   "PE"    "SDR"  
+# [11] "SDRL"  "TAT"   "TEGP"  "TPLM"  "VNRAP" "YUMA" 
+
+convertportfoliolisttodbformat <- function(userid,portfolio,symbollist){
+  formatedportfoliolist=data.frame(userid=userid,portfolio_name=portfolio,symbol=symbollist)
+  return(formatedportfoliolist)
+}
+
+#takes an object in the correct format and puts it in the table
+insert_into_unicorn_portfolios_table <- function(x){
+  tablename="unicorn_portfolios"
+  dbWriteTable(mydb,tablename,x, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
+  #need to create some logic here...
+  return(0)
+}
+
+#pulls a portfolio from the unicorn_portfolios table
+pull_from_unicorn_portfolios_table<-function(userid,portfolioname){
+  
+  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_portfolios WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+#    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = as.list(dbFetch(res))
+  dbClearResult(res)
+  results = sort(results)
+  return(results)
+}
+
+load_unicorn_best_featurelist <- function(userid,portfolioname){
+  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = as.list(dbFetch(res))
+  dbClearResult(res)
+  results = sort(results)
+  return(results)
+}
+
+insert_into_unicorn_best_featurelist <- function(userid,portfolioname,symbollist){
+#  symbollist = featurelistforNN2
+#  userid = 2
+#  portfolioname = portfolionickname
+
+  symbollisttable = convertportfoliolisttodbformat(userid,portfolioname,symbollist)
+  #remove the old "Best" featurelist
+  res <- dbSendQuery(mydb, paste("DELETE FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+#  results = as.list(dbFetch(res))
+  dbClearResult(res)
+  
+  #insert the new "Best" featurelist
+  tablename="unicorn_best_featurelist"
+  dbWriteTable(mydb,tablename,symbollisttable, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
+  #need to create some logic here...
+ return(0) 
+}
