@@ -46,6 +46,7 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
   }
 
   seedmoney = 1000  # money to invest
+  print("Seedmoney set")
   
   # portfolio.csv will have the full list of curency combinations in it.
   #So....the actual values of "stockstocombine" contains the currency conversion info
@@ -61,12 +62,16 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
   balancematrix = matrix(0,nrow=daystouse,ncol=length(currencylist))
   colnames(balancematrix) <- currencylist
   rownames(balancematrix) <- tail(rownames(adjustedinput),daystouse)
+#print(balancematrix)
   balancematrix[1,'USD'] = seedmoney
+print
   currencypairs = substr(portfoliolistcolumnnames,1,6)
   currencypairpushratios = currencypairs
   currencypairpushratios[] = 0
   allocation = tail(mlpeval_eval,daystouse)
   colnames(allocation)<- currencypairs
+  
+  print("after allocation set")
   
   #normalize the allocations per day
 #  normalizedallocation = allocation
@@ -115,6 +120,7 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
     {
       NNperformancechart <<- c(NNperformancechart,convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)) 
     }
+#    print("middle")
 #    print(i)
 #    print(dim(balancematrix)[1])
     if (i == daystouse)
@@ -148,8 +154,10 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
   #if this is a forex portfolio...different performance eval than normal
   if (file.exists(paste(outputdirectory,"/isforex",sep = '')))
   {
-    returnthis = forexperformance(mlpeval_eval,adjustedinput,saveit)
-    return(returnthis)
+    
+    forexreturn = forexperformance(mlpeval_eval,adjustedinput,saveit)
+    print(forexreturn)
+    return(forexreturn)
   }
   
 #  print("In new model performance")

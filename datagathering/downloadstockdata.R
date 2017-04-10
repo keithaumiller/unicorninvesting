@@ -1,7 +1,8 @@
 library(quantmod)
 library(RMySQL)
 
-#You have to create a mysql server instance with a db named unicorn for this line to work.
+#You have to create a mysql server instance with a db named unicorn for this line to work.(closes current connectiosn first)
+lapply( dbListConnections( dbDriver( drv = "MySQL")), dbDisconnect)
 mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
 
 
@@ -114,29 +115,38 @@ write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 }
 
 #loadportfoliolist()
-loadportfoliolist <- function(x){
+loadportfoliolist <- function(userid,portfolio){
+  userid=1
+  portfolio=1
 #  print(paste("loadportfoliolist: ", x ))
-  filetoread = paste(x, '/portfolio.csv', sep = '/')
-  portfoliolist <- read.csv(filetoread,header = FALSE)[,1]
-  portfoliolist <- levels(portfoliolist)
-  portfoliolist <- gsub(" ", "", portfoliolist)
-  portfoliolist <- sort(portfoliolist)
+#  filetoread = paste(x, '/portfolio.csv', sep = '/')
+#  portfoliolist <- read.csv(filetoread,header = FALSE)[,1]
+#  portfoliolist <- levels(portfoliolist)
+#  portfoliolist <- gsub(" ", "", portfoliolist)
+#  portfoliolist <- sort(portfoliolist)
+  portfoliolist <- load_from_unicorn_portfolios_table(userid,portfolio)
   return(portfoliolist)
 }
 
-
 #loadfeaturelist()
-loadfeaturelist <- function(x){
+loadfeaturelist <- function(userid, portfolioname, maxfeaturestouse=0){
+#  maxfeaturestouse=10
 #  print(paste("loadfeaturelist: ", x ))
-  filetoread = paste(x, '/featurelist.csv', sep = '/')
-  featurelist = read.csv(filetoread,header = FALSE)[,1]
+#  filetoread = paste(x, '/featurelist.csv', sep = '/')
+#  featurelist = read.csv(filetoread,header = FALSE)[,1]
 #  print(featurelist)
 #  featurelist = readRDS(filetoread)
-  featurelist = levels(featurelist)
-  portfoliolist = loadportfoliolist(x)
+#  featurelist = levels(featurelist)
+  portfoliolist = loadportfoliolist(userid,portfolioname)
+  featurelist = dbReadTable(mydb,"unicorn_universalfeaturelist_daily")
+  featurelist = sort(featurelist[[2]])
+  if(maxfeaturestouse != 0)
+  {
+    featurelist =c(featurelist[1:maxfeaturestouse],portfoliolist)
+  }
+#  print(length(featurelist))
   featurelist = unique(c(portfoliolist,featurelist))
   featurelist = gsub(" ", "", featurelist)
-  featurelist = sort(featurelist)
   return(featurelist)
 }
 
@@ -150,7 +160,7 @@ loadfeaturelist <- function(x){
 # [11] "SDRL"  "TAT"   "TEGP"  "TPLM"  "VNRAP" "YUMA" 
 
 convertportfoliolisttodbformat <- function(userid,portfolio,symbollist){
-  formatedportfoliolist=data.frame(userid=userid,portfolio_name=portfolio,symbol=symbollist)
+  formatedportfoliolist=data.frame(userid=userid,portfolioid=portfolio,symbol=symbollist)
   return(formatedportfoliolist)
 }
 
@@ -163,33 +173,33 @@ insert_into_unicorn_portfolios_table <- function(x){
 }
 
 #pulls a portfolio from the unicorn_portfolios table
-pull_from_unicorn_portfolios_table<-function(userid,portfolioname){
+load_from_unicorn_portfolios_table<-function(userid,portfolioname){
   
-  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_portfolios WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_portfolios WHERE userid = ", userid, " AND portfolioid = '", portfolioname,"';", sep = ''))
 #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = as.list(dbFetch(res))
   dbClearResult(res)
-  results = sort(results)
+  results = sort(results[[1]])
   return(results)
 }
 
 load_unicorn_best_featurelist <- function(userid,portfolioname){
-  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+  res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolioid = '", portfolioname,"';", sep = ''))
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = as.list(dbFetch(res))
   dbClearResult(res)
-  results = sort(results)
+  results = sort(results[[1]])
   return(results)
 }
 
 insert_into_unicorn_best_featurelist <- function(userid,portfolioname,symbollist){
 #  symbollist = featurelistforNN2
 #  userid = 2
-#  portfolioname = portfolionickname
-
-  symbollisttable = convertportfoliolisttodbformat(userid,portfolioname,symbollist)
+  portfolio = portfolioname
+  formatedportfoliolist=data.frame(userid=userid,portfolioid=portfolio,symbol=symbollist)
+  symbollisttable = formatedportfoliolist
   #remove the old "Best" featurelist
-  res <- dbSendQuery(mydb, paste("DELETE FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolio_name = '", portfolioname,"';", sep = ''))
+  res <- dbSendQuery(mydb, paste("DELETE FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolioid = '", portfolioname,"';", sep = ''))
 #  results = as.list(dbFetch(res))
   dbClearResult(res)
   
@@ -198,4 +208,125 @@ insert_into_unicorn_best_featurelist <- function(userid,portfolioname,symbollist
   dbWriteTable(mydb,tablename,symbollisttable, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
   #need to create some logic here...
  return(0) 
+}
+
+
+insert_universalfeaturelist_daily <- function(){
+#    forimport ='MAKE SURE YOU SET YOUR forimport'
+
+    tablename="unicorn_universalfeaturelist_daily"
+    dbWriteTable(mydb,tablename,forimport, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
+    #need to create some logic here...
+    return(0)
+}
+
+insert_into_unicorn_allocationhistory <- function(userid,portfolio,allocationtable){
+#  library(data.table)
+  #    forimport ='MAKE SURE YOU SET YOUR forimport'
+  now <- as.POSIXlt(Sys.time())
+  now.str <- format(now,'%Y-%m-%d %H:%M:%S')
+  
+  temp= data.frame()
+  symbols = colnames(allocationtable)
+  datetime = now.str
+  allocations = allocationtable[1,]
+  
+  temp = data.frame("userid"= userid, "portfolioid"= portfolio, "Symbol"= symbols, "datetime" = now.str, "allocation"=allocations)
+
+  forimport=temp
+  tablename="unicorn_allocationhistory"
+  dbWriteTable(mydb,tablename,forimport, field.types = TRUE, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
+  dbGetQuery(mydb,"SHOW WARNINGS")
+  #need to create some logic here...
+  return(0)
+}
+
+load_unicorn_allocationhistory <- function(userid,portfolio,recorddate=NULL){
+  library(reshape)
+  #this needs to updated to support "Latest" when no date is provided.
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_allocationhistory WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
+  dbClearResult(res)
+  
+  if(is.na(results[1,1])){
+    None = data.frame(date=100,holder=100)
+    return(None)
+  }
+  
+  #restructure it into what the callers expect. i.e. a portfolio table
+  results = recast(results[,3:5],datetime ~ Symbol)
+  
+  results = results[order(results$datetime,decreasing = TRUE),]
+  
+  if (is.null(recorddate)){
+    print("Recoddate Is Null")
+    return(results)
+  }
+  else{
+    date=substr(recorddate,0,10)
+    datesresults = results[substr(results$datetime,0,10) == date,][1,]
+    return(datesresults)
+  }
+  return(results)
+}
+
+#details is a matrix with the columns in it
+insert_into_unicorn_portfolios_details <- function(userid,portfolio,values){
+  now <- as.POSIXlt(Sys.time())
+  now.str <- format(now,'%Y-%m-%d %H:%M:%S')
+  #    forimport ='MAKE SURE YOU SET YOUR forimport'
+  
+  details = data.frame(matrix(ncol=4,nrow=1))
+  names(details)=c("userid","portfolioid","bestperformance","datetime")
+  details[1,] = c(userid,portfolio,values,now.str)
+  #  details[1,] = c(1,1,-1000,0)
+  #  details[1,'datetime']=now.str
+  
+#  This function needs to be updated to add the datetime iteself to the records
+
+  forimport=details
+  tablename="unicorn_portfolios_details"
+  dbWriteTable(mydb,tablename,forimport, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
+  #need to create some logic here...
+  return(0)
+}
+
+load_unicorn_portfolios_details <- function(userid,portfolio,recorddate=NULL){
+  
+  #this needs to updated to support "Latest" when no date is provided.
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios_details WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
+  dbClearResult(res)
+
+  if (is.null(recorddate)){
+    return(results[1,])
+  }
+  else{
+    date=substr(recorddate,0,10)
+    datesresults = results[substr(results$datetime,0,10) == date,][1,]
+    return(datesresults)
+  }
+  return(results)
+}
+
+load_unicorn_useridlist <- function(){
+  #this needs to updated to support "Latest" when no date is provided.
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
+  results = unique(results$userid)
+  dbClearResult(res)
+  return(results)
+}
+
+load_unicorn_portfoliolist<-function(){
+  #this needs to updated to support "Latest" when no date is provided.
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
+  results = unique(results$portfolioid)
+  dbClearResult(res)
+  return(results)
 }

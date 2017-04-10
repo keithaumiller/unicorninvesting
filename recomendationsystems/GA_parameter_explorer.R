@@ -46,9 +46,11 @@ fitnesfunction<-function(x){
   
   
 
-  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
-  print("bestperformance fileloaded")
-  print(bestperformance)
+#  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
+    portfoliodetails = load_unicorn_portfolios_details(userid, portfolionickname)
+    bestperformance = portfoliodetails[,'bestperformance']
+    print("Bestperformance:")
+    print(bestperformance)
 
     featurelistforNN <<- convertobjecttonetinputlist(x)
   #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
@@ -86,14 +88,21 @@ fitnesfunction<-function(x){
      portfoliolistfilename = "portfolio.csv"
      file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
      backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
+
      write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
+
+     insert_into_unicorn_best_featurelist(userid,portfolionickname,featurelistforNN)
 #     saveRDS(featurelistforNN, file = backupoffeaturelist)
      print("saving bestperformance")
      print(bestperformance)
-     saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
+     
+     #saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
+     insert_into_unicorn_portfolios_details(userid,portfolionickname,bestperformance)
+     
      if(exists('GA')){
        saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
      }
+
      saveRDS(mymlpnet_clean, ascii=FALSE, file=bestnetfile,refhook ='mymlpnet_clean')
    }
    
@@ -154,8 +163,8 @@ portfoliolist <<- loadportfoliolist(outputdirectory)
 #binaryresults[] = 0
 #numberofstockstouse=20
 NNrunid=0
-populationsize=20
-maxiter=30
+populationsize=10
+maxiter=10
 run=30
 averagefitnessbyiteration = c(seq(1:maxiter))
 averagefitnessbyiteration[] = 0

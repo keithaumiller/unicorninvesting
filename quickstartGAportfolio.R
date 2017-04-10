@@ -15,18 +15,16 @@ if(!exists("generatetrainingmatrix", mode="function")) source("./recomendationsy
 if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R")
 if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystems/GA_parameter_explorer.R")
 
-
-
 #loads your list of features from data/features/featurelist.csv
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
-portfolionickname <<- 'Energyportfolio1'
-#portfolionickname <<- 'forex1'
-userid='runs'
+portfolionickname <<- '1'
+#portfolionickname <<- '2'
+userid='1'
 outputdirectory <<- paste("data/results/",userid,"/", portfolionickname, sep = "")
-featurelist <<- loadfeaturelist(outputdirectory)
-portfoliolist <<- loadportfoliolist(outputdirectory)
+featurelist <<- loadfeaturelist(userid,portfolionickname)
+portfoliolist <<- loadportfoliolist(userid,portfolionickname)
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference

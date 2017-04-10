@@ -1,5 +1,6 @@
 rm(list = ls())
 library(FCNN4R)
+library(parallel)
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 #if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
@@ -16,7 +17,7 @@ convertnetresultsintoaction <- function(userid,portfolio){
   portfolionickname <<- portfolio
 #    userid = "runs"
 #    portfolionickname = 'Energyportfolio1'
-  outputdirectory = paste("data/results/",userid,"/", portfolionickname, "/portfoliosbest", sep = "")
+  outputdirectory = paste("data/results/",userid,"/", portfolio, "/portfoliosbest", sep = "")
   neuralnetfile = paste(outputdirectory, '/bestnetfile', sep = "")
   print(neuralnetfile)
   if(file.exists(neuralnetfile)){
@@ -28,20 +29,23 @@ convertnetresultsintoaction <- function(userid,portfolio){
   }
   
   #Logic needs to improve to pull based off date instead of position in file.
-  allocationmatrix = loadallocationfile(portfolionickname)
-  allocationmatrix = allocationmatrix[,2:length(allocationmatrix)]
+#  allocationmatrix = loadallocationfile(userid,portfolio)
+    allocationmatrix = load_unicorn_allocationhistory(userid,portfolio)
+#  allocationmatrix = allocationmatrix[,2:length(allocationmatrix)]
   
-  yesterdaysallocation = round(tail(allocationmatrix,1),5)
+  yesterdaysallocation = allocationmatrix[1,]
   #if yesterdaysallocation == 100 then this is the first run...
 
   thisportfoliodailydata = loadthisportfoliodailydata(userid,portfolio)
   thisportfoliodailydata = thisportfoliodailydata[,grep('.output',colnames(thisportfoliodailydata),value = TRUE, invert = TRUE)]
   
-  todaysallocation = createdailyallocation(userid,mymlpnet_clean$net,thisportfoliodailydata)
+  todaysallocation <<- createdailyallocation(userid,mymlpnet_clean$net,thisportfoliodailydata)
 
+  insert_into_unicorn_allocationhistory(userid,portfolio,todaysallocation)
+  
 #  print("DOING STUFF")
 #First time?  This'll finish you  
-  if(length(allocationmatrix) == 1)
+  if(length(allocationmatrix) == 2)
   {
     print("Its your first time!  Use the % allocation provided")
     return(todaysallocation)
@@ -49,36 +53,30 @@ convertnetresultsintoaction <- function(userid,portfolio){
 
  #generate % change  #compare day's and tomorrows allocation
  #
-  todayspercentchangeofallocation = todaysallocation - yesterdaysallocation
-#  currentbalance = loadportfoliobalance() #load current balance
+  todayspercentchangeofallocation = todaysallocation - yesterdaysallocation[1,2:length(yesterdaysallocation[1,])]
+  todayspercentchangeofallocation = round(todayspercentchangeofallocation,4)
+  #  currentbalance = loadportfoliobalance() #load current balance
   #loadportfoliobalance
   #generate order
   return(todayspercentchangeofallocation)
 }
 
 Endofdayprocessing<- function(){
-
-  portfoliofiles = list.files("./data/results", recursive = TRUE ,pattern = 'portfolio.csv')
-  featurelistfiles = list.files("./data/results", recursive = TRUE ,pattern = 'featurelist.csv')
-  fileslist = c(portfoliofiles,featurelistfiles)
-  stocklist = vector()
   
-  setwd("./data/results")
-  for (thisfile in fileslist)
-  {
-    thisfilesdata <- read.csv(thisfile, header = FALSE)[,1]
-    thisfilesdata = levels(thisfilesdata)
-    stocklist = unique(c(stocklist,thisfilesdata))
-#    thisfilesdata <- c(thisfilesdata,read.csv("data/results/runs/Energyportfolio1/portfoliosbest/featurelist.csv", header = FALSE)[,1])
-  }
-  setwd("../../")
+  stocklist = loadfeaturelist()
   
+#  this downloads the daily data and is very burdensome so only uncomment in prod
+#  or if you need to download all stocks in the DB featurelist...
 #  pullstocklist(stocklist)
-  userids = list.files("./data/results")
+
+  userids = load_unicorn_useridlist()
+  portfolios = load_unicorn_portfoliolist()
+  
+#  userids = list.files("./data/results")
   for (userid in userids)
   {
 #    print(userid)
-    portfolios = list.files(paste("./data/results/", userid, sep = ""))
+#    portfolios = list.files(paste("./data/results/", userid, sep = ""))
     for (portfolio in portfolios)
     {
 #    print(portfolio)
@@ -88,15 +86,15 @@ Endofdayprocessing<- function(){
     print(thisallocation)
     }
   }
-
-
   #  }
 #}
   
 }
 
-loadallocationfile <- function(portfolionickname){
-  allocationfile <<- paste("data/results/runs/", portfolionickname, "/portfoliosbest/bestNNallocationrecordfile.csv", sep = "")
+
+#This is Defunct now.
+loadallocationfile <- function(userid,portfolio){
+  allocationfile <<- paste("data/results/", userid, "/", portfolio, "/portfoliosbest/bestNNallocationrecordfile.csv", sep = "")
   if(file.exists(allocationfile)){
 #    historicalallocation <- read.csv(allocationfile, row.names=1, header = TRUE)
     historicalallocation <- read.csv(allocationfile, header = TRUE)
