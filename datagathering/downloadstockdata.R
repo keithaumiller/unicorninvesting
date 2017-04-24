@@ -116,8 +116,8 @@ write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 
 #loadportfoliolist()
 loadportfoliolist <- function(userid,portfolio){
-  userid=1
-  portfolio=1
+#  userid=1
+#  portfolio=1
 #  print(paste("loadportfoliolist: ", x ))
 #  filetoread = paste(x, '/portfolio.csv', sep = '/')
 #  portfoliolist <- read.csv(filetoread,header = FALSE)[,1]
@@ -145,7 +145,8 @@ loadfeaturelist <- function(userid, portfolioname, maxfeaturestouse=0){
     featurelist =c(featurelist[1:maxfeaturestouse],portfoliolist)
   }
 #  print(length(featurelist))
-  featurelist = unique(c(portfoliolist,featurelist))
+#  featurelist = unique(c(portfoliolist,featurelist))
+  featurelist = sort(featurelist)
   featurelist = gsub(" ", "", featurelist)
   return(featurelist)
 }

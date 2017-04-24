@@ -102,7 +102,7 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdir
 #rm(amex,nasdaq,nyse)
 
   #symbolsavailable = list.files(path = 'data/stockdata')
-  portfoliolist <<- loadportfoliolist(outputdirectory)
+  portfoliolist <<- loadportfoliolist(userid, portfolionickname)
 
     #featurelist is not the whole featurelist for the portfolio, it is just the featurelist for this specific net
   stocklist = unique(c(portfoliolist,featurelistforNN))

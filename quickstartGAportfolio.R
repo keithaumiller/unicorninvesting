@@ -19,8 +19,8 @@ if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystem
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
-portfolionickname <<- '1'
-#portfolionickname <<- '2'
+#portfolionickname <<- '1'
+portfolionickname <<- '2'
 userid='1'
 outputdirectory <<- paste("data/results/",userid,"/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(userid,portfolionickname)

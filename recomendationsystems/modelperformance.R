@@ -1,10 +1,14 @@
 library(taRifx) # adds shift() functionality
 library(PerformanceAnalytics)  # will be used at some point in the future... after I learn it.
 
-conversionlookup <- function(fromcurency,tocurrency,date){
-  transactiontype = paste(fromcurency,tocurrency,".Adjusted",sep = '')
+conversionlookup <- function(fromcurrency,tocurrency,date){
+  transactiontype = paste(fromcurrency,tocurrency,".Adjusted",sep = '')
   conversionrate = stockstocombine[date,transactiontype]
-  return(conversionrate)
+#  print(paste("Date", date, "FROM", fromcurrency, "TO", tocurrency, "Conversionrate", conversionrate, sep = ": "))
+  if(is.na(conversionrate)){
+    return(0)
+  }
+    return(conversionrate)
 }
 
 convertportfoliotoUSD <- function(portfolio,date,currencylist){
@@ -31,6 +35,14 @@ convertportfoliotoUSD <- function(portfolio,date,currencylist){
 }
 
 forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
+  
+  mlpeval_eval <<-   mlpeval_eval
+  adjustedinput <<- adjustedinput
+  saveit <<- saveit
+  
+  
+#print(head(adjustedinput))
+#return(0)
 
 #  mlpeval_eval = objectivefunctionnetoutput
 #  adjustedinput = input[,portfoliolistcolumnnames]
@@ -46,7 +58,7 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
   }
 
   seedmoney = 1000  # money to invest
-  print("Seedmoney set")
+#  print("Seedmoney set 2")
   
   # portfolio.csv will have the full list of curency combinations in it.
   #So....the actual values of "stockstocombine" contains the currency conversion info
@@ -62,16 +74,17 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
   balancematrix = matrix(0,nrow=daystouse,ncol=length(currencylist))
   colnames(balancematrix) <- currencylist
   rownames(balancematrix) <- tail(rownames(adjustedinput),daystouse)
-#print(balancematrix)
+
   balancematrix[1,'USD'] = seedmoney
-print
+#print(head(balancematrix))
+
   currencypairs = substr(portfoliolistcolumnnames,1,6)
-  currencypairpushratios = currencypairs
-  currencypairpushratios[] = 0
+#  currencypairpushratios = currencypairs
+#  currencypairpushratios[] = 0
   allocation = tail(mlpeval_eval,daystouse)
   colnames(allocation)<- currencypairs
   
-  print("after allocation set")
+#  print("after allocation set")
   
   #normalize the allocations per day
 #  normalizedallocation = allocation
@@ -79,18 +92,24 @@ print
 
   for (i in 1:dim(balancematrix)[1]){
 #    i=1
+#    print(balancematrix[1:2,])
     cppad = currencypairs # currencypairpercentpushanddirectionholder
     if (i==1){
-      tempbalance = balancematrix[i,]
-    }
-    else{
-      tempbalance = balancematrix[i-1,]
+      tempbalance <- balancematrix[i,]
+    } else
+      {
+      tempbalance <- balancematrix[i-1,]
     }
 #    print("NEXTROW")
 #    print("###################")
-    
-    for (j in 1:length(currencypairs)){
-#      print(tempbalance)
+#    print(paste("Tempbalance: ", tempbalance, "ITER: ", i ,sep = ''))
+
+#    if(i==2){
+#    print("DONE")
+#    return(0)
+#    }
+
+        for (j in 1:length(currencypairs)){
       thistransaction = currencypairs[j]
       fromcurrency = substr(thistransaction,1,3)
       tocurrency = substr(thistransaction,4,6)
@@ -128,7 +147,7 @@ print
       finalUSDValue = convertportfoliotoUSD(balancematrix[i,],rownames(balancematrix)[i],currencylist)
       balancematrix[i,] = 0
       balancematrix[i,"USD"] = finalUSDValue
-      #  print(tail(balancematrix,5))
+#      print(tail(balancematrix,2))
       USDvaluetoreturn = tail(balancematrix[,"USD"],1)
         if (USDvaluetoreturn == 1000)
         {
@@ -156,7 +175,7 @@ modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
   {
     
     forexreturn = forexperformance(mlpeval_eval,adjustedinput,saveit)
-    print(forexreturn)
+#    print(forexreturn)
     return(forexreturn)
   }
   

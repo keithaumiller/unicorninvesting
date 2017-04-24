@@ -158,8 +158,8 @@ NNperformancechart<<- 1000
 portfolionickname <<- portfolionickname
 outputdirectory = outputdirectory
 runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
-featureslist <<- loadfeaturelist(outputdirectory)
-portfoliolist <<- loadportfoliolist(outputdirectory)
+featureslist <<- loadfeaturelist(userid,portfolionickname)
+portfoliolist <<- loadportfoliolist(userid,portfolionickname)
 #binaryresults[] = 0
 #numberofstockstouse=20
 NNrunid=0
