@@ -3,7 +3,8 @@
 trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam, outputdirectory) {
 #print("Enteringtrainmodel----------")
 #cat("NETDEPTH:", netdepthparam, "\n")
-
+print(paste("Creating", outputdirectory))
+dir.create(outputdirectory, recursive = TRUE)
 
 library(FCNN4R)
 inputlayersize <<- as.double(diminputpercentagematrix[2])

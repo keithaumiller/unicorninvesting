@@ -20,8 +20,8 @@ if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystem
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
 #portfolionickname <<- '1'
-portfolionickname <<- '2'
-userid='1'
+portfolionickname <<- '1'
+userid='2'
 outputdirectory <<- paste("data/results/",userid,"/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(userid,portfolionickname)
 portfoliolist <<- loadportfoliolist(userid,portfolionickname)

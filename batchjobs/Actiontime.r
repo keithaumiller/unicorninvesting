@@ -28,7 +28,7 @@ convertnetresultsintoaction <- function(userid,portfolio){
     return(1)
   }
   
-  #Logic needs to improve to pull based off date instead of position in file.
+#  Logic needs to improve to pull based off date instead of position in file.
 #  allocationmatrix = loadallocationfile(userid,portfolio)
     allocationmatrix = load_unicorn_allocationhistory(userid,portfolio)
 #  allocationmatrix = allocationmatrix[,2:length(allocationmatrix)]
@@ -39,7 +39,7 @@ convertnetresultsintoaction <- function(userid,portfolio){
   thisportfoliodailydata = loadthisportfoliodailydata(userid,portfolio)
   thisportfoliodailydata = thisportfoliodailydata[,grep('.output',colnames(thisportfoliodailydata),value = TRUE, invert = TRUE)]
   
-  todaysallocation <<- createdailyallocation(userid,mymlpnet_clean$net,thisportfoliodailydata)
+  todaysallocation <<- createdailyallocation(userid,portfolio, mymlpnet_clean$net,thisportfoliodailydata)
 
   insert_into_unicorn_allocationhistory(userid,portfolio,todaysallocation)
   
@@ -62,13 +62,9 @@ convertnetresultsintoaction <- function(userid,portfolio){
 }
 
 Endofdayprocessing<- function(){
+  #Deprecated and moved to Batchscriptmaster.R so it can be called from System easily
+  #logic has changed and is better too
   
-  stocklist = loadfeaturelist()
-  
-#  this downloads the daily data and is very burdensome so only uncomment in prod
-#  or if you need to download all stocks in the DB featurelist...
-#  pullstocklist(stocklist)
-
   userids = load_unicorn_useridlist()
   portfolios = load_unicorn_portfoliolist()
   
@@ -81,13 +77,30 @@ Endofdayprocessing<- function(){
     {
 #    print(portfolio)
     print(paste("DailyCalculations started for User: ", userid, " Portfolio: ", portfolio, sep = ''))
-    thisallocation = convertnetresultsintoaction(userid,portfolio)
+    thisallocation <- mcparallel(convertnetresultsintoaction(userid,portfolio))
 #    print("DONEwiththis")
+#    mccollect(thisallocation)
     print(thisallocation)
     }
   }
   #  }
 #}
+  
+# last but not least, make sure all of the model generators are still chugging away.
+  for (userid in userids)
+  {
+    #    print(userid)
+    #    portfolios = list.files(paste("./data/results/", userid, sep = ""))
+    for (portfolio in portfolios)
+    {
+      #    print(portfolio)
+      print(paste("Daily Model Generation Started for: ", userid, " Portfolio: ", portfolio, sep = ''))
+      outputdirectory = paste("data/results/",userid,"/", portfolio, sep = "")
+      stuff <- mcparallel(launchaGAportfolio(userid,portfolio,outputdirectory))
+    }
+    mccollect(stuff)
+  }
+  
   
 }
 
@@ -109,7 +122,7 @@ loadallocationfile <- function(userid,portfolio){
 #our base assumption in this function is that all portfolio members are valid.
 #I know from earlier experience that isn't always true.
 # perhaps a check on the Frontend to make sure only valid portfolio member choicess are made
-createdailyallocation <- function(userid,neuralnet, dailydata){
+createdailyallocation <- function(userid, portfolionickname, neuralnet, dailydata){
   #dothe evaluation
 #  dailydata = thisportfoliodailydata
 #  neuralnet = mymlpnet_clean$net
@@ -118,7 +131,7 @@ createdailyallocation <- function(userid,neuralnet, dailydata){
   portfoliohome = paste("data/results/",userid,"/", portfolionickname, sep ='')
   outputdirectory = paste(portfoliohome, "/portfoliosbest", sep = "")
 
-    portfoliolist =     loadportfoliolist(portfoliohome)
+    portfoliolist = loadportfoliolist(userid,portfolionickname)
   
   todaysallocationtemp = mlp_eval(neuralnet,data.matrix(dailydata))
   rownames(todaysallocationtemp)<- rownames(dailydata)

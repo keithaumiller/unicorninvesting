@@ -1,3 +1,7 @@
+
+library(quantmod)
+library(plyr)
+
 generatestockstocombine <- function(stocklist){
   count = 0
 #  timerstart = proc.time()
@@ -74,8 +78,12 @@ getgloballistofstocks <- function(numbertopullparam){
 }
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdirectory){
-#print("Combining Stocks")
-#listofobjects that get set globally in this function.... I know, shut up....  
+  print("Combining Stocks")
+#  print(outputdirectory)
+  userid = unlist(strsplit(outputdirectory,"/"))[3]
+  portfolionickname = unlist(strsplit(outputdirectory,"/"))[4]
+  
+  #listofobjects that get set globally in this function.... I know, shut up....  
 #stocklist
 #portfoliolist
 #featurelist
@@ -87,9 +95,6 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdir
 #numbertopull=numbertopullparam
 #datetoread=Sys.Date()
 #datetoread="2016-10-16"
-
-  library(quantmod)
-  library(plyr)
 
   
 #  amex = read.csv('data/exchangedata/amex.csv')  # read csv file

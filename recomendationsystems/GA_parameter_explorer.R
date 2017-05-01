@@ -40,7 +40,7 @@ fitnesfunction<-function(x){
   {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''))}
   #Where to put the "Best Net" created.... for in theory use of trade management...
   bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
-  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
+#  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
   myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
   bestNNplotfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
   
@@ -49,6 +49,9 @@ fitnesfunction<-function(x){
 #  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
     portfoliodetails = load_unicorn_portfolios_details(userid, portfolionickname)
     bestperformance = portfoliodetails[,'bestperformance']
+    if(is.na(bestperformance)){
+      bestperformance=-1000
+    }
     print("Bestperformance:")
     print(bestperformance)
 
@@ -86,15 +89,14 @@ fitnesfunction<-function(x){
      bestperformance = performance
      featurelistfilename = "featurelist.csv"
      portfoliolistfilename = "portfolio.csv"
-     file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
-     backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
-
-     write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
+#     file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
+#     backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
+#     write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
 
      insert_into_unicorn_best_featurelist(userid,portfolionickname,featurelistforNN)
 #     saveRDS(featurelistforNN, file = backupoffeaturelist)
-     print("saving bestperformance")
-     print(bestperformance)
+#     print("saving bestperformance")
+#     print(bestperformance)
      
      #saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
      insert_into_unicorn_portfolios_details(userid,portfolionickname,bestperformance)
@@ -121,6 +123,7 @@ convertobjecttonetinputlist <- function(XX){
 
 monitor <- function(obj)
 {
+  monitoredGA<--obj
   mydebug("GA Monitor Called")
 
  myfilesavelocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')

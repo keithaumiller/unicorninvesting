@@ -11,6 +11,10 @@
 # % change total
 # higher the % chagne the better
 #
+#The portfolio package contains classes for equity portfolio management; the portfolioSim builds a related simulation framework. The backtest offers tools to explore portfolio-based hypotheses about financial instruments. The stockPortfolio package provides functions for single index, constant correlation and multigroup models. The pa package offers performance attribution functionality for equity portfolios.
+#The pbo package models the probability of backtest overfitting, performance degradation, probability of loss, and the stochastic dominance when analysing trading strategies.
+
+
 
 fitnesscalc <-function(todayschanges,outputnodes)
   {

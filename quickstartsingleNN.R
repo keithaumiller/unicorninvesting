@@ -27,7 +27,7 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
 #portfolionickname <<- 'forex1'
-userid='1'
+userid='2'
 portfolionickname <<- '1'
 outputdirectory <<- paste("data/results/", userid,"/", portfolionickname, sep = "")
 featurelist <<- loadfeaturelist(userid,portfolionickname,10)

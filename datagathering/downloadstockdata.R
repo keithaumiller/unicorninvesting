@@ -1,5 +1,16 @@
 library(quantmod)
 library(RMySQL)
+library(parallel)
+library(multicore)
+library(foreach)
+library(parallel)
+library(doParallel)
+
+# Calculate the number of cores
+no_cores <- detectCores() - 1
+
+# Initiate cluster
+cl = makeCluster(no_cores, type = "FORK")
 
 #You have to create a mysql server instance with a db named unicorn for this line to work.(closes current connectiosn first)
 lapply( dbListConnections( dbDriver( drv = "MySQL")), dbDisconnect)
@@ -19,7 +30,7 @@ mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninves
 
 #rm(amex,nasdaq,nyse)
 downloadcurrency <- function(x){
-  #x = 'ZARTWD'
+#  x = 'ZARTWD'
   symbol_name = x
   #currencylist = paste(substr(currencylist[,],1,3), substr(currencylist[,],4,6),sep = '/')
   usablecurrency = paste(substr(symbol_name,1,3), substr(symbol_name,4,6),sep = '/')
@@ -41,6 +52,7 @@ downloadcurrency <- function(x){
 }
 
 downloaddata <- function(x){
+#    print(x)
     symbol_name = x
       getSymbols(symbol_name)
       symbol = get(symbol_name)
@@ -53,6 +65,7 @@ downloaddata <- function(x){
     writelocationarray = c(writelocationarray, "stockdata.csv")# removing to reduce, sessionlabel)
     writelocation = paste(writelocationarray, sep = '/', collapse='')
     write.csv(adjusted, file=writelocation)
+#    print(writelocation)
 }
 
 
@@ -60,43 +73,41 @@ pullstocklist <- function(x) {
 
 initialstocklist = c(as.vector(x))
 currencylist = read.csv('data/exchangedata/FOREX.csv')[,1]
+currencylist = levels(currencylist)
 #so we don't try to download the currency converstions
 stocklist = setdiff(initialstocklist, currencylist)
 
 
-count = 0
-for (i in (stocklist))
-{
-  print(paste(count, "of", length(stocklist), sep = " "))
-  count = count + 1
-#  print(i)
-  tryCatch({
-    downloaddata(i)
-  },
-  error = function(e){
-    cat('ERROR Downloading\n')
-  },
-  warning 
-  )
-#  print("Completing Loop\n")
+
+foreach(i=stocklist)%dopar% {
+ tryCatch({
+   print(i)
+   downloaddata(i)
+ },
+ error = function(e){
+  print('ERROR Downloading\n')
+ },
+ warning = function(w){
+  print('Warning Downloading\n')
+ }
+ )
 }
 
 
-count = 0
-for (curencys in currencylist)
-{
-  print(paste(count, "of", length(currencylist), sep = " "))
-  count = count + 1
-  print(curencys)
+foreach(i=currencylist)%dopar% {
   tryCatch({
-    downloadcurrency(curencys)
+#    print(i)
+    downloadcurrency(i)
   },
   error = function(e){
-    print(paste('ERROR Downloading currency:', curencys, e, sep = ' '))
+    print('ERROR Downloading\n')
+    print(e)
   },
-  warning 
+  warning = function(w){
+    print('Warning Downloading\n')
+    print(w)
+  }
   )
-  #  print("Completing Loop\n")
 }
 
 #add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
@@ -129,7 +140,7 @@ loadportfoliolist <- function(userid,portfolio){
 }
 
 #loadfeaturelist()
-loadfeaturelist <- function(userid, portfolioname, maxfeaturestouse=0){
+loadfeaturelist <- function(userid=1, portfolioname=1, maxfeaturestouse=0){
 #  maxfeaturestouse=10
 #  print(paste("loadfeaturelist: ", x ))
 #  filetoread = paste(x, '/featurelist.csv', sep = '/')
@@ -327,7 +338,19 @@ load_unicorn_portfoliolist<-function(){
   res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
+  results = unique(results[,1:2])
+  dbClearResult(res)
+  return(results)
+}
+
+load_unicorn_usersportfolios<-function(userid){
+  mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
+  #this needs to updated to support "Latest" when no date is provided.
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios where userid =", userid, " ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
   results = unique(results$portfolioid)
   dbClearResult(res)
+  if(length(results)==0){results=0}  
   return(results)
 }
