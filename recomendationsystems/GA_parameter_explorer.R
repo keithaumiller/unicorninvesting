@@ -37,7 +37,7 @@ fitnesfunction<-function(x){
   bestperformance <<- -1000
   
   if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
-  {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''))}
+  {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''), recursive = TRUE)}
   #Where to put the "Best Net" created.... for in theory use of trade management...
   bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
 #  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
@@ -76,7 +76,7 @@ fitnesfunction<-function(x){
   #comment out line above and uncomment this line below to play with the GA feature selector.
   #  performance <<- sum(x)
  if(performance > 1500){
-    plotmyNN(myfilesavelocation,performance)
+#    plotmyNN(myfilesavelocation,performance)
   }
   
   thisGARun=paste(portfolionickname,NNrunid, runid, performance,sep = ",")
@@ -123,7 +123,7 @@ convertobjecttonetinputlist <- function(XX){
 
 monitor <- function(obj)
 {
-  monitoredGA<--obj
+#  monitoredGA<--obj
   mydebug("GA Monitor Called")
 
  myfilesavelocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
@@ -166,8 +166,8 @@ portfoliolist <<- loadportfoliolist(userid,portfolionickname)
 #binaryresults[] = 0
 #numberofstockstouse=20
 NNrunid=0
-populationsize=10
-maxiter=10
+populationsize=30
+maxiter=30
 run=30
 averagefitnessbyiteration = c(seq(1:maxiter))
 averagefitnessbyiteration[] = 0
@@ -187,7 +187,9 @@ if (!dir.exists(plotdir)){dir.create(plotdir)}
 
 if(file.exists(gaoutputlocation)){
   print("GA File Found. LOADING IT")
-  GA = readRDS(gaoutputlocation)}
+  GA = readRDS(gaoutputlocation)
+  GA1 = GA
+  }
 
 
 
@@ -226,5 +228,36 @@ GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelengt
 #
 ############
 #Save the last version of the GA.
+if(exists('GA1')){
+GA = combineGAsummarys(GA1, GA)
+}
+updateportfolioGAplot(GA)
 saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
+}
+
+
+combineGAsummarys <- function(GA1, GA2){
+  GA3 = GA2
+  GA3@summary = rbind(GA1@summary,GA2@summary)
+  GA3@iter = GA1@iter + GA2@iter
+  rownames(GA3@summary)<- 1:GA3@iter
+  return(GA3)
+}
+
+updateportfolioGAplot <- function(obj){
+  
+  myfilesavelocation = paste(outputdirectory, "./plots/portfoliohistory.png", sep = '')
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(obj)#, main = paste(obj@iter))
+  
+  summarymean = obj@summary[,"mean"]
+  tempx = c(1:length(summarymean))
+  points(tempx, summarymean, pch = 4, col = 9)
+  
+  tempx = c(1:length(obj@fitness))
+  tempx[] = obj@iter
+  points(tempx, obj@fitness, pch = 20, col = 2)
+  rug(obj@population, col = 2)
+  dev.off()
+  Sys.sleep(0.05)
 }
