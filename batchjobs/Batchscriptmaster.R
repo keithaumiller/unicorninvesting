@@ -48,7 +48,7 @@ cl = makeCluster(no_cores, type = "FORK")
 stocklist = loadfeaturelist()
 #  this downloads the daily data and is very burdensome so only uncomment in prod
 #  or if you need to download all stocks in the DB featurelist...
-#pullstocklist(stocklist)
+pullstocklist(stocklist)
 
 userids = load_unicorn_useridlist()
 portfolios = load_unicorn_portfoliolist()
