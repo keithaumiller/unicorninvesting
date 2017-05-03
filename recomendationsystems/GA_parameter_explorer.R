@@ -101,11 +101,11 @@ fitnesfunction<-function(x){
      #saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
      insert_into_unicorn_portfolios_details(userid,portfolionickname,bestperformance)
      
-     if(exists('GA')){
-       saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
-     }
+#      if(exists('GA')){
+# #       saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
+#      }
 
-     saveRDS(mymlpnet_clean, ascii=FALSE, file=bestnetfile,refhook ='mymlpnet_clean')
+#     saveRDS(mymlpnet_clean, ascii=FALSE, file=bestnetfile,refhook ='mymlpnet_clean')
    }
    
   return(performance)
@@ -140,13 +140,24 @@ monitor <- function(obj)
   rug(obj@population, col = 2)
   dev.off()
   Sys.sleep(0.05)
+  
+#   if(exists('GA1')){
+#     print(paste("Monitor OBJ :", obj@iter, dim(obj@summary)))
+#     print(paste("Monitor GA1 :", GA1@iter, dim(GA1@summary)))
+#     GA3 = combineGAsummarys(GA1, obj)
+#     print(paste("Monitor GA3 :", GA3@iter, dim(GA3@summary)))
+#     INSIDEGA<<-GA3
+  #   updateportfolioGAplot(GA3)
+#   }
+
+  
 }
 
 postFitness <- function(theGA){
 #  print("IN THE POST FITNESS FUNCTION")
     GA = theGA
     
-    saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
+#    saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
 
   return(GA)
 }
@@ -168,7 +179,7 @@ portfoliolist <<- loadportfoliolist(userid,portfolionickname)
 NNrunid=0
 populationsize=30
 maxiter=30
-run=30
+run=20
 averagefitnessbyiteration = c(seq(1:maxiter))
 averagefitnessbyiteration[] = 0
 totalsearchspacelength <- length(featureslist)
@@ -187,8 +198,7 @@ if (!dir.exists(plotdir)){dir.create(plotdir)}
 
 if(file.exists(gaoutputlocation)){
   print("GA File Found. LOADING IT")
-  GA = readRDS(gaoutputlocation)
-  GA1 = GA
+  GA1 <- readRDS(gaoutputlocation)
   }
 
 
@@ -199,10 +209,10 @@ if(file.exists(gaoutputlocation)){
 
 #Initialize it so roughly this many are set as features... 
 probability = 10/totalsearchspacelength
-if(exists("GA"))
+if(exists("GA1"))
   {
-  suggestionsadd = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = probability),nrow = populationsize, ncol = totalsearchspacelength-dim(GA@population)[2]))
-  suggestions = GA@population
+  suggestionsadd = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = probability),nrow = populationsize, ncol = totalsearchspacelength-dim(GA1@population)[2]))
+  suggestions = GA1@population
   suggestions = cbind(suggestions,suggestionsadd)
   }
   else
@@ -228,32 +238,39 @@ GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelengt
 #
 ############
 #Save the last version of the GA.
+#print(paste("Final Monitor GA :", GA@iter, dim(GA@summary)))
+#print(paste("Final Monitor GA1 :", GA1@iter, dim(GA1@summary)))
+
 if(exists('GA1')){
-GA = combineGAsummarys(GA1, GA)
+  GA <- combineGAsummarys(GA1, GA)
 }
 updateportfolioGAplot(GA)
 saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
 }
 
-
 combineGAsummarys <- function(GA1, GA2){
   GA3 = GA2
   GA3@summary = rbind(GA1@summary,GA2@summary)
-  GA3@iter = GA1@iter + GA2@iter
-  rownames(GA3@summary)<- 1:GA3@iter
+  GA1dims = dim(GA1@summary)[1]
+  GA2dims = dim(GA2@summary)[1]
+  print(GA1dims)
+  print(GA2dims)
+  
+  GA3dims = GA1dims+GA2dims
+  #GA3@iter = GA1@iter + GA2@iter 
+  GA3@iter = GA3dims
+  print(GA3dims)
+  rownames(GA3@summary)<- 1:GA3dims
   return(GA3)
 }
 
 updateportfolioGAplot <- function(obj){
-  
-  myfilesavelocation = paste(outputdirectory, "./plots/portfoliohistory.png", sep = '')
+  myfilesavelocation = paste(outputdirectory, "/plots/portfoliohistory.png", sep = '')
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(obj)#, main = paste(obj@iter))
-  
   summarymean = obj@summary[,"mean"]
   tempx = c(1:length(summarymean))
   points(tempx, summarymean, pch = 4, col = 9)
-  
   tempx = c(1:length(obj@fitness))
   tempx[] = obj@iter
   points(tempx, obj@fitness, pch = 20, col = 2)

@@ -1,0 +1,2 @@
+http://blog.fosstrading.com/2011/03/how-to-backtest-strategy-in-r.html
+
