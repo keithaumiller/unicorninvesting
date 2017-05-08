@@ -7,14 +7,14 @@ library(parallel)
 library(doParallel)
 
 # Calculate the number of cores
-no_cores <- detectCores() - 1
+no_cores <- detectCores()
 
 # Initiate cluster
 cl = makeCluster(no_cores, type = "FORK")
 
 #You have to create a mysql server instance with a db named unicorn for this line to work.(closes current connectiosn first)
 lapply( dbListConnections( dbDriver( drv = "MySQL")), dbDisconnect)
-mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
+mydb = dbConnect(MySQL(), user='unicorn', password='n7gtRLHi', dbname='unicorn', host='ec2-54-85-232-216.compute-1.amazonaws.com')
 
 
 #other useful provided files.
@@ -344,7 +344,7 @@ load_unicorn_portfoliolist<-function(){
 }
 
 load_unicorn_usersportfolios<-function(userid){
-  mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
+  mydb = dbConnect(MySQL(), user='unicorn', password='n7gtRLHi', dbname='unicorn', host='ec2-54-85-232-216.compute-1.amazonaws.com')
   #this needs to updated to support "Latest" when no date is provided.
   res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios where userid =", userid, " ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")

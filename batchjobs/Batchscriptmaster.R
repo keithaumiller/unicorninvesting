@@ -41,7 +41,7 @@ library(parallel)
 library(doParallel)
 
 # Calculate the number of cores
-no_cores <- detectCores() - 1
+no_cores <- detectCores()
 
 # Initiate cluster
 cl = makeCluster(no_cores, type = "FORK")
