@@ -9,8 +9,8 @@ generatestockstocombine <- function(stocklist){
   for (i in (stocklist))
   {
     filetoread = paste('data/stockdata/', i, "/", "stockdata.csv", sep = '') #used to be paste(i,datetoread, sep ="_")
- #       print(paste(count, "loaded", sep = " "))
- #       print(paste("Reading in file :", filetoread, sep=' '))
+#        print(paste(count, "loaded", sep = " "))
+#        print(paste("Reading in file :", filetoread, sep=' '))
     tryCatch({
       tempstockdata<-0
       #      print(paste(count, filetoread))
@@ -64,18 +64,17 @@ generatestockstocombine <- function(stocklist){
 #  stockstocombine[is.infinite(stockstocombine)] <- 0
   print("Stocks Combined")
 #  print(stockstocombine)
+  
+  #Remove the dates where we have no adjusted values for the potfolio stocks since those records are useless and can cause problems.
+  
+  stockstocombine <<- stockstocombine
   return(stockstocombine)
 }
-
-
 
 #not sure I need these still, but meh.
 is.nan.data.frame <- function(x){do.call(cbind, lapply(x, is.nan))}
 is.na.data.frame <- function(x){do.call(cbind, lapply(x, is.na))}
 is.infinite.data.frame <- function(x){do.call(cbind, lapply(x, is.infinite))}
-
-getgloballistofstocks <- function(numbertopullparam){
-}
 
 combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdirectory){
   print("Combining Stocks")
@@ -83,30 +82,11 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdir
   userid = unlist(strsplit(outputdirectory,"/"))[3]
   portfolionickname = unlist(strsplit(outputdirectory,"/"))[4]
   
-  #listofobjects that get set globally in this function.... I know, shut up....  
-#stocklist
-#portfoliolist
-#featurelist
-#stockstocombine
-#percentchangedcombined
-#portfoliolistcolumnnames
-  
-
 #numbertopull=numbertopullparam
 #datetoread=Sys.Date()
 #datetoread="2016-10-16"
 
-  
-#  amex = read.csv('data/exchangedata/amex.csv')  # read csv file
-#  amexstocks = amex[,1]
-#  nasdaq = read.csv('data/exchangedata/nasdaq.csv')  # read csv file
-#  nasdaqstocks = nasdaq[,1]
-#  nyse = read.csv('data/exchangedata/nyse.csv')  # read csv file
-#  nysestocks = nyse[,1]
-#TODO:  Add logic to updat ethe \^ stocks and strip spaces out of the symbol names\
-#rm(amex,nasdaq,nyse)
-
-  #symbolsavailable = list.files(path = 'data/stockdata')
+    #symbolsavailable = list.files(path = 'data/stockdata')
   portfoliolist <<- loadportfoliolist(userid, portfolionickname)
 
     #featurelist is not the whole featurelist for the portfolio, it is just the featurelist for this specific net
@@ -116,6 +96,18 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdir
 
   stockstocombine <<- data.frame()
   stockstocombine <<- generatestockstocombine(stocklist)
+  
+  portfoliolistcolumnnames <<- vector()
+  for (portfoliostock in (portfoliolist)){
+    portfoliostockdot = paste(portfoliostock, '.', 'Adjusted', sep = '')
+    portfoliolistcolumnnames <<- c(portfoliolistcolumnnames,portfoliostockdot)
+  }
+
+  #remove he rows that are pointless since our portfolio doesn't have data for those days.. just the other features.
+  #if(all(is.na(stockstocombine[1,portfoliolistcolumnnames])) == TRUE){print("TEST")}
+  
+  stockstocombine2 <<- stockstocombine[all(is.na(stockstocombine[,portfoliolistcolumnnames])),]
+  
 
   #  rm(percentchangedcombined)
   percentchangedcombined <<- data.frame()
@@ -145,17 +137,7 @@ combinestocksfunction <- function(numbertopullparam, featurelistforNN, outputdir
 
 #  print(paste("COLUMNCHECKmid2: ",grep("AKR.Adjusted",colnames(percentchangedcombined)), sep = ''))
 
-#  adjustedcolumnnames <<- grep('Adjusted',colnames(percentchangedcombined),value =TRUE)
-# print(length(adjustedcolumnnames))
-  portfoliolistcolumnnames <<- vector()
 
-    for (portfoliostock in (portfoliolist)){
-    portfoliostockdot = paste(portfoliostock, '.', 'Adjusted', sep = '')
-    portfoliolistcolumnnames <<- c(portfoliolistcolumnnames,portfoliostockdot)
-#    mydebug(portfoliostock)
-    #print(length(portfoliolistcolumnnames))
-    #print(portfoliolistcolumnnames)
-    }
 #  mydebug(length(portfoliolistcolumnnames))
 #  mydebug(portfoliolistcolumnnames)
   

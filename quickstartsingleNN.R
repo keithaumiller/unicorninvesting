@@ -26,13 +26,16 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
-#portfolionickname <<- 'forex1'
-userid='2'
-portfolionickname <<- '1'
-outputdirectory <<- paste("data/results/", userid,"/", portfolionickname, sep = "")
-featurelist <<- loadfeaturelist(userid,portfolionickname,10)
+
+userid='1'
+portfolioid <<- '3' # forex test portfolio "majors"
+#portfolioid <<- '1' # stocks test portfolio
+
+
+outputdirectory <<- paste("data/results/", userid,"/", portfolioid, sep = "")
+featurelist <<- loadfeaturelist(userid,portfolioid,10)
 featurelist <<- head(featurelist,40)
-portfoliolist <<- loadportfoliolist(userid,portfolionickname)
+portfoliolist <<- loadportfoliolist(userid,portfolioid)
 NNperformancechart <<- 1000
 
 #downloads the stocks that are default in the featurelist.csv
@@ -47,8 +50,9 @@ stocklist <<- featurelist
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
 
-for (i in 1:20){
+for (i in 1:1){
   print(Sys.time())
+  NNperformancechart = NULL
   performance = modelexplorer(userid,featurelist,outputdirectory)
   
 

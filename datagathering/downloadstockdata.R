@@ -85,10 +85,10 @@ foreach(i=stocklist)%dopar% {
    downloaddata(i)
  },
  error = function(e){
-  print('ERROR Downloading\n')
+  print(paste("ERROR Downloading:", e))
  },
  warning = function(w){
-  print('Warning Downloading\n')
+  print(paste("Warning Downloading:", w))
  }
  )
 }
@@ -344,13 +344,33 @@ load_unicorn_portfoliolist<-function(){
 }
 
 load_unicorn_usersportfolios<-function(userid){
-  mydb = dbConnect(MySQL(), user='root', password='password', dbname='unicorninvesting', host='127.0.0.1')
   #this needs to updated to support "Latest" when no date is provided.
   res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios where userid =", userid, " ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   results = unique(results$portfolioid)
   dbClearResult(res)
-  if(length(results)==0){results=0}  
+  if(length(results)==0){results=0}
   return(results)
+}
+
+portfolioisforex <- function(userid,portfolioid){
+  #this needs to updated to support "Latest" when no date is provided.
+  query = paste("SELECT * FROM unicorn_portfolio_attributes where userid =", userid, " and portfolioid =", portfolioid," ORDER BY userid DESC;", sep = '')
+  res <- dbSendQuery(mydb, query) #," AND datetime = '", recorddate 
+  #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
+  results = dbFetch(res)
+  dbClearResult(res)
+  tryCatch({
+    if(results[,'isforex'] == 1){return(TRUE)}
+    else{return(FALSE)}
+  },
+  error = function(e){
+    return(FALSE)
+  },
+  warning = function(w){
+    print('Warning inforexcheck\n')
+  }
+  )
+
 }

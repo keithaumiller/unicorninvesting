@@ -5,14 +5,14 @@ conversionlookup <- function(fromcurrency,tocurrency,date){
   transactiontype = paste(fromcurrency,tocurrency,".Adjusted",sep = '')
   conversionrate = stockstocombine[date,transactiontype]
 #  print(paste("Date", date, "FROM", fromcurrency, "TO", tocurrency, "Conversionrate", conversionrate, sep = ": "))
-  if(is.na(conversionrate)){
+print(conversionrate)
+ if(is.na(conversionrate)){
     return(0)
   }
     return(conversionrate)
 }
 
 convertportfoliotoUSD <- function(portfolio,date,currencylist){
-  
   #      print("Finalday")
   #      print(balancematrix[i,])
 #  portfolio = balancematrix[i,]
@@ -35,32 +35,18 @@ convertportfoliotoUSD <- function(portfolio,date,currencylist){
 }
 
 forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
-  
   mlpeval_eval <<-   mlpeval_eval
   adjustedinput <<- adjustedinput
   saveit <<- saveit
-  
-  
-#print(head(adjustedinput))
-#return(0)
-
-#  mlpeval_eval = objectivefunctionnetoutput
-#  adjustedinput = input[,portfoliolistcolumnnames]
-#  saveit = FALSE
-
-#  conversionmatrix = 
-  
   datasetlength <- dim(adjustedinput)[1]  # how many days of data do I have
   daystouse = 252 #252  # use only the final X days... shortens the execution, 252 is how many exchange days there are in a year
-  if(daystouse > datasetlength)
-  {
+  if(daystouse > datasetlength)#  
+    {
     daystouse = datasetlength
   }
-
   seedmoney = 1000  # money to invest
 #  print("Seedmoney set 2")
   
-  # portfolio.csv will have the full list of curency combinations in it.
   #So....the actual values of "stockstocombine" contains the currency conversion info
   #first three letters are the from currency
   #second three letters are the to currency
@@ -91,8 +77,8 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
 #  normalizedallocation[] = normalizedallocation[]/rowSums(allocation)
 
   for (i in 1:dim(balancematrix)[1]){
-#    i=1
-#    print(balancematrix[1:2,])
+    i=1
+    print(balancematrix[1:2,])
     cppad = currencypairs # currencypairpercentpushanddirectionholder
     if (i==1){
       tempbalance <- balancematrix[i,]
@@ -158,12 +144,13 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
 #          print(head(mlpeval_eval))
 #          print(head(adjustedinput))
         }
+      print(paste("ForexReturn:", Sys.time(),USDvaluetoreturn,saveit, sep = ' '))
       return(USDvaluetoreturn)
     }
   }
 #  print(tail(balancematrix,5))
   USDvaluetoreturn = tail(balancematrix[,"USD"],1)
-#  print(paste(Sys.time(),USDvaluetoreturn,saveit, sep = ' '))
+  print(paste("ForexReturn:", Sys.time(),USDvaluetoreturn,saveit, sep = ' '))
   return(USDvaluetoreturn)
 }
 
@@ -171,11 +158,13 @@ forexperformance <- function(mlpeval_eval,adjustedinput,saveit){
 modelperformance <- function(mlpeval_eval,adjustedinput,saveit)
 {
   #if this is a forex portfolio...different performance eval than normal
-  if (file.exists(paste(outputdirectory,"/isforex",sep = '')))
+#  print(paste("userid: ", userid, "Portfolioid: ", portfolioid))
+  isforex = portfolioisforex(userid,portfolioid)
+#  print(paste("isforex:",isforex))
+  if (portfolioisforex(userid,portfolioid))
   {
-    
     forexreturn = forexperformance(mlpeval_eval,adjustedinput,saveit)
-#    print(forexreturn)
+#    print(paste("forexreturn:", forexreturn))
     return(forexreturn)
   }
   
@@ -297,11 +286,10 @@ generatetrainingmatrix <-function(trainingmatrix){
   return(temptrainingmatrix)
 }
 
-
 trainingobjectivefunction <- function(nettotrain,inputmatrix,outputmatrix){
-  
   return(score)
 }
+
 
 
 

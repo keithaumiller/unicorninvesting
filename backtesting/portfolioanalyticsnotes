@@ -1,0 +1,13 @@
+https://mran.revolutionanalytics.com/web/packages/PortfolioAnalytics/PortfolioAnalytics.pdf
+PortfolioAnalytics leverages the PerformanceAnalytics package for many common objective
+functions. The objective types in PortfolioAnalytics are designed to be used with PerformanceAnalytics functions, but any user supplied valid R function can be used as an objective.
+
+potfolio.spec function used to initialize
+add.objective - sets goals
+add.constraint - sets limitations
+
+optimize portoflio and optimize.portfolio rebalancing - called to rebalance the portfolio
+
+set.portfolio.moments?  not sure I understand this.
+
+chart.xxxx used to chart the portfolio

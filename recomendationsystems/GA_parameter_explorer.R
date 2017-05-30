@@ -1,5 +1,21 @@
 #GA Implementation to expore the network parameter space
 
+convertobjecttonetinputlist <- function(XX){
+  
+  mydebug("GA convertobjecttonetinputlist Called")
+  #  cat("THISONE:\n", XX,"\n\n\n\n\n\n")
+  #  TESTING<<-XX
+  convertedlist = featureslist[XX == 1]
+  #cat(convertedlist,"\n")
+  return(convertedlist)
+}
+
+postFitness <- function(theGA){
+  #  print("IN THE POST FITNESS FUNCTION")
+  GA = theGA
+  #    saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
+  return(GA)
+}
 plotmyNN <- function(myfilesavelocation,performance){
   png(filename = myfilesavelocation, width = 900, height = 900)
   plot(NNperformancechart)
@@ -12,7 +28,153 @@ plotmyNN <- function(myfilesavelocation,performance){
   dev.off()
 }
 
-launchaGAportfolio <- function(userid, portfolionickname, outputdirectory){
+updateportfolioGAplot <- function(obj){
+  myfilesavelocation = paste(outputdirectory, "/plots/portfoliohistory.png", sep = '')
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(obj)#, main = paste(obj@iter))
+  summarymean = obj@summary[,"mean"]
+  tempx = c(1:length(summarymean))
+  points(tempx, summarymean, pch = 4, col = 9)
+  tempx = c(1:length(obj@fitness))
+  tempx[] = obj@iter
+  points(tempx, obj@fitness, pch = 20, col = 2)
+  rug(obj@population, col = 2)
+  dev.off()
+  Sys.sleep(0.05)
+}
+
+combineGAsummarys <- function(GA1, GA2){
+  GA3 = GA2
+  GA3@summary = rbind(GA1@summary,GA2@summary)
+  GA1dims = dim(GA1@summary)[1]
+  GA2dims = dim(GA2@summary)[1]
+  print(GA1dims)
+  print(GA2dims)
+  
+  GA3dims = GA1dims+GA2dims
+  #GA3@iter = GA1@iter + GA2@iter 
+  GA3@iter = GA3dims
+  print(GA3dims)
+  rownames(GA3@summary)<- 1:GA3dims
+  return(GA3)
+}
+
+creatpopulation <- function(object, ...){
+  population <- matrix(as.double(NA), nrow = object@popSize, 
+                       ncol = object@nBits)
+  for (j in 1:object@nBits) {
+    population[, j] <- round(runif(object@popSize))
+  }
+  if(exists("GA1"))
+  {
+    suggestionsadd = data.frame(matrix(data = rbinom(totalsearchspacelength, size = 1, prob = probability),nrow = populationsize, ncol = totalsearchspacelength-dim(GA1@population)[2]))
+    population = GA1@population
+  }
+  return(population)
+}
+monitor <- function(obj)
+{
+  #  monitoredGA<--obj
+  mydebug("GA Monitor Called")
+  gatempid =  gsub(" ", "-", gsub(":", "-", Sys.time()))
+  tempgaoutputlocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, "-GAinterim-", gatempid, sep = '')
+  saveRDS(obj, ascii=FALSE, file=tempgaoutputlocation,refhook = 'GAinterim')
+  
+  myfilesavelocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
+  png(filename = myfilesavelocation, width = 900, height = 900)
+  plot(obj)#, main = paste(obj@iter))
+  
+  summarymean = obj@summary[,"mean"]
+  tempx = c(1:length(summarymean))
+  points(tempx, summarymean, pch = 4, col = 9)
+  
+  tempx = c(1:length(obj@fitness))
+  tempx[] = obj@iter
+  points(tempx, obj@fitness, pch = 20, col = 2)
+  rug(obj@population, col = 2)
+  dev.off()
+  Sys.sleep(0.05)
+}
+
+fitnesfunction<-function(x){
+  NNperformancechart<<- 1000
+  NNrunid<<-NNrunid+1
+  print(paste("NNrunID:", NNrunid))
+  print(Sys.time())
+  #Load your best performance ever for reference
+  bestperformance <<- -1000
+  
+  if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
+  {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''), recursive = TRUE)}
+  #Where to put the "Best Net" created.... for in theory use of trade management...
+  bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
+  #  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
+  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
+  bestNNplotfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
+  
+  
+  
+  #  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
+  portfoliodetails = load_unicorn_portfolios_details(userid, portfolioid)
+  bestperformance = portfoliodetails[,'bestperformance']
+  if(is.na(bestperformance)){
+    bestperformance=-1000
+  }
+  print("Bestperformance:")
+  print(bestperformance)
+  
+  featurelistforNN <<- convertobjecttonetinputlist(x)
+  #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
+  # this limits the number of features to 30 stocks because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
+  
+  print(paste("Number of Features used on this NN: ", length(featurelistforNN)))
+  
+  maxfeatureslimit = 40
+  #  isforex = file.exists(paste(outputdirectory,"/isforex",sep = ''))
+  isforex = portfolioisforex(userid, portfolioid)
+  
+  if(isforex == TRUE){maxfeatureslimit = 1200 }
+  
+  if((length(featurelistforNN) > maxfeatureslimit)) {
+    print(paste("TOO LONG: ", length(featurelistforNN), sep=''))
+    return((length(featurelistforNN)*-.0001))
+  }
+  
+  #Generate trainNN
+  performance <<- modelexplorer(runid, featurelistforNN,outputdirectory)
+  #comment out line above and uncomment this line below to play with the GA feature selector.
+  #  performance <<- sum(x)
+  if(performance > 1500){
+    #    plotmyNN(myfilesavelocation,performance)
+  }
+  
+  thisGARun=paste(portfolioid,NNrunid, runid, performance,sep = ",")
+  GARunresultsfile = paste(outputdirectory, 'GAResults.csv', sep = "/")
+  write(thisGARun,file=GARunresultsfile,append=TRUE)
+  
+  if (performance>bestperformance){
+    plotmyNN(myfilesavelocation,performance)
+    file.copy(myfilesavelocation,bestNNplotfilesavelocation,overwrite = TRUE)
+    bestperformance = performance
+    featurelistfilename = "featurelist.csv"
+    portfoliolistfilename = "portfolio.csv"
+    #     file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
+    #     backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
+    #     write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
+    
+    insert_into_unicorn_best_featurelist(userid,portfolioid,featurelistforNN)
+    #     saveRDS(featurelistforNN, file = backupoffeaturelist)
+    #     print("saving bestperformance")
+    #     print(bestperformance)
+    
+    #saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
+    insert_into_unicorn_portfolios_details(userid,portfolioid,bestperformance)
+  }
+  
+    return(performance)
+  }
+  
+launchaGAportfolio <- function(userid, portfolioid, outputdirectory){
   library(GA)
 
 rm(list = ls())
@@ -28,158 +190,19 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 
 clear <- function() cat("\014")
 
-fitnesfunction<-function(x){
-  NNperformancechart<<- 1000
-  NNrunid<<-NNrunid+1
-  print(paste("NNrunID:", NNrunid))
-  print(Sys.time())
-  #Load your best performance ever for reference
-  bestperformance <<- -1000
-  
-  if(!dir.exists(paste(outputdirectory,"/portfoliosbest",sep = '')))
-  {dir.create(paste(outputdirectory,"/portfoliosbest",sep = ''), recursive = TRUE)}
-  #Where to put the "Best Net" created.... for in theory use of trade management...
-  bestnetfile <<- paste(outputdirectory, "/portfoliosbest/bestnetfile", sep = "/")
-#  bestperformancefile <<- paste(outputdirectory, "portfoliosbest/bestperformance", sep = "/")
-  myfilesavelocation = paste("./", outputdirectory, "/plots/GArunid-", runid, "-NNrunid-" ,NNrunid, "netperformance.png", sep = '')
-  bestNNplotfilesavelocation = paste("./", outputdirectory, "/plots/BestNN-netperformance.png", sep = '')
-  
-  
-
-#  if(file.exists(bestperformancefile)){bestperformance = readRDS(bestperformancefile)}
-    portfoliodetails = load_unicorn_portfolios_details(userid, portfolionickname)
-    bestperformance = portfoliodetails[,'bestperformance']
-    if(is.na(bestperformance)){
-      bestperformance=-1000
-    }
-    print("Bestperformance:")
-    print(bestperformance)
-
-    featurelistforNN <<- convertobjecttonetinputlist(x)
-  #  print(paste("Number of features on this net: ", length(featurelistforNN), sep = ''))
-  # this limits the number of features to 30 stocks because more than that is obscene and takes too long... Maybe after I set this thing to scale. ;)
-
-  print(paste("Number of Features used on this NN: ", length(featurelistforNN)))
-  
-  maxfeatureslimit = 40
-  isforex = file.exists(paste(outputdirectory,"/isforex",sep = ''))
-
-  if(isforex == TRUE){maxfeatureslimit = 1200 }
-  
-  if((length(featurelistforNN) > maxfeatureslimit)) {
-    print(paste("TOO LONG: ", length(featurelistforNN), sep=''))
-    return((length(featurelistforNN)*-.0001))
-    }
-  
-  #Generate trainNN
-  performance <<- modelexplorer(runid, featurelistforNN,outputdirectory)
-  #comment out line above and uncomment this line below to play with the GA feature selector.
-  #  performance <<- sum(x)
- if(performance > 1500){
-#    plotmyNN(myfilesavelocation,performance)
-  }
-  
-  thisGARun=paste(portfolionickname,NNrunid, runid, performance,sep = ",")
-  GARunresultsfile = paste(outputdirectory, 'GAResults.csv', sep = "/")
-  write(thisGARun,file=GARunresultsfile,append=TRUE)
-  
-   if (performance>bestperformance){
-     plotmyNN(myfilesavelocation,performance)
-     file.copy(myfilesavelocation,bestNNplotfilesavelocation,overwrite = TRUE)
-     bestperformance = performance
-     featurelistfilename = "featurelist.csv"
-     portfoliolistfilename = "portfolio.csv"
-#     file.copy(paste(outputdirectory,"/portfolio.csv", sep = ""), paste(outputdirectory, "/portfoliosbest/portfolio.csv", sep = ""),overwrite = TRUE)
-#     backupoffeaturelist = paste(outputdirectory,"/portfoliosbest/", featurelistfilename, sep = "")
-#     write.csv(featurelistforNN, file = backupoffeaturelist,row.names = FALSE,quote = FALSE)  #until we get it in the DB
-
-     insert_into_unicorn_best_featurelist(userid,portfolionickname,featurelistforNN)
-#     saveRDS(featurelistforNN, file = backupoffeaturelist)
-#     print("saving bestperformance")
-#     print(bestperformance)
-     
-     #saveRDS(bestperformance, ascii=FALSE, file=bestperformancefile, refhook = 'bestperformance')
-     insert_into_unicorn_portfolios_details(userid,portfolionickname,bestperformance)
-     
-#      if(exists('GA')){
-# #       saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
-#      }
-
-#     saveRDS(mymlpnet_clean, ascii=FALSE, file=bestnetfile,refhook ='mymlpnet_clean')
-   }
-   
-  return(performance)
-}
-
-convertobjecttonetinputlist <- function(XX){
-  
-  mydebug("GA convertobjecttonetinputlist Called")
-  #  cat("THISONE:\n", XX,"\n\n\n\n\n\n")
-  #  TESTING<<-XX
-  convertedlist = featureslist[XX == 1]
-  #cat(convertedlist,"\n")
-  return(convertedlist)
-}
-
-monitor <- function(obj)
-{
-#  monitoredGA<--obj
-  mydebug("GA Monitor Called")
-
- myfilesavelocation = paste(outputdirectory, "/plots/Generations-GArunid-", runid, ".png", sep = '')
-  png(filename = myfilesavelocation, width = 900, height = 900)
-  plot(obj)#, main = paste(obj@iter))
-
-  summarymean = obj@summary[,"mean"]
-  tempx = c(1:length(summarymean))
-  points(tempx, summarymean, pch = 4, col = 9)
-  
-  tempx = c(1:length(obj@fitness))
-  tempx[] = obj@iter
-  points(tempx, obj@fitness, pch = 20, col = 2)
-  rug(obj@population, col = 2)
-  dev.off()
-  Sys.sleep(0.05)
-  
-#   if(exists('GA1')){
-#     print(paste("Monitor OBJ :", obj@iter, dim(obj@summary)))
-#     print(paste("Monitor GA1 :", GA1@iter, dim(GA1@summary)))
-#     GA3 = combineGAsummarys(GA1, obj)
-#     print(paste("Monitor GA3 :", GA3@iter, dim(GA3@summary)))
-#     INSIDEGA<<-GA3
-  #   updateportfolioGAplot(GA3)
-#   }
-
-  
-}
-
-postFitness <- function(theGA){
-#  print("IN THE POST FITNESS FUNCTION")
-    GA = theGA
-    
-#    saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
-
-  return(GA)
-}
-
-#rebuildstocklistfeatures()
-
-#binary2decimal(x)
-#decimal2binary(x,length)
-#allstocklist <<- head(read.csv('data/exchangedata/all_stocks.csv')[,1])
 clear()
 NNperformancechart<<- 1000
-portfolionickname <<- portfolionickname
+portfolioid <<- portfolioid
 outputdirectory = outputdirectory
 runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
-featureslist <<- loadfeaturelist(userid,portfolionickname)
-portfoliolist <<- loadportfoliolist(userid,portfolionickname)
+featureslist <<- loadfeaturelist(userid,portfolioid)
+portfoliolist <<- loadportfoliolist(userid,portfolioid)
 #binaryresults[] = 0
 #numberofstockstouse=20
-NNrunid=0
-populationsize=30
-maxiter=30
-run=20
+NNrunid<<-0
+populationsize=300
+maxiter=100
+run=200
 averagefitnessbyiteration = c(seq(1:maxiter))
 averagefitnessbyiteration[] = 0
 totalsearchspacelength <- length(featureslist)
@@ -230,7 +253,7 @@ if(exists("GA1"))
 print(paste("Total Features:", length(featureslist)))
 #FYI, don't turn on the multi-core/multi-processor functionality.  It tries splitting it up and then craps out.... :)
 # I'm thinking I just save the phone GA to a file and let multiple machines pick it up and fire it back of again on their own with periodic checks to see if they have a better "Best"
-GA<<-ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = maxiter, run = run, optim = TRUE, popSize = populationsize, keepBest = TRUE, parallel = FALSE, postFitness = postFitness, suggestions = suggestions, pmutation = .2) #type = c("binary", "real-valued", "permutation")
+GA<<-ga(type = "binary",population = creatpopulation, fitness = fitnesfunction, nBits = totalsearchspacelength, monitor = monitor, maxiter = maxiter, run = run, optim = TRUE, popSize = populationsize, keepBest = TRUE, parallel = FALSE, postFitness = postFitness, suggestions = suggestions, pmutation = .2) #type = c("binary", "real-valued", "permutation")
 # if you get this error:
 ####Error in ga(type = "binary", fitness = fitnesfunction, nBits = totalsearchspacelength,  : 
 ####Provided suggestions (ncol) matrix do not match number of variables of the problem!
@@ -246,35 +269,4 @@ if(exists('GA1')){
 }
 updateportfolioGAplot(GA)
 saveRDS(GA, ascii=FALSE, file=gaoutputlocation,refhook = 'GA')
-}
-
-combineGAsummarys <- function(GA1, GA2){
-  GA3 = GA2
-  GA3@summary = rbind(GA1@summary,GA2@summary)
-  GA1dims = dim(GA1@summary)[1]
-  GA2dims = dim(GA2@summary)[1]
-  print(GA1dims)
-  print(GA2dims)
-  
-  GA3dims = GA1dims+GA2dims
-  #GA3@iter = GA1@iter + GA2@iter 
-  GA3@iter = GA3dims
-  print(GA3dims)
-  rownames(GA3@summary)<- 1:GA3dims
-  return(GA3)
-}
-
-updateportfolioGAplot <- function(obj){
-  myfilesavelocation = paste(outputdirectory, "/plots/portfoliohistory.png", sep = '')
-  png(filename = myfilesavelocation, width = 900, height = 900)
-  plot(obj)#, main = paste(obj@iter))
-  summarymean = obj@summary[,"mean"]
-  tempx = c(1:length(summarymean))
-  points(tempx, summarymean, pch = 4, col = 9)
-  tempx = c(1:length(obj@fitness))
-  tempx[] = obj@iter
-  points(tempx, obj@fitness, pch = 20, col = 2)
-  rug(obj@population, col = 2)
-  dev.off()
-  Sys.sleep(0.05)
 }

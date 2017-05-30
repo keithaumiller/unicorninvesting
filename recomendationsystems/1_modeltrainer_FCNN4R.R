@@ -170,7 +170,7 @@ thismodelsperformance=modelperformance(mlpeval_eval,evalmatrix[,portfoliolistcol
 print(paste("Performance: ", thismodelsperformance, sep = ''))
 
 #write results to the results file.
-thisrun=paste(portfolionickname,runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
+thisrun=paste(portfolioid,runid, nettype,max_epochs,netdepth,inputlayer,layer2,layer3,layer4,ouputlayer,tol_level,max_epochs,learn_rate,l2reg,u,d,gmax,gmin,report_freq,slope,hidden_activation_function,output_activation_function,minibatchsz,lambda,gamma,momentum,tail(mymlpnet_trained$mse,1),thismodelsperformance,sep = ',')
 NNresultsfilenoutputname = paste(outputdirectory, "/NNresults.csv", sep = "")
 #print(NNresultsfilenoutputname)
 write(thisrun,file=NNresultsfilenoutputname,append=TRUE)

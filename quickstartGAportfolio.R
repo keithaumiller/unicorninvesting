@@ -20,11 +20,11 @@ if(!exists("launchaGAportfolio", mode="function")) source("./recomendationsystem
 #loads your portfoliolist from data/exchangedata/portfolio.csv
 #just a list of stock assets... These will also be added to the featurelist if not already in there.
 #portfolionickname <<- '1'
-portfolionickname <<- '1'
+portfolioid <<- '3'
 userid='1'
-outputdirectory <<- paste("data/results/",userid,"/", portfolionickname, sep = "")
-featurelist <<- loadfeaturelist(userid,portfolionickname)
-portfoliolist <<- loadportfoliolist(userid,portfolionickname)
+outputdirectory <<- paste("data/results/",userid,"/", portfolioid, sep = "")
+featurelist <<- loadfeaturelist(userid,portfolioid)
+portfoliolist <<- loadportfoliolist(userid,portfolioid)
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
@@ -44,7 +44,7 @@ stocklist <<- featurelist
 ############################################################################
 
 for (i in 1:200){
-launchaGAportfolio(userid,portfolionickname,outputdirectory)
+launchaGAportfolio(userid,portfolioid,outputdirectory)
 }
 #modelexplorer(1,featurelist)
 
