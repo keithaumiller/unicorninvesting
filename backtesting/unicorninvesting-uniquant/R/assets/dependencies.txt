@@ -1,0 +1,4 @@
+stringr
+RMySQL
+bcrypt
+lubridate
