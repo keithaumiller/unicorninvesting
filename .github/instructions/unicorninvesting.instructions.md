@@ -279,3 +279,8 @@ This is the main repository containing:
 - Research and backtesting frameworks
 
 The goal is to modernize this codebase while preserving the core financial logic and improving scalability, maintainability, and user experience.
+
+
+
+When updating a file. always review the README.md for that file in the same directory for context.
+After updating a file. Always update the README.md for that directory with the latest information.
