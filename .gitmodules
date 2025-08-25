@@ -1,0 +1,3 @@
+[submodule "BackendPython/Lean"]
+	path = BackendPython/Lean
+	url = https://github.com/QuantConnect/Lean.git
