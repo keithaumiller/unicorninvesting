@@ -1,53 +1,135 @@
 # Unicorn Investing Platform
 
-An advanced algorithmic trading platform that combines Genetic Algorithms with Neural Networks for automated portfolio optimization and quantitative trading.
+An advanced algorithmic trading platform that combines Genetic Algorithms with Neural Networks for automated portfolio optimization and quantitative trading, now integrated with QuantConnect LEAN for institutional-grade algorithmic trading execution.
 
 ## Overview
 
-Unicorn Investing is a sophisticated time-series data balancing algorithm designed for trading management, risk mitigation, and executive decision assistance. The platform uses machine learning to optimize portfolio allocations across stocks and forex markets.
+Unicorn Investing is a sophisticated investment analysis and algorithmic trading platform that uses machine learning to optimize portfolio allocations across stocks and forex markets. The platform has been modernized with a clean separation between proprietary algorithms and the QuantConnect LEAN trading framework.
 
-## Core Technology
+## Core Technology Stack
+
+### Current Architecture (August 2025)
+- **Frontend**: Drupal 11 web interface with PHP 8.3
+- **Backend**: Python 3.12 with advanced data science libraries
+- **Trading Engine**: QuantConnect LEAN framework integration
+- **Database**: MySQL 8.0 with financial-grade security
+- **Infrastructure**: Ubuntu 24.04 LAMP stack with SSL certificates
 
 ### Algorithm Architecture
 - **Genetic Algorithm (GA)**: Feature selection and neural network hyperparameter optimization
-- **Neural Networks**: Portfolio allocation decisions and risk balancing
+- **Neural Networks**: Portfolio allocation decisions and risk balancing using TensorFlow
 - **Portfolio Optimization**: Daily rebalancing based on ML predictions
+- **LEAN Integration**: Algorithmic trading execution through QuantConnect framework
 - **Performance Tracking**: Continuous backtesting and performance evaluation
 
 ### Key Capabilities
-- **Sensor Extension**: Easily add new data sources and market indicators
-- **Portfolio Management**: Multi-asset portfolio optimization with risk controls
-- **Feature Selection**: Automated filtering of redundant or unnecessary data
-- **Neural Balancing**: ML-driven portfolio rebalancing for optimal returns
+- **Multi-Asset Trading**: Stocks, forex, and cryptocurrency support
+- **Real-Time Analytics**: Live market data processing and analysis
+- **Machine Learning**: Advanced AI-driven portfolio optimization
+- **Risk Management**: Sophisticated risk controls and position sizing
+- **Backtesting**: Historical strategy validation with LEAN engine
+- **Web Interface**: Modern Drupal 11 interface replacing legacy desktop apps
 
 ## Project Structure
 
 ### BackendPython/
-Contains all analytics, data processing, and machine learning code:
-- **Legacy R Scripts**: Original quantitative models (being migrated to Python)
-- **Data Processing**: Market data collection, cleaning, and feature engineering
-- **ML Algorithms**: GA + Neural Network optimization for portfolio management
-- **Backtesting**: Historical strategy validation and performance testing
-- **Database**: MySQL schemas and data management
+**Status**: ✅ Fully configured Python 3.12 environment with 90+ packages
+```
+BackendPython/
+├── Lean/                      # QuantConnect LEAN Framework (git submodule)
+│   ├── Algorithm/            # LEAN algorithm framework
+│   ├── Algorithm.Python/     # Python algorithm examples
+│   ├── Data/                 # Market data handling
+│   └── Engine/               # Trading execution engine
+└── unicorn/                  # Proprietary Unicorn code
+    ├── backend/              # ✅ Python backend services
+    │   ├── api/             # ✅ FastAPI REST endpoints
+    │   ├── ml/              # Machine learning models
+    │   ├── models/          # Database models
+    │   └── services/        # Business logic
+    ├── algorithms/          # Custom LEAN algorithms
+    ├── integrations/        # LEAN integration layer
+    ├── data/               # Market data and analysis
+    ├── backtesting/        # Strategy validation
+    └── legacy/             # R scripts (being migrated)
+```
+
+### Infrastructure
+**Status**: ✅ Production-ready LAMP stack deployed
+- **Web Server**: Apache 2.4.58 with SSL certificates
+- **Database**: MySQL 8.0 with isolated databases
+- **SSL Security**: Let's Encrypt certificates with auto-renewal
+- **Multi-Domain**: Supporting 4 domains with dedicated configurations
 
 ### WebFrontend/
-Modern web interface replacing legacy desktop applications:
-- **Drupal 11**: Web-based portfolio management and trading interface
-- **Responsive Design**: Mobile-optimized trading dashboard
-- **Real-time Data**: Live market feeds and portfolio monitoring
-- **User Management**: Multi-user platform with role-based access
+**Status**: ✅ Drupal 11 installations ready for configuration
+- **Framework**: Drupal 11 with PHP 8.3
+- **Domains**: Multiple production sites configured
+- **Security**: Database isolation with strong authentication
+- **Integration**: Ready for Python backend API integration
+
+## Environment Status
+
+### Python Environment (✅ Configured)
+- **Version**: Python 3.12.3 in virtual environment
+- **Location**: `/workspaces/unicorninvesting/.venv/`
+- **Packages**: 90+ scientific and financial libraries installed
+- **Testing**: FastAPI application verified and functional
+
+### Key Dependencies Installed
+```bash
+# Core Data Science
+pandas==2.3.2, numpy==2.3.2, scipy==1.16.1
+
+# Machine Learning
+tensorflow==2.20.0, scikit-learn==1.7.1, statsmodels==0.14.5
+
+# Financial Data
+yfinance==0.2.65, alpha_vantage==3.0.0
+
+# Web Framework
+fastapi==0.116.1, uvicorn==0.35.0, pydantic==2.11.7
+
+# Database
+SQLAlchemy==2.0.43, PyMySQL==1.1.2, redis==6.4.0
+
+# Development
+jupyter==1.1.1, pytest==8.4.1, structlog==25.4.0
+```
+
+### Database Configuration (✅ Operational)
+- **MySQL Databases**: 
+  - `unicorn_analytics` (main financial data)
+  - `stlouisintegration_drupal`, `angelicafeliciano_drupal`, `unicorninvesting_drupal`
+- **Security**: Dedicated users with strong authentication
+- **Backup**: Automated backup strategies in place
+
+### API Status (✅ Functional)
+- **Endpoint**: `http://localhost:8000`
+- **Framework**: FastAPI with automatic documentation
+- **Features**: Configuration management, health checks, CORS support
+- **Documentation**: Available at `/docs` and `/redoc`
 
 ## Architecture Transition
 
-### Current State (Legacy)
-- R-based analytics and machine learning (FCNN4R, GA packages)
-- WPF desktop applications for Windows
-- File-based data storage and processing
-- Direct MySQL database access from R scripts
+### Completed Components ✅
+- **LEAN Integration**: QuantConnect framework cloned and configured as git submodule
+- **Python Migration**: Virtual environment with all required packages
+- **Code Segregation**: Clean separation of proprietary vs third-party code
+- **Infrastructure**: Full LAMP stack with SSL certificates
+- **API Foundation**: FastAPI application ready for development
+- **Database Setup**: MySQL with financial-grade security
 
-### Future State (Target)
-- Python-based analytics (scikit-learn, TensorFlow, pandas)
-- Drupal 11 web interface with responsive design
+### In Progress 🔄
+- **R to Python Migration**: Converting legacy R algorithms to Python
+- **LEAN Algorithm Development**: Creating custom trading algorithms
+- **Frontend Integration**: Connecting Drupal with Python backend
+- **ML Model Implementation**: Rebuilding genetic algorithms and neural networks
+
+### Legacy Components (Being Migrated) 📦
+- **R Scripts**: Original quantitative models in R
+- **WPF Applications**: Legacy Windows desktop apps
+- **File-based Storage**: Being replaced with database integration
 - FastAPI backend services with REST APIs
 - Optimized MySQL schema with proper ORM integration
 

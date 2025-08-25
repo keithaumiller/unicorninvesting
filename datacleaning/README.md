@@ -1,23 +1,59 @@
-# Data Cleaning (Legacy)
+# Data Cleaning
 
-Legacy R scripts for data preprocessing, validation, and debugging utilities.
+**Status**: 📦 Legacy R framework preserved, Python migration ready
+
+Legacy R scripts for data preprocessing, validation, and debugging utilities, preserved during migration to Python-based data processing.
+
+## Current Status (August 2025)
+
+### ✅ Legacy Preservation
+- **R Scripts**: Original data cleaning framework preserved
+- **Debug Utilities**: Custom debugging functions maintained
+- **Migration Ready**: Prepared for Python pandas/numpy conversion
+- **Documentation**: Original functionality documented for conversion
+
+### 🔄 Python Migration Target
+- **New Location**: `/BackendPython/unicorn/backend/services/data_processor.py`
+- **Technology**: pandas, numpy, scipy for data processing
+- **Framework**: Structured logging with structlog for debugging
+- **Integration**: Direct database integration with SQLAlchemy
 
 ## Purpose
-- Data quality assurance and validation
-- Debugging utilities for R analytics pipeline  
-- Data preprocessing and normalization functions
-- **Status**: Being migrated to Python equivalents
+- Data quality assurance and validation (migrating to pandas)
+- Debugging utilities for analytics pipeline (migrating to Python logging)
+- Data preprocessing and normalization functions (migrating to scikit-learn)
+- **Current Status**: Preserved for reference during Python implementation
 
-## Files
+## Legacy Files (R Implementation)
 
 ### debugframework.R
+**Status**: 📦 Legacy R implementation preserved
 **Purpose**: Debug utilities and data validation framework for R analytics
 **Key Functions**:
 - `mydebug()` - Custom debugging function used throughout R codebase
-- Data validation and error checking utilities
+- Data validation and error checking utilities  
 - Debug output formatting and logging
 
-**Usage**: 
+**Python Migration Target**:
+```python
+# Modern Python equivalent using structlog
+import structlog
+import pandas as pd
+
+logger = structlog.get_logger()
+
+def debug_dataframe(df, name="DataFrame"):
+    """Debug utility for pandas DataFrames"""
+    logger.info(
+        "DataFrame Debug",
+        name=name,
+        shape=df.shape,
+        dtypes=df.dtypes.to_dict(),
+        null_counts=df.isnull().sum().to_dict()
+    )
+```
+
+**Usage in Legacy R Code**: 
 - Referenced by multiple R scripts for debugging and validation
 - Provides consistent debug output across the analytics pipeline
 - Used in GA optimization, neural network training, and data processing

@@ -1,19 +1,37 @@
 # Data
 
-Market data storage, reference datasets, and analysis results.
+**Status**: 📦 Legacy data preserved, ready for Python processing pipeline
+
+Market data storage, reference datasets, and analysis results for the Unicorn Investing platform.
+
+## Current Status (August 2025)
+
+### ✅ Data Preservation
+- **Legacy Data**: All historical market data preserved during reorganization
+- **Reference Data**: Exchange listings and currency pairs maintained
+- **Structure**: Original directory structure preserved for migration
+- **Accessibility**: Ready for Python-based data processing pipeline
+
+### 🔄 Migration Progress
+- **Raw Data**: Legacy CSV files available for Python processing
+- **Database Integration**: Ready for MySQL import and normalization
+- **API Integration**: Prepared for real-time data feed integration
+- **Feature Engineering**: Historical feature lists available for ML pipeline
 
 ## Purpose
 - Store raw and processed market data (stocks, forex, indices)
 - Maintain reference datasets for exchanges and securities
 - Archive analysis results and model outputs
 - Historical data preservation and versioning
+- Support Python-based data processing and ML pipelines
 
 ## Subdirectories
 
 ### exchangedata/
+**Status**: ✅ Complete reference data available
 **Purpose**: Reference data for securities and exchanges
 **Contents**:
-- `all_stocks.csv` - Comprehensive list of all available stocks
+- `all_stocks.csv` - Comprehensive list of available stocks (ready for database import)
 - `amex.csv` - American Stock Exchange listings
 - `nasdaq.csv` - NASDAQ exchange listings  
 - `nyse.csv` - New York Stock Exchange listings
@@ -22,9 +40,10 @@ Market data storage, reference datasets, and analysis results.
 - `FOREX.csv` - Forex pair definitions and metadata
 - `FOREX.txt` - Forex trading notes and documentation
 - `stockstouse.csv` - Curated list of stocks for analysis
-- `master_featurelist.csv` - Master list of all available features for ML models
+- `master_featurelist.csv` - Master list of features for ML models
 
 ### old/
+**Status**: 📦 Archived legacy files
 **Purpose**: Archive of legacy data files and deprecated datasets
 **Contents**:
 - `Finalsetoutputstructure.ods` - Legacy output structure documentation
