@@ -16,59 +16,115 @@ class DashboardController extends ControllerBase {
     $module_info = \Drupal::service('extension.list.module')->getExtensionInfo('unicornmetrics');
     $version = $module_info['version'] ?? '1.0.0';
     
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    $portfolio_selector = $this->renderPortfolioSelector($current_portfolio_id);
+    
     $metrics_table = '
     <div class="dashboard-header">
-      <h1>Unicorn Metrics Dashboard</h1>
+      <h1>🦄 Unicorn Portfolio Management System</h1>
       <div class="version-info">
         <span class="module-version">Version ' . $version . '</span>
         <span class="last-updated">Last Updated: ' . date('Y-m-d H:i:s') . '</span>
       </div>
     </div>
-    <p>Welcome to the Unicorn Investment Metrics Dashboard. LEAN framework integration for comprehensive portfolio and algorithm management.</p>
+    
+    ' . $portfolio_selector . '
+    
+    <p>Portfolio-centric investment management powered by LEAN algorithmic trading framework. Your portfolio is the central hub containing all securities, algorithms, and performance metrics.</p>
     
     <div class="dashboard-sections">
     
-    <!-- LEAN Framework Integration Section -->
+    <!-- Primary Portfolio Section -->
     <div class="dashboard-section">
-      <h2>🏗️ LEAN Framework Management</h2>
+      <h2>💼 ' . $current_portfolio['name'] . '</h2>
+      <p><strong>' . $current_portfolio['description'] . '</strong> - Portfolio managed by ' . $current_portfolio['algorithm'] . ' algorithm in ' . $current_portfolio['environment'] . ' mode.</p>
+      
+      <div class="portfolio-stats">
+        <div class="stat-card">
+          <span class="stat-value">$' . number_format($current_portfolio['total_value'], 2) . '</span>
+          <span class="stat-label">Total Value</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">' . $current_portfolio['positions'] . '</span>
+          <span class="stat-label">Active Positions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">' . $current_portfolio['daily_pnl'] . '</span>
+          <span class="stat-label">Daily P&L</span>
+        </div>
+        <div class="stat-card ' . ($current_portfolio['status'] == 'active' ? 'status-active' : 'status-inactive') . '">
+          <span class="stat-value">⚡</span>
+          <span class="stat-label">' . ucfirst($current_portfolio['status']) . '</span>
+        </div>
+      </div>
+      
       <table class="lean-nav-table">
         <thead>
           <tr>
-            <th class="icon-column">Type</th>
-            <th class="link-column">Component</th>
+            <th class="icon-column">Hierarchy</th>
+            <th class="link-column">Portfolio Component</th>
             <th class="description-column">Description</th>
+            <th class="count-column">Count</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="icon-column">💼</td>
-            <td class="link-column"><a href="/admin/metrics/lean/portfolio">Portfolio Management</a></td>
-            <td class="description-column">LEAN portfolio state, holdings overview, cash positions, and total portfolio value from live algorithm execution.</td>
+            <td class="link-column"><a href="/admin/metrics/lean/portfolio?portfolio=' . $current_portfolio_id . '"><strong>📊 Portfolio Overview</strong></a></td>
+            <td class="description-column"><strong>Main Portfolio Dashboard:</strong> Total value, cash positions, and portfolio-level metrics from LEAN SecurityPortfolioManager.</td>
+            <td class="count-column"><span class="metric-count">1</span></td>
           </tr>
           <tr>
-            <td class="icon-column">📈</td>
-            <td class="link-column"><a href="/admin/metrics/lean/holdings">Portfolio Holdings</a></td>
-            <td class="description-column">Detailed breakdown of individual security holdings, positions, market values, and unrealized P&L from LEAN portfolio manager.</td>
+            <td class="icon-column">├─ 🏷️</td>
+            <td class="link-column"><a href="/admin/metrics/lean/holdings?portfolio=' . $current_portfolio_id . '">📈 Securities & Holdings</a></td>
+            <td class="description-column"><em>Portfolio Component:</em> Individual security positions, market values, and unrealized P&L within the portfolio.</td>
+            <td class="count-column"><span class="metric-count">' . $current_portfolio['positions'] . '</span></td>
           </tr>
           <tr>
-            <td class="icon-column">⚡</td>
-            <td class="link-column"><a href="/admin/metrics/lean/performance">Portfolio Performance</a></td>
-            <td class="description-column">Real-time portfolio performance metrics including returns, Sharpe ratio, drawdown, and benchmark comparisons from LEAN results.</td>
+            <td class="icon-column">├─ ⚡</td>
+            <td class="link-column"><a href="/admin/metrics/lean/performance?portfolio=' . $current_portfolio_id . '">📊 Performance Metrics</a></td>
+            <td class="description-column"><em>Portfolio Analytics:</em> Returns, Sharpe ratio, drawdown, and risk metrics for overall portfolio performance.</td>
+            <td class="count-column"><span class="metric-count">12</span></td>
           </tr>
           <tr>
-            <td class="icon-column">🤖</td>
-            <td class="link-column"><a href="/admin/metrics/lean/algorithms">Algorithm Management</a></td>
-            <td class="description-column">LEAN algorithm status monitoring, execution state, insights generation, and algorithm performance tracking.</td>
+            <td class="icon-column">└─ �</td>
+            <td class="link-column"><a href="/admin/metrics/lean/algorithms">🤖 Managing Algorithm</a></td>
+            <td class="description-column"><em>Portfolio Strategy:</em> UnicornForexEnsemble algorithm that executes trades and manages this portfolio.</td>
+            <td class="count-column"><span class="metric-count">1</span></td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Algorithm Tools Section -->
+    <div class="dashboard-section">
+      <h2>🔧 Algorithm Management Tools</h2>
+      <p>Strategy analysis and backtesting tools for the algorithms managing your portfolio.</p>
+      
+      <table class="lean-nav-table">
+        <thead>
+          <tr>
+            <th class="icon-column">Tool</th>
+            <th class="link-column">Algorithm Analysis</th>
+            <th class="description-column">Description</th>
+            <th class="count-column">Metrics</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td class="icon-column">📊</td>
-            <td class="link-column"><a href="/admin/metrics/lean/algorithms/performance">Algorithm Performance</a></td>
-            <td class="description-column">Detailed algorithm performance analysis including signal quality, prediction accuracy, and alpha generation metrics.</td>
+            <td class="link-column"><a href="/admin/metrics/lean/algorithms/performance?portfolio=' . $current_portfolio_id . '">🎯 Algorithm Performance</a></td>
+            <td class="description-column">Signal accuracy, financial impact, and alpha generation analysis for portfolio management strategies.</td>
+            <td class="count-column"><span class="metric-count">6</span></td>
           </tr>
           <tr>
             <td class="icon-column">🔬</td>
-            <td class="link-column"><a href="/admin/metrics/lean/backtest">Backtest Results</a></td>
-            <td class="description-column">Historical backtest performance analysis, strategy validation, and out-of-sample testing results from LEAN backtesting engine.</td>
+            <td class="link-column"><a href="/admin/metrics/lean/backtest?portfolio=' . $current_portfolio_id . '">📈 Backtest Results</a></td>
+            <td class="description-column">Historical strategy validation and out-of-sample testing for algorithm performance verification.</td>
+            <td class="count-column"><span class="metric-count">3</span></td>
           </tr>
         </tbody>
       </table>
@@ -77,14 +133,15 @@ class DashboardController extends ControllerBase {
     </div>
     
     <div class="system-overview">
-      <h3>System Overview</h3>
+      <h3>🏗️ LEAN Multi-Portfolio Architecture</h3>
       <ul>
-        <li><strong>LEAN Integration:</strong> 6 portfolio and algorithm management components</li>
-        <li><strong>Real-time Analysis:</strong> Live portfolio monitoring</li>
-        <li><strong>Algorithm Framework:</strong> LEAN-powered algorithm execution and monitoring</li>
-        <li><strong>Performance Tracking:</strong> Comprehensive portfolio and algorithm analytics</li>
-        <li><strong>Risk Management:</strong> Real-time risk assessment and monitoring</li>
-        <li><strong>Backtesting:</strong> Historical strategy validation and analysis</li>
+        <li><strong>Selected Portfolio:</strong> ' . $current_portfolio['name'] . ' ($' . number_format($current_portfolio['total_value'], 2) . ')</li>
+        <li><strong>Portfolio Components:</strong> ' . $current_portfolio['positions'] . ' active securities and holdings within this portfolio</li>
+        <li><strong>Algorithm Strategy:</strong> ' . $current_portfolio['algorithm'] . ' managing portfolio trades and positions</li>
+        <li><strong>Trading Environment:</strong> ' . ucfirst($current_portfolio['environment']) . ' trading mode with real-time monitoring</li>
+        <li><strong>Asset Classes:</strong> ' . implode(', ', $current_portfolio['symbols']) . '</li>
+        <li><strong>Multi-Portfolio Management:</strong> 4 total portfolios with $525,847.62 in total assets</li>
+        <li><strong>Performance Analytics:</strong> Comprehensive portfolio and algorithm analysis tools</li>
       </ul>
     </div>
     ';
@@ -180,6 +237,10 @@ class DashboardController extends ControllerBase {
                   width: 120px;
                   text-align: center;
                 }
+                .count-column {
+                  width: 120px;
+                  text-align: center;
+                }
                 .link-column {
                   width: 250px;
                 }
@@ -188,6 +249,118 @@ class DashboardController extends ControllerBase {
                 }
                 .metric-count {
                   background: #3498db;
+                  color: white;
+                  padding: 4px 8px;
+                  border-radius: 12px;
+                  font-size: 0.85em;
+                  font-weight: bold;
+                }
+                .portfolio-selector-container {
+                  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                  border: 1px solid #dee2e6;
+                  border-radius: 10px;
+                  padding: 20px;
+                  margin: 20px 0;
+                }
+                .portfolio-selector {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 15px;
+                  flex-wrap: wrap;
+                  gap: 15px;
+                }
+                .portfolio-selector h3 {
+                  margin: 0;
+                  color: #495057;
+                  font-size: 1.3em;
+                }
+                .selector-wrapper {
+                  display: flex;
+                  align-items: center;
+                  gap: 15px;
+                  flex-wrap: wrap;
+                }
+                .selector-wrapper label {
+                  font-weight: bold;
+                  color: #495057;
+                }
+                .selector-wrapper select {
+                  padding: 8px 15px;
+                  border: 2px solid #ced4da;
+                  border-radius: 5px;
+                  background: white;
+                  font-size: 1em;
+                  min-width: 300px;
+                }
+                .selector-wrapper select:focus {
+                  border-color: #80bdff;
+                  outline: none;
+                  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+                }
+                .total-assets {
+                  background: #28a745;
+                  color: white;
+                  padding: 8px 15px;
+                  border-radius: 20px;
+                  font-weight: bold;
+                  font-size: 0.9em;
+                }
+                .quick-stats {
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  gap: 20px;
+                }
+                .quick-stat-item {
+                  text-align: center;
+                  padding: 10px;
+                }
+                .quick-stat-item .stat-number {
+                  display: block;
+                  font-size: 1.5em;
+                  font-weight: bold;
+                  color: #2c3e50;
+                }
+                .quick-stat-item .stat-desc {
+                  display: block;
+                  font-size: 0.9em;
+                  color: #6c757d;
+                  margin-top: 5px;
+                }
+                .portfolio-stats {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                  gap: 15px;
+                  margin: 20px 0;
+                }
+                .stat-card {
+                  background: white;
+                  border: 1px solid #e1e5e9;
+                  border-radius: 8px;
+                  padding: 15px;
+                  text-align: center;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .stat-card .stat-value {
+                  display: block;
+                  font-size: 1.5em;
+                  font-weight: bold;
+                  color: #2c3e50;
+                  margin-bottom: 5px;
+                }
+                .stat-card .stat-label {
+                  display: block;
+                  font-size: 0.9em;
+                  color: #6c757d;
+                }
+                .status-active .stat-value {
+                  color: #28a745;
+                }
+                .status-inactive .stat-value {
+                  color: #dc3545;
+                }
                   color: white;
                   padding: 5px 10px;
                   border-radius: 50%;
@@ -243,8 +416,11 @@ class DashboardController extends ControllerBase {
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>🏗️ LEAN Portfolio Management</h1>
-      <p>Real-time portfolio state and holdings from LEAN algorithmic trading framework</p>
+      <h1>💼 Primary Trading Portfolio</h1>
+      <p>Your main investment portfolio - the central container managed by LEAN SecurityPortfolioManager</p>
+      <div class="portfolio-hierarchy">
+        <span class="hierarchy-note">📊 Portfolio Overview → Securities & Holdings → Algorithm Strategy</span>
+      </div>
     </div>
     
     <div class="portfolio-overview-grid">
@@ -278,9 +454,19 @@ class DashboardController extends ControllerBase {
     </div>
     
     <div class="portfolio-actions">
-      <a href="/admin/metrics/lean/holdings" class="action-button">📋 View Holdings</a>
-      <a href="/admin/metrics/lean/performance" class="action-button">⚡ Performance Metrics</a>
-      <a href="/admin/metrics/lean/algorithms" class="action-button">🤖 Algorithm Status</a>
+      <a href="/admin/metrics/lean/holdings" class="action-button">� View Securities & Holdings</a>
+      <a href="/admin/metrics/lean/performance" class="action-button">⚡ Portfolio Performance</a>
+      <a href="/admin/metrics/lean/algorithms" class="action-button">� Managing Algorithm</a>
+    </div>
+    
+    <div class="portfolio-hierarchy-info">
+      <h3>📊 Portfolio Hierarchy</h3>
+      <ul>
+        <li><strong>Portfolio:</strong> Main container with $125,847.62 total value</li>
+        <li>├─ <strong>Securities:</strong> 8 active holdings across multiple asset classes</li>
+        <li>├─ <strong>Cash:</strong> $15,432.18 in cash positions (12.3% allocation)</li>
+        <li>└─ <strong>Algorithm:</strong> UnicornForexEnsemble strategy managing trades</li>
+      </ul>
     </div>
     
     <div class="last-updated">
@@ -725,6 +911,8 @@ class DashboardController extends ControllerBase {
       '#tag' => 'style',
       '#value' => '
         .lean-dashboard-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .portfolio-hierarchy { margin-top: 10px; font-style: italic; opacity: 0.9; font-size: 0.9em; }
+        .hierarchy-note { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; }
         .portfolio-overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; }
         .portfolio-card { background: white; border: 1px solid #e1e5e9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .portfolio-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); transform: translateY(-2px); transition: all 0.3s ease; }
@@ -734,6 +922,10 @@ class DashboardController extends ControllerBase {
         .portfolio-actions { display: flex; gap: 15px; margin: 30px 0; }
         .action-button { background: #3498db; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; }
         .action-button:hover { background: #2980b9; text-decoration: none; color: white; }
+        .portfolio-hierarchy-info { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3498db; }
+        .portfolio-hierarchy-info h3 { margin-top: 0; color: #2c3e50; }
+        .portfolio-hierarchy-info ul { margin: 10px 0; padding-left: 0; list-style: none; }
+        .portfolio-hierarchy-info li { margin: 8px 0; padding: 5px 0; font-family: monospace; }
         .positive { color: #27ae60; }
         .negative { color: #e74c3c; }
         .last-updated { margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 6px; color: #6c757d; font-size: 0.9em; }
@@ -837,6 +1029,124 @@ class DashboardController extends ControllerBase {
         .negative { color: #e74c3c; }
       ',
     ];
+  }
+
+  /**
+   * Get portfolio data by ID.
+   */
+  private function getPortfolioById($portfolio_id) {
+    $portfolios = [
+      'forex' => [
+        'id' => 'forex',
+        'name' => 'Primary Forex Portfolio',
+        'description' => 'Main forex trading portfolio with multi-currency pairs',
+        'algorithm' => 'UnicornForexEnsemble',
+        'environment' => 'live',
+        'total_value' => 125847.62,
+        'positions' => 8,
+        'daily_pnl' => '+$2,347.18',
+        'status' => 'active',
+        'project_id' => 12345,
+        'symbols' => ['EURUSD', 'USDJPY', 'USDCNH', 'ETHUSD']
+      ],
+      'equity' => [
+        'id' => 'equity',
+        'name' => 'Growth Equity Portfolio',
+        'description' => 'Large-cap growth equity portfolio with tech focus',
+        'algorithm' => 'UnicornEquityGrowth',
+        'environment' => 'live',
+        'total_value' => 250000.00,
+        'positions' => 12,
+        'daily_pnl' => '+$1,250.00',
+        'status' => 'active',
+        'project_id' => 12346,
+        'symbols' => ['SPY', 'AAPL', 'TSLA', 'MSFT', 'GOOGL']
+      ],
+      'bonds' => [
+        'id' => 'bonds',
+        'name' => 'Conservative Bond Portfolio',
+        'description' => 'Fixed income portfolio for capital preservation',
+        'algorithm' => 'UnicornBondStrategy',
+        'environment' => 'live',
+        'total_value' => 100000.00,
+        'positions' => 5,
+        'daily_pnl' => '+$87.50',
+        'status' => 'active',
+        'project_id' => 12347,
+        'symbols' => ['TLT', 'AGG', 'LQD', 'IEF']
+      ],
+      'paper' => [
+        'id' => 'paper',
+        'name' => 'Paper Trading Portfolio',
+        'description' => 'Simulated trading for strategy testing and development',
+        'algorithm' => 'UnicornTestStrategy',
+        'environment' => 'paper',
+        'total_value' => 50000.00,
+        'positions' => 6,
+        'daily_pnl' => '+$125.00',
+        'status' => 'active',
+        'project_id' => 12348,
+        'symbols' => ['SPY', 'EURUSD', 'BTC']
+      ]
+    ];
+    
+    return $portfolios[$portfolio_id] ?? $portfolios['forex'];
+  }
+
+  /**
+   * Render portfolio selector dropdown.
+   */
+  private function renderPortfolioSelector($current_portfolio_id) {
+    $portfolios = [
+      'forex' => ['name' => 'Primary Forex Portfolio', 'value' => '$125,847.62', 'status' => 'active'],
+      'equity' => ['name' => 'Growth Equity Portfolio', 'value' => '$250,000.00', 'status' => 'active'],
+      'bonds' => ['name' => 'Conservative Bond Portfolio', 'value' => '$100,000.00', 'status' => 'active'],
+      'paper' => ['name' => 'Paper Trading Portfolio', 'value' => '$50,000.00', 'status' => 'active']
+    ];
+    
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    $options = '';
+    foreach ($portfolios as $id => $portfolio) {
+      $selected = ($id == $current_portfolio_id) ? 'selected' : '';
+      $status_indicator = $portfolio['status'] == 'active' ? '⚡' : '⏸️';
+      $options .= '<option value="' . $id . '" ' . $selected . '>' . $status_indicator . ' ' . $portfolio['name'] . ' (' . $portfolio['value'] . ')</option>';
+    }
+    
+    return '
+    <div class="portfolio-selector-container">
+      <div class="portfolio-selector">
+        <h3>📁 Portfolio Selection</h3>
+        <div class="selector-wrapper">
+          <label for="portfolio-dropdown">Choose Portfolio:</label>
+          <select id="portfolio-dropdown" onchange="switchPortfolio(this.value)">
+            ' . $options . '
+          </select>
+          <span class="total-assets">Total Assets: $525,847.62</span>
+        </div>
+      </div>
+      
+      <div class="quick-stats">
+        <div class="quick-stat-item">
+          <span class="stat-number">4</span>
+          <span class="stat-desc">Active Portfolios</span>
+        </div>
+        <div class="quick-stat-item">
+          <span class="stat-number">31</span>
+          <span class="stat-desc">Total Positions</span>
+        </div>
+        <div class="quick-stat-item">
+          <span class="stat-number">+$3,809.68</span>
+          <span class="stat-desc">Today\'s P&L</span>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+    function switchPortfolio(portfolioId) {
+      window.location.href = "/admin/metrics/dashboard?portfolio=" + portfolioId;
+    }
+    </script>';
   }
 
 }
