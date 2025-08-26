@@ -1,0 +1,8 @@
+access unicorn metrics:
+  title: 'Access Unicorn Metrics Dashboard'
+  description: 'Allow users to view portfolio metrics and LEAN framework data'
+
+administer unicorn metrics:
+  title: 'Administer Unicorn Metrics'
+  description: 'Configure and manage portfolio settings and LEAN integration'
+  restrict access: true

@@ -1,0 +1,89 @@
+/**
+ * @file
+ * Styles for the portfolio selector component.
+ */
+
+.portfolio-selector-container {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 20px 0;
+}
+
+.portfolio-selector {
+  margin-bottom: 20px;
+}
+
+.portfolio-selector h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.3em;
+}
+
+.selector-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.selector-wrapper label {
+  font-weight: bold;
+  color: #495057;
+  margin-right: 10px;
+}
+
+.selector-wrapper select {
+  padding: 8px 12px;
+  border: 2px solid #ced4da;
+  border-radius: 5px;
+  background: white;
+  color: #495057;
+  font-size: 1em;
+  min-width: 250px;
+  cursor: pointer;
+}
+
+.selector-wrapper select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.total-assets {
+  background: #28a745;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.quick-stat-item {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-desc {
+  display: block;
+  font-size: 0.9em;
+  opacity: 0.9;
+}

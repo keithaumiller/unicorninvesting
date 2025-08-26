@@ -1,0 +1,116 @@
+{#
+/**
+ * @file
+ * Template for the Unicorn Metrics dashboard.
+ *
+ * Available variables:
+ * - portfolio_data: Array containing current portfolio information.
+ * - metrics: Array containing portfolio performance metrics.
+ * - portfolio_selector: Rendered portfolio selector component.
+ */
+#}
+
+<div class="unicorn-metrics-dashboard">
+  <div class="dashboard-header">
+    <h1>🦄 Unicorn Portfolio Management System</h1>
+    <div class="version-info">
+      <span class="module-version">{{ 'Version 4.0.0'|t }}</span>
+      <span class="last-updated">{{ 'Last Updated: @date'|t({'@date': 'now'|date('Y-m-d H:i:s')}) }}</span>
+    </div>
+  </div>
+
+  {{ portfolio_selector }}
+
+  <div class="dashboard-sections">
+    <div class="dashboard-section">
+      <h2>💼 {{ portfolio_data.name }}</h2>
+      <p>
+        <strong>{{ portfolio_data.description }}</strong> - 
+        {{ 'Portfolio managed by @algorithm algorithm in @environment mode.'|t({
+          '@algorithm': portfolio_data.algorithm,
+          '@environment': portfolio_data.environment
+        }) }}
+      </p>
+      
+      <div class="portfolio-stats">
+        <div class="stat-card">
+          <span class="stat-value">${{ portfolio_data.total_value|number_format(2) }}</span>
+          <span class="stat-label">{{ 'Total Value'|t }}</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{{ portfolio_data.positions }}</span>
+          <span class="stat-label">{{ 'Positions'|t }}</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">{{ portfolio_data.daily_pnl }}</span>
+          <span class="stat-label">{{ "Today's P&L"|t }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>📊 {{ 'Performance Metrics'|t }}</h2>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <span class="metric-label">{{ 'Sharpe Ratio'|t }}</span>
+          <span class="metric-value">{{ metrics.sharpe_ratio|number_format(2) }}</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">{{ 'Max Drawdown'|t }}</span>
+          <span class="metric-value">{{ (metrics.max_drawdown * 100)|number_format(1) }}%</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">{{ 'Annual Return'|t }}</span>
+          <span class="metric-value">{{ (metrics.annual_return * 100)|number_format(1) }}%</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">{{ 'Volatility'|t }}</span>
+          <span class="metric-value">{{ (metrics.volatility * 100)|number_format(1) }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>🎯 {{ 'Navigation'|t }}</h2>
+      <table class="metrics-nav-table">
+        <thead>
+          <tr>
+            <th>{{ 'Section'|t }}</th>
+            <th>{{ 'Description'|t }}</th>
+            <th>{{ 'Action'|t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>{{ 'Portfolio Management'|t }}</strong></td>
+            <td>{{ 'View and manage portfolio allocations and positions'|t }}</td>
+            <td><a href="{{ path('unicornmetrics.lean_portfolio') }}" class="button">{{ 'View Portfolio'|t }}</a></td>
+          </tr>
+          <tr>
+            <td><strong>{{ 'Holdings Analysis'|t }}</strong></td>
+            <td>{{ 'Detailed breakdown of individual positions and performance'|t }}</td>
+            <td><a href="{{ path('unicornmetrics.lean_holdings') }}" class="button">{{ 'View Holdings'|t }}</a></td>
+          </tr>
+          <tr>
+            <td><strong>{{ 'Performance Analytics'|t }}</strong></td>
+            <td>{{ 'Comprehensive risk and return analysis with benchmarks'|t }}</td>
+            <td><a href="{{ path('unicornmetrics.lean_performance') }}" class="button">{{ 'View Performance'|t }}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dashboard-section">
+      <div class="system-overview">
+        <h3>🦄 {{ 'System Overview'|t }}</h3>
+        <ul>
+          <li><strong>{{ 'Algorithm Strategy'|t }}:</strong> {{ portfolio_data.algorithm }} {{ 'managing portfolio trades and positions'|t }}</li>
+          <li><strong>{{ 'Trading Environment'|t }}:</strong> {{ portfolio_data.environment|capitalize }} {{ 'trading mode with real-time monitoring'|t }}</li>
+          <li><strong>{{ 'Asset Classes'|t }}:</strong> {{ portfolio_data.symbols|join(', ') }}</li>
+          <li><strong>{{ 'Multi-Portfolio Management'|t }}:</strong> {{ '4 total portfolios with $525,847.62 in total assets'|t }}</li>
+          <li><strong>{{ 'Performance Analytics'|t }}:</strong> {{ 'Comprehensive portfolio and algorithm analysis tools'|t }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

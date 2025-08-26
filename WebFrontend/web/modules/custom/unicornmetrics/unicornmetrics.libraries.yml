@@ -1,0 +1,29 @@
+dashboard:
+  version: VERSION
+  css:
+    theme:
+      css/dashboard.css: {}
+      css/portfolio-selector.css: {}
+  js:
+    js/portfolio-switcher.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+
+lean-framework:
+  version: VERSION
+  css:
+    theme:
+      css/lean-portfolio.css: {}
+      css/lean-holdings.css: {}
+      css/lean-performance.css: {}
+  dependencies:
+    - core/drupal
+
+admin:
+  version: VERSION
+  css:
+    theme:
+      css/admin.css: {}
+  dependencies:
+    - core/drupal

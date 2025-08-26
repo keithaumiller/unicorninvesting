@@ -1,9 +1,21 @@
 name: 'Unicorn Metrics'
 description: 'LEAN framework portfolio and algorithm management with comprehensive metrics display - streamlined for LEAN integration only'
 type: module
-version: '4.0.0'
+version: '4.1.0'
 core_version_requirement: ^10 || ^11
 package: 'Unicorn Investing'
 
+# Define module requirements
 dependencies:
   - drupal:system
+  - drupal:user
+
+# Configure module for Drupal 11
+php: '8.2'
+
+# Module lifecycle information
+lifecycle: stable
+datestamp: 1735257600
+
+# Module configuration
+configure: unicornmetrics.dashboard

@@ -3,6 +3,7 @@
 namespace Drupal\unicornmetrics\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\Markup;
 
 /**
  * Controller for Unicorn Metrics dashboard pages.
@@ -32,8 +33,6 @@ class DashboardController extends ControllerBase {
     </div>
     
     ' . $portfolio_selector . '
-    
-    <p>Portfolio-centric investment management powered by LEAN algorithmic trading framework. Your portfolio is the central hub containing all securities, algorithms, and performance metrics.</p>
     
     <div class="dashboard-sections">
     
@@ -401,6 +400,17 @@ class DashboardController extends ControllerBase {
               ',
             ],
             'unicorn-metrics-dashboard-styles',
+          ],
+          [
+            [
+              '#tag' => 'script',
+              '#value' => '
+                function switchPortfolio(portfolioId) {
+                  window.location.href = "/admin/metrics/dashboard?portfolio=" + portfolioId;
+                }
+              ',
+            ],
+            'unicorn-portfolio-switcher-js',
           ],
         ],
       ],
@@ -1113,7 +1123,7 @@ class DashboardController extends ControllerBase {
       $options .= '<option value="' . $id . '" ' . $selected . '>' . $status_indicator . ' ' . $portfolio['name'] . ' (' . $portfolio['value'] . ')</option>';
     }
     
-    return '
+    return Markup::create('
     <div class="portfolio-selector-container">
       <div class="portfolio-selector">
         <h3>📁 Portfolio Selection</h3>
@@ -1140,13 +1150,7 @@ class DashboardController extends ControllerBase {
           <span class="stat-desc">Today\'s P&L</span>
         </div>
       </div>
-    </div>
-    
-    <script>
-    function switchPortfolio(portfolioId) {
-      window.location.href = "/admin/metrics/dashboard?portfolio=" + portfolioId;
-    }
-    </script>';
+    </div>');
   }
 
 }

@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Contains unicornmetrics.module.
+ *
+ * Provides LEAN framework portfolio and algorithm management functionality
+ * with comprehensive metrics display.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function unicornmetrics_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.unicornmetrics':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Unicorn Metrics module provides a comprehensive dashboard for managing LEAN algorithmic trading framework portfolios and analyzing performance metrics.') . '</p>';
+      $output .= '<h3>' . t('Features') . '</h3>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Multi-portfolio management with switching capabilities') . '</li>';
+      $output .= '<li>' . t('Real-time portfolio performance metrics') . '</li>';
+      $output .= '<li>' . t('LEAN framework integration for algorithmic trading') . '</li>';
+      $output .= '<li>' . t('Holdings analysis and position tracking') . '</li>';
+      $output .= '<li>' . t('Risk management and performance analytics') . '</li>';
+      $output .= '</ul>';
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>' . t('Navigate to Administration » Metrics to access the dashboard. Users with the "access unicorn metrics" permission can view portfolio data and performance metrics.') . '</p>';
+      return $output;
+
+    case 'unicornmetrics.dashboard':
+      return '<p>' . t('This dashboard provides comprehensive portfolio management and metrics for LEAN algorithmic trading strategies.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function unicornmetrics_theme() {
+  return [
+    'unicornmetrics_dashboard' => [
+      'variables' => [
+        'portfolio_data' => NULL,
+        'metrics' => NULL,
+        'portfolio_selector' => NULL,
+      ],
+      'template' => 'unicornmetrics-dashboard',
+    ],
+    'unicornmetrics_portfolio_selector' => [
+      'variables' => [
+        'portfolios' => NULL,
+        'current_portfolio' => NULL,
+        'stats' => NULL,
+      ],
+      'template' => 'unicornmetrics-portfolio-selector',
+    ],
+  ];
+}

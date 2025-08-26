@@ -4,7 +4,7 @@ unicornmetrics.dashboard:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::dashboard'
     _title: 'LEAN Metrics Dashboard'
   requirements:
-    _access: 'TRUE'
+    _permission: 'access unicorn metrics'
 
 # LEAN Portfolio Management Routes
 unicornmetrics.lean_portfolio:
@@ -13,7 +13,7 @@ unicornmetrics.lean_portfolio:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanPortfolio'
     _title: 'LEAN Portfolio Management'
   requirements:
-    _access: 'TRUE'
+    _permission: 'access unicorn metrics'
 
 unicornmetrics.lean_holdings:
   path: '/admin/metrics/lean/holdings'
@@ -21,7 +21,7 @@ unicornmetrics.lean_holdings:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanHoldings'
     _title: 'LEAN Portfolio Holdings'
   requirements:
-    _access: 'TRUE'
+    _permission: 'access unicorn metrics'
 
 unicornmetrics.lean_performance:
   path: '/admin/metrics/lean/performance'
