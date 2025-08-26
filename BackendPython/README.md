@@ -7,6 +7,9 @@ This directory contains the Python backend services for the Unicorn Investing Pl
 ```
 BackendPython/
 ├── README.md                  # This file
+├── requirements-lean.txt      # LEAN framework dependencies
+├── requirements-unicorn.txt   # Unicorn platform dependencies  
+├── requirements.txt           # Combined dependencies
 ├── Lean/                      # QuantConnect LEAN Framework (3rd party)
 │   ├── Algorithm/            # LEAN algorithm framework
 │   ├── Algorithm.CSharp/     # C# algorithm examples
@@ -18,6 +21,10 @@ BackendPython/
 │   ├── Tests/                # LEAN test suites
 │   └── ...                   # Other LEAN components
 └── unicorn/                  # Proprietary Unicorn Investing code
+    ├── README.md             # Unicorn platform documentation
+    ├── backend/              # Python backend services (FastAPI, ML, etc.)
+    ├── algorithms/           # Custom LEAN algorithms
+    ├── integrations/         # LEAN integration layer
     ├── backtesting/          # Portfolio analytics and backtesting
     ├── batchjobs/            # Automated batch processing scripts
     ├── blotterscripts/       # Trade execution and portfolio management
