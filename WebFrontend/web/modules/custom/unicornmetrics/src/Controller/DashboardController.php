@@ -13,8 +13,17 @@ class DashboardController extends ControllerBase {
    * Main dashboard page.
    */
   public function dashboard() {
+    $module_info = \Drupal::service('extension.list.module')->getExtensionInfo('unicornmetrics');
+    $version = $module_info['version'] ?? '1.0.0';
+    
     $metrics_table = '
-    <h1>Unicorn Metrics Dashboard</h1>
+    <div class="dashboard-header">
+      <h1>Unicorn Metrics Dashboard</h1>
+      <div class="version-info">
+        <span class="module-version">Version ' . $version . '</span>
+        <span class="last-updated">Last Updated: ' . date('Y-m-d H:i:s') . '</span>
+      </div>
+    </div>
     <p>Welcome to the Unicorn Investment Metrics Dashboard. Access comprehensive performance analytics across 5 key categories with 78 total metrics.</p>
     
     <table class="metrics-nav-table">
@@ -28,27 +37,27 @@ class DashboardController extends ControllerBase {
       <tbody>
         <tr>
           <td class="count-column"><span class="metric-count">15</span></td>
-          <td class="link-column"><a href="/unicorn/portfolio">Portfolio Statistics</a></td>
+          <td class="link-column"><a href="/admin/metrics/portfolio">Portfolio Statistics</a></td>
           <td class="description-column">Comprehensive portfolio performance analysis including returns, volatility, Sharpe ratio, portfolio value, and composition metrics for investment analysis.</td>
         </tr>
         <tr>
           <td class="count-column"><span class="metric-count">16</span></td>
-          <td class="link-column"><a href="/unicorn/trades">Trade Statistics</a></td>
+          <td class="link-column"><a href="/admin/metrics/trades">Trade Statistics</a></td>
           <td class="description-column">Detailed trading performance metrics covering win rates, average gains/losses, trade duration, drawdowns, and execution analysis for strategy optimization.</td>
         </tr>
         <tr>
           <td class="count-column"><span class="metric-count">14</span></td>
-          <td class="link-column"><a href="/unicorn/risk">Risk Metrics</a></td>
+          <td class="link-column"><a href="/admin/metrics/risk">Risk Metrics</a></td>
           <td class="description-column">Advanced risk assessment tools including VaR, CVaR, maximum drawdown, Kelly criterion, and risk budget analysis for comprehensive risk management.</td>
         </tr>
         <tr>
           <td class="count-column"><span class="metric-count">13</span></td>
-          <td class="link-column"><a href="/unicorn/forecasting">Forecasting Metrics</a></td>
+          <td class="link-column"><a href="/admin/metrics/forecasting">Forecasting Metrics</a></td>
           <td class="description-column">Predictive analytics and machine learning model performance including forecast accuracy, confidence intervals, trend analysis, and signal quality scoring.</td>
         </tr>
         <tr>
           <td class="count-column"><span class="metric-count">20</span></td>
-          <td class="link-column"><a href="/unicorn/market">Market Relationship Metrics</a></td>
+          <td class="link-column"><a href="/admin/metrics/market">Market Relationship Metrics</a></td>
           <td class="description-column">Market correlation analysis including alpha/beta calculations, benchmark comparisons, sector allocation, currency exposure, and systematic risk factors.</td>
         </tr>
       </tbody>
@@ -380,7 +389,7 @@ class DashboardController extends ControllerBase {
     </div>
 
     <div style='margin-top: 30px; text-align: center;'>
-      <a href='/unicorn' style='background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>← Back to Dashboard</a>
+      <a href='/admin/metrics' style='background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>← Back to Dashboard</a>
     </div>";
 
     return [
@@ -472,7 +481,7 @@ class DashboardController extends ControllerBase {
       </div>
       
       <div style='margin-top: 30px; text-align: center;'>
-        <a href='/unicorn' style='background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>← Back to Dashboard</a>
+        <a href='/admin/metrics' style='background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>← Back to Dashboard</a>
       </div>
     ";
 

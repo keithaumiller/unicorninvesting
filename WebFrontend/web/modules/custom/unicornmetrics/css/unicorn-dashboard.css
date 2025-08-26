@@ -1,0 +1,48 @@
+/* Unicorn Metrics Dashboard Styles */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px 0;
+  border-bottom: 2px solid #0073aa;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: #0073aa;
+  font-size: 2.2em;
+}
+
+.version-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.module-version {
+  font-weight: bold;
+  color: #0073aa;
+  margin-bottom: 5px;
+}
+
+.last-updated {
+  font-style: italic;
+  font-size: 0.85em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .version-info {
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+}

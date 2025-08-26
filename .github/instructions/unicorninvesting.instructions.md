@@ -8,6 +8,29 @@ applyTo: '**'
 
 Unicorn Investing is a comprehensive investment platform focused on unicorn startups, high-growth companies, and financial market analysis. The platform provides investment analysis, portfolio management, algorithmic trading, and machine learning-driven recommendations.
 
+## ⚠️ IMPORTANT - First Time Setup After Codespace Restart
+
+**When working in this codebase for the first time after a codespace restart or pause, ALWAYS run the environment health check scripts first:**
+
+1. **Set up environment aliases**: `source /workspaces/unicorninvesting/scripts/setup_environment.sh`
+2. **Validate and start services**: `drupal-start` (or `/workspaces/unicorninvesting/scripts/startup_drupal.sh`)
+
+These scripts will:
+- ✅ Check and start Apache web server
+- ✅ Check and start MySQL database server  
+- ✅ Validate port availability (80, 3306)
+- ✅ Clear Drupal cache to prevent module loading issues
+- ✅ Test website accessibility at both homepage and dashboard
+- ✅ Set up convenient aliases for development
+
+**Available aliases after setup:**
+- `drupal-start` - Start and validate Drupal system
+- `drupal-status` - Check Apache and MySQL status
+- `drupal-logs` - View recent Drupal error logs
+- `drupal-restart` - Restart Apache and MySQL services
+- `drupal-cd` - Change to Drupal root directory
+- `unicorn-root` - Change to project root directory
+
 ### Current State
 - Legacy R-based analytics and machine learning models
 - Basic MySQL database schema

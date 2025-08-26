@@ -2,6 +2,22 @@
 
 An advanced algorithmic trading platform that combines Genetic Algorithms with Neural Networks for automated portfolio optimization and quantitative trading, now integrated with QuantConnect LEAN for institutional-grade algorithmic trading execution.
 
+## 🚀 Quick Start After Codespace Restart
+
+**IMPORTANT: After any codespace restart or pause, run these commands first:**
+
+```bash
+# Set up environment and aliases
+source /workspaces/unicorninvesting/scripts/setup_environment.sh
+
+# Start and validate all services (Apache, MySQL, Drupal)
+drupal-start
+```
+
+This will ensure Apache web server and MySQL database are running, and the Drupal site is accessible at:
+- **Homepage**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/
+- **LEAN Dashboard**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics
+
 ## Overview
 
 Unicorn Investing is a sophisticated investment analysis and algorithmic trading platform that uses machine learning to optimize portfolio allocations across stocks and forex markets. The platform has been modernized with a clean separation between proprietary algorithms and the QuantConnect LEAN trading framework.
