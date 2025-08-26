@@ -4,44 +4,54 @@ unicornmetrics.dashboard:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::dashboard'
     _title: 'LEAN Metrics Dashboard'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
 
-unicornmetrics.portfolio:
-  path: '/admin/metrics/portfolio'
+# LEAN Portfolio Management Routes
+unicornmetrics.lean_portfolio:
+  path: '/admin/metrics/lean/portfolio'
   defaults:
-    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::portfolio'
-    _title: 'Portfolio Statistics'
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanPortfolio'
+    _title: 'LEAN Portfolio Management'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
 
-unicornmetrics.trades:
-  path: '/admin/metrics/trades'
+unicornmetrics.lean_holdings:
+  path: '/admin/metrics/lean/holdings'
   defaults:
-    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::trades'
-    _title: 'Trade Statistics'
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanHoldings'
+    _title: 'LEAN Portfolio Holdings'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
 
-unicornmetrics.risk:
-  path: '/admin/metrics/risk'
+unicornmetrics.lean_performance:
+  path: '/admin/metrics/lean/performance'
   defaults:
-    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::risk'
-    _title: 'Risk Metrics'
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanPerformance'
+    _title: 'LEAN Portfolio Performance'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
 
-unicornmetrics.forecasting:
-  path: '/admin/metrics/forecasting'
+# LEAN Algorithm Management Routes
+unicornmetrics.lean_algorithms:
+  path: '/admin/metrics/lean/algorithms'
   defaults:
-    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::forecasting'
-    _title: 'Forecasting Metrics'
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanAlgorithms'
+    _title: 'LEAN Algorithm Management'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
 
-unicornmetrics.market:
-  path: '/admin/metrics/market'
+unicornmetrics.lean_algorithm_performance:
+  path: '/admin/metrics/lean/algorithms/performance'
   defaults:
-    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::market'
-    _title: 'Market Relationship Metrics'
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanAlgorithmPerformance'
+    _title: 'LEAN Algorithm Performance'
   requirements:
-    _permission: 'administer site configuration'
+    _access: 'TRUE'
+
+unicornmetrics.lean_backtest_results:
+  path: '/admin/metrics/lean/backtest'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanBacktestResults'
+    _title: 'LEAN Backtest Results'
+  requirements:
+    _access: 'TRUE'
