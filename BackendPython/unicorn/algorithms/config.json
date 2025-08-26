@@ -1,0 +1,23 @@
+{
+  "algorithm-type-name": "UnicornBasicForexAlgorithm",
+  "algorithm-language": "Python",
+  "algorithm-location": "/workspaces/unicorninvesting/BackendPython/unicorn/algorithms/unicorn_basic_forex_algorithm.py",
+  "data-folder": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "debugging": true,
+  "debugging-method": "QuantConnect.Lean.Engine.DataFeeds.LiveTradingDataFeed",
+  "log-handler": "QuantConnect.Logging.CompositeLogHandler",
+  "messaging-handler": "QuantConnect.Messaging.Messaging",
+  "api-handler": "QuantConnect.Api.Api",
+  "map-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskMapFileProvider",
+  "factor-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskFactorFileProvider",
+  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
+  "alpha-handler": "QuantConnect.Lean.Engine.Alphas.DefaultAlphaHandler",
+  "data-channel-provider": "DataChannelProvider",
+  "object-store": "QuantConnect.Lean.Engine.Storage.LocalObjectStore",
+  "data-aggregator": "QuantConnect.Lean.Engine.DataFeeds.AggregationManager",
+  "symbol-minute-limit": 10000,
+  "symbol-second-limit": 10000,
+  "symbol-tick-limit": 10000,
+  "maximum-data-points-per-chart-series": 1000000,
+  "maximum-chart-series": 30
+}

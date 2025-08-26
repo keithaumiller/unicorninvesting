@@ -1,0 +1,45 @@
+{
+    "algorithm-type-name": "SimpleForexForecastingDemo",
+    "algorithm-language": "Python",
+    "algorithm-location": "Algorithm.Python/simple_forex_forecasting_demo.py",
+    "data-folder": "/Lean/Data",
+    "debugging": true,
+    "debugging-method": "LocalCmdline",
+    "log-handler": "ConsoleLogHandler",
+    "messaging-handler": "ConsoleMessagingHandler",
+    "job-queue-handler": "ConsoleQueueHandler",
+    "api-handler": "LocalDiskApiHandler",
+    "map-file-provider": "LocalZipMapFileProvider",
+    "factor-file-provider": "LocalZipFactorFileProvider",
+    "data-provider": "DefaultDataProvider",
+    "alpha-handler": "DefaultAlphaHandler",
+    "data-channel-provider": "DataChannelProvider",
+    "object-store": "LocalObjectStore",
+    "data-aggregator": "AggregationManager",
+    "symbol-minute-limit": 10000,
+    "symbol-second-limit": 10000,
+    "symbol-tick-limit": 10000,
+    "maximum-orders": 10000,
+    "maximum-insights": 10000,
+    
+    "environments": {
+        "backtesting": {
+            "live-mode": false,
+            "setup-handler": "ConsoleSetupHandler",
+            "result-handler": "BacktestingResultHandler",
+            "data-feed-handler": "FileSystemDataFeed",
+            "real-time-handler": "BacktestingRealTimeHandler",
+            "history-provider": "SubscriptionDataReaderHistoryProvider",
+            "transaction-handler": "BacktestingTransactionHandler"
+        },
+        "live-trading": {
+            "live-mode": true,
+            "setup-handler": "ConsoleSetupHandler",
+            "result-handler": "LiveTradingResultHandler",
+            "data-feed-handler": "LiveTradingDataFeed",
+            "data-queue-handler": ["LiveDataQueue"],
+            "real-time-handler": "LiveTradingRealTimeHandler",
+            "transaction-handler": "LiveTradingTransactionHandler"
+        }
+    }
+}

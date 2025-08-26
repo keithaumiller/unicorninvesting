@@ -1,0 +1,467 @@
+# Unicorn Investing Platform - Deployment Configuration
+# This file captures all requirements and setup steps for production deployment
+
+version: '1.0'
+name: 'unicorn-investing-platform'
+description: 'Production deployment configuration for Unicorn Investing Platform'
+
+# Infrastructure Requirements
+infrastructure:
+  os: 'Ubuntu 24.04 LTS'
+  architecture: 'x86_64'
+  
+  hardware:
+    cpu_cores: 8
+    memory_gb: 16
+    storage_gb: 200
+    storage_type: 'SSD'
+  
+  network:
+    ssl_required: true
+    domains:
+      - 'unicorninvesting.com'
+      - 'www.unicorninvesting.com'
+      - 'stlouisintegration.com'
+      - 'www.stlouisintegration.com'
+      - 'angelicafeliciano.com'
+      - 'www.angelicafeliciano.com'
+
+# System Dependencies
+system_packages:
+  - 'software-properties-common'
+  - 'curl'
+  - 'wget'
+  - 'git'
+  - 'build-essential'
+  - 'pkg-config'
+  - 'libssl-dev'
+  - 'libffi-dev'
+  - 'python3-dev'
+  - 'python3-pip'
+  - 'python3-venv'
+  - 'mysql-server'
+  - 'apache2'
+  - 'apache2-utils'
+  - 'certbot'
+  - 'python3-certbot-apache'
+  - 'zip'
+  - 'unzip'
+
+# PHP Configuration
+php:
+  version: '8.3'
+  packages:
+    - 'php8.3'
+    - 'php8.3-apache2'
+    - 'php8.3-mysql'
+    - 'php8.3-curl'
+    - 'php8.3-gd'
+    - 'php8.3-mbstring'
+    - 'php8.3-xml'
+    - 'php8.3-zip'
+    - 'php8.3-bcmath'
+    - 'php8.3-intl'
+    - 'php8.3-soap'
+    - 'php8.3-opcache'
+  
+  settings:
+    memory_limit: '512M'
+    upload_max_filesize: '100M'
+    post_max_size: '100M'
+
+# .NET Requirements (for LEAN Framework)
+dotnet:
+  version: '8.0'
+  sdk_required: true
+
+# Database Configuration
+databases:
+  mysql:
+    version: '8.0+'
+    character_set: 'utf8mb4'
+    collation: 'utf8mb4_unicode_ci'
+    
+    databases:
+      - name: 'unicorn_analytics'
+        user: 'unicorn_user'
+        description: 'Main analytics and trading data'
+      
+      - name: 'unicorninvesting_drupal'
+        user: 'drupal_main'
+        description: 'Main Drupal website'
+      
+      - name: 'stlouisintegration_drupal'
+        user: 'drupal_stlouis'
+        description: 'StLouis Integration website'
+      
+      - name: 'angelicafeliciano_drupal'
+        user: 'drupal_angelica'
+        description: 'Angelica Feliciano website'
+
+# Python Environment
+python:
+  version: '3.12.3'
+  virtual_env_path: '/workspaces/unicorninvesting/.venv'
+  
+  # Core requirements from requirements.txt
+  base_packages:
+    - 'fastapi>=0.115.4'
+    - 'uvicorn[standard]>=0.32.0'
+    - 'sqlalchemy>=2.0.36'
+    - 'pymysql>=1.1.1'
+    - 'python-multipart>=0.0.17'
+    - 'python-dotenv>=1.0.1'
+    - 'pandas>=2.2.3'
+    - 'numpy>=2.1.3'
+    - 'scipy>=1.14.1'
+    - 'scikit-learn>=1.5.2'
+    - 'requests>=2.32.3'
+    - 'pydantic>=2.9.2'
+  
+  # Unicorn-specific packages from requirements-unicorn.txt
+  unicorn_packages:
+    - 'quantlib-python>=1.35'
+    - 'yfinance>=0.2.43'
+    - 'alpha-vantage>=2.3.1'
+    - 'plotly>=5.24.1'
+    - 'matplotlib>=3.9.2'
+    - 'seaborn>=0.13.2'
+    - 'jupyter>=1.1.1'
+    - 'notebook>=7.2.2'
+    - 'ipywidgets>=8.1.5'
+  
+  # LEAN-specific packages from requirements-lean.txt
+  lean_packages:
+    - 'tensorflow==2.20.0'
+    - 'torch==2.5.1'
+    - 'xgboost==3.0.2'
+    - 'lightgbm==4.5.0'
+    - 'catboost==1.2.7'
+    - 'prophet==1.1.7'
+    - 'pyarrow>=18.0.0'
+    - 'joblib>=1.4.2'
+  
+  # Development packages
+  development_packages:
+    - 'pytest>=8.3.3'
+    - 'black>=24.10.0'
+    - 'flake8>=7.1.1'
+    - 'mypy>=1.13.0'
+    - 'jupyter>=1.1.1'
+
+# Apache Configuration
+apache:
+  version: '2.4+'
+  modules:
+    - 'rewrite'
+    - 'ssl'
+    - 'headers'
+    - 'expires'
+  
+  virtual_hosts:
+    - server_name: 'unicorninvesting.com'
+      document_root: '/var/www/unicorninvesting.com/web'
+      ssl_enabled: true
+    
+    - server_name: 'stlouisintegration.com'
+      document_root: '/var/www/stlouisintegration.com/web'
+      ssl_enabled: true
+    
+    - server_name: 'angelicafeliciano.com'
+      document_root: '/var/www/angelicafeliciano.com/web'
+      ssl_enabled: true
+
+# Drupal Configuration
+drupal:
+  version: '11.x'
+  installation_method: 'composer'
+  
+  sites:
+    - name: 'unicorninvesting'
+      path: '/var/www/unicorninvesting.com'
+      database: 'unicorninvesting_drupal'
+    
+    - name: 'stlouisintegration'
+      path: '/var/www/stlouisintegration.com'
+      database: 'stlouisintegration_drupal'
+    
+    - name: 'angelicafeliciano'
+      path: '/var/www/angelicafeliciano.com'
+      database: 'angelicafeliciano_drupal'
+
+# Services Configuration
+services:
+  unicorn_api:
+    name: 'unicorn-api'
+    description: 'Unicorn Investing FastAPI Backend'
+    type: 'systemd'
+    user: 'www-data'
+    group: 'www-data'
+    working_directory: '/workspaces/unicorninvesting/BackendPython/unicorn/backend'
+    environment_file: '/workspaces/unicorninvesting/.env'
+    command: '/workspaces/unicorninvesting/.venv/bin/uvicorn api.main:app --host 0.0.0.0 --port 8000 --workers 4'
+    restart_policy: 'on-failure'
+    enabled: true
+
+# Environment Variables
+environment_variables:
+  # Core Configuration
+  ENVIRONMENT: 'production'
+  DEBUG: 'false'
+  
+  # API Configuration
+  API_HOST: '0.0.0.0'
+  API_PORT: '8000'
+  API_WORKERS: '4'
+  
+  # Database Connection
+  DATABASE_URL: 'mysql://unicorn_user:PASSWORD@localhost/unicorn_analytics'
+  
+  # Security
+  SECRET_KEY: 'GENERATE_SECURE_KEY'
+  ALLOWED_HOSTS: 'unicorninvesting.com,www.unicorninvesting.com'
+  
+  # External APIs (to be configured)
+  ALPHA_VANTAGE_API_KEY: 'YOUR_API_KEY'
+  IEX_CLOUD_API_KEY: 'YOUR_API_KEY'
+  QUANDL_API_KEY: 'YOUR_API_KEY'
+
+# Directory Structure
+directories:
+  project_root: '/workspaces/unicorninvesting'
+  
+  key_directories:
+    - '/workspaces/unicorninvesting/backend'
+    - '/workspaces/unicorninvesting/BackendPython'
+    - '/workspaces/unicorninvesting/BackendPython/Lean'
+    - '/workspaces/unicorninvesting/BackendPython/unicorn'
+    - '/workspaces/unicorninvesting/database'
+    - '/workspaces/unicorninvesting/frontend'
+    - '/workspaces/unicorninvesting/WebFrontend'
+    - '/workspaces/unicorninvesting/docs'
+    - '/workspaces/unicorninvesting/tests'
+    - '/var/www/unicorninvesting.com'
+    - '/var/www/stlouisintegration.com'
+    - '/var/www/angelicafeliciano.com'
+    - '/var/log/unicorn'
+    - '/var/backups/unicorn'
+
+# File Permissions
+permissions:
+  web_directories:
+    owner: 'www-data'
+    group: 'www-data'
+    mode: '755'
+  
+  python_environment:
+    owner: 'ubuntu'  # or deployment user
+    group: 'ubuntu'
+    mode: '755'
+  
+  log_directories:
+    owner: 'www-data'
+    group: 'www-data'
+    mode: '755'
+
+# SSL Certificates
+ssl:
+  provider: 'letsencrypt'
+  auto_renewal: true
+  
+  certificates:
+    - 'unicorninvesting.com'
+    - 'www.unicorninvesting.com'
+    - 'stlouisintegration.com'
+    - 'www.stlouisintegration.com'
+    - 'angelicafeliciano.com'
+    - 'www.angelicafeliciano.com'
+
+# Git Configuration
+git:
+  repository: 'https://github.com/keithaumiller/unicorninvesting.git'
+  branch: 'main'
+  submodules: true  # Required for LEAN framework
+
+# Backup Configuration
+backup:
+  databases:
+    frequency: 'daily'
+    retention_days: 30
+    location: '/var/backups/unicorn'
+  
+  files:
+    frequency: 'weekly'
+    retention_weeks: 12
+    location: '/var/backups/unicorn'
+
+# Monitoring and Logging
+monitoring:
+  log_rotation: true
+  log_retention_days: 365
+  
+  log_locations:
+    - '/var/log/apache2/'
+    - '/var/log/mysql/'
+    - '/var/log/unicorn/'
+  
+  health_checks:
+    - service: 'mysql'
+    - service: 'apache2'
+    - service: 'unicorn-api'
+    - endpoint: 'http://localhost:8000/health'
+
+# LEAN Framework Configuration
+lean:
+  installation_path: '/workspaces/unicorninvesting/BackendPython/Lean'
+  data_directory: '/workspaces/unicorninvesting/BackendPython/Lean/Data'
+  cache_directory: '/tmp/lean-cache'
+  
+  configuration:
+    algorithm_language: 'Python'
+    debugging: false
+    log_handler: 'FileLogHandler'
+    data_feed: 'FileSystemDataFeed'
+
+# Prophet Forecasting Configuration
+prophet:
+  version: '1.1.7'
+  optimized_for: 'forex_trading'
+  
+  settings:
+    daily_seasonality: true
+    weekly_seasonality: true
+    yearly_seasonality: false
+    changepoint_prior_scale: 0.05
+    seasonality_prior_scale: 15.0
+    seasonality_mode: 'multiplicative'
+    interval_width: 0.8
+
+# Performance Tuning
+performance:
+  mysql:
+    innodb_buffer_pool_size: '4G'
+    max_connections: 200
+    query_cache_size: '256M'
+  
+  apache:
+    max_request_workers: 400
+    threads_per_child: 25
+    server_limit: 16
+  
+  python:
+    workers: 4
+    worker_connections: 1000
+    max_requests: 1000
+    max_requests_jitter: 100
+
+# Security Configuration
+security:
+  firewall:
+    enabled: true
+    allowed_ports:
+      - 22    # SSH
+      - 80    # HTTP
+      - 443   # HTTPS
+      - 8000  # API (internal only)
+  
+  fail2ban:
+    enabled: true
+    services:
+      - 'ssh'
+      - 'apache'
+  
+  mysql:
+    secure_installation: true
+    remove_test_database: true
+    disable_remote_root: true
+
+# Deployment Steps Order
+deployment_sequence:
+  1: 'System package installation'
+  2: 'MySQL installation and configuration'
+  3: 'Database creation and user setup'
+  4: 'Python virtual environment setup'
+  5: 'Package installation (base, unicorn, lean)'
+  6: '.NET SDK installation (for LEAN)'
+  7: 'Apache and PHP installation'
+  8: 'Composer installation'
+  9: 'Drupal installation'
+  10: 'Virtual host configuration'
+  11: 'SSL certificate setup'
+  12: 'Service configuration'
+  13: 'Environment variable setup'
+  14: 'Permission configuration'
+  15: 'Backup script setup'
+  16: 'Health check verification'
+  17: 'Performance testing'
+
+# Validation Checklist
+validation:
+  system:
+    - 'All required packages installed'
+    - 'Services running (MySQL, Apache, unicorn-api)'
+    - 'SSL certificates valid'
+    - 'Firewall configured'
+  
+  python:
+    - 'Virtual environment created'
+    - 'All packages installed successfully'
+    - 'Prophet import test passes'
+    - 'FastAPI application starts'
+  
+  database:
+    - 'All databases created'
+    - 'User permissions correct'
+    - 'Connection tests pass'
+  
+  web:
+    - 'Virtual hosts respond'
+    - 'SSL redirects work'
+    - 'Drupal installations accessible'
+  
+  lean:
+    - 'LEAN framework available'
+    - '.NET runtime functional'
+    - 'Algorithm execution test passes'
+  
+  forecasting:
+    - 'Prophet test script runs'
+    - 'Forex demo completes successfully'
+    - 'LEAN Prophet algorithm loads'
+
+# Rollback Plan
+rollback:
+  database:
+    - 'Database backup restoration'
+    - 'User permission reset'
+  
+  application:
+    - 'Previous version deployment'
+    - 'Configuration file restoration'
+  
+  services:
+    - 'Service stop/start procedures'
+    - 'Log preservation'
+
+# Maintenance Schedule
+maintenance:
+  daily:
+    - 'Database backup'
+    - 'Log rotation'
+    - 'Health checks'
+  
+  weekly:
+    - 'File system backup'
+    - 'SSL certificate check'
+    - 'Performance monitoring'
+  
+  monthly:
+    - 'Security updates'
+    - 'Package updates'
+    - 'Capacity planning review'
+
+# Contact Information
+support:
+  documentation: '/workspaces/unicorninvesting/INSTALLATION.md'
+  logs: '/var/log/unicorn/'
+  health_script: '/workspaces/unicorninvesting/scripts/health_check.sh'

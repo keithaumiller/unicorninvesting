@@ -30,6 +30,38 @@ Unicorn Investing is a sophisticated investment analysis and algorithmic trading
 - **Backtesting**: Historical strategy validation with LEAN engine
 - **Web Interface**: Modern Drupal 11 interface replacing legacy desktop apps
 
+## Quick Start
+
+### 🚀 Production Installation
+
+For complete production deployment, see the **[Installation Guide](INSTALLATION.md)** which provides:
+
+- Step-by-step setup instructions for all components
+- Database configuration and optimization
+- Python environment with Prophet forecasting
+- LEAN framework integration
+- Apache/PHP/Drupal configuration
+- SSL certificate setup
+- Production deployment scripts
+- Health monitoring and backup procedures
+
+### 📋 Deployment Configuration
+
+The **[deploy.yml](deploy.yml)** file contains the complete deployment specification including:
+
+- Infrastructure requirements and system dependencies
+- Service configurations and environment variables
+- Security settings and performance tuning
+- Validation checklists and rollback procedures
+
+### 🧪 Development Environment
+
+For immediate development, the workspace is pre-configured with:
+- Python 3.12 virtual environment at `/workspaces/unicorninvesting/.venv/`
+- FastAPI backend running at `http://localhost:8000`
+- Prophet forecasting capabilities fully installed and tested
+- LEAN framework available for algorithm development
+
 ## Project Structure
 
 ### BackendPython/
