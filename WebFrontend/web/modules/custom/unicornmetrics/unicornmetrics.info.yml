@@ -1,0 +1,9 @@
+name: 'Unicorn Metrics'
+description: 'Performance metrics dashboard for unicorn investment analysis'
+type: module
+version: '1.0.0'
+core_version_requirement: ^10 || ^11
+package: 'Unicorn Investing'
+
+dependencies:
+  - drupal:system

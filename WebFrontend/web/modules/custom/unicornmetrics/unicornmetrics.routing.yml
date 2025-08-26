@@ -1,0 +1,47 @@
+unicornmetrics.dashboard:
+  path: '/unicorn'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::dashboard'
+    _title: 'Unicorn Metrics Dashboard'
+  requirements:
+    _permission: 'access content'
+
+unicornmetrics.portfolio:
+  path: '/unicorn/portfolio'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::portfolio'
+    _title: 'Portfolio Statistics'
+  requirements:
+    _permission: 'access content'
+
+unicornmetrics.trades:
+  path: '/unicorn/trades'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::trades'
+    _title: 'Trade Statistics'
+  requirements:
+    _permission: 'access content'
+
+unicornmetrics.risk:
+  path: '/unicorn/risk'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::risk'
+    _title: 'Risk Metrics'
+  requirements:
+    _permission: 'access content'
+
+unicornmetrics.forecasting:
+  path: '/unicorn/forecasting'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::forecasting'
+    _title: 'Forecasting Metrics'
+  requirements:
+    _permission: 'access content'
+
+unicornmetrics.market:
+  path: '/unicorn/market'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::market'
+    _title: 'Market Relationship Metrics'
+  requirements:
+    _permission: 'access content'
