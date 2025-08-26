@@ -31,6 +31,15 @@ These scripts will:
 - `drupal-cd` - Change to Drupal root directory
 - `unicorn-root` - Change to project root directory
 
+### 🌐 GitHub Codespace URL Translation for Debugging
+
+**IMPORTANT**: When debugging in the workspace environment, always translate external GitHub Codespace URLs to localhost:
+
+- **External URL**: `https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics`
+- **Terminal/Debugging URL**: `http://localhost/admin/metrics` or `http://127.0.0.1/admin/metrics`
+
+**Why**: The workspace terminal cannot authenticate through GitHub's tunnel proxy (returns 401 Unauthorized), but localhost routes directly to Apache and works perfectly. Browser access uses your authenticated GitHub session, while terminal access needs local routing.
+
 ### Current State
 - Legacy R-based analytics and machine learning models
 - Basic MySQL database schema
