@@ -21,8 +21,6 @@ class DashboardController extends ControllerBase {
     $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
     $current_portfolio = $this->getPortfolioById($current_portfolio_id);
     
-    $portfolio_selector = $this->renderPortfolioSelector($current_portfolio_id);
-    
     $metrics_table = '
     <div class="dashboard-header">
       <h1>🦄 Unicorn Portfolio Management System</h1>
@@ -32,7 +30,7 @@ class DashboardController extends ControllerBase {
       </div>
     </div>
     
-    ' . $portfolio_selector . '
+    ' . $this->renderNavigationMenu($current_portfolio_id) . '
     
     <div class="dashboard-sections">
     
@@ -90,8 +88,8 @@ class DashboardController extends ControllerBase {
           </tr>
           <tr>
             <td class="icon-column">└─ �</td>
-            <td class="link-column"><a href="/admin/metrics/lean/algorithms">🤖 Managing Algorithm</a></td>
-            <td class="description-column"><em>Portfolio Strategy:</em> UnicornForexEnsemble algorithm that executes trades and manages this portfolio.</td>
+            <td class="link-column"><a href="/admin/metrics/lean/algorithms?portfolio=' . $current_portfolio_id . '">🤖 Managing Algorithm</a></td>
+            <td class="description-column"><em>Portfolio Strategy:</em> ' . $current_portfolio['algorithm'] . ' algorithm that executes trades and manages this portfolio.</td>
             <td class="count-column"><span class="metric-count">1</span></td>
           </tr>
         </tbody>
@@ -146,7 +144,7 @@ class DashboardController extends ControllerBase {
     ';
     
     return [
-      '#markup' => $metrics_table,
+      '#markup' => Markup::create($metrics_table),
       '#attached' => [
         'html_head' => [
           [
@@ -397,6 +395,146 @@ class DashboardController extends ControllerBase {
                 .system-overview li {
                   margin-bottom: 5px;
                 }
+                
+                /* Unified Navigation and Portfolio Selector Styles */
+                .unicorn-unified-navigation {
+                  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                  border: 1px solid #dee2e6;
+                  border-radius: 12px;
+                  padding: 20px;
+                  margin: 20px 0;
+                  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                }
+                
+                .portfolio-selector-unified {
+                  margin-bottom: 20px;
+                  padding-bottom: 20px;
+                  border-bottom: 2px solid #dee2e6;
+                }
+                
+                .portfolio-selector-unified h3 {
+                  margin: 0 0 15px 0;
+                  color: #495057;
+                  font-size: 1.3em;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                
+                .portfolio-select {
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 2px solid #ced4da;
+                  border-radius: 8px;
+                  background: white;
+                  font-size: 1em;
+                  margin-bottom: 15px;
+                  transition: border-color 0.3s ease;
+                }
+                
+                .portfolio-select:focus {
+                  border-color: #80bdff;
+                  outline: none;
+                  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+                }
+                
+                .portfolio-stats {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  gap: 15px;
+                }
+                
+                .portfolio-stats .total-assets {
+                  background: linear-gradient(135deg, #28a745, #20c997);
+                  color: white;
+                  padding: 8px 15px;
+                  border-radius: 20px;
+                  font-weight: bold;
+                  font-size: 0.9em;
+                }
+                
+                .portfolio-stats .active-count {
+                  background: linear-gradient(135deg, #17a2b8, #6f42c1);
+                  color: white;
+                  padding: 8px 15px;
+                  border-radius: 20px;
+                  font-weight: bold;
+                  font-size: 0.9em;
+                }
+                
+                .nav-container h3 {
+                  margin: 0 0 15px 0;
+                  color: #495057;
+                  font-size: 1.3em;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                
+                .nav-menu {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                  gap: 12px;
+                }
+                
+                .nav-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  padding: 12px 16px;
+                  background: white;
+                  border: 2px solid #e9ecef;
+                  border-radius: 8px;
+                  text-decoration: none;
+                  color: #495057;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                }
+                
+                .nav-item:hover {
+                  border-color: #80bdff;
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                  transform: translateY(-2px);
+                  text-decoration: none;
+                  color: #0056b3;
+                }
+                
+                .nav-item.current {
+                  background: linear-gradient(135deg, #007bff, #0056b3);
+                  border-color: #0056b3;
+                  color: white;
+                  box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+                }
+                
+                .nav-item.current:hover {
+                  color: white;
+                  transform: translateY(-2px);
+                }
+                
+                .nav-icon {
+                  font-size: 1.2em;
+                  min-width: 24px;
+                  text-align: center;
+                }
+                
+                .nav-label {
+                  font-weight: 600;
+                  font-size: 0.95em;
+                }
+                
+                @media (max-width: 768px) {
+                  .nav-menu {
+                    grid-template-columns: 1fr;
+                  }
+                  
+                  .portfolio-stats {
+                    flex-direction: column;
+                    align-items: stretch;
+                    text-align: center;
+                  }
+                }
               ',
             ],
             'unicorn-metrics-dashboard-styles',
@@ -405,9 +543,11 @@ class DashboardController extends ControllerBase {
             [
               '#tag' => 'script',
               '#value' => '
+                <script>
                 function switchPortfolio(portfolioId) {
-                  window.location.href = "/admin/metrics/dashboard?portfolio=" + portfolioId;
+                  window.location.href = "/admin/metrics?portfolio=" + portfolioId;
                 }
+              </script>
               ',
             ],
             'unicorn-portfolio-switcher-js',
@@ -421,15 +561,23 @@ class DashboardController extends ControllerBase {
    * LEAN Portfolio Management Dashboard.
    */
   public function leanPortfolio() {
-    // Read LEAN portfolio state from JSON files
-    $portfolio_data = $this->getLeanPortfolioData();
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    // Read LEAN portfolio state from JSON files based on selected portfolio
+    $portfolio_data = $this->getLeanPortfolioData($current_portfolio_id);
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>💼 Primary Trading Portfolio</h1>
+      <h1>💼 ' . htmlspecialchars($current_portfolio['name']) . '</h1>
       <p>Your main investment portfolio - the central container managed by LEAN SecurityPortfolioManager</p>
       <div class="portfolio-hierarchy">
         <span class="hierarchy-note">📊 Portfolio Overview → Securities & Holdings → Algorithm Strategy</span>
+      </div>
+    </div>
+    
+    ' . $this->renderNavigationMenu($current_portfolio_id, 'portfolio') . '
       </div>
     </div>
     
@@ -464,9 +612,9 @@ class DashboardController extends ControllerBase {
     </div>
     
     <div class="portfolio-actions">
-      <a href="/admin/metrics/lean/holdings" class="action-button">� View Securities & Holdings</a>
-      <a href="/admin/metrics/lean/performance" class="action-button">⚡ Portfolio Performance</a>
-      <a href="/admin/metrics/lean/algorithms" class="action-button">� Managing Algorithm</a>
+      <a href="/admin/metrics/lean/holdings?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">� View Securities & Holdings</a>
+      <a href="/admin/metrics/lean/performance?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">⚡ Portfolio Performance</a>
+      <a href="/admin/metrics/lean/algorithms?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">� Managing Algorithm</a>
     </div>
     
     <div class="portfolio-hierarchy-info">
@@ -496,12 +644,18 @@ class DashboardController extends ControllerBase {
    * LEAN Portfolio Holdings Detail.
    */
   public function leanHoldings() {
-    $holdings = $this->getLeanHoldingsData();
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    $holdings = $this->getLeanHoldingsData($current_portfolio_id);
     
     $holdings_table = '<div class="lean-dashboard-header">
-      <h1>📈 LEAN Portfolio Holdings</h1>
+      <h1>📈 ' . htmlspecialchars($current_portfolio['name']) . ' Holdings</h1>
       <p>Detailed breakdown of individual security positions from LEAN portfolio manager</p>
-    </div>';
+    </div>
+    
+    ' . $this->renderNavigationMenu($current_portfolio_id, 'holdings') . '';
     
     $holdings_table .= '
     <table class="holdings-table">
@@ -552,11 +706,17 @@ class DashboardController extends ControllerBase {
    * LEAN Portfolio Performance Metrics.
    */
   public function leanPerformance() {
-    $performance = $this->getLeanPerformanceData();
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    $performance = $this->getLeanPerformanceData($current_portfolio_id);
+    
+    $navigation = $this->renderNavigationMenu($current_portfolio_id, 'performance');
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>⚡ LEAN Portfolio Performance</h1>
+      <h1>⚡ ' . htmlspecialchars($current_portfolio['name']) . ' Performance</h1>
       <p>Comprehensive performance analysis from LEAN algorithm execution</p>
     </div>
     
@@ -631,11 +791,17 @@ class DashboardController extends ControllerBase {
    * LEAN Algorithm Management Dashboard.
    */
   public function leanAlgorithms() {
-    $algorithms = $this->getLeanAlgorithmData();
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
+    $algorithms = $this->getLeanAlgorithmData($current_portfolio_id);
+    
+    $navigation = $this->renderNavigationMenu($current_portfolio_id, 'algorithms');
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>🤖 LEAN Algorithm Management</h1>
+      <h1>🤖 ' . htmlspecialchars($current_portfolio['name']) . ' Algorithm</h1>
       <p>Algorithm execution status and performance monitoring</p>
     </div>
     
@@ -687,11 +853,17 @@ class DashboardController extends ControllerBase {
    * LEAN Algorithm Performance Analysis.
    */
   public function leanAlgorithmPerformance() {
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
     $performance = $this->getLeanAlgorithmPerformanceData();
+    
+    $navigation = $this->renderNavigationMenu($current_portfolio_id, 'algorithm-performance');
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>📊 LEAN Algorithm Performance</h1>
+      <h1>🎯 ' . htmlspecialchars($current_portfolio['name']) . ' Algorithm Performance</h1>
       <p>Detailed algorithm performance analysis and signal quality metrics</p>
     </div>
     
@@ -746,11 +918,17 @@ class DashboardController extends ControllerBase {
    * LEAN Backtest Results Analysis.
    */
   public function leanBacktestResults() {
+    // Get current portfolio selection from URL parameter or default
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
+    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    
     $backtest = $this->getLeanBacktestData();
+    
+    $navigation = $this->renderNavigationMenu($current_portfolio_id, 'backtest');
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>🔬 LEAN Backtest Results</h1>
+      <h1>🔬 ' . htmlspecialchars($current_portfolio['name']) . ' Backtest Results</h1>
       <p>Historical strategy validation and out-of-sample testing results</p>
     </div>
     
@@ -789,17 +967,22 @@ class DashboardController extends ControllerBase {
   /**
    * Helper: Get LEAN portfolio data (simulated for now).
    */
-  private function getLeanPortfolioData(): array {
+  private function getLeanPortfolioData(string $portfolio_id = 'forex'): array {
     // In production, read from LEAN JSON files:
     // $portfolio_file = '/workspaces/unicorninvesting/BackendPython/Lean/Results/portfolio-state.json';
     
+    // Get portfolio-specific data from the same source as the main dashboard
+    $portfolio = $this->getPortfolioById($portfolio_id);
+    
+    // For now, use mock data based on portfolio selection
+    // In production, this would read from actual LEAN portfolio state files
     return [
-      'total_value' => 125847.62,
-      'cash' => 15432.18,
-      'positions_value' => 110415.44,
-      'unrealized_pnl' => 8247.33,
-      'daily_change' => 1.23,
-      'holdings_count' => 8,
+      'total_value' => $portfolio['total_value'],
+      'cash' => $portfolio['total_value'] * 0.15, // 15% cash allocation
+      'positions_value' => $portfolio['total_value'] * 0.85, // 85% in positions
+      'unrealized_pnl' => $portfolio['total_value'] * 0.065, // 6.5% unrealized gains
+      'daily_change' => 1.23, // Mock daily change
+      'holdings_count' => count($portfolio['symbols']), // Fix: symbols is already an array
       'last_updated' => date('Y-m-d H:i:s'),
     ];
   }
@@ -807,49 +990,58 @@ class DashboardController extends ControllerBase {
   /**
    * Helper: Get LEAN holdings data.
    */
-  private function getLeanHoldingsData(): array {
-    return [
-      [
-        'symbol' => 'SPY',
-        'name' => 'SPDR S&P 500 ETF',
-        'quantity' => 25,
-        'average_cost' => 428.50,
-        'current_price' => 445.75,
-        'market_value' => 11143.75,
-        'unrealized_pnl' => 431.25,
-        'unrealized_pnl_percent' => 0.0401,
-        'weight' => 0.089,
-      ],
-      [
-        'symbol' => 'AAPL',
-        'name' => 'Apple Inc.',
-        'quantity' => 50,
-        'average_cost' => 175.25,
-        'current_price' => 189.84,
-        'market_value' => 9492.00,
-        'unrealized_pnl' => 729.50,
-        'unrealized_pnl_percent' => 0.0832,
-        'weight' => 0.076,
-      ],
-      [
-        'symbol' => 'TSLA',
-        'name' => 'Tesla Inc.',
-        'quantity' => 30,
-        'average_cost' => 245.67,
-        'current_price' => 267.32,
-        'market_value' => 8019.60,
-        'unrealized_pnl' => 649.50,
-        'unrealized_pnl_percent' => 0.0881,
-        'weight' => 0.064,
-      ],
+  private function getLeanHoldingsData(string $portfolio_id = 'forex'): array {
+    $portfolio = $this->getPortfolioById($portfolio_id);
+    $symbols = $portfolio['symbols']; // Already an array, no need to explode
+    
+    // Generate holdings data based on portfolio symbols
+    $holdings = [];
+    $total_value = $portfolio['total_value']; // Fix: use 'total_value' not 'value'
+    $per_holding_value = $total_value / count($symbols);
+    
+    foreach ($symbols as $index => $symbol) {
+      $holdings[] = [
+        'symbol' => $symbol,
+        'name' => $this->getSecurityName($symbol),
+        'quantity' => round($per_holding_value / 100), // Mock quantity calculation
+        'average_cost' => 100.0, // Mock average cost
+        'current_price' => 105.0 + ($index * 2), // Mock current price with variation
+        'market_value' => $per_holding_value,
+        'unrealized_pnl' => $per_holding_value * 0.05, // 5% unrealized gain
+        'unrealized_pnl_percent' => 0.05,
+        'weight' => 1.0 / count($symbols), // Equal weight
+      ];
+    }
+    
+    return $holdings;
+  }
+
+  /**
+   * Helper: Get security display name.
+   */
+  private function getSecurityName(string $symbol): string {
+    $names = [
+      'SPY' => 'SPDR S&P 500 ETF',
+      'AAPL' => 'Apple Inc.',
+      'TSLA' => 'Tesla Inc.',
+      'MSFT' => 'Microsoft Corporation',
+      'GOOGL' => 'Alphabet Inc.',
+      'EURUSD' => 'Euro / US Dollar',
+      'GBPUSD' => 'British Pound / US Dollar',
+      'USDJPY' => 'US Dollar / Japanese Yen',
+      'BTC' => 'Bitcoin',
+      'ETH' => 'Ethereum',
     ];
+    
+    return $names[$symbol] ?? $symbol . ' Security';
   }
 
   /**
    * Helper: Get LEAN performance data.
    */
-  private function getLeanPerformanceData(): array {
-    return [
+  private function getLeanPerformanceData(string $portfolio_id = 'forex'): array {
+    // Performance metrics could vary based on portfolio type in production
+    $base_performance = [
       'total_return' => 0.0847,
       'annualized_return' => 0.1245,
       'sharpe_ratio' => 1.85,
@@ -860,15 +1052,31 @@ class DashboardController extends ControllerBase {
       'var_95' => -0.0287,
       'information_ratio' => 1.23,
     ];
+    
+    // Adjust performance based on portfolio type
+    switch ($portfolio_id) {
+      case 'equity':
+        $base_performance['total_return'] = 0.1523;
+        $base_performance['sharpe_ratio'] = 2.14;
+        break;
+      case 'paper':
+        $base_performance['total_return'] = 0.0234;
+        $base_performance['sharpe_ratio'] = 0.89;
+        break;
+    }
+    
+    return $base_performance;
   }
 
   /**
    * Helper: Get LEAN algorithm data.
    */
-  private function getLeanAlgorithmData(): array {
+  private function getLeanAlgorithmData(string $portfolio_id = 'forex'): array {
+    $portfolio = $this->getPortfolioById($portfolio_id);
+    
     return [
       'current' => [
-        'name' => 'UnicornForexEnsemble',
+        'name' => $portfolio['algorithm'],
         'status' => 'RUNNING',
         'runtime' => '2h 34m',
         'signals_generated' => 1847,
@@ -1071,32 +1279,6 @@ class DashboardController extends ControllerBase {
         'status' => 'active',
         'project_id' => 12346,
         'symbols' => ['SPY', 'AAPL', 'TSLA', 'MSFT', 'GOOGL']
-      ],
-      'bonds' => [
-        'id' => 'bonds',
-        'name' => 'Conservative Bond Portfolio',
-        'description' => 'Fixed income portfolio for capital preservation',
-        'algorithm' => 'UnicornBondStrategy',
-        'environment' => 'live',
-        'total_value' => 100000.00,
-        'positions' => 5,
-        'daily_pnl' => '+$87.50',
-        'status' => 'active',
-        'project_id' => 12347,
-        'symbols' => ['TLT', 'AGG', 'LQD', 'IEF']
-      ],
-      'paper' => [
-        'id' => 'paper',
-        'name' => 'Paper Trading Portfolio',
-        'description' => 'Simulated trading for strategy testing and development',
-        'algorithm' => 'UnicornTestStrategy',
-        'environment' => 'paper',
-        'total_value' => 50000.00,
-        'positions' => 6,
-        'daily_pnl' => '+$125.00',
-        'status' => 'active',
-        'project_id' => 12348,
-        'symbols' => ['SPY', 'EURUSD', 'BTC']
       ]
     ];
     
@@ -1109,9 +1291,7 @@ class DashboardController extends ControllerBase {
   private function renderPortfolioSelector($current_portfolio_id) {
     $portfolios = [
       'forex' => ['name' => 'Primary Forex Portfolio', 'value' => '$125,847.62', 'status' => 'active'],
-      'equity' => ['name' => 'Growth Equity Portfolio', 'value' => '$250,000.00', 'status' => 'active'],
-      'bonds' => ['name' => 'Conservative Bond Portfolio', 'value' => '$100,000.00', 'status' => 'active'],
-      'paper' => ['name' => 'Paper Trading Portfolio', 'value' => '$50,000.00', 'status' => 'active']
+      'equity' => ['name' => 'Growth Equity Portfolio', 'value' => '$250,000.00', 'status' => 'active']
     ];
     
     $current_portfolio = $this->getPortfolioById($current_portfolio_id);
@@ -1123,7 +1303,7 @@ class DashboardController extends ControllerBase {
       $options .= '<option value="' . $id . '" ' . $selected . '>' . $status_indicator . ' ' . $portfolio['name'] . ' (' . $portfolio['value'] . ')</option>';
     }
     
-    return Markup::create('
+    return '
     <div class="portfolio-selector-container">
       <div class="portfolio-selector">
         <h3>📁 Portfolio Selection</h3>
@@ -1132,25 +1312,91 @@ class DashboardController extends ControllerBase {
           <select id="portfolio-dropdown" onchange="switchPortfolio(this.value)">
             ' . $options . '
           </select>
-          <span class="total-assets">Total Assets: $525,847.62</span>
+          <span class="total-assets">Total Assets: $375,847.62</span>
         </div>
       </div>
       
       <div class="quick-stats">
         <div class="quick-stat-item">
-          <span class="stat-number">4</span>
+          <span class="stat-number">2</span>
           <span class="stat-desc">Active Portfolios</span>
         </div>
         <div class="quick-stat-item">
-          <span class="stat-number">31</span>
+          <span class="stat-number">20</span>
           <span class="stat-desc">Total Positions</span>
         </div>
         <div class="quick-stat-item">
-          <span class="stat-number">+$3,809.68</span>
+          <span class="stat-number">+$3,597.18</span>
           <span class="stat-desc">Today\'s P&L</span>
         </div>
       </div>
-    </div>');
+    </div>';
+  }
+
+  /**
+   * Render unified navigation and portfolio selector with normalized appearance.
+   */
+  private function renderNavigationMenu($current_portfolio_id, $current_page = 'dashboard') {
+    // Get portfolio selector HTML
+    $portfolio_selector = $this->renderPortfolioSelectorInternal($current_portfolio_id);
+    
+    $pages = [
+      'dashboard' => ['url' => '/admin/metrics', 'icon' => '🏠', 'label' => 'Portfolio Dashboard'],
+      'portfolio' => ['url' => '/admin/metrics/lean/portfolio', 'icon' => '💼', 'label' => 'Portfolio Overview'],
+      'holdings' => ['url' => '/admin/metrics/lean/holdings', 'icon' => '📈', 'label' => 'Securities & Holdings'],
+      'performance' => ['url' => '/admin/metrics/lean/performance', 'icon' => '⚡', 'label' => 'Performance Metrics'],
+      'algorithms' => ['url' => '/admin/metrics/lean/algorithms', 'icon' => '🤖', 'label' => 'Algorithm Management'],
+      'algorithm-performance' => ['url' => '/admin/metrics/lean/algorithms/performance', 'icon' => '🎯', 'label' => 'Algorithm Performance'],
+      'backtest' => ['url' => '/admin/metrics/lean/backtest', 'icon' => '🔬', 'label' => 'Backtest Results']
+    ];
+    
+    $nav_items = '';
+    foreach ($pages as $page_key => $page_info) {
+      $active_class = ($page_key == $current_page) ? ' current' : '';
+      $nav_items .= '
+          <a href="' . $page_info['url'] . '?portfolio=' . urlencode($current_portfolio_id) . '" class="nav-item' . $active_class . '">
+            <span class="nav-icon">' . $page_info['icon'] . '</span>
+            <span class="nav-label">' . $page_info['label'] . '</span>
+          </a>';
+    }
+    
+    return '
+    <div class="unicorn-unified-navigation">
+      ' . $portfolio_selector . '
+      <div class="nav-container">
+        <h3>🧭 Navigation Menu</h3>
+        <div class="nav-menu">' . $nav_items . '
+        </div>
+      </div>
+    </div>';
+  }
+
+  /**
+   * Internal method for rendering portfolio selector without container.
+   */
+  private function renderPortfolioSelectorInternal($current_portfolio_id) {
+    $portfolios = $this->getAvailablePortfolios();
+    $options = '';
+    
+    foreach ($portfolios as $id => $portfolio) {
+      $selected = ($id === $current_portfolio_id) ? ' selected' : '';
+      $options .= '<option value="' . htmlspecialchars($id) . '"' . $selected . '>' . 
+                  htmlspecialchars($portfolio['name']) . ' - $' . number_format($portfolio['value'], 2) . '</option>';
+    }
+    
+    return '
+    <div class="portfolio-selector-unified">
+      <h3>📁 Portfolio Selection</h3>
+      <div class="selector-wrapper">
+        <select id="portfolio-dropdown" onchange="switchPortfolio(this.value)" class="portfolio-select">
+          ' . $options . '
+        </select>
+        <div class="portfolio-stats">
+          <span class="total-assets">Total Assets: $375,847.62</span>
+          <span class="active-count">2 Active Portfolios</span>
+        </div>
+      </div>
+    </div>';
   }
 
 }
