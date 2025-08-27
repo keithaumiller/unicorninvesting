@@ -1,10 +1,18 @@
 #!/bin/bash
 
-# Unicorn Investing Platform - Health Check Script
-# Verifies all components are properly configured and functional
+#!/bin/bash
 
-echo "🦄 Unicorn Investing Platform - Comprehensive Health Check"
-echo "=========================================================="
+# Unicorn Investing - Health Check Script
+# Comprehensive system validation for the trading platform
+
+set -e
+
+echo "========================================="
+echo "🦄 UNICORN INVESTING HEALTH CHECK"
+echo "========================================="
+echo "Date: $(date)"
+echo "Environment: $(whoami)@$(hostname)"
+echo ""
 
 # Color codes for output
 RED='\033[0;31m'
@@ -13,25 +21,35 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Counters
-TOTAL_CHECKS=0
-PASSED_CHECKS=0
-FAILED_CHECKS=0
+# Track test results
+TESTS_PASSED=0
+TESTS_FAILED=0
 
-# Function to check and report status
-check_status() {
-    TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+# Function to print test result
+test_result() {
     if [ $1 -eq 0 ]; then
-        echo -e "${GREEN}✅ $2${NC}"
-        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        echo -e "✅ ${GREEN}$2${NC}"
+        ((TESTS_PASSED++))
     else
-        echo -e "${RED}❌ $2${NC}"
-        FAILED_CHECKS=$((FAILED_CHECKS + 1))
-        if [ ! -z "$3" ]; then
-            echo -e "${YELLOW}   → $3${NC}"
-        fi
+        echo -e "❌ ${RED}$2${NC}"
+        ((TESTS_FAILED++))
     fi
 }
+
+# Function to print info
+info() {
+    echo -e "ℹ️  ${BLUE}$1${NC}"
+}
+
+# Function to print warning
+warn() {
+    echo -e "⚠️  ${YELLOW}$1${NC}"
+}
+
+# Load project environment
+echo "🔧 Loading project environment..."
+cd /workspaces/unicorninvesting
+source scripts/setup_environment.sh &>/dev/null
 
 echo -e "${BLUE}🔧 System Components${NC}"
 echo "===================="

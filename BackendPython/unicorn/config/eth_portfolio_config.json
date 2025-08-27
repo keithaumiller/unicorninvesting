@@ -1,0 +1,83 @@
+{
+  "environment": "backtesting",
+  "algorithm-type-name": "EthOnlyPortfolio",
+  "algorithm-location": "Algorithm.Python/EthOnlyPortfolio.py",
+  "algorithm-language": "Python",
+  "data-folder": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "api-access-token": "",
+  "job-user-id": "0",
+  "job-project-id": "0",
+  "job-organization-id": "",
+  "live-cash-balance": "",
+  "live-holdings": "",
+  "desktop-http-port": "1234",
+  "desktop-exe": false,
+  "composer-dll-directory": ".",
+  "debugging": false,
+  "debugging-method": "",
+  "log-level": "trace",
+  "messaging-handler": "QuantConnect.Messaging.Messaging",
+  "job-queue-handler": "QuantConnect.Queues.JobQueue",
+  "api-handler": "QuantConnect.Api.Api",
+  "map-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskMapFileProvider",
+  "factor-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskFactorFileProvider",
+  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
+  "alpha-handler": "QuantConnect.Lean.Engine.Alphas.DefaultAlphaHandler",
+  "data-channel-provider": "DataChannelProvider",
+  "object-store": "QuantConnect.Lean.Engine.Storage.LocalObjectStore",
+  "data-aggregator": "QuantConnect.Lean.Engine.DataFeeds.AggregationManager",
+  "symbol-minute-limit": 10000,
+  "symbol-second-limit": 10000,
+  "symbol-tick-limit": 10000,
+  "maximum-data-points-per-chart-series": 4000,
+  "force-exchange-always-open": false,
+  "transaction-log": "",
+  "reserved-words-prefix": "@",
+  "show-missing-data-logs": true,
+  "maximum-chain-securities": 5,
+  "maximum-concurrent-backtest-count": 10,
+  "results-destination-folder": ".",
+  "plugin-directory": "./",
+  "command": "QuantConnect.Lean.Launcher.exe",
+  "python-additional-paths": [],
+  "send-via-api": false,
+  "close-automatically": true,
+  "mute-python-library-logging": true,
+  "ignore-version-checks": false,
+  "forward-console-messages": true,
+  
+  "portfolio-name": "ETH Only Portfolio",
+  "initial-capital": 1000,
+  "target-allocation": {
+    "ETHUSD": 0.95,
+    "cash": 0.05
+  },
+  
+  "data-feed-handler": "QuantConnect.Lean.Engine.DataFeeds.FileSystemDataFeed",
+  "data-directory": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "cache-location": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  
+  "risk-management": {
+    "stop-loss-percent": 0.05,
+    "daily-loss-limit": 0.10,
+    "max-position-size": 0.95,
+    "min-trade-amount": 10
+  },
+  
+  "performance-tracking": {
+    "benchmark": "ETHUSD",
+    "report-destination": "./results/",
+    "enable-detailed-logging": true
+  },
+  
+  "coinbase-data-directory": "/workspaces/unicorninvesting/BackendPython/Lean/Data/crypto/coinbase",
+  "supported-crypto-exchanges": ["coinbase"],
+  "crypto-data-resolution": ["minute", "hour", "daily"],
+  
+  "unicorn-platform": {
+    "enable-drupal-integration": true,
+    "portfolio-updates-endpoint": "http://localhost/api/portfolio/update",
+    "performance-metrics-endpoint": "http://localhost/api/metrics/performance",
+    "risk-alerts-endpoint": "http://localhost/api/alerts/risk"
+  }
+}
