@@ -25,3 +25,8 @@ data/GAResults.csv
 unicorninvesting.Rproj.RData
 unicorn.RData
 data/results/*
+
+# Drupal cache files
+WebFrontend/web/sites/default/files/css/
+WebFrontend/web/sites/default/files/js/
+WebFrontend/web/sites/default/files/php/
