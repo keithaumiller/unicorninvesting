@@ -6,74 +6,51 @@ applyTo: '**'
 
 ## Project Overview
 
-Unicorn Investing is a comprehensive investment platform focused on unicorn startups, high-growth companies, and financial market analysis. The platform provides investment analysis, portfolio management, algorithmic trading, and machine learning-driven recommendations.
+Unicorn Investing is a financial analytics platform for unicorn startups, high-growth companies, and market analysis. It provides investment analysis, portfolio management, algorithmic trading, and ML-driven recommendations.
 
 ## ⚠️ IMPORTANT - First Time Setup After Codespace Restart
 
-**When working in this codebase for the first time after a codespace restart or pause, ALWAYS run the environment health check scripts first:**
-
-1. **Set up environment aliases**: `source /workspaces/unicorninvesting/scripts/setup_environment.sh`
-2. **Validate and start services**: `drupal-start` (or `/workspaces/unicorninvesting/scripts/startup_drupal.sh`)
-
-These scripts will:
-- ✅ Check and start Apache web server
-- ✅ Check and start MySQL database server  
-- ✅ Validate port availability (80, 3306)
-- ✅ Clear Drupal cache to prevent module loading issues
-- ✅ Test website accessibility at both homepage and dashboard
-- ✅ Set up convenient aliases for development
-
-**Available aliases after setup:**
-- `drupal-start` - Start and validate Drupal system
-- `drupal-status` - Check Apache and MySQL status
-- `drupal-logs` - View recent Drupal error logs
-- `drupal-restart` - Restart Apache and MySQL services
-- `drupal-cd` - Change to Drupal root directory
-- `unicorn-root` - Change to project root directory
+**After codespace restart or pause:**
+- Run: `source scripts/setup_environment.sh`
+- Start services: `drupal-start` or `scripts/startup_drupal.sh`
+- Use aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`
 
 ### 🌐 GitHub Codespace URL Translation for Debugging
 
-**IMPORTANT**: When debugging in the workspace environment, always translate external GitHub Codespace URLs to localhost:
-
-- **External URL**: `https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics`
-- **Terminal/Debugging URL**: `http://localhost/admin/metrics` or `http://127.0.0.1/admin/metrics`
-
-**Why**: The workspace terminal cannot authenticate through GitHub's tunnel proxy (returns 401 Unauthorized), but localhost routes directly to Apache and works perfectly. Browser access uses your authenticated GitHub session, while terminal access needs local routing.
+**Debugging tip:** Use `http://localhost/...` in terminal (not external GitHub Codespace URLs).
 
 ### Current State
-- Legacy R-based analytics and machine learning models
-- Basic MySQL database schema
-- WPF desktop applications (legacy)
-- File-based data storage and processing
-
-### Future Architecture (Target State)
-- **Frontend**: Drupal 11 web interface following modern web standards
-- **Backend**: Python-based data processing, analysis, and machine learning
-- **Database**: MySQL with optimized schema for high-performance analytics
-- **Infrastructure**: Standard LAMP server architecture
+### Architecture
+- Frontend: Drupal 11 (PHP 8.2+)
+- Backend: Python 3.9+ (pandas, scikit-learn, etc.)
+- Database: MySQL 8.0+
+- Web Server: Apache/Nginx
 
 ## Technology Stack
 
 ### Primary Technologies
-- **Frontend**: Drupal 11 with PHP 8.2+
-- **Backend Processing**: Python 3.9+ with data science libraries
-- **Database**: MySQL 8.0+
-- **Web Server**: Apache/Nginx
-- **Version Control**: Git
+### Key Technologies
+- Drupal 11, PHP 8.2+
+- Python 3.9+, pandas, scikit-learn, etc.
+- MySQL 8.0+
+- Apache/Nginx
+- Git
 
 ### Python Dependencies
-- **Data Analysis**: pandas, numpy, scipy
-- **Machine Learning**: scikit-learn, tensorflow, keras
-- **Financial Data**: quantlib, yfinance, alpha_vantage
-- **Database**: SQLAlchemy, PyMySQL
-- **API**: FastAPI, requests
-- **Visualization**: matplotlib, plotly, seaborn
+### Python Dependencies
+- pandas, numpy, scipy
+- scikit-learn, tensorflow, keras
+- quantlib, yfinance, alpha_vantage
+- SQLAlchemy, PyMySQL
+- FastAPI, requests
+- matplotlib, plotly, seaborn
 
 ### Frontend Dependencies
-- **Drupal 11**: Latest stable release
-- **PHP**: 8.2 or higher
-- **JavaScript**: ES6+ with modern frameworks as needed
-- **CSS**: SCSS/Sass with Bootstrap or similar framework
+### Frontend Dependencies
+- Drupal 11
+- PHP 8.2+
+- JavaScript (ES6+)
+- SCSS/Sass, Bootstrap
 
 ## Coding Standards
 
@@ -91,6 +68,7 @@ Follow official Drupal coding standards and best practices:
    - Use proper hook implementations
    - Follow configuration management best practices
    - Implement proper caching strategies
+   - **CRITICAL**: Always clear Drupal cache after ANY module changes using the proper su method (see Drush Operations section)
 
 3. **Theme Development**
    - Use Twig templating system
@@ -104,158 +82,77 @@ Follow official Drupal coding standards and best practices:
    - Use Views for data display
    - Follow content type and field best practices
 
-### Python Standards
-Follow PEP 8 and modern Python best practices:
+### Drupal Development Best Practices
 
-1. **Code Structure**
-   ```python
-   # Type hints for all functions
-   def analyze_portfolio(portfolio_id: int, timeframe: str = '1Y') -> Dict[str, float]:
-       """Analyze portfolio performance metrics."""
-       pass
-
-   # Use dataclasses for data structures
-   @dataclass
-   class InvestmentAnalysis:
-       risk_score: float
-       expected_return: float
-       volatility: float
+1. **Cache Management**
+   - Always fix permissions before cache operations to avoid errors
+   - Use proper user context for cache rebuilds
+   - **IMPORTANT**: Run Drush cache operations as www-data user to prevent MySQL PDO errors
+   ```bash
+   # Fix permissions before cache operations
+   
+   # Remove problematic cached files if needed
+   sudo rm -rf /workspaces/unicorninvesting/WebFrontend/web/sites/default/files/css/*
+   sudo rm -rf /workspaces/unicorninvesting/WebFrontend/web/sites/default/files/js/*
+   
+   # Run cache rebuild as www-data user to avoid database connection issues
+   # Simple method that works in this environment:
+   sudo su /workspaces/unicorninvesting/scripts/drupalcachereset.sh
    ```
 
-2. **Data Processing**
-   - Use pandas for data manipulation
-   - Implement proper error handling and logging
-   - Use type hints consistently
-   - Follow functional programming principles where applicable
+2. **Drush Operations**
+   - Always use system PHP for Drush operations: `/usr/bin/php8.3 ./vendor/bin/drush.php`
+   - **CRITICAL**: For Drush commands with database operations, use sudo to avoid permission issues:
+     ```bash
+     # Simple method that works in this environment:
+     cd /workspaces/unicorninvesting/WebFrontend
+     sudo /usr/bin/php8.3 ./vendor/bin/drush.php cache:rebuild
+     ```
+   - Verify PHP extensions are available before troubleshooting
+   - See `/workspaces/unicorninvesting/docs/DRUSH_DEPENDENCIES_CHECKLIST.md` for complete troubleshooting guide
 
-3. **Machine Learning**
-   - Use scikit-learn pipelines
-   - Implement proper model validation
-   - Save models using joblib or pickle
-   - Document model parameters and performance metrics
+3. **Module Development & Changes**
+    - **MANDATORY**: After ANY change to Drupal modules (code, CSS, routing, etc.), ALWAYS clear the Drupal cache.
+    - To clear cache:
+       ```bash
+       su root
+       ./scripts/drupalcachreset.sh
+       ```
 
-4. **API Development**
-   - Use FastAPI for REST APIs
-   - Implement proper authentication
-   - Use Pydantic models for data validation
-   - Follow OpenAPI specification
+### Python Standards
+- Follow PEP 8
+- Use type hints and dataclasses
+- Use pandas for data manipulation
+- Use scikit-learn pipelines, validate models
+- Use FastAPI for APIs, Pydantic for validation
 
 ### Database Standards
-
-1. **Schema Design**
-   - Use normalized database design
-   - Implement proper indexing strategies
-   - Use foreign key constraints
-   - Follow naming conventions (snake_case)
-
-2. **Queries**
-   - Use parameterized queries
-   - Implement proper transaction management
-   - Use SQLAlchemy ORM for Python
-   - Optimize for performance
+### Database Standards
+- Normalize schema, use indexes and FKs
+- Use snake_case naming
+- Use parameterized queries, transactions
+- Use SQLAlchemy ORM
 
 ## Migration Strategy
 
-### Phase 1: Infrastructure Setup
-1. Set up LAMP server environment
-2. Install and configure Drupal 11
-3. Migrate MySQL database schema
-4. Set up Python virtual environment
+## Migration Strategy
+- Phase 1: Infra setup (LAMP, Drupal, MySQL, Python venv)
+- Phase 2: Data migration (R→Python, files→DB, validation)
+- Phase 3: Backend (Python analytics, REST APIs, ML migration)
+- Phase 4: Frontend (Drupal content types, auth, dashboard)
 
-### Phase 2: Data Migration
-1. Convert R data processing scripts to Python
-2. Migrate file-based data to database
-3. Implement data validation and cleaning
-4. Set up automated data pipelines
 
-### Phase 3: Backend Services
-1. Implement Python-based analytics engine
-2. Create REST APIs for data access
-3. Migrate machine learning models to Python
-4. Implement real-time data processing
-
-### Phase 4: Frontend Development
-1. Design Drupal content types and views
-2. Implement user authentication and authorization
-3. Create dashboard and reporting interfaces
-4. Integrate with Python backend services
-
-## Development Guidelines
-
-### Code Organization
-```
-unicorninvesting/
-├── backend/                    # Python backend services
-│   ├── api/                   # FastAPI routes
-│   ├── models/                # SQLAlchemy models
-│   ├── services/              # Business logic
-│   ├── ml/                    # Machine learning models
-│   └── utils/                 # Utility functions
-├── frontend/                  # Drupal frontend
-│   ├── modules/               # Custom Drupal modules
-│   ├── themes/                # Custom themes
-│   └── config/                # Configuration files
-├── database/                  # Database schemas and migrations
-├── tests/                     # Test suites
-├── docs/                      # Documentation
-└── deployment/                # Deployment scripts
-```
-
-### Testing Requirements
-1. **Python Backend**
-   - Unit tests with pytest
-   - Integration tests for APIs
-   - Performance tests for ML models
-   - Minimum 80% code coverage
-
-2. **Drupal Frontend**
-   - PHPUnit for backend functionality
-   - JavaScript testing with Jest
-   - Functional testing with Behat
-   - Accessibility testing
-
-### Security Requirements
-1. **Authentication & Authorization**
-   - Implement OAuth 2.0 for API access
-   - Use Drupal's user management system
-   - Implement role-based access control
-   - Secure API endpoints with proper authentication
-
-2. **Data Security**
-   - Encrypt sensitive financial data
-   - Implement data backup strategies
-   - Use HTTPS for all communications
-   - Follow GDPR compliance requirements
-
-### Performance Requirements
-1. **Database Optimization**
-   - Index frequently queried columns
-   - Implement database connection pooling
-   - Use read replicas for reporting queries
-   - Monitor query performance
-
-2. **Application Performance**
-   - Implement caching strategies (Redis/Memcached)
-   - Use asynchronous processing for heavy tasks
-   - Optimize image and asset delivery
    - Monitor application performance metrics
-
 ## Legacy Code Migration
 
 ### R to Python Conversion Guidelines
 1. **Data Processing Functions**
    ```r
    # R Code (Legacy)
-   loadfeaturelist <- function(userid, portfolioname) {
      # R implementation
    }
    ```
    
-   ```python
-   # Python Code (Target)
-   def load_feature_list(user_id: int, portfolio_name: str) -> List[str]:
-       """Load feature list for given user and portfolio."""
-       # Python implementation using pandas/SQLAlchemy
    ```
 
 2. **Machine Learning Models**
@@ -273,46 +170,28 @@ unicorninvesting/
 ## Quality Assurance
 
 ### Code Review Process
-1. All code changes require peer review
-2. Automated testing must pass
-3. Security scanning for vulnerabilities
-4. Performance impact assessment
-
 ### Documentation Requirements
-1. All functions must have docstrings
-2. API endpoints must be documented
-3. Database schema changes must be documented
-4. User-facing features need user documentation
-
 ### Deployment Process
-1. Use Git for version control
-2. Implement CI/CD pipelines
-3. Use staging environment for testing
-4. Monitor production deployments
+## Quality & Deployment
+- Code review required for all changes
+- Automated tests must pass
+- Security scan for vulnerabilities
+- Document functions, APIs, DB changes, user features
+- Use Git, CI/CD, staging, monitor deployments
 
 ## README.md Context
-
 When working on any part of this codebase, always consider:
-- This is a financial platform requiring high accuracy and security
-- Performance is critical for real-time trading decisions
-- User experience should be intuitive for financial professionals
-- Code must be maintainable and well-documented
-- All financial calculations must be auditable and traceable
+## General Principles
+- High accuracy and security (financial platform)
+- Performance is critical for real-time trading
+- Intuitive UX for financial professionals
+- Maintainable, well-documented, auditable code
 
 ## Parent Directory Context
 
 ### /workspaces/unicorninvesting/
-This is the main repository containing:
-- Legacy R scripts for financial analysis and machine learning
-- Data processing pipelines for stock and forex data
-- Portfolio management and optimization algorithms
-- Database integration for MySQL
-- Batch processing jobs for automated trading
-- Research and backtesting frameworks
+## Repo Context
+- Main repo: R scripts, data pipelines, portfolio/optimization, MySQL integration, batch jobs, research/backtesting
+- Goal: Modernize, preserve financial logic, improve scalability, maintainability, UX
 
-The goal is to modernize this codebase while preserving the core financial logic and improving scalability, maintainability, and user experience.
-
-
-
-When updating a file. always review the README.md for that file in the same directory for context.
-After updating a file. Always update the README.md for that directory with the latest information.
+- Always review and update README.md in the same directory after any file change.

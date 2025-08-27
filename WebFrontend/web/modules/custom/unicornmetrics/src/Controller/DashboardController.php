@@ -1372,6 +1372,24 @@ class DashboardController extends ControllerBase {
   }
 
   /**
+   * Get available portfolios for selection.
+   */
+  private function getAvailablePortfolios() {
+    return [
+      'forex' => [
+        'id' => 'forex',
+        'name' => 'Primary Forex Portfolio',
+        'value' => 125847.62,
+      ],
+      'equity' => [
+        'id' => 'equity',
+        'name' => 'Growth Equity Portfolio',
+        'value' => 250000.00,
+      ]
+    ];
+  }
+
+  /**
    * Internal method for rendering portfolio selector without container.
    */
   private function renderPortfolioSelectorInternal($current_portfolio_id) {

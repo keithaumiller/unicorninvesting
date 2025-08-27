@@ -31,6 +31,16 @@
 2. **Verify extensions**: `php -m | grep [extension]` before assuming availability
 3. **Test alternative paths**: Check `/usr/bin/php*` for system installations
 4. **Document solutions**: Maintain clear command formats for team consistency
+5. **Cache Operations**: Always set proper permissions before cache rebuild
+   ```bash
+   # Fix permissions before cache operations
+   sudo chown -R www-data:www-data /workspaces/unicorninvesting/WebFrontend/web/sites/default/files
+   sudo chmod -R 755 /workspaces/unicorninvesting/WebFrontend/web/sites/default/files
+   
+   # Then run cache rebuild as www-data
+   cd /workspaces/unicorninvesting/WebFrontend
+   sudo -u www-data /usr/bin/php8.3 ./vendor/bin/drush.php cache:rebuild
+   ```
 
 ### 🚀 **Future Prevention**
 1. **Environment Setup**: Include PHP extension verification in setup scripts
@@ -149,41 +159,54 @@ cd /workspaces/unicorninvesting/WebFrontend
 
 ## 📋 **RECOMMENDED USAGE**
 
-### 🔧 **Standard Command Format**
+### � **IMPROVED: System-Wide Drush Access** ✅ IMPLEMENTED
+```bash
+# Drush now works from ANY directory thanks to system alias!
+drush status
+drush pm:list
+drush cache:rebuild
+```
+
+### 🔧 **Alias Configuration** (ALREADY SETUP)
+```bash
+# System alias automatically configured for global access:
+alias drush="/usr/bin/php8.3 /workspaces/unicorninvesting/WebFrontend/vendor/bin/drush.php --root=/workspaces/unicorninvesting/WebFrontend/web"
+```
+
+### 🚀 **Common Operations** (Work from ANY directory)
+```bash
+# System status
+drush status
+
+# Module management  
+drush pm:list
+drush pm:list | grep unicorn
+drush pm:install [module]
+drush pm:uninstall [module]
+
+# Cache operations
+drush cache:clear
+drush cache:rebuild
+
+# Configuration
+drush config:get [config.key]
+drush config:set [config.key] [value]
+
+# Route discovery
+drush route
+
+# User management
+drush user:list
+drush user:role:add [role] [user]
+```
+
+### 🔧 **Legacy Command Format** (Still works if needed)
 ```bash
 # Navigate to WebFrontend directory
 cd /workspaces/unicorninvesting/WebFrontend
 
 # Execute Drush commands using system PHP
 /usr/bin/php8.3 ./vendor/bin/drush.php [command]
-```
-
-### 🚀 **Common Operations**
-```bash
-# System status
-/usr/bin/php8.3 ./vendor/bin/drush.php core:status
-
-# Module management
-/usr/bin/php8.3 ./vendor/bin/drush.php pm:list
-/usr/bin/php8.3 ./vendor/bin/drush.php pm:list --filter=unicornmetrics
-
-# Cache operations
-/usr/bin/php8.3 ./vendor/bin/drush.php cache:clear
-/usr/bin/php8.3 ./vendor/bin/drush.php cache:rebuild
-
-# Configuration
-/usr/bin/php8.3 ./vendor/bin/drush.php config:get [config.key]
-/usr/bin/php8.3 ./vendor/bin/drush.php config:set [config.key] [value]
-
-# Route discovery
-/usr/bin/php8.3 ./vendor/bin/drush.php route
-```
-
-### 🔧 **Optional Convenience Alias**
-```bash
-# Add to ~/.bashrc for easier access
-echo 'alias drush="/usr/bin/php8.3 /workspaces/unicorninvesting/WebFrontend/vendor/bin/drush.php"' >> ~/.bashrc
-source ~/.bashrc
 ```
 
 ---
