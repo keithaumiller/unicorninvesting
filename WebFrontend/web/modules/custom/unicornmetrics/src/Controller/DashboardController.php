@@ -635,7 +635,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $content,
       '#attached' => [
-        'html_head' => [[$this->getLeanPortfolioStyles(), 'lean-portfolio-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanPortfolioStyles(), 'lean-portfolio-styles']
+        ],
       ],
     ];
   }
@@ -697,7 +700,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $holdings_table,
       '#attached' => [
-        'html_head' => [[$this->getLeanHoldingsStyles(), 'lean-holdings-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanHoldingsStyles(), 'lean-holdings-styles']
+        ],
       ],
     ];
   }
@@ -719,6 +725,8 @@ class DashboardController extends ControllerBase {
       <h1>⚡ ' . htmlspecialchars($current_portfolio['name']) . ' Performance</h1>
       <p>Comprehensive performance analysis from LEAN algorithm execution</p>
     </div>
+    
+    ' . $navigation . '
     
     <div class="performance-grid">
       <div class="performance-section">
@@ -782,7 +790,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $content,
       '#attached' => [
-        'html_head' => [[$this->getLeanPerformanceStyles(), 'lean-performance-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanPerformanceStyles(), 'lean-performance-styles']
+        ],
       ],
     ];
   }
@@ -804,6 +815,8 @@ class DashboardController extends ControllerBase {
       <h1>🤖 ' . htmlspecialchars($current_portfolio['name']) . ' Algorithm</h1>
       <p>Algorithm execution status and performance monitoring</p>
     </div>
+    
+    ' . $navigation . '
     
     <div class="algorithms-grid">
       <div class="algorithm-card">
@@ -844,7 +857,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $content,
       '#attached' => [
-        'html_head' => [[$this->getLeanAlgorithmStyles(), 'lean-algorithm-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanAlgorithmStyles(), 'lean-algorithm-styles']
+        ],
       ],
     ];
   }
@@ -866,6 +882,8 @@ class DashboardController extends ControllerBase {
       <h1>🎯 ' . htmlspecialchars($current_portfolio['name']) . ' Algorithm Performance</h1>
       <p>Detailed algorithm performance analysis and signal quality metrics</p>
     </div>
+    
+    ' . $navigation . '
     
     <div class="algorithm-performance-grid">
       <div class="performance-card">
@@ -909,7 +927,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $content,
       '#attached' => [
-        'html_head' => [[$this->getLeanAlgorithmPerformanceStyles(), 'lean-algorithm-performance-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanAlgorithmPerformanceStyles(), 'lean-algorithm-performance-styles']
+        ],
       ],
     ];
   }
@@ -931,6 +952,8 @@ class DashboardController extends ControllerBase {
       <h1>🔬 ' . htmlspecialchars($current_portfolio['name']) . ' Backtest Results</h1>
       <p>Historical strategy validation and out-of-sample testing results</p>
     </div>
+    
+    ' . $navigation . '
     
     <div class="backtest-summary">
       <div class="backtest-card">
@@ -959,7 +982,10 @@ class DashboardController extends ControllerBase {
     return [
       '#markup' => $content,
       '#attached' => [
-        'html_head' => [[$this->getLeanBacktestStyles(), 'lean-backtest-styles']],
+        'html_head' => [
+          [$this->getSharedNavigationStyles(), 'shared-navigation-styles'],
+          [$this->getLeanBacktestStyles(), 'lean-backtest-styles']
+        ],
       ],
     ];
   }
@@ -1118,6 +1144,98 @@ class DashboardController extends ControllerBase {
       'total_trades' => 2340,
       'win_rate' => 0.634,
       'max_drawdown' => -0.0923,
+    ];
+  }
+
+  /**
+   * Get shared navigation and portfolio selector styles.
+   */
+  private function getSharedNavigationStyles(): array {
+    return [
+      '#tag' => 'style',
+      '#value' => '
+        .unicorn-unified-navigation { 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+          color: white; 
+          padding: 20px; 
+          border-radius: 10px; 
+          margin: 20px 0; 
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        .portfolio-selector-unified { 
+          margin-bottom: 20px; 
+          padding: 15px; 
+          background: rgba(255,255,255,0.1); 
+          border-radius: 8px; 
+        }
+        .portfolio-selector-unified h3 { 
+          margin: 0 0 10px 0; 
+          font-size: 1.1em; 
+          font-weight: bold; 
+        }
+        .selector-wrapper { 
+          display: flex; 
+          align-items: center; 
+          gap: 15px; 
+          flex-wrap: wrap; 
+        }
+        .portfolio-select { 
+          padding: 8px 12px; 
+          border: 1px solid rgba(255,255,255,0.3); 
+          border-radius: 5px; 
+          background: rgba(255,255,255,0.9); 
+          color: #333; 
+          font-size: 14px; 
+          min-width: 250px; 
+        }
+        .portfolio-stats { 
+          display: flex; 
+          gap: 15px; 
+          font-size: 0.9em; 
+          color: rgba(255,255,255,0.9); 
+        }
+        .nav-container h3 { 
+          margin: 0 0 15px 0; 
+          font-size: 1.1em; 
+          font-weight: bold; 
+        }
+        .nav-menu { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+          gap: 10px; 
+        }
+        .nav-item { 
+          display: flex; 
+          align-items: center; 
+          gap: 8px; 
+          padding: 10px 15px; 
+          background: rgba(255,255,255,0.1); 
+          color: white; 
+          text-decoration: none; 
+          border-radius: 6px; 
+          font-size: 0.9em; 
+          transition: all 0.3s ease; 
+        }
+        .nav-item:hover { 
+          background: rgba(255,255,255,0.2); 
+          text-decoration: none; 
+          color: white; 
+          transform: translateY(-1px); 
+        }
+        .nav-item.current { 
+          background: rgba(255,255,255,0.3); 
+          font-weight: bold; 
+          border: 1px solid rgba(255,255,255,0.4); 
+        }
+        .nav-icon { 
+          font-size: 1.1em; 
+          width: 20px; 
+          text-align: center; 
+        }
+        .nav-label { 
+          flex: 1; 
+        }
+      ',
     ];
   }
 
@@ -1368,7 +1486,15 @@ class DashboardController extends ControllerBase {
         <div class="nav-menu">' . $nav_items . '
         </div>
       </div>
-    </div>';
+    </div>
+    
+    <script>
+    function switchPortfolio(portfolioId) {
+      const currentUrl = new URL(window.location);
+      currentUrl.searchParams.set("portfolio", portfolioId);
+      window.location.href = currentUrl.toString();
+    }
+    </script>';
   }
 
   /**
@@ -1384,7 +1510,7 @@ class DashboardController extends ControllerBase {
       'equity' => [
         'id' => 'equity',
         'name' => 'Growth Equity Portfolio',
-        'value' => 250000.00,
+        'value' => 0.00,
       ]
     ];
   }

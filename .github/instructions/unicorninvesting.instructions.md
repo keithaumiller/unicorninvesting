@@ -95,9 +95,6 @@ Follow official Drupal coding standards and best practices:
    sudo rm -rf /workspaces/unicorninvesting/WebFrontend/web/sites/default/files/css/*
    sudo rm -rf /workspaces/unicorninvesting/WebFrontend/web/sites/default/files/js/*
    
-   # Run cache rebuild as www-data user to avoid database connection issues
-   # Simple method that works in this environment:
-   sudo su /workspaces/unicorninvesting/scripts/drupalcachereset.sh
    ```
 
 2. **Drush Operations**
