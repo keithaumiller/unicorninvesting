@@ -1,0 +1,374 @@
+#!/bin/bash
+
+# Unicorn Investing - Comprehensive Environment Setup & Health Check
+# This script combines environment setup with system validation
+# Usage: ./scripts/unicorn_environment.sh [--setup-only|--check-only|--help]
+
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Counters for health checks
+TOTAL_CHECKS=0
+PASSED_CHECKS=0
+FAILED_CHECKS=0
+
+# Function to check status and print results
+check_status() {
+    TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+    if [ $1 -eq 0 ]; then
+        echo -e "${GREEN}✅ $2${NC}"
+        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+    else
+        echo -e "${RED}❌ $2${NC}"
+        FAILED_CHECKS=$((FAILED_CHECKS + 1))
+        if [ -n "$3" ]; then
+            echo -e "   ${YELLOW}💡 Suggestion: $3${NC}"
+        fi
+    fi
+}
+
+# Function to display help
+show_help() {
+    echo "🦄 Unicorn Investing - Environment & Health Script"
+    echo ""
+    echo "Usage: $0 [OPTION]"
+    echo ""
+    echo "Options:"
+    echo "  --setup-only    Setup environment variables and aliases only"
+    echo "  --check-only    Run health checks only (skip environment setup)"
+    echo "  --help, -h      Show this help message"
+    echo "  (no options)    Run both environment setup and health checks"
+    echo ""
+    echo "Available aliases after setup:"
+    echo "  drupal-start    - Start and validate Drupal system"
+    echo "  drupal-status   - Check Apache and MySQL status"
+    echo "  drupal-logs     - View recent Drupal error logs"
+    echo "  drupal-restart  - Restart Apache and MySQL services"
+    echo "  drupal-cd       - Change to Drupal root directory"
+    echo "  unicorn-root    - Change to project root directory"
+    echo "  unicorn-env     - Run this comprehensive environment script"
+    echo ""
+}
+
+# Function to setup environment
+setup_environment() {
+    echo -e "${BLUE}🔧 Setting Up Unicorn Environment${NC}"
+    echo "=================================="
+
+    # Add to ~/.bashrc for persistent aliases
+    if [ -f ~/.bashrc ]; then
+        # Check if our aliases are already in .bashrc
+        if ! grep -q "# Unicorn Investing Aliases" ~/.bashrc; then
+            echo "" >> ~/.bashrc
+            echo "# Unicorn Investing Aliases" >> ~/.bashrc
+            echo "alias drupal-start='/workspaces/unicorninvesting/scripts/startup_drupal.sh'" >> ~/.bashrc
+            echo "alias drupal-status='sudo service apache2 status && sudo service mysql status'" >> ~/.bashrc
+            echo "alias drupal-logs='sudo tail -20 /var/log/apache2/drupal_error.log'" >> ~/.bashrc
+            echo "alias drupal-restart='sudo service apache2 restart && sudo service mysql restart'" >> ~/.bashrc
+            echo "alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
+            echo "alias unicorn-root='cd /workspaces/unicorninvesting'" >> ~/.bashrc
+            echo "alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'" >> ~/.bashrc
+            echo "" >> ~/.bashrc
+            echo "# Unicorn Investing Environment" >> ~/.bashrc
+            echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
+            echo "export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
+            echo "export DRUPAL_URL='https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/'" >> ~/.bashrc
+            
+            echo -e "${GREEN}✅ Aliases added to ~/.bashrc${NC}"
+            echo -e "${YELLOW}💡 Run 'source ~/.bashrc' or restart your terminal to use them${NC}"
+        else
+            echo -e "${GREEN}✅ Aliases already exist in ~/.bashrc${NC}"
+        fi
+    fi
+
+    # Set up aliases for current session
+    alias drupal-start='/workspaces/unicorninvesting/scripts/startup_drupal.sh'
+    alias drupal-status='sudo service apache2 status && sudo service mysql status'
+    alias drupal-logs='sudo tail -20 /var/log/apache2/drupal_error.log'
+    alias drupal-restart='sudo service apache2 restart && sudo service mysql restart'
+    alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'
+    alias unicorn-root='cd /workspaces/unicorninvesting'
+    alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'
+
+    # Set environment variables for current session
+    export UNICORN_ROOT='/workspaces/unicorninvesting'
+    export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'
+    export DRUPAL_URL='https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/'
+
+    echo ""
+    echo -e "${GREEN}🦄 Unicorn Environment Variables Set:${NC}"
+    echo -e "  UNICORN_ROOT = ${BLUE}$UNICORN_ROOT${NC}"
+    echo -e "  DRUPAL_ROOT = ${BLUE}$DRUPAL_ROOT${NC}"
+    echo -e "  DRUPAL_URL = ${BLUE}$DRUPAL_URL${NC}"
+    echo ""
+}
+
+# Function to run health checks
+run_health_checks() {
+    echo -e "${BLUE}🏥 Unicorn Platform Health Check${NC}"
+    echo "================================="
+    echo "Checking system components..."
+    echo ""
+
+    # 1. System Requirements
+    echo -e "${BLUE}🖥️  System Requirements${NC}"
+    echo "======================="
+
+    # OS Check
+    if [ -f /etc/os-release ]; then
+        OS_INFO=$(grep PRETTY_NAME /etc/os-release | cut -d'"' -f2)
+        check_status 0 "Operating System: $OS_INFO"
+    else
+        check_status 1 "Operating System: Information not available"
+    fi
+
+    # Disk Space Check
+    DISK_USAGE=$(df /workspaces | tail -1 | awk '{print $5}' | sed 's/%//')
+    if [ "$DISK_USAGE" -lt 80 ]; then
+        check_status 0 "Disk Space: ${DISK_USAGE}% used (sufficient)"
+    else
+        check_status 1 "Disk Space: ${DISK_USAGE}% used (running low)" "Consider cleaning up files"
+    fi
+
+    # Memory Check
+    MEMORY_USAGE=$(free | grep Mem | awk '{printf("%.0f", $3/$2 * 100.0)}')
+    if [ "$MEMORY_USAGE" -lt 80 ]; then
+        check_status 0 "Memory Usage: ${MEMORY_USAGE}% (healthy)"
+    else
+        check_status 1 "Memory Usage: ${MEMORY_USAGE}% (high)" "Consider restarting services"
+    fi
+
+    # 2. Python Environment
+    echo -e "\n${BLUE}🐍 Python Environment${NC}"
+    echo "====================="
+
+    # Python Installation
+    if command -v python3 >/dev/null 2>&1; then
+        PYTHON_VERSION=$(python3 --version | cut -d' ' -f2)
+        check_status 0 "Python: Version $PYTHON_VERSION"
+    else
+        check_status 1 "Python: Not installed"
+    fi
+
+    # Conda Environment
+    if command -v conda >/dev/null 2>&1; then
+        CONDA_VERSION=$(conda --version | cut -d' ' -f2)
+        check_status 0 "Conda: Version $CONDA_VERSION"
+        
+        # Check if in conda environment
+        if [ -n "$CONDA_DEFAULT_ENV" ]; then
+            check_status 0 "Conda Environment: Active ($CONDA_DEFAULT_ENV)"
+        else
+            check_status 1 "Conda Environment: Not activated" "Run: conda activate base"
+        fi
+    else
+        check_status 1 "Conda: Not installed"
+    fi
+
+    # Python Virtual Environment
+    if [ -f ".venv/bin/activate" ]; then
+        check_status 0 "Python Virtual Environment: Available"
+        
+        # Activate venv and check libraries
+        source .venv/bin/activate
+        
+        python -c "import fastapi, uvicorn" >/dev/null 2>&1
+        check_status $? "FastAPI Framework: Installed and importable"
+        
+        python -c "import pandas, numpy, scipy" >/dev/null 2>&1
+        check_status $? "Data Science Libraries: pandas, numpy, scipy"
+        
+        python -c "import sklearn" >/dev/null 2>&1
+        check_status $? "Machine Learning Libraries: scikit-learn"
+        
+        python -c "import prophet" >/dev/null 2>&1
+        check_status $? "Prophet Forecasting: Installed and importable"
+        
+        python -c "import yfinance" >/dev/null 2>&1
+        check_status $? "Financial Data Libraries: yfinance"
+        
+        python -c "import sqlalchemy, pymysql" >/dev/null 2>&1
+        check_status $? "Database Libraries: SQLAlchemy, PyMySQL"
+        
+    else
+        check_status 1 "Virtual Environment: Missing" "Run: python3 -m venv .venv && source .venv/bin/activate"
+    fi
+
+    # 3. Web Server & Database
+    echo -e "\n${BLUE}🌐 Web Server & Database${NC}"
+    echo "========================"
+
+    # MySQL Service
+    systemctl is-active mysql >/dev/null 2>&1
+    check_status $? "MySQL Service: Running"
+
+    # Apache Service
+    systemctl is-active apache2 >/dev/null 2>&1
+    check_status $? "Apache Service: Running"
+
+    # Database Connection Test
+    if command -v mysql >/dev/null 2>&1; then
+        mysql -e "SELECT 1;" >/dev/null 2>&1
+        check_status $? "Database Connection: Accessible"
+    else
+        check_status 1 "MySQL Client: Not installed"
+    fi
+
+    # PHP Installation
+    if command -v php >/dev/null 2>&1; then
+        PHP_VERSION=$(php --version | head -n1 | grep -o "[0-9]\+\.[0-9]\+")
+        if [[ "$PHP_VERSION" =~ ^8\.[3-9] ]]; then
+            check_status 0 "PHP Version: $PHP_VERSION (compatible)"
+        else
+            check_status 1 "PHP Version: $PHP_VERSION (8.3+ recommended)"
+        fi
+    else
+        check_status 1 "PHP: Not installed"
+    fi
+
+    # 4. Directory Structure
+    echo -e "\n${BLUE}📁 Directory Structure${NC}"
+    echo "======================"
+
+    # Key Directories Check
+    REQUIRED_DIRS=(
+        "BackendPython"
+        "BackendPython/unicorn"
+        "BackendPython/unicorn/1_data_sources"
+        "WebFrontend"
+        "docs"
+        "scripts"
+        "tests"
+    )
+
+    MISSING_DIRS=0
+    for dir in "${REQUIRED_DIRS[@]}"; do
+        if [ -d "$dir" ]; then
+            continue
+        else
+            MISSING_DIRS=$((MISSING_DIRS + 1))
+        fi
+    done
+
+    if [ $MISSING_DIRS -eq 0 ]; then
+        check_status 0 "Directory Structure: All key directories present"
+    else
+        check_status 1 "Directory Structure: $MISSING_DIRS directories missing"
+    fi
+
+    # Documentation Files
+    DOC_FILES=("README.md" "INSTALLATION.md" "deploy.yml")
+    MISSING_DOCS=0
+    for file in "${DOC_FILES[@]}"; do
+        if [ ! -f "$file" ]; then
+            MISSING_DOCS=$((MISSING_DOCS + 1))
+        fi
+    done
+
+    if [ $MISSING_DOCS -eq 0 ]; then
+        check_status 0 "Documentation: All key files present"
+    else
+        check_status 1 "Documentation: $MISSING_DOCS files missing"
+    fi
+
+    # 5. LEAN Framework
+    echo -e "\n${BLUE}🏗️  LEAN Framework${NC}"
+    echo "=================="
+
+    if [ -f "BackendPython/Lean/readme.md" ]; then
+        check_status 0 "LEAN Framework: Available"
+        
+        # Check for .NET (required for LEAN)
+        if command -v dotnet >/dev/null 2>&1; then
+            DOTNET_VERSION=$(dotnet --version 2>/dev/null)
+            check_status 0 ".NET Runtime: Version $DOTNET_VERSION"
+        else
+            check_status 1 ".NET Runtime: Not installed" "Required for LEAN framework"
+        fi
+    else
+        check_status 1 "LEAN Framework: Not found"
+    fi
+
+    # 6. Data Sources Validation
+    echo -e "\n${BLUE}📊 Data Sources${NC}"
+    echo "==============="
+
+    # Yahoo Finance Connector
+    if [ -f "BackendPython/unicorn/1_data_sources/1_raw/connectors/YahooFinanceMinuteData.py" ]; then
+        check_status 0 "Yahoo Finance Connector: Available"
+        
+        # Test if we can import it
+        cd BackendPython/unicorn/1_data_sources/1_raw/connectors
+        if [ -f "../../../../../.venv/bin/activate" ]; then
+            source ../../../../../.venv/bin/activate
+            python -c "import YahooFinanceMinuteData" >/dev/null 2>&1
+            check_status $? "Yahoo Finance Connector: Importable"
+        fi
+        cd - >/dev/null
+    else
+        check_status 1 "Yahoo Finance Connector: Not found"
+    fi
+
+    # 7. Summary
+    echo -e "\n${BLUE}📊 Summary${NC}"
+    echo "==========="
+
+    echo -e "Total Checks: ${BLUE}$TOTAL_CHECKS${NC}"
+    echo -e "Passed: ${GREEN}$PASSED_CHECKS${NC}"
+    echo -e "Failed: ${RED}$FAILED_CHECKS${NC}"
+
+    PASS_RATE=$((PASSED_CHECKS * 100 / TOTAL_CHECKS))
+    echo -e "Success Rate: ${BLUE}$PASS_RATE%${NC}"
+
+    if [ $FAILED_CHECKS -eq 0 ]; then
+        echo -e "\n${GREEN}🎉 All checks passed! Platform is ready for use.${NC}"
+        return 0
+    elif [ $PASS_RATE -ge 80 ]; then
+        echo -e "\n${YELLOW}⚠️  Platform is mostly functional with $FAILED_CHECKS minor issues.${NC}"
+        return 1
+    else
+        echo -e "\n${RED}🚨 Platform has significant issues requiring attention.${NC}"
+        return 2
+    fi
+}
+
+# Main script logic
+case "${1:-}" in
+    --setup-only)
+        setup_environment
+        echo -e "\n${GREEN}✅ Environment setup complete!${NC}"
+        ;;
+    --check-only)
+        run_health_checks
+        exit $?
+        ;;
+    --help|-h)
+        show_help
+        ;;
+    "")
+        # Run both setup and health check
+        setup_environment
+        echo ""
+        run_health_checks
+        HEALTH_EXIT_CODE=$?
+        
+        echo -e "\n${BLUE}📖 For more information:${NC}"
+        echo -e "   • INSTALLATION.md - Complete installation guide"
+        echo -e "   • docs/README.md - Documentation overview"
+        echo -e "   • README.md - Project overview"
+        echo ""
+        echo -e "${GREEN}🦄 Unicorn Environment Ready!${NC}"
+        
+        exit $HEALTH_EXIT_CODE
+        ;;
+    *)
+        echo -e "${RED}❌ Unknown option: $1${NC}"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac

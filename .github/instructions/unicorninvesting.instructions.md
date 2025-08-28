@@ -11,9 +11,10 @@ Unicorn Investing is a financial analytics platform for unicorn startups, high-g
 ## ⚠️ IMPORTANT - First Time Setup After Codespace Restart
 
 **After codespace restart or pause:**
-- Run: `source scripts/setup_environment.sh`
+- Run: `./scripts/unicorn_environment.sh` (comprehensive setup + health check)
+- Or use: `unicorn-env` (after initial setup)
 - Start services: `drupal-start` or `scripts/startup_drupal.sh`
-- Use aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`
+- Available aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`, `unicorn-env`
 
 ### 🌐 GitHub Codespace URL Translation for Debugging
 
@@ -175,6 +176,50 @@ Follow official Drupal coding standards and best practices:
 - Security scan for vulnerabilities
 - Document functions, APIs, DB changes, user features
 - Use Git, CI/CD, staging, monitor deployments
+
+## 📝 Documentation Standards
+
+### **CRITICAL: No Summary Files After Actions**
+- **❌ DO NOT** create separate summary files (e.g., `*_SUMMARY.md`, `*_COMPLETE.md`) after completing tasks
+- **❌ DO NOT** create standalone documentation files for completed work
+
+### **✅ Documentation Approach:**
+
+#### **1. README.md Files (Primary Documentation)**
+- **Update existing README.md files** in the relevant directory after any changes
+- **Create README.md files** for new directories or components
+- Include comprehensive information about functionality, usage, and architecture
+- Keep documentation current and accurate
+
+#### **2. Commit Messages (Action Reporting)**
+- **Use detailed commit messages** for after-action reporting
+- Include what was accomplished, why it was done, and any important notes
+- Structure: `[Type]: Brief description`
+- Body: Detailed explanation of changes and impact
+
+#### **3. Inline Code Documentation**
+- Document functions, classes, and complex logic directly in code
+- Use appropriate comment styles for each language (docstrings, JSDoc, etc.)
+- Include usage examples where helpful
+
+### **Documentation Workflow:**
+1. **Make changes** to code/configuration
+2. **Update relevant README.md** with new information
+3. **Commit with detailed message** explaining the changes
+4. **NO separate summary files**
+
+### **Example Good Commit Message:**
+```
+feat: Consolidate health_check.sh and setup_environment.sh scripts
+
+- Created comprehensive unicorn_environment.sh script combining functionality
+- Added modular execution options (--setup-only, --check-only, --help)
+- Enhanced health checks with 23 system validations
+- Moved legacy scripts to scripts/legacy/ directory
+- Added deprecation wrappers for backward compatibility
+- Updated documentation in scripts/README.md
+- Success rate: 86% system validation with minor issues identified
+```
 
 ## README.md Context
 When working on any part of this codebase, always consider:
