@@ -2,27 +2,49 @@
 
 ## 🏗️ Architecture Overview
 
-This directory implements the **LEAN Algorithm Framework** with clean separation of concerns across four core architectural components. Each component has a specific responsibility and operates independently within the framework.
+This directory implements the **LEAN Algorithm Framework** with clean separation of concerns across six core architectural layers. Each layer has a specific responsibility and operates independently within the framework.
 
 ## 📁 Directory Structure
 
 ```
 unicorn/
-├── alpha_models/           # 📊 Signal Generation & Forecasting
-├── portfolio_construction/ # 🎯 Position Sizing & Allocation  
-├── execution_models/       # ⚡ Order Placement & Execution
-├── risk_management/        # 🛡️ Risk Controls & Management
-├── algorithms/             # 🚀 Complete Algorithm Implementations
-├── data_sources/           # 📡 Custom Data Providers & Sources
-├── utils/                  # 🔧 Shared Utilities & Configuration
+├── 1_data_sources/         # 📡 Data Ingestion & Source Management
+│   ├── 1_raw/              # Raw data connectors (IBKR, Yahoo Finance, Alpha Vantage)
+│   ├── 2_bronze/           # Initial data validation and basic transformations
+│   ├── 3_silver/           # Cleaned and enriched datasets
+│   ├── 4_gold/             # Analytics-ready data marts
+│   ├── 5_data_marts/       # Business logic and aggregated views
+│   └── 6_etl_pipelines/    # Extract, Transform, Load processes
+├── 2_alpha_models/         # 📊 Signal Generation & Forecasting
+├── 3_risk_management/      # 🛡️ Risk Controls & Management
+├── 4_portfolio_construction/ # 🎯 Position Sizing & Allocation  
+├── 5_execution_models/     # ⚡ Order Placement & Execution
+├── 6_algorithms/           # 🚀 Complete Algorithm Implementations
+├── config/                 # ⚙️ Configuration files and settings
+├── backend/                # 🔧 Backend API services and utilities
+├── framework/              # 🏗️ Core framework components
 ├── legacy/                 # 📦 Legacy R & WPF Code (Archive)
 ├── README.md              # 📋 This Architecture Guide
 └── ARCHITECTURE.md        # 🏗️ Technical Implementation Details
 ```
 
-## 🎯 LEAN Framework - Four Core Components
+## 🎯 LEAN Framework - Six Core Layers
 
-### 1. 📊 Alpha Models (`alpha_models/`)
+### 1. 📡 Data Sources (`1_data_sources/`)
+**Purpose**: Comprehensive data management and ingestion pipeline
+- **Raw Layer**: Direct integrations with IBKR, Yahoo Finance, Alpha Vantage
+- **Bronze Layer**: Initial data validation and basic transformations
+- **Silver Layer**: Cleaned and enriched datasets
+- **Gold Layer**: Analytics-ready data marts
+- **Data Marts**: Business logic and aggregated views
+- **ETL Pipelines**: Automated data processing workflows
+
+**Current Integrations**:
+- Interactive Brokers (IBKR) - Live trading and market data
+- Yahoo Finance - Free historical and real-time data
+- Alpha Vantage - Financial data API integration
+
+### 2. 📊 Alpha Models (`2_alpha_models/`)
 **Purpose**: Pure forecasting and signal generation
 - **Input**: Market data, economic indicators, alternative data
 - **Output**: Insights (buy/sell signals with confidence and time horizon)
@@ -34,7 +56,17 @@ unicorn/
 - `predictiveanalytics/` - Advanced ML forecasting models
 - `recomendationsystems/` - Recommendation engine components
 
-### 2. 🎯 Portfolio Construction (`portfolio_construction/`)
+### 3. 🛡️ Risk Management (`3_risk_management/`)
+**Purpose**: Monitor and control portfolio risk
+- **Input**: Current portfolio state and market conditions
+- **Output**: Risk management targets (stop losses, position limits)
+- **Responsibility**: Protect capital and enforce risk limits
+
+**Current Implementations**:
+- `UnicornRiskManagement.py` - Core risk management models
+- `blotterscripts/` - Trade blotter and risk monitoring scripts
+
+### 4. 🎯 Portfolio Construction (`4_portfolio_construction/`)
 **Purpose**: Convert insights into target portfolio weights
 - **Input**: Insights from Alpha Models
 - **Output**: PortfolioTarget objects (how much of each asset to hold)
@@ -44,7 +76,9 @@ unicorn/
 - `UnicornPortfolioConstruction.py` - Core portfolio construction models
 - `batchjobs/` - Batch portfolio optimization processes
 
-### 3. ⚡ Execution Models (`execution_models/`)
+### 5. ⚡ Execution Models (`5_execution_models/`)
+**Purpose**: Convert portfolio targets into actual orders
+- **Input**: PortfolioTarget objects from Portfolio Construction
 **Purpose**: Convert portfolio targets into actual orders
 - **Input**: PortfolioTarget objects from Portfolio Construction
 - **Output**: Market orders, limit orders, stop orders
@@ -55,45 +89,39 @@ unicorn/
 - `deployment/` - Live trading deployment configurations
 - **Future**: Custom execution for slippage optimization, VWAP strategies
 
-### 4. 🛡️ Risk Management (`risk_management/`)
-**Purpose**: Monitor and control portfolio risk
-- **Input**: Current portfolio state and market conditions
-- **Output**: Risk management targets (stop losses, position limits)
-- **Responsibility**: Protect capital and enforce risk limits
+### 6.  Complete Algorithms (`6_algorithms/`)
 
-**Current Implementations**:
-- `UnicornRiskManagement.py` - Core risk management models
-- `blotterscripts/` - Trade blotter and risk monitoring scripts
-
-## 🚀 Complete Algorithms (`algorithms/`)
-
-Pre-built algorithms that combine all four components:
+Pre-built algorithms that combine all framework components:
 
 - `AdvancedForexFrameworkAlgorithm.py` - Multi-currency ensemble forecasting
 - `YahooFinanceForexFrameworkAlgorithm.py` - Free Yahoo Finance forex data
-- `test_forex_algorithm.py` - Testing and validation scripts
-- Legacy algorithms for reference and migration
+- `EthFrameworkAlgorithm.py` - ETH-focused trading algorithms
+- `MinuteLevelDataIntegrationAlgorithm.py` - High-frequency data processing
+- Algorithm validation and testing scripts
 
-## 📡 Data Sources (`data_sources/`)
+## ⚙️ Configuration (`config/`)
 
-Custom data providers and integrations:
-- `YahooFinanceMinuteData.py` - Free Yahoo Finance integration (no API key)
-- `AlphaVantageMinuteData.py` - Alpha Vantage integration
-- `data/` - Historical and reference data
-- `database/` - Database connections and schemas
-- `datagathering/` - Data collection processes
-- `datasetcreation/` - Dataset preparation pipelines
+System configuration and settings:
+- `eth_portfolio_config.json` - ETH portfolio configuration
+- `ibkr/` - Interactive Brokers configuration and credentials
+- Environment and API configuration files
 
-## 🔧 Utilities & Support (`utils/`)
+## 🔧 Backend Services (`backend/`)
 
-Shared utilities and configuration:
-- `backend/` - Backend service components
-- `config/` - Configuration files and settings
-- `scripts/` - Utility and deployment scripts
-- `tests/` - Unit and integration tests
-- `backtesting/` - Backtesting frameworks and results
-- `results/` - Analysis results and reports
-- `docs/` - Additional documentation
+API services and backend utilities:
+- `api/` - REST API endpoints
+- `ml/` - Machine learning service components
+- `models/` - Data models and schemas
+- `services/` - Business logic services
+- `utils/` - Shared utilities and helpers
+
+## 🏗️ Framework (`framework/`)
+
+Core framework components and abstractions:
+- `UnicornFrameworkAlgorithms.py` - Base framework algorithms
+- `alphas/` - Alpha model implementations
+- `portfolio/` - Portfolio construction components
+- `risk/` - Risk management components
 
 ## 📦 Legacy Code (`legacy/`)
 

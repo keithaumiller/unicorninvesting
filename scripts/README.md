@@ -17,6 +17,9 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 # Health check only
 ./scripts/unicorn_environment.sh --check-only
 
+# Start Drupal services and run full validation
+./scripts/unicorn_environment.sh --startup
+
 # Show help
 ./scripts/unicorn_environment.sh --help
 ```
@@ -24,7 +27,8 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 **Features:**
 - ✅ Environment variables setup
 - ✅ Bash aliases configuration
-- ✅ Complete system health checks (23 validation checks)
+- ✅ Complete system health checks (28 validation checks)
+- ✅ Drupal services startup and validation
 - ✅ Python environment validation
 - ✅ Database connectivity tests
 - ✅ Directory structure verification
@@ -35,7 +39,7 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - ✅ Alpha Vantage connector validation
 
 **Available Aliases After Setup:**
-- `drupal-start` - Start and validate Drupal system
+- `drupal-start` - Start Drupal services and run full platform validation (integrated)
 - `drupal-status` - Check Apache and MySQL status
 - `drupal-logs` - View recent Drupal error logs
 - `drupal-restart` - Restart Apache and MySQL services
@@ -55,10 +59,14 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 
 **Note:** All functionality from the legacy scripts has been successfully consolidated into `unicorn_environment.sh` with enhanced features and better maintainability.
 
-## 🔧 Other Scripts
+## 🔧 Individual Scripts
 
 ### `startup_drupal.sh`
-Drupal-specific startup script for web frontend
+**Status**: ⚠️ **SUPERSEDED** by `unicorn_environment.sh --startup`
+
+Drupal-specific startup script for web frontend. This functionality has been integrated into the main `unicorn_environment.sh` script for better consolidation.
+
+**Migration**: Use `./scripts/unicorn_environment.sh --startup` instead
 
 ## 🔗 Data Source Integrations
 
