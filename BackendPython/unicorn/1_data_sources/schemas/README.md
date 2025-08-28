@@ -1,12 +1,14 @@
-# Database
+# Database Schemas & Data Models
 
-MySQL schemas, migration scripts, and database dumps for the Unicorn Investing platform.
+## 📊 Purpose
 
-## Purpose
-- Database schema definitions and migrations
-- Historical database dumps for backup/restore
-- Table structure documentation
-- Data migration scripts for R to Python transition
+This directory contains **database schemas, data models, and structure definitions** for all layers of the data warehouse. Schemas ensure consistent data structure and relationships across the platform.
+
+## 🏗️ Architecture Role
+
+**Schema Management**: Defines structure for Bronze → Silver → Gold → Data Marts
+
+Database schemas provide the **structural foundation** for all data storage and processing.
 
 ## Current Files
 

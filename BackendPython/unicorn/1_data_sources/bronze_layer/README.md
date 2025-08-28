@@ -1,22 +1,45 @@
-# Data
+# Bronze Layer - Raw Data Storage
 
-**Status**: 📦 Legacy data preserved, ready for Python processing pipeline
+## 🥉 Purpose
 
-Market data storage, reference datasets, and analysis results for the Unicorn Investing platform.
+The **Bronze Layer** stores raw, unprocessed data exactly as received from source systems. This layer serves as the **single source of truth** for all historical data and provides the foundation for all downstream processing.
 
-## Current Status (August 2025)
+## 🏗️ Architecture Role
 
-### ✅ Data Preservation
-- **Legacy Data**: All historical market data preserved during reorganization
-- **Reference Data**: Exchange listings and currency pairs maintained
-- **Structure**: Original directory structure preserved for migration
-- **Accessibility**: Ready for Python-based data processing pipeline
+**Data Flow**: Connectors → Staging → **Bronze Layer** → Silver Layer → Gold Layer
 
-### 🔄 Migration Progress
-- **Raw Data**: Legacy CSV files available for Python processing
-- **Database Integration**: Ready for MySQL import and normalization
-- **API Integration**: Prepared for real-time data feed integration
-- **Feature Engineering**: Historical feature lists available for ML pipeline
+The Bronze Layer is the **permanent archive** of all raw data with complete historical preservation.
+
+## 📊 Current Data Categories
+
+### **📈 Exchange Data** (`exchangedata/`)
+Market reference data and trading universe definitions:
+
+- **`FOREX.csv/txt`** - Foreign exchange pairs and specifications
+- **`currencies.csv`** - Currency reference data and metadata
+- **`all_stocks.csv`** - Complete stock universe
+- **`nyse.csv`** - New York Stock Exchange listings
+- **`nasdaq.csv`** - NASDAQ listings  
+- **`amex.csv`** - American Stock Exchange listings
+- **`master_featurelist.csv`** - Complete feature definitions
+- **`stockstouse.csv`** - Filtered trading universe
+
+### **� Historical Archives** (`old/`)
+Legacy datasets and archived files:
+
+- **`Finalsetoutputstructure.ods/csv`** - Historical output schemas
+- **`OLD_Architecture.ods`** - Previous system architecture
+- **`Predict.csv`** - Historical prediction datasets
+- **`stock_returns_base150.csv`** - Base return calculations
+- **`table.csv`** - Legacy data tables
+
+### **📊 Analysis Results** (`results/`)
+Raw analytical outputs and model results:
+
+- **`1/2/NNresults.csv`** - Neural network model outputs
+- **`1/3/GAResults.csv`** - Genetic algorithm results
+- **`1/3/NNresults.csv`** - Alternative neural network results
+- **`1/3/plots/`** - Raw performance plots and visualizations
 
 ## Purpose
 - Store raw and processed market data (stocks, forex, indices)

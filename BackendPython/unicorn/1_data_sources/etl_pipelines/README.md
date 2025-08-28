@@ -1,12 +1,17 @@
-# Dataset Creation
+# ETL Pipelines - Data Transformation Workflows
 
-Feature engineering and training set generation for machine learning models.
+## ⚙️ Purpose
 
-## Purpose
-- Combine multiple stock/forex datasets into unified training matrices
-- Generate features from raw market data (price, volume, technical indicators)
-- Create training and evaluation datasets for neural network training
-- Data preprocessing, normalization, and cleaning
+This directory contains **Extract, Transform, Load (ETL) pipelines** that move and transform data between layers of the data warehouse. Pipelines automate the flow from raw data to business-ready analytics.
+
+## 🏗️ Architecture Role
+
+**Pipeline Flow**: 
+- **Extract**: Bronze → Silver → Gold → Data Marts
+- **Transform**: Data cleaning, validation, aggregation, calculation
+- **Load**: Optimized storage for downstream consumption
+
+ETL pipelines are the **data transformation engine** of the platform.
 
 ## Files
 
