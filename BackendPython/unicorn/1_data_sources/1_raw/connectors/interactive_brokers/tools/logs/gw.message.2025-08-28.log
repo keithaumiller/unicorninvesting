@@ -434,3 +434,109 @@
 -> GET /sso/ping,200|84ms
 -> request: /v1/api/tickle
 -> GET /v1/api/tickle,200|171ms
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+<- 200 GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+-> GET /sso/lib/xyz.bundle.min.js
+-> GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+-> GET /css/reg-am/login.min.css
+-> GET /css/fontawesome-6.4.2/all.min.css
+<- 304 GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+<- 304 GET /sso/lib/xyz.bundle.min.js
+-> GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+-> GET /css/ibkr/theme-ibkr-portal.min.css
+-> GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+<- 304 GET /css/reg-am/login.min.css
+<- 200 GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+<- 304 GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+<- 304 GET /css/ibkr/theme-ibkr-portal.min.css
+<- 304 GET /css/fontawesome-6.4.2/all.min.css
+-> GET /images/common/logos/ibkr/interactive-brokers.svg
+<- 304 GET /images/common/logos/ibkr/interactive-brokers.svg
+-> GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> GET /fonts/proxima-nova/Proxima-Nova-Semibold.woff2
+<- 304 GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> GET /fonts/proxima-nova/Proxima-Nova-Regular.woff2
+<- 304 GET /fonts/proxima-nova/Proxima-Nova-Semibold.woff2
+-> GET /en/includes/general/gdpr-am.php
+-> POST /sso/report
+-> POST /portal.proxy/v1/gstat/bulletins
+<- 304 GET /fonts/proxima-nova/Proxima-Nova-Regular.woff2
+<- 301 GET /en/includes/general/gdpr-am.php
+<- 200 POST /portal.proxy/v1/gstat/bulletins
+-> GET /fonts/fontawesome-6.4.2/webfonts/fa-solid-900.woff2
+<- 304 GET /fonts/fontawesome-6.4.2/webfonts/fa-solid-900.woff2
+<- 200 POST /sso/report
+-> GET /fonts/proxima-nova/proximanova-extrabold.woff2
+<- 200 GET /fonts/proxima-nova/proximanova-extrabold.woff2
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+<- 200 GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+-> GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+-> GET /css/reg-am/login.min.css
+-> GET /css/fontawesome-6.4.2/all.min.css
+-> GET /css/ibkr/theme-ibkr-portal.min.css
+-> GET /sso/lib/xyz.bundle.min.js
+<- 304 GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+<- 304 GET /css/reg-am/login.min.css
+<- 304 GET /sso/lib/xyz.bundle.min.js
+<- 304 GET /css/ibkr/theme-ibkr-portal.min.css
+<- 200 GET /css/fontawesome-6.4.2/all.min.css
+-> GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+-> GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+<- 200 GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+<- 304 GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+-> GET /images/common/logos/ibkr/interactive-brokers.svg
+<- 304 GET /images/common/logos/ibkr/interactive-brokers.svg
+-> GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> POST /sso/report
+-> GET /en/includes/general/gdpr-am.php
+<- 304 GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> POST /portal.proxy/v1/gstat/bulletins
+<- 301 GET /en/includes/general/gdpr-am.php
+-> GET /images/web/favicons/home-screen-icon-128x128.png
+<- 304 GET /images/web/favicons/home-screen-icon-128x128.png
+<- 200 POST /sso/report
+<- 200 POST /portal.proxy/v1/gstat/bulletins
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Dispatcher
+<- 302 POST /sso/Dispatcher
+-> request: /v1/api/sso/validate?gw=1
+-> GET /v1/api/sso/validate?gw=1,200|99ms
+-> request: /v1/api/one/user
+-> request: /v1/api/ssodh/init
+-> sso GET https://api.ibkr.com/v1/api/ssodh/init
+-> GET /v1/api/one/user,200|175ms
+-> request: /v1/api/ssodh/st
+-> sso GET https://api.ibkr.com/v1/api/ssodh/st
+-> request: /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status,200|134ms
+-> request: /v1/api/iserver/auth/ssodh/init
+-> POST https://api.ibkr.com/v1/api/iserver/auth/ssodh/init,200|1613ms
+-> request: /v1/api/iserver/accounts
+-> GET /v1/api/iserver/accounts,200|63ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|317ms

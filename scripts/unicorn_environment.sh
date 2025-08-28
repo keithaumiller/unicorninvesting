@@ -225,6 +225,82 @@ start_drupal_services() {
     return 0
 }
 
+# Function to check and start IBKR Gateway
+start_ibkr_gateway() {
+    echo -e "${BLUE}🏦 IBKR Gateway Startup & Validation${NC}"
+    echo "====================================="
+    echo ""
+
+    local IBKR_TOOLS_PATH="/workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools"
+    
+    # Check if IBKR Gateway is already running
+    if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
+        echo -e "${GREEN}✅ IBKR Gateway is already running${NC}"
+        
+        # Check authentication status
+        AUTH_STATUS=$(curl -s http://localhost:5000/v1/api/iserver/auth/status | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('authenticated', False))" 2>/dev/null)
+        if [ "$AUTH_STATUS" = "True" ]; then
+            echo -e "${GREEN}✅ IBKR Gateway is authenticated${NC}"
+        else
+            echo -e "${YELLOW}⚠️  IBKR Gateway is running but not authenticated${NC}"
+            echo -e "${BLUE}📱 Please log in via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+        fi
+    else
+        echo -e "${YELLOW}🔄 Starting IBKR Gateway...${NC}"
+        
+        if [ ! -d "$IBKR_TOOLS_PATH" ]; then
+            echo -e "${RED}❌ IBKR Gateway path not found: $IBKR_TOOLS_PATH${NC}"
+            return 1
+        fi
+        
+        # Stop any existing gateway processes
+        echo -e "${YELLOW}🛑 Stopping any existing IBKR Gateway processes...${NC}"
+        pkill -f "ibgroup.web.core.clientportal.gw.GatewayStart" 2>/dev/null || true
+        sleep 2
+        
+        # Start the gateway in background
+        cd "$IBKR_TOOLS_PATH"
+        
+        # Ensure HTTP configuration exists
+        if [ ! -f "root/conf-http.yaml" ]; then
+            echo -e "${YELLOW}📝 Creating HTTP configuration...${NC}"
+            # Create HTTP config by copying and modifying SSL settings
+            sed 's/listenSsl: true/listenSsl: false/' root/conf.yaml > root/conf-http.yaml
+            # Remove SSL cert and password lines
+            sed -i '/sslCert:/d' root/conf-http.yaml
+            sed -i '/sslPwd:/d' root/conf-http.yaml
+        fi
+        
+        # Start the gateway using the HTTP config
+        echo -e "${YELLOW}🚀 Starting IBKR Gateway with HTTP configuration...${NC}"
+        nohup ./bin/run.sh root/conf-http.yaml > gateway-http.log 2>&1 &
+        local GATEWAY_PID=$!
+        
+        echo -e "${YELLOW}⏳ Waiting for IBKR Gateway to start (PID: $GATEWAY_PID)...${NC}"
+        
+        # Wait up to 45 seconds for the gateway to start
+        local COUNT=0
+        while [ $COUNT -lt 45 ]; do
+            if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
+                echo ""
+                echo -e "${GREEN}✅ IBKR Gateway started successfully on HTTP${NC}"
+                echo -e "${BLUE}📱 Please log in via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+                echo -e "${YELLOW}💡 Note: Login URL uses HTTPS proxy but gateway runs on HTTP${NC}"
+                return 0
+            fi
+            sleep 1
+            COUNT=$((COUNT + 1))
+            echo -n "."
+        done
+        
+        echo ""
+        echo -e "${RED}❌ IBKR Gateway failed to start within 45 seconds${NC}"
+        echo -e "${YELLOW}💡 Check logs at: $IBKR_TOOLS_PATH/gateway-http.log${NC}"
+        echo -e "${YELLOW}💡 Also check: $IBKR_TOOLS_PATH/gateway.log${NC}"
+        return 1
+    fi
+}
+
 # Function to run health checks
 run_health_checks() {
     echo -e "${BLUE}🏥 Unicorn Platform Health Check${NC}"
@@ -505,6 +581,8 @@ case "${1:-}" in
         setup_environment
         echo ""
         start_drupal_services
+        echo ""
+        start_ibkr_gateway
         echo ""
         run_health_checks
         HEALTH_EXIT_CODE=$?

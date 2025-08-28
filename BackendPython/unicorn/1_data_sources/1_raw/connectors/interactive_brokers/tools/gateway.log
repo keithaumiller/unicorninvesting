@@ -1,4 +1,3 @@
-nohup: ignoring input
 running  
  runtime path : root:dist/ibgroup.web.core.iblink.router.clientportal.gw.jar:build/lib/runtime/*
  config file  : root/conf.yaml

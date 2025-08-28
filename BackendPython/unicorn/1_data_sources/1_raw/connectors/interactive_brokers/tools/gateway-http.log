@@ -1,7 +1,6 @@
-nohup: ignoring input
 running  
  runtime path : root:dist/ibgroup.web.core.iblink.router.clientportal.gw.jar:build/lib/runtime/*
- config file  : root/conf-codespace.yaml
+ config file  : root/conf-http.yaml
  -> mount demo on /demo
 Java Version: 21.0.7
 ****************************************************
