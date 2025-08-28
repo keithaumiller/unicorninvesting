@@ -15,15 +15,29 @@ Framework Components:
 - Portfolio: UnicornConfidenceWeightedPortfolioConstruction
 - Execution: ImmediateExecutionModel
 - Risk: UnicornForexRiskManagement
+
+YAHOO FINANCE INTEGRATION:
+- Added support for Yahoo Finance as free data source
+- No API keys required
+- Supports major forex pairs: EURUSD, GBPUSD, USDJPY, etc.
+- Fallback to regular data if Yahoo Finance unavailable
 """
 
 import sys
 sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/framework')
+sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/data_sources')
 
 from AlgorithmImports import *
 from alphas.AdvancedForexForecastingAlpha import AdvancedForexForecastingAlpha
 from portfolio.UnicornPortfolioConstruction import UnicornConfidenceWeightedPortfolioConstruction
 from risk.UnicornRiskManagement import UnicornForexRiskManagement
+
+# Yahoo Finance data integration
+try:
+    from YahooFinanceMinuteData import YahooFinanceForexData, YahooFinanceCryptoData
+    YAHOO_FINANCE_AVAILABLE = True
+except ImportError:
+    YAHOO_FINANCE_AVAILABLE = False
 
 
 class AdvancedForexFrameworkAlgorithm(QCAlgorithm):
@@ -41,32 +55,33 @@ class AdvancedForexFrameworkAlgorithm(QCAlgorithm):
     """
     
     def initialize(self):
-        """Initialize the framework-based algorithm."""
+        """Initialize the framework-based algorithm with Yahoo Finance support."""
         
         # Basic algorithm setup
         self.set_start_date(2023, 1, 1)
         self.set_end_date(2024, 1, 1)
         self.set_cash(100000)
         
-        # Define forex universe
-        forex_symbols = [
-            Symbol.create("EURUSD", SecurityType.FOREX, Market.OANDA),
-            Symbol.create("USDJPY", SecurityType.FOREX, Market.OANDA),
-            Symbol.create("USDCNH", SecurityType.FOREX, Market.OANDA),
-        ]
+        # Yahoo Finance integration flag
+        self.using_yahoo_finance = False
+        self.yahoo_symbols = {}
         
-        # Add crypto ETH if available
-        try:
-            eth_symbol = Symbol.create("ETHUSD", SecurityType.CRYPTO, Market.GDAX)
-            forex_symbols.append(eth_symbol)
-            self.debug("✅ Added ETHUSD crypto")
-        except:
+        # ===========================================
+        # DATA SOURCE SELECTION: Yahoo Finance or Default
+        # ===========================================
+        
+        if YAHOO_FINANCE_AVAILABLE:
             try:
-                eth_symbol = Symbol.create("ETHUSD", SecurityType.FOREX, Market.OANDA)
-                forex_symbols.append(eth_symbol)
-                self.debug("✅ Added ETHUSD forex")
-            except:
-                self.debug("⚠️ ETHUSD not available")
+                # Try Yahoo Finance first (free, no API key required)
+                forex_symbols = self.setup_yahoo_finance_data()
+                self.using_yahoo_finance = True
+                self.debug("🌐 Using Yahoo Finance as primary data source")
+            except Exception as e:
+                self.debug(f"⚠️ Yahoo Finance setup failed: {e}")
+                forex_symbols = self.setup_default_forex_data()
+        else:
+            self.debug("ℹ️ Yahoo Finance not available, using default data")
+            forex_symbols = self.setup_default_forex_data()
         
         # ===========================================
         # LEAN ALGORITHM FRAMEWORK COMPONENTS
@@ -107,19 +122,103 @@ class AdvancedForexFrameworkAlgorithm(QCAlgorithm):
         self.insights_count = 0
         self.trades_count = 0
         self.last_insight_time = datetime.min
+        self.yahoo_data_points = 0
         
         # Log initialization
+        data_source = "Yahoo Finance (Free)" if self.using_yahoo_finance else "Default Forex Data"
         self.debug("🚀 ADVANCED FOREX FRAMEWORK ALGORITHM INITIALIZED")
-        self.debug("🔮 Forecasting: ARIMA + Neural Networks + Prophet + XGBoost")
+        self.debug(f"� Data Source: {data_source}")
+        self.debug("�🔮 Forecasting: ARIMA + Neural Networks + Prophet + XGBoost")
         self.debug("⚖️ Portfolio: Confidence-weighted allocation")
         self.debug("🛡️ Risk: Multi-layer forex risk management")
         self.debug("💰 Capital: $100,000")
+    
+    def setup_yahoo_finance_data(self):
+        """
+        Setup Yahoo Finance data sources for major forex pairs.
+        
+        Yahoo Finance provides free forex data without API keys.
+        Format: EURUSD=X, GBPUSD=X, etc.
+        
+        Returns:
+            List of symbols for framework universe selection
+        """
+        forex_symbols = []
+        
+        # Major forex pairs to track with Yahoo Finance
+        yahoo_forex_pairs = {
+            'EURUSD': 'EURUSD',
+            'GBPUSD': 'GBPUSD', 
+            'USDJPY': 'USDJPY',
+            'AUDUSD': 'AUDUSD'
+        }
+        
+        for lean_pair, yahoo_pair in yahoo_forex_pairs.items():
+            try:
+                symbol = self.add_data(YahooFinanceForexData, yahoo_pair, Resolution.MINUTE).symbol
+                forex_symbols.append(symbol)
+                self.yahoo_symbols[lean_pair] = symbol
+                self.debug(f"✅ Yahoo Finance: {lean_pair} -> {yahoo_pair}=X")
+            except Exception as e:
+                self.debug(f"❌ Failed to add Yahoo Finance {lean_pair}: {e}")
+        
+        # Add crypto as forex alternatives
+        yahoo_crypto_pairs = {
+            'BTCUSD': 'BTCUSD',
+            'ETHUSD': 'ETHUSD'
+        }
+        
+        for lean_pair, yahoo_pair in yahoo_crypto_pairs.items():
+            try:
+                symbol = self.add_data(YahooFinanceCryptoData, yahoo_pair, Resolution.MINUTE).symbol
+                forex_symbols.append(symbol)
+                self.yahoo_symbols[lean_pair] = symbol
+                self.debug(f"✅ Yahoo Finance Crypto: {lean_pair} -> {yahoo_pair}-USD")
+            except Exception as e:
+                self.debug(f"❌ Failed to add Yahoo Finance crypto {lean_pair}: {e}")
+        
+        if len(forex_symbols) == 0:
+            raise Exception("No Yahoo Finance symbols successfully added")
+        
+        self.debug(f"🌐 Yahoo Finance setup complete: {len(forex_symbols)} symbols")
+        return forex_symbols
+    
+    def setup_default_forex_data(self):
+        """
+        Setup default forex data as fallback.
+        
+        Returns:
+            List of symbols for framework universe selection  
+        """
+        # Define forex universe using traditional LEAN forex symbols
+        forex_symbols = [
+            Symbol.create("EURUSD", SecurityType.FOREX, Market.OANDA),
+            Symbol.create("USDJPY", SecurityType.FOREX, Market.OANDA),
+            Symbol.create("USDCNH", SecurityType.FOREX, Market.OANDA),
+        ]
+        
+        # Add crypto ETH if available
+        try:
+            eth_symbol = Symbol.create("ETHUSD", SecurityType.CRYPTO, Market.GDAX)
+            forex_symbols.append(eth_symbol)
+            self.debug("✅ Added ETHUSD crypto")
+        except:
+            try:
+                eth_symbol = Symbol.create("ETHUSD", SecurityType.FOREX, Market.OANDA)
+                forex_symbols.append(eth_symbol)
+                self.debug("✅ Added ETHUSD forex")
+            except:
+                self.debug("⚠️ ETHUSD not available")
+        
+        self.debug(f"🔄 Default forex setup complete: {len(forex_symbols)} symbols")
+        return forex_symbols
     
     def on_insights_generated(self, algorithm, data):
         """
         Called when Alpha Model generates new Insights.
         
         This is for monitoring only - the framework handles trading automatically.
+        Enhanced with Yahoo Finance data source tracking.
         """
         self.insights_count += len(data.insights)
         self.last_insight_time = self.time
@@ -132,8 +231,12 @@ class AdvancedForexFrameworkAlgorithm(QCAlgorithm):
             # Get confidence if available
             confidence = getattr(insight, 'confidence', 0.5) if hasattr(insight, 'confidence') else 0.5
             
-            # Log the insight
-            self.debug(f"{direction_emoji} FORECAST {insight.symbol}: "
+            # Get pair name for Yahoo Finance symbols
+            pair_name = self.get_pair_name_for_symbol(insight.symbol)
+            data_source_indicator = "📊" if self.using_yahoo_finance else "💼"
+            
+            # Log the insight with data source info
+            self.debug(f"{direction_emoji} {data_source_indicator} FORECAST {pair_name}: "
                       f"{direction_text} - Expected Return: {insight.magnitude:.2%}, "
                       f"Confidence: {confidence:.2f}, "
                       f"Horizon: {insight.period}")
@@ -141,12 +244,48 @@ class AdvancedForexFrameworkAlgorithm(QCAlgorithm):
             # Add insight metadata if available
             if hasattr(insight, 'tag') and insight.tag:
                 self.debug(f"   📊 Details: {insight.tag}")
+                
+            # Log Yahoo Finance specific info
+            if self.using_yahoo_finance:
+                self.debug(f"   🌐 Yahoo Finance Data Source: FREE")
+    
+    def get_pair_name_for_symbol(self, symbol):
+        """Get human-readable pair name for symbol, especially for Yahoo Finance."""
+        
+        if self.using_yahoo_finance:
+            # Find the pair name from yahoo_symbols mapping
+            for pair_name, yahoo_symbol in self.yahoo_symbols.items():
+                if yahoo_symbol == symbol:
+                    return pair_name
+        
+        # Fallback to symbol string
+        return str(symbol)
+    
+    def on_data(self, data):
+        """
+        Monitor incoming data, especially Yahoo Finance data quality.
+        
+        Framework handles trading automatically, this is for monitoring.
+        """
+        if self.using_yahoo_finance:
+            # Count Yahoo Finance data points
+            for pair_name, symbol in self.yahoo_symbols.items():
+                if data.contains_key(symbol):
+                    self.yahoo_data_points += 1
+                    
+                    # Log occasional data quality checks
+                    if self.yahoo_data_points % 100 == 0:
+                        price = data[symbol].value
+                        self.debug(f"🌐 Yahoo Finance {pair_name}: "
+                                  f"Data Point #{self.yahoo_data_points}, "
+                                  f"Price=${price:.5f}")
     
     def on_order_event(self, order_event):
         """
         Monitor order executions from the framework.
         
         Framework handles all order placement - this is just for tracking.
+        Enhanced with Yahoo Finance symbol mapping.
         """
         if order_event.status == OrderStatus.FILLED:
             self.trades_count += 1
