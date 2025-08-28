@@ -298,13 +298,21 @@ This data warehouse architecture supports:
 ✅ **Modern Architecture**: Clean layer-based data processing flow  
 ✅ **Python Connectors**: Real-time API integrations in `1_raw/connectors/`  
 ✅ **Transform Scripts**: Dedicated processing scripts in each layer  
+✅ **Utilities Framework**: Layer-specific maintenance and operations tools  
 ✅ **Reference Data**: Current market data in `2_bronze/exchangedata/`  
 ✅ **Legacy Archive**: Historical R scripts preserved in `legacy/`
+
+**Key Components:**  
+- **Connectors**: Data source integrations (Yahoo Finance, Alpha Vantage)
+- **Transform Scripts**: Layer-specific data processing and transformation
+- **Utilities**: Creation, maintenance, monitoring, and optimization tools
+- **Reference Data**: Exchange listings, currency pairs, feature definitions
 
 **Key Migration Notes:**  
 - All R scripts moved to `legacy/` - use Python equivalents for new development
 - Data connectors now integrated with raw layer for logical data flow
 - Transform scripts distributed by layer for better separation of concerns
+- Utilities provide comprehensive maintenance and operational capabilities
 
 ---
 
