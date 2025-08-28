@@ -2,18 +2,33 @@
 
 ## 🏪 Purpose
 
-The **1_raw** layer provides temporary storage for data validation and initial processing before moving to the 2_bronze Layer. This area acts as a buffer and quality gate for incoming data.
+The **1_raw** layer provides temporary storage for data validation and initial processing before moving to the 2_bronze layer. This area acts as a buffer and quality gate for incoming data.
 
 ## 🏗️ Architecture Role
 
-**Data Flow**: 7_connectors → **1_raw** → 2_bronze → 3_silver → 4_gold
+**Data Flow**: External APIs → **1_raw/connectors** → **1_raw** → 2_bronze → 3_silver → 4_gold
 
 The 1_raw layer ensures **data quality and validation** before permanent storage.
 
+## 📂 Directory Structure
+
+```
+1_raw/
+├── connectors/           # 🔌 Data source API integrations
+│   ├── AlphaVantageMinuteData.py
+│   ├── YahooFinanceMinuteData.py
+│   └── YAHOO_FINANCE_INTEGRATION_GUIDE.md
+├── transformscripts/     # ⚙️ Raw data processing scripts
+├── market_data/         # Raw market data feeds (runtime)
+├── news_feeds/          # Unprocessed news data (runtime)
+├── economic_data/       # Raw economic indicators (runtime)
+└── README.md           # This documentation
+```
+
 ## 🎯 **Raw Data Functions**
 
-### **1. Data Validation**
-Initial quality checks before bronze layer storage:
+### **1. Data Ingestion (connectors/)**
+External API integrations and data source connections:
 
 - **Schema Validation**: Ensure data conforms to expected structure
 - **Format Validation**: Verify file formats and encoding

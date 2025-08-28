@@ -10,25 +10,30 @@ This directory implements a **modern data warehouse architecture** following ind
 
 ```
 1_data_sources/
-├── 1_raw/                  # 🏪 Raw/Staging - Unprocessed data from sources
-├── 2_bronze/               # 🥉 Bronze - Raw data with basic validation  
+├── 1_raw/                  # 🏪 Raw Data Staging Layer
+│   ├── connectors/        # 🔌 Data Source Connectors & APIs
+│   └── transformscripts/  # ⚙️ Raw data transformation scripts
+├── 2_bronze/               # 🥉 Bronze - Raw data with basic validation
+│   └── transformscripts/  # ⚙️ Bronze layer processing scripts
 ├── 3_silver/               # 🥈 Silver - Cleaned, normalized data
+│   └── transformscripts/  # ⚙️ Silver layer transformation scripts
 ├── 4_gold/                 # 🥇 Gold - Business-ready, aggregated data
+│   └── transformscripts/  # ⚙️ Gold layer aggregation scripts
 ├── 5_data_marts/           # 🏢 Data Marts - Subject-specific data stores
-├── 6_etl_pipelines/        # ⚙️ ETL/ELT - Data transformation processes
-├── 7_connectors/           # 🔌 Data Connectors - Source system integrations
+│   └── transformscripts/  # ⚙️ Data mart creation scripts
 ├── 8_metadata/             # 📋 Metadata Management - Schema, lineage, quality
-├── schemas/                # 📊 Database Schemas & Data Models
+│   └── transformscripts/  # ⚙️ Metadata processing scripts
+├── legacy/                 # � Historical R scripts and deprecated data
 ├── README.md              # 📖 This Architecture Guide
 └── ARCHITECTURE.md        # 🏗️ Technical Implementation Details
 ```
 
-## 🔄 Data Warehouse Flow
+## 🔄 Data Processing Flow
 
 ```
-External APIs → 7_connectors → 1_raw → 2_bronze → 3_silver → 4_gold → 5_data_marts
-                                 ↓        ↓        ↓        ↓        ↓
-                            6_etl_pipelines → 8_metadata (governance & lineage)
+External APIs → 1_raw/connectors → 1_raw → 2_bronze → 3_silver → 4_gold → 5_data_marts
+                     ↓                ↓        ↓        ↓        ↓        ↓
+                transformscripts → transformscripts at each layer → 8_metadata
 ```
 
 ## 🔄 Data Flow Architecture
@@ -288,15 +293,18 @@ This data warehouse architecture supports:
 - **Compliance**: Complete audit trail and data governance
 - **Scalability**: Handle increasing data volumes efficiently
 
-## 🎯 **Current Status: REORGANIZED & PRODUCTION READY**
+## 🎯 **Current Status: PRODUCTION READY**
 
-✅ **Clean Architecture**: All R scripts moved to legacy structure  
-✅ **Modern Connectors**: Python APIs ready for real-time data  
-✅ **Reference Data**: Current market data properly organized  
-✅ **Legacy Preserved**: Complete historical archive maintained  
-✅ **Documentation**: All layers documented with implementation guides  
+✅ **Modern Architecture**: Clean layer-based data processing flow  
+✅ **Python Connectors**: Real-time API integrations in `1_raw/connectors/`  
+✅ **Transform Scripts**: Dedicated processing scripts in each layer  
+✅ **Reference Data**: Current market data in `2_bronze/exchangedata/`  
+✅ **Legacy Archive**: Historical R scripts preserved in `legacy/`
 
-📄 **See**: `REORGANIZATION_COMPLETE.md` for detailed cleanup summary
+**Key Migration Notes:**  
+- All R scripts moved to `legacy/` - use Python equivalents for new development
+- Data connectors now integrated with raw layer for logical data flow
+- Transform scripts distributed by layer for better separation of concerns
 
 ---
 
