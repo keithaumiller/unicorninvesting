@@ -1,23 +1,31 @@
-# ETL Pipelines - Data Transformation Workflows
+# 6_etl_pipelines - Data Transformation Workflows
 
 ## ⚙️ Purpose
 
-This directory contains **Extract, Transform, Load (ETL) pipelines** that move and transform data between layers of the data warehouse. Pipelines automate the flow from raw data to business-ready analytics.
+This directory contains **Extract, Transform, Load (ETL) pipelines** that move and transform data between layers of the data warehouse. Modern Python-based pipelines automate the flow from raw data to business-ready analytics.
 
 ## 🏗️ Architecture Role
 
 **Pipeline Flow**: 
-- **Extract**: Bronze → Silver → Gold → Data Marts
+- **Extract**: 1_raw → 2_bronze → 3_silver → 4_gold → 5_data_marts
 - **Transform**: Data cleaning, validation, aggregation, calculation
 - **Load**: Optimized storage for downstream consumption
 
 ETL pipelines are the **data transformation engine** of the platform.
 
-## Files
+## 🚀 Modern Python Pipelines
 
-### Combinestocks.R
-**Purpose**: Primary dataset assembly and feature matrix creation
-**Key Functions**:
+### Planned Implementations
+- **pandas_etl.py** - DataFrame-based data transformations
+- **market_data_pipeline.py** - Real-time market data processing
+- **feature_engineering.py** - ML feature generation and selection
+- **data_quality_checks.py** - Automated validation and quality controls
+- **bronze_to_silver.py** - Data cleaning and normalization
+- **silver_to_gold.py** - Business logic and aggregations
+
+## 📚 Legacy R Scripts
+
+All original R scripts have been moved to `../legacy/6_etl_pipelines/` for historical reference:
 - `combinestocksfunction(numberofstockstouse, featurelistforNN, outputdirectory)` - Main dataset assembly function
 - `loadstockdata(symbol)` - Loads individual stock data from CSV files
 - Combines multiple stock time series into unified percentage change matrix

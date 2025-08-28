@@ -1,13 +1,34 @@
-# Database Schemas & Data Models
+# 📚 Legacy Data Sources Archive
 
-## 📊 Purpose
+## Overview
+This directory contains historical R scripts, legacy data files, and deprecated analysis results that have been migrated from the original unicorn investing platform. The structure mirrors the modern data warehouse architecture to preserve context.
 
-This directory contains **database schemas, data models, and structure definitions** for all layers of the data warehouse. Schemas ensure consistent data structure and relationships across the platform.
+## 🏗️ Legacy Directory Structure
 
-## 🏗️ Architecture Role
-
-**Schema Management**: Defines structure for Bronze → Silver → Gold → Data Marts
-
+```
+legacy/
+├── 1_raw/                  # Legacy raw data staging files
+├── 2_bronze/               # Historical analysis results and deprecated data
+│   ├── old/               # Deprecated prediction models and analysis
+│   └── results/           # Neural network and genetic algorithm results
+├── 3_silver/              # Legacy cleaned data (if any)
+├── 4_gold/                # Legacy aggregated data (if any)
+├── 5_data_marts/          # Legacy data marts (if any)
+├── 6_etl_pipelines/       # Original R-based ETL scripts and legacy data
+│   ├── data/             # Historical stock data samples
+│   ├── Combinestocks.R   # Legacy R script for combining stock data
+│   ├── Generatefeatureslist.R  # Legacy feature generation
+│   ├── downloadstockdata.R     # Legacy data download script
+│   ├── generatetrainingoutput.R # Legacy training data generation
+│   ├── mysqlconnector.R  # Legacy MySQL integration
+│   └── debugframework.R  # Legacy debugging utilities
+├── 7_connectors/          # Legacy data connectors (if any)
+├── 8_metadata/            # Legacy metadata and schemas
+├── README.md              # This documentation
+├── Dump20170424.sql       # Historical database schema
+├── Dump20170529.sql       # Updated historical database schema
+└── PRODUCTION_SETUP.md    # Legacy production setup guide
+```
 Database schemas provide the **structural foundation** for all data storage and processing.
 
 ## Current Files
