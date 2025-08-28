@@ -30,3 +30,8 @@ data/results/*
 WebFrontend/web/sites/default/files/css/
 WebFrontend/web/sites/default/files/js/
 WebFrontend/web/sites/default/files/php/
+
+# IBKR Gateway logs
+BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/logs/
+BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/*.log
+BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/gateway*.log
