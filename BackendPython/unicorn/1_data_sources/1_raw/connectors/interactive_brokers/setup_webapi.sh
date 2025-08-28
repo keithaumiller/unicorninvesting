@@ -104,7 +104,7 @@ if [ "$UPDATE_CONFIG" = "y" ]; then
     
     echo ""
     echo "📊 Available Accounts:"
-    echo "Live Trading: keithaumiller (U21748632)"
+    echo "Live Trading: [Your IBKR Username] ([Your Account Number])"
     echo "Paper Trading: xyzyuc422 (DUM785491) ⭐ Recommended for testing"
     echo ""
     echo "Enter your IBKR configuration:"
@@ -119,7 +119,7 @@ if [ "$UPDATE_CONFIG" = "y" ]; then
         echo "📋 Using paper trading defaults (safe for testing)"
     else
         DEFAULT_ACCOUNT="U21748632"
-        DEFAULT_USERNAME="keithaumiller"
+        DEFAULT_USERNAME="[YOUR_IBKR_USERNAME]"
         echo "⚠️  Using live trading account - be careful!"
     fi
     

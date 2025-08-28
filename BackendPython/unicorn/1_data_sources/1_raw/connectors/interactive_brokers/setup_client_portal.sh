@@ -42,7 +42,7 @@ echo "📝 IBKR Account Configuration"
 echo "============================="
 echo ""
 echo "📊 Available Accounts:"
-echo "Live Trading: keithaumiller (U21748632)"
+echo "Live Trading: [Your IBKR Username] ([Your Account Number])"
 echo "Paper Trading: xyzyuc422 (DUM785491) ⭐ Recommended for testing"
 echo ""
 

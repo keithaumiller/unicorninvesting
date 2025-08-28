@@ -16,7 +16,7 @@ Interactive Brokers provides professional trading capabilities and real-time mar
 ## 🔐 Account Information
 
 ### Live Trading Account
-- **Username**: keithaumiller
+- **Username**: [Your IBKR Username]
 - **Account Number**: U21748632
 - **API Access**: ✅ Enabled (confirmed by IBKR support ticket #T895507)
 - **API Key**: 🔄 Pending (obtain from Client Portal > Settings > API Settings)

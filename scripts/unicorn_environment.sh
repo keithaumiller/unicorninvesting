@@ -237,13 +237,14 @@ start_ibkr_gateway() {
     if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
         echo -e "${GREEN}✅ IBKR Gateway is already running${NC}"
         
-        # Check authentication status
+        # Check authentication status and authenticate if needed
         AUTH_STATUS=$(curl -s http://localhost:5000/v1/api/iserver/auth/status | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('authenticated', False))" 2>/dev/null)
         if [ "$AUTH_STATUS" = "True" ]; then
             echo -e "${GREEN}✅ IBKR Gateway is authenticated${NC}"
         else
             echo -e "${YELLOW}⚠️  IBKR Gateway is running but not authenticated${NC}"
-            echo -e "${BLUE}📱 Please log in via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+            echo ""
+            authenticate_ibkr_gateway
         fi
     else
         echo -e "${YELLOW}🔄 Starting IBKR Gateway...${NC}"
@@ -284,7 +285,13 @@ start_ibkr_gateway() {
             if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
                 echo ""
                 echo -e "${GREEN}✅ IBKR Gateway started successfully on HTTP${NC}"
-                echo -e "${BLUE}📱 Please log in via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+                
+                # Automatically attempt authentication
+                echo ""
+                authenticate_ibkr_gateway
+                
+                echo ""
+                echo -e "${BLUE}📱 Gateway accessible via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
                 echo -e "${YELLOW}💡 Note: Login URL uses HTTPS proxy but gateway runs on HTTP${NC}"
                 return 0
             fi
@@ -299,6 +306,51 @@ start_ibkr_gateway() {
         echo -e "${YELLOW}💡 Also check: $IBKR_TOOLS_PATH/gateway.log${NC}"
         return 1
     fi
+}
+
+# Function to authenticate to IBKR Gateway
+authenticate_ibkr_gateway() {
+    echo -e "${BLUE}🔐 IBKR Gateway Authentication${NC}"
+    echo "=============================="
+    echo ""
+    
+    # Check if gateway is accessible
+    if ! curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
+        echo -e "${RED}❌ IBKR Gateway is not accessible${NC}"
+        return 1
+    fi
+    
+    # Wait a bit more for gateway to fully initialize
+    echo -e "${YELLOW}⏳ Allowing gateway to fully initialize...${NC}"
+    sleep 5
+    
+    # Check current authentication status
+    AUTH_RESPONSE=$(curl -s http://localhost:5000/v1/api/iserver/auth/status 2>/dev/null)
+    
+    # Try to parse authentication status
+    if echo "$AUTH_RESPONSE" | grep -q "authenticated.*true" 2>/dev/null; then
+        echo -e "${GREEN}✅ Already authenticated to IBKR Gateway${NC}"
+        return 0
+    fi
+    
+    echo -e "${YELLOW}🔄 IBKR Gateway is ready for authentication${NC}"
+    echo -e "${BLUE}📱 Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+    echo ""
+    echo -e "${YELLOW}📋 Use your IBKR credentials:${NC}"
+    echo -e "${GREEN}   Username: [Your IBKR Username]${NC}"
+    echo -e "${GREEN}   Password: [Your IBKR Password]${NC}"
+    echo -e "${GREEN}   Mode: Paper Trading (toggle to Paper)${NC}"
+    echo ""
+    echo -e "${YELLOW}📝 Authentication Steps:${NC}"
+    echo -e "${YELLOW}   1. Open the URL above in your browser${NC}"
+    echo -e "${YELLOW}   2. Enter the username and password${NC}"
+    echo -e "${YELLOW}   3. Toggle the mode switch to 'Paper Trading'${NC}"
+    echo -e "${YELLOW}   4. Click 'Login'${NC}"
+    echo -e "${YELLOW}   5. Complete 2FA approval when prompted${NC}"
+    echo ""
+    echo -e "${BLUE}💡 The gateway will remain running and ready for trading operations${NC}"
+    
+    return 0
 }
 
 # Function to run health checks

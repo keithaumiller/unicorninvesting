@@ -34,7 +34,7 @@ print('Health Check:', connector.health_check())
         echo "⚠️  Not authenticated yet"
         echo "👉 Go to https://localhost:5000 and login"
         echo "   Use: xyzyuc422 / DUM785491 (paper trading)"
-        echo "   Or: keithaumiller / U21748632 (live trading)"
+        echo "   Or: [Your IBKR Username] / [Your Account Number] (live trading)"
     fi
     
 else
