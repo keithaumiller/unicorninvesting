@@ -1,0 +1,9 @@
+{
+    "account_id": "DUM785491",
+    "username": "xyzyuc422",
+    "trading_mode": "paper",
+    "api_type": "client_portal",
+    "base_url": "https://localhost:5000/v1/api",
+    "setup_date": "2025-08-28T18:57:00Z",
+    "notes": "Paper trading configuration for safe testing"
+}

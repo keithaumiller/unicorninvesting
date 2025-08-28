@@ -1,0 +1,92 @@
+{
+  "contract": {
+    "conid": "541686654",
+    "companyHeader": "Ethereum cryptocurrency",
+    "companyName": "Ethereum cryptocurrency",
+    "symbol": "ETH",
+    "description": null,
+    "restricted": null,
+    "sections": [
+      {
+        "secType": "CRYPTO",
+        "exchange": "ZEROHASH;"
+      }
+    ]
+  },
+  "historical_data": {
+    "serverId": "630118",
+    "symbol": "ETH",
+    "text": "Ethereum cryptocurrency",
+    "priceFactor": 20,
+    "startTime": "20250827-20:01:00",
+    "high": "93000/1479.46506352/0",
+    "low": "89201/1479.46506352/0",
+    "timePeriod": "1d",
+    "barLength": 14400,
+    "mdAvailability": "S",
+    "mktDataDelay": 0,
+    "outsideRth": false,
+    "tradingDayDuration": 1439,
+    "volumeFactor": 1,
+    "priceDisplayRule": 1,
+    "priceDisplayValue": "2",
+    "negativeCapable": false,
+    "messageVersion": 2,
+    "data": [
+      {
+        "o": 4562.5,
+        "c": 4507.85,
+        "h": 4650.0,
+        "l": 4460.05,
+        "v": 1479.46506352,
+        "t": 1756324860000
+      },
+      {
+        "o": 4505.65,
+        "c": 4541.85,
+        "h": 4547.9,
+        "l": 4462.2,
+        "v": 254.90992331,
+        "t": 1756339200000
+      },
+      {
+        "o": 4541.8,
+        "c": 4596.7,
+        "h": 4599.8,
+        "l": 4535.85,
+        "v": 160.06054842,
+        "t": 1756353600000
+      },
+      {
+        "o": 4597.7,
+        "c": 4593.85,
+        "h": 4632.65,
+        "l": 4582.7,
+        "v": 118.099704,
+        "t": 1756368000000
+      },
+      {
+        "o": 4596.2,
+        "c": 4505.1,
+        "h": 4615.8,
+        "l": 4486.05,
+        "v": 441.70712096,
+        "t": 1756382400000
+      },
+      {
+        "o": 4505.4,
+        "c": 4467.5,
+        "h": 4530.95,
+        "l": 4461.7,
+        "v": 363.91352238,
+        "t": 1756396800000
+      }
+    ],
+    "points": 5,
+    "travelTime": 81
+  },
+  "timestamp": "2025-08-28T19:24:19.139657",
+  "data_type": "historical",
+  "period": "1d",
+  "bar_size": "5mins"
+}

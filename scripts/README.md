@@ -24,12 +24,15 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 **Features:**
 - ✅ Environment variables setup
 - ✅ Bash aliases configuration
-- ✅ Complete system health checks
+- ✅ Complete system health checks (23 validation checks)
 - ✅ Python environment validation
 - ✅ Database connectivity tests
 - ✅ Directory structure verification
 - ✅ LEAN framework validation
 - ✅ Data sources checking
+- ✅ Interactive Brokers (IBKR) integration validation
+- ✅ Yahoo Finance connector verification
+- ✅ Alpha Vantage connector validation
 
 **Available Aliases After Setup:**
 - `drupal-start` - Start and validate Drupal system
@@ -57,14 +60,25 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 ### `startup_drupal.sh`
 Drupal-specific startup script for web frontend
 
-### `setup_ibkr_env.sh`
-Interactive Brokers (IBKR) environment setup
+## 🔗 Data Source Integrations
 
-### `setup_lean_ibkr.sh`
-LEAN framework integration with IBKR
+### Interactive Brokers (IBKR) Integration
+- **Status**: ✅ Fully operational with Client Portal Gateway
+- **Authentication**: Manual login required via web interface
+- **Gateway URL**: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
+- **Data Sources**: Real-time and historical cryptocurrency data (ETH validated)
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
 
-### `test_ibkr_connection.sh`
-Test IBKR connectivity
+### Yahoo Finance Integration  
+- **Status**: ✅ Operational
+- **Authentication**: No authentication required
+- **Data Sources**: Historical and real-time market data
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/`
+
+### Alpha Vantage Integration
+- **Status**: ⚠️ Requires API key configuration
+- **Authentication**: API key required
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage/`
 
 ## 🎯 Quick Start
 

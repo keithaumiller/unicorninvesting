@@ -181,6 +181,39 @@ jupyter==1.1.1, pytest==8.4.1, structlog==25.4.0
 - FastAPI backend services with REST APIs
 - Optimized MySQL schema with proper ORM integration
 
+## 📊 Data Sources & Integrations
+
+### Interactive Brokers (IBKR) - ✅ Operational
+- **Status**: Fully integrated with Client Portal Gateway
+- **Authentication**: Manual login via web interface required
+- **Gateway URL**: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
+- **Data Types**: Real-time and historical cryptocurrency, stocks, forex
+- **Implementation**: Custom Python connector with REST API
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
+- **Features**: 
+  - Live market data streaming
+  - Historical data collection (OHLCV bars)
+  - Account information access
+  - Trading capabilities (when authenticated)
+
+### Yahoo Finance - ✅ Operational  
+- **Status**: Active and collecting data
+- **Authentication**: No authentication required
+- **Data Types**: Historical and real-time market data for stocks, crypto, indices
+- **Implementation**: Python yfinance library integration
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/`
+- **Features**:
+  - Minute-level granular data
+  - No rate limits for basic usage
+  - Comprehensive symbol coverage
+
+### Alpha Vantage - ⚠️ Configuration Required
+- **Status**: Framework ready, API key needed
+- **Authentication**: API key required (free tier available)
+- **Data Types**: Stocks, forex, cryptocurrencies, economic indicators
+- **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage/`
+- **Setup Required**: Configure API key in connector settings
+
 ## Getting Started
 
 ### Prerequisites

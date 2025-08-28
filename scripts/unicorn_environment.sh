@@ -298,19 +298,55 @@ run_health_checks() {
     echo "==============="
 
     # Yahoo Finance Connector
-    if [ -f "BackendPython/unicorn/1_data_sources/1_raw/connectors/YahooFinanceMinuteData.py" ]; then
+    if [ -f "BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/eth_data_collector.py" ]; then
         check_status 0 "Yahoo Finance Connector: Available"
         
-        # Test if we can import it
-        cd BackendPython/unicorn/1_data_sources/1_raw/connectors
-        if [ -f "../../../../../.venv/bin/activate" ]; then
-            source ../../../../../.venv/bin/activate
-            python -c "import YahooFinanceMinuteData" >/dev/null 2>&1
-            check_status $? "Yahoo Finance Connector: Importable"
+        # Test if we can import yfinance
+        if [ -f ".venv/bin/activate" ]; then
+            source .venv/bin/activate
+            python -c "import yfinance" >/dev/null 2>&1
+            check_status $? "Yahoo Finance Library: yfinance importable"
         fi
-        cd - >/dev/null
     else
         check_status 1 "Yahoo Finance Connector: Not found"
+    fi
+
+    # Interactive Brokers (IBKR) Integration
+    IBKR_CONNECTOR_PATH="BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers"
+    if [ -f "$IBKR_CONNECTOR_PATH/IBKRClientPortalConnector.py" ]; then
+        check_status 0 "IBKR Client Portal Connector: Available"
+        
+        # Check if IBKR Gateway is running
+        if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
+            check_status 0 "IBKR Gateway: Running and responsive"
+            
+            # Check authentication status
+            AUTH_STATUS=$(curl -s http://localhost:5000/v1/api/iserver/auth/status | python -c "import sys, json; data=json.load(sys.stdin); print(data.get('authenticated', False))" 2>/dev/null)
+            if [ "$AUTH_STATUS" = "True" ]; then
+                check_status 0 "IBKR Authentication: Authenticated"
+            else
+                check_status 1 "IBKR Authentication: Not authenticated" "Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
+            fi
+        else
+            check_status 1 "IBKR Gateway: Not running" "Start gateway in $IBKR_CONNECTOR_PATH/tools/"
+        fi
+        
+        # Check ETH data collection capability
+        if [ -f "$IBKR_CONNECTOR_PATH/eth_data_collector.py" ]; then
+            check_status 0 "IBKR ETH Data Collector: Available"
+        else
+            check_status 1 "IBKR ETH Data Collector: Missing"
+        fi
+    else
+        check_status 1 "IBKR Client Portal Connector: Not found"
+    fi
+
+    # Alpha Vantage Connector
+    if [ -d "BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage" ]; then
+        check_status 0 "Alpha Vantage Connector: Directory available"
+        check_status 1 "Alpha Vantage API Key: Configuration required" "Set API key in connector"
+    else
+        check_status 1 "Alpha Vantage Connector: Not found"
     fi
 
     # 7. Summary

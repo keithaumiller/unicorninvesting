@@ -1,0 +1,294 @@
+-> GET /v1/api/portal/iserver/auth/status
+<- 401 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/portal/iserver/auth/status
+<- 401 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/portal/iserver/auth/status
+<- 401 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/portal/iserver/auth/status
+<- 401 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/portal/iserver/auth/status
+<- 401 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/iserver/auth/status
+<- 401 GET /v1/api/iserver/auth/status
+-> GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+<- 200 GET /sso/Login?forwardTo=22&RL=1&ip2loc=US
+-> GET /css/bootstrap-5.2.2/bootstrap.min.css
+<- 200 GET /css/bootstrap-5.2.2/bootstrap.min.css
+-> GET /css/reg-am/login.min.css
+-> GET /css/ibkr/theme-ibkr-portal.min.css
+-> GET /sso/lib/xyz.bundle.min.js
+-> GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+-> GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+-> GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+-> GET /css/fontawesome-6.4.2/all.min.css
+<- 200 GET /css/reg-am/login.min.css
+<- 200 GET /scripts/common/js/jquery-3.7.0/jquery.min.js
+<- 200 GET /sso/lib/xyz.bundle.min.js
+<- 200 GET /css/ibkr/theme-ibkr-portal.min.css
+<- 200 GET /scripts/common/js/bootstrap-5.2.2/bootstrap.bundle.min.js
+<- 200 GET /css/fontawesome-6.4.2/all.min.css
+<- 200 GET /css/bootstrap-switch-3.3.2/bootstrap-switch.min.css
+-> GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> GET /fonts/fontawesome-6.4.2/webfonts/fa-solid-900.woff2
+<- 200 GET /fonts/fontawesome-6.4.2/webfonts/fa-brands-400.woff2
+-> GET /fonts/proxima-nova/Proxima-Nova-Regular.woff2
+-> GET /fonts/proxima-nova/Proxima-Nova-Semibold.woff2
+<- 200 GET /fonts/fontawesome-6.4.2/webfonts/fa-solid-900.woff2
+-> POST /sso/report
+-> POST /portal.proxy/v1/gstat/bulletins
+-> GET /en/includes/general/gdpr-am.php
+<- 200 GET /fonts/proxima-nova/Proxima-Nova-Semibold.woff2
+<- 200 GET /fonts/proxima-nova/Proxima-Nova-Regular.woff2
+<- 301 GET /en/includes/general/gdpr-am.php
+-> GET /images/common/logos/ibkr/interactive-brokers.svg
+<- 200 POST /sso/report
+<- 200 GET /images/common/logos/ibkr/interactive-brokers.svg
+<- 200 POST /portal.proxy/v1/gstat/bulletins
+-> GET /images/web/favicons/home-screen-icon-128x128.png
+<- 200 GET /images/web/favicons/home-screen-icon-128x128.png
+-> GET /fonts/proxima-nova/proximanova-extrabold.woff2
+<- 200 GET /fonts/proxima-nova/proximanova-extrabold.woff2
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Authenticator
+<- 200 POST /sso/Authenticator
+-> POST /sso/Dispatcher
+<- 302 POST /sso/Dispatcher
+-> request: /v1/api/sso/validate?gw=1
+-> GET /v1/api/sso/validate?gw=1,200|125ms
+-> request: /v1/api/one/user
+-> request: /v1/api/ssodh/init
+-> sso GET https://api.ibkr.com/v1/api/ssodh/init
+-> GET /v1/api/one/user,200|130ms
+-> request: /v1/api/ssodh/st
+-> sso GET https://api.ibkr.com/v1/api/ssodh/st
+-> request: /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status,200|69ms
+-> request: /v1/api/iserver/auth/ssodh/init
+-> POST https://api.ibkr.com/v1/api/iserver/auth/ssodh/init,200|2066ms
+-> request: /v1/api/iserver/accounts
+-> GET /v1/api/iserver/accounts,200|88ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|170ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|162ms
+-> GET /v1/api/portal/iserver/auth/status
+<- 404 GET /v1/api/portal/iserver/auth/status
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|65ms
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/portal/iserver/auth/status
+<- 404 GET /v1/api/portal/iserver/auth/status
+-> GET /v1/api/sso/validate
+<- 200 GET /v1/api/sso/validate
+-> GET /v1/api/iserver/accounts
+<- 200 GET /v1/api/iserver/accounts
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/accounts
+<- 200 GET /v1/api/iserver/accounts
+-> GET /v1/api/iserver/accounts
+<- 200 GET /v1/api/iserver/accounts
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|107ms
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/sso/validate
+<- 200 GET /v1/api/sso/validate
+-> GET /v1/api/iserver/accounts
+<- 200 GET /v1/api/iserver/accounts
+-> GET /v1/api/iserver/secdef/search?symbol=AAPL&secType=STK
+<- 200 GET /v1/api/iserver/secdef/search?symbol=AAPL&secType=STK
+-> GET /v1/api/iserver/marketdata/snapshot?conids=265598&fields=31%2C55%2C84
+<- 200 GET /v1/api/iserver/marketdata/snapshot?conids=265598&fields=31%2C55%2C84
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|81ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|109ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|93ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|94ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|180ms
+-> request: /sso/ping
+-> GET /sso/ping,200|106ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|360ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|93ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|152ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|114ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|144ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|77ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|90ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|102ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|70ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|182ms
+-> request: /sso/ping
+-> GET /sso/ping,200|70ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|137ms
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=CRYPTO
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=CRYPTO
+-> GET /v1/api/trsrv/secdef/search?symbol=ETHUSD&secType=CRYPTO
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETHUSD&secType=CRYPTO
+-> GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=CFD
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=CFD
+-> GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETH&secType=STK
+-> GET /v1/api/trsrv/secdef/search?symbol=ETHEREUM&secType=CRYPTO
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETHEREUM&secType=CRYPTO
+-> GET /v1/api/trsrv/secdef/search?symbol=BTC&secType=CRYPTO
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=BTC&secType=CRYPTO
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|88ms
+-> GET /v1/api/trsrv/secdef/search?symbol=AAPL&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=AAPL&secType=STK
+-> GET /v1/api/trsrv/secdef/search?symbol=MSFT&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=MSFT&secType=STK
+-> GET /v1/api/trsrv/secdef/search?symbol=SPY&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=SPY&secType=STK
+-> GET /v1/api/trsrv/secdef/search?symbol=TSLA&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=TSLA&secType=STK
+-> GET /v1/api/trsrv/futures
+<- 500 GET /v1/api/trsrv/futures
+-> GET /v1/api/trsrv/secdef/info
+<- 404 GET /v1/api/trsrv/secdef/info
+-> GET /v1/api/iserver/accounts
+<- 200 GET /v1/api/iserver/accounts
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|86ms
+-> GET /v1/api/iserver/secdef/search?symbol=AAPL
+<- 200 GET /v1/api/iserver/secdef/search?symbol=AAPL
+-> GET /v1/api/iserver/secdef/search?symbol=AAPL&secType=STK
+<- 200 GET /v1/api/iserver/secdef/search?symbol=AAPL&secType=STK
+-> GET /v1/api/iserver/secdef/search?symbol=ETH
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETH
+-> GET /v1/api/iserver/secdef/search?symbol=BTC
+<- 200 GET /v1/api/iserver/secdef/search?symbol=BTC
+-> GET /v1/api/trsrv/secdef/search?symbol=AAPL
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=AAPL
+-> GET /v1/api/trsrv/secdef/search?symbol=AAPL&secType=STK
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=AAPL&secType=STK
+-> GET /v1/api/trsrv/secdef/search?symbol=ETH
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=ETH
+-> GET /v1/api/trsrv/secdef/search?symbol=BTC
+<- 404 GET /v1/api/trsrv/secdef/search?symbol=BTC
+-> GET /v1/api/secdef/search?symbol=AAPL
+<- 404 GET /v1/api/secdef/search?symbol=AAPL
+-> GET /v1/api/secdef/search?symbol=AAPL&secType=STK
+<- 404 GET /v1/api/secdef/search?symbol=AAPL&secType=STK
+-> GET /v1/api/secdef/search?symbol=ETH
+<- 404 GET /v1/api/secdef/search?symbol=ETH
+-> GET /v1/api/secdef/search?symbol=BTC
+<- 404 GET /v1/api/secdef/search?symbol=BTC
+-> GET /v1/api/iserver/marketdata/conids
+<- 404 GET /v1/api/iserver/marketdata/conids
+-> GET /v1/api/iserver/contract/rules
+<- 405 GET /v1/api/iserver/contract/rules
+-> GET /v1/api/iserver/secdef/info
+<- 400 GET /v1/api/iserver/secdef/info
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|70ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|87ms
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/secdef/search?symbol=ETH&secType=CRYPTO
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETH&secType=CRYPTO
+-> GET /v1/api/iserver/secdef/search?symbol=ETHUSD&secType=CRYPTO
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETHUSD&secType=CRYPTO
+-> GET /v1/api/iserver/secdef/search?symbol=ETH&secType=CFD
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETH&secType=CFD
+-> GET /v1/api/iserver/secdef/search?symbol=ETH&secType=STK
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETH&secType=STK
+-> GET /v1/api/iserver/secdef/search?symbol=ETHEREUM&secType=CRYPTO
+<- 200 GET /v1/api/iserver/secdef/search?symbol=ETHEREUM&secType=CRYPTO
+-> GET /v1/api/iserver/secdef/search?symbol=BTC&secType=CRYPTO
+<- 200 GET /v1/api/iserver/secdef/search?symbol=BTC&secType=CRYPTO
+-> GET /v1/api/iserver/marketdata/snapshot?conids=541686654&fields=31%2C55%2C70%2C71%2C84%2C86
+<- 200 GET /v1/api/iserver/marketdata/snapshot?conids=541686654&fields=31%2C55%2C70%2C71%2C84%2C86
+-> GET /v1/api/iserver/marketdata/history?conid=541686654&period=1d&bar=5mins&outsideRth=true
+<- 200 GET /v1/api/iserver/marketdata/history?conid=541686654&period=1d&bar=5mins&outsideRth=true
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|94ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|65ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|82ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|71ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|277ms
+-> request: /sso/ping
+-> GET /sso/ping,200|66ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|209ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|161ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|154ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|61ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|109ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|85ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|139ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|160ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|105ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|129ms
+-> request: /sso/ping
+-> GET /sso/ping,200|109ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|166ms
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> GET /v1/api/iserver/auth/status
+<- 200 GET /v1/api/iserver/auth/status
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|98ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|89ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|118ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|83ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|64ms
+-> request: /v1/api/tickle
+-> GET /v1/api/tickle,200|74ms

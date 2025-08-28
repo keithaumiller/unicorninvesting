@@ -9,13 +9,14 @@ This guide provides complete step-by-step instructions for setting up the Unicor
 3. [Database Configuration](#database-configuration)
 4. [Python Environment](#python-environment)
 5. [LEAN Framework Integration](#lean-framework-integration)
-6. [Prophet Forecasting Setup](#prophet-forecasting-setup)
-7. [Web Server Configuration](#web-server-configuration)
-8. [Drupal Frontend Setup](#drupal-frontend-setup)
-9. [SSL Certificate Setup](#ssl-certificate-setup)
-10. [Verification and Testing](#verification-and-testing)
-11. [Production Deployment](#production-deployment)
-12. [Troubleshooting](#troubleshooting)
+6. [Data Sources Integration](#data-sources-integration)
+7. [Prophet Forecasting Setup](#prophet-forecasting-setup)
+8. [Web Server Configuration](#web-server-configuration)
+9. [Drupal Frontend Setup](#drupal-frontend-setup)
+10. [SSL Certificate Setup](#ssl-certificate-setup)
+11. [Verification and Testing](#verification-and-testing)
+12. [Production Deployment](#production-deployment)
+13. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -263,6 +264,125 @@ Create `/workspaces/unicorninvesting/BackendPython/Lean/Launcher/config.json`:
     }
 }
 ```
+
+---
+
+## Data Sources Integration
+
+### 1. Interactive Brokers (IBKR) Setup
+
+The platform integrates with Interactive Brokers for live trading and market data through the Client Portal Gateway.
+
+#### Prerequisites
+- Active Interactive Brokers account
+- Java 8+ installed for running the gateway
+
+#### Download and Setup IBKR Gateway
+
+```bash
+# Navigate to IBKR tools directory
+cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools
+
+# Download the Client Portal Gateway (if not already present)
+# Manual download required from: https://www.interactivebrokers.com/en/trading/ib-api.php
+
+# Verify Java installation
+java -version
+
+# Start the IBKR Gateway
+cd clientportal.gw
+./bin/run.sh root/conf.yaml
+```
+
+#### Gateway Configuration
+
+Create or modify `root/conf.yaml`:
+
+```yaml
+ssl: false
+enableFeatures:
+  - bond
+  - cryptocurrency
+  - futures
+  - stocks
+  - forex
+listenPort: 5000
+proxyRemotehostForLocalhost: true
+```
+
+#### Authentication Setup
+
+1. **Start the Gateway**: Run the gateway with the configuration above
+2. **Access Web Interface**: Navigate to https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
+3. **Login**: Use your IBKR credentials and complete 2FA if required
+4. **Verify Connection**: The gateway should show "authenticated: true" status
+
+#### Test IBKR Integration
+
+```bash
+# Activate Python environment
+source /workspaces/unicorninvesting/.venv/bin/activate
+
+# Test IBKR connection
+cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers
+python IBKRClientPortalConnector.py
+
+# Test ETH data collection
+python eth_data_collector.py
+```
+
+### 2. Yahoo Finance Setup
+
+Yahoo Finance integration requires no authentication and provides free market data.
+
+```bash
+# Install yfinance (already included in requirements.txt)
+source /workspaces/unicorninvesting/.venv/bin/activate
+pip install yfinance
+
+# Test Yahoo Finance connector
+cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance
+python eth_data_collector.py
+```
+
+### 3. Alpha Vantage Setup
+
+Alpha Vantage requires an API key for access to financial data.
+
+#### Get API Key
+1. Visit https://www.alphavantage.co/support/#api-key
+2. Sign up for a free account
+3. Copy your API key
+
+#### Configure Alpha Vantage
+
+```bash
+# Create configuration file
+cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage
+
+# Create config.json with your API key
+cat > config.json << EOF
+{
+    "api_key": "YOUR_ALPHA_VANTAGE_API_KEY_HERE",
+    "base_url": "https://www.alphavantage.co/query"
+}
+EOF
+```
+
+### 4. Data Sources Validation
+
+Use the health check script to validate all data source integrations:
+
+```bash
+# Run comprehensive health check including data sources
+/workspaces/unicorninvesting/scripts/unicorn_environment.sh --check-only
+```
+
+The health check will validate:
+- ✅ IBKR Gateway connectivity and authentication status
+- ✅ Yahoo Finance library availability and functionality  
+- ✅ Alpha Vantage API key configuration
+- ✅ Data collection capabilities for each source
 
 ---
 
