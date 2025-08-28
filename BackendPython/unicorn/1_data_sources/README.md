@@ -6,18 +6,29 @@ This directory implements a **modern data warehouse architecture** following ind
 
 ## 📁 Data Warehouse Layers
 
+## 📁 Data Warehouse Layers
+
 ```
 1_data_sources/
-├── 🔌 connectors/          # Data Source Connectors & Integrations
-├── 🏪 staging/             # Temporary staging area for data ingestion
-├── 🥉 bronze_layer/        # Raw data storage (as-is from sources)
-├── 🥈 silver_layer/        # Cleaned, validated, normalized data
-├── 🥇 gold_layer/          # Business-ready, aggregated data
-├── 🏢 data_marts/          # Subject-specific data stores
-├── ⚙️ etl_pipelines/       # Extract, Transform, Load processes
-├── 📊 schemas/             # Database schemas and data models
-├── 📋 metadata/            # Data lineage, quality, governance
-└── 📖 README.md           # This architecture guide
+├── 1_raw/                  # 🏪 Raw/Staging - Unprocessed data from sources
+├── 2_bronze/               # 🥉 Bronze - Raw data with basic validation  
+├── 3_silver/               # 🥈 Silver - Cleaned, normalized data
+├── 4_gold/                 # 🥇 Gold - Business-ready, aggregated data
+├── 5_data_marts/           # 🏢 Data Marts - Subject-specific data stores
+├── 6_etl_pipelines/        # ⚙️ ETL/ELT - Data transformation processes
+├── 7_connectors/           # 🔌 Data Connectors - Source system integrations
+├── 8_metadata/             # 📋 Metadata Management - Schema, lineage, quality
+├── schemas/                # 📊 Database Schemas & Data Models
+├── README.md              # 📖 This Architecture Guide
+└── ARCHITECTURE.md        # 🏗️ Technical Implementation Details
+```
+
+## 🔄 Data Warehouse Flow
+
+```
+External APIs → 7_connectors → 1_raw → 2_bronze → 3_silver → 4_gold → 5_data_marts
+                                 ↓        ↓        ↓        ↓        ↓
+                            6_etl_pipelines → 8_metadata (governance & lineage)
 ```
 
 ## 🔄 Data Flow Architecture

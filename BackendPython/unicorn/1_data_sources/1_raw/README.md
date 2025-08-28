@@ -1,16 +1,16 @@
-# Staging Area - Temporary Data Processing
+# 1_raw - Raw Data Staging Layer
 
 ## 🏪 Purpose
 
-The **Staging Area** provides temporary storage for data validation and initial processing before moving to the Bronze Layer. This area acts as a buffer and quality gate for incoming data.
+The **1_raw** layer provides temporary storage for data validation and initial processing before moving to the 2_bronze Layer. This area acts as a buffer and quality gate for incoming data.
 
 ## 🏗️ Architecture Role
 
-**Data Flow**: Connectors → **Staging** → Bronze Layer → Silver Layer → Gold Layer
+**Data Flow**: 7_connectors → **1_raw** → 2_bronze → 3_silver → 4_gold
 
-The Staging Area ensures **data quality and validation** before permanent storage.
+The 1_raw layer ensures **data quality and validation** before permanent storage.
 
-## 🎯 **Staging Functions**
+## 🎯 **Raw Data Functions**
 
 ### **1. Data Validation**
 Initial quality checks before bronze layer storage:
