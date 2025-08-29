@@ -1,3 +1,0 @@
-"""
-CRYPTO Features Package
-"""

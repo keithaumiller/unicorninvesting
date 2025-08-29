@@ -1,259 +1,173 @@
-# Alpha Models Package - Unicorn Investing
+# Alpha Models Framework
 
-## 🎯 Overview
-
-Scalable alpha model development framework organized by asset class for systematic investment strategies. This package provides a structured approach to developing, testing, and deploying quantitative trading models across multiple asset classes.
+## Overview
+Comprehensive multi-model framework for developing, testing, and deploying alpha models across different asset classes in the unicorn investing platform.
 
 ## 🏗️ Architecture
 
-### Asset-Based Organization
+**IMPORTANT**: This directory follows a strict hierarchical architecture. See `ARCHITECTURE.md` for complete specifications.
+
+### Directory Structure
 ```
 2_alpha_models/
-├── ETH/                    # Ethereum & ETH-related models
-├── FOREX/                  # Foreign exchange models
-├── CRYPTO/                 # General cryptocurrency models  
-├── EQUITIES/               # Stock and equity models
-├── shared/                 # Common utilities and base classes
-├── utils/                  # Development utilities
-└── examples/               # Example implementations
+├── CRYPTO/                    # Cryptocurrency asset class
+│   ├── BTC/                   # Bitcoin models
+│   │   ├── models/            # All model types (alpha, prophet, xgboost, ensemble)
+│   │   ├── algorithms/        # LEAN trading algorithms
+│   │   ├── tests/             # Comprehensive test suites
+│   │   ├── scripts/           # Model building and validation
+│   │   ├── features/          # Feature engineering
+│   │   └── research/          # Research analysis
+│   ├── ETH/                   # Ethereum models
+│   │   └── [same structure]
+│   └── [OTHER_CRYPTO]/
+├── EQUITIES/                  # Stock asset class
+├── FOREX/                     # Foreign exchange asset class
+├── shared/                    # Framework components
+├── utils/                     # Utility tools
+├── examples/                  # Example implementations
+└── legacy/                    # Deprecated code
 ```
 
-### Subdirectory Structure (per asset class)
-```
-{ASSET_CLASS}/
-├── models/                 # Alpha model implementations
-├── algorithms/             # LEAN algorithm implementations
-├── features/               # Feature engineering modules
-├── research/               # Research and backtesting scripts
-├── scripts/                # Utility and demo scripts
-└── tests/                  # Unit tests and validation
-```
+## 🚀 Model Types
 
-## 🚀 Current Implementation Status
+Each asset implements multiple model types:
+- **Technical Alpha**: Traditional technical analysis models
+- **Prophet**: Facebook Prophet time series forecasting
+- **XGBoost**: Gradient boosting prediction models
+- **Ensemble**: Combined multi-model approach
+- **LEAN Algorithm**: Production trading algorithms
 
-### ✅ Phase 2 Task 2.1 Complete - ETH Technical Analysis Alpha
+## 📊 Implemented Assets
 
-**Enhanced ETH Technical Alpha Model** (`ETH/models/enhanced_technical_alpha.py`)
-- **30+ Technical Indicators**: RSI, MACD, Bollinger Bands, Stochastic, Williams %R, CCI, ADX, Aroon, etc.
-- **Ensemble Weighting**: Sophisticated category-based weighting (Trend 40%, Momentum 30%, Volume 20%, Volatility 10%)
-- **Dynamic Confidence Scoring**: Multi-factor confidence calculation incorporating signal strength, volatility, and volume
-- **Phase 1 Integration**: Seamlessly integrates with existing Technical Indicators Engine
-- **Real-time Processing**: Optimized for live market data processing
+### ✅ Cryptocurrency (CRYPTO/)
+- **BTC (Bitcoin)**: Complete implementation with all model types
+  - Technical Alpha Model (`btc_alpha.py`)
+  - Prophet Forecasting Model (`btc_prophet.py`)
+  - XGBoost Prediction Model (`btc_xgboost.py`)
+  - Ensemble Model (`btc_ensemble.py`)
+  - LEAN Algorithm (`btc_algorithm.py`)
+  - Trained models (`.pkl` files)
+  - Comprehensive tests and validation
 
-**LEAN Algorithm Implementation** (`ETH/algorithms/enhanced_technical_algorithm.py`) 
-- **Complete Trading Algorithm**: Full LEAN-compatible implementation with portfolio management
-- **Risk Management**: Position sizing, drawdown protection, volatility-based adjustments
-- **Performance Monitoring**: Real-time performance tracking and signal analytics
-- **Execution Logic**: Dynamic position sizing based on signal confidence and market conditions
+- **ETH (Ethereum)**: Legacy implementation (needs framework migration)
+  - Enhanced Technical Alpha (`enhanced_technical_alpha.py`)
+  - Basic Technical Alpha (`basic_technical_alpha.py`)
+  - LEAN Algorithm (`enhanced_technical_algorithm.py`)
+  - Needs: Prophet, XGBoost, Ensemble models
 
-**Validation & Testing** (`ETH/scripts/alpha_validation_test.py`)
-- **Integration Tests**: Validates Phase 1 Technical Indicators Engine integration
-- **Signal Generation**: Generates 25+ realistic signals with 80% buy / 20% sell distribution
-- **Performance Metrics**: Comprehensive signal analysis and quality assessment
-- **Edge Case Handling**: Tests insufficient data scenarios and boundary conditions
+### 🔧 FOREX
+- Partial implementation with basic models
+- Needs: Complete framework migration
 
-**Research Framework** (`ETH/research/standalone_signal_generator.py`)
-- **Standalone Testing**: Independent signal generation for research and analysis
-- **Backtesting Support**: Historical signal analysis and strategy development
-- **Data Visualization**: Signal plotting and market condition analysis
+### 🔧 EQUITIES
+- Structure created, models pending
 
-### ✅ FOREX Foundation
+## 🧪 Framework Components
 
-**Advanced Forecasting Models** (`FOREX/models/advanced_forecasting_alpha.py`)
-- **Prophet Integration**: Facebook Prophet for time series forecasting
-- **XGBoost Implementation**: Gradient boosting for forex prediction
-- **Multi-timeframe Analysis**: Various forecasting horizons and methodologies
+### Testing Framework (`shared/testing_framework.py`)
+- `BaseModelTester`: Comprehensive model validation
+- `TechnicalAlphaModelTester`: Technical analysis testing
+- `MLAlphaModelTester`: Machine learning model testing
+- Automated test suite execution and reporting
 
-**FOREX Algorithms** (`FOREX/algorithms/`)
-- **Prophet Algorithm**: Time series forecasting trading strategy
-- **Basic FOREX Algorithm**: Fundamental forex trading implementation  
-- **Advanced Forecasting**: Multi-model ensemble approach
+### Model Framework (`shared/model_framework.py`)
+- `ProphetModel`: Time series forecasting framework
+- `XGBoostModel`: Gradient boosting framework
+- `EnsembleModel`: Multi-model combination framework
+- `ModelFactory`: Automated model creation
 
-### 🏗️ Framework Infrastructure
+### Performance Tracking (`shared/performance_tracker.py`)
+- `ModelPerformanceTracker`: Comprehensive performance monitoring
+- SQLite database persistence
+- Training/Validation/Live performance metrics
+- Automated reporting and analysis
 
-**Base Classes** (`shared/base_alpha.py`)
-- **BaseAlphaModel**: Abstract base class for all alpha models
-- **TechnicalAlphaModel**: Base class for technical analysis models
-- **MachineLearningAlphaModel**: Base class for ML-based models
-- **Common Interface**: Standardized signal generation and performance tracking
+### Asset Generation (`utils/enhanced_asset_generator.py`)
+- `EnhancedAssetTemplateGenerator`: Automated asset structure creation
+- Complete model templates for all types
+- LEAN algorithm generation
+- Test suite and validation script creation
 
-**Shared Utilities** (`shared/utils.py`)
-- **DataValidator**: OHLCV data validation and quality checks
-- **SignalProcessor**: Signal normalization, filtering, and confidence calculation
-- **PerformanceAnalyzer**: Sharpe ratio, drawdown, win rate calculations
-- **RiskManager**: Position sizing and portfolio risk management
+## 📋 Usage
 
-**Development Tools** (`utils/asset_template_generator.py`)
-- **Template Generation**: Automated creation of new asset class structures
-- **Standardized Templates**: Model, algorithm, and test templates
-- **Scalable Development**: Consistent patterns across asset classes
-
-## 📊 Integration with Phase 1
-
-### Technical Indicators Engine Integration
+### Adding New Assets
 ```python
-# Phase 1 Integration Pattern
-from unicorn.1_data_infrastructure.technical_indicators import TechnicalIndicatorEngine
+from utils.enhanced_asset_generator import EnhancedAssetTemplateGenerator
 
-class EnhancedETHTechnicalAlpha:
-    def __init__(self):
-        self.indicator_engine = TechnicalIndicatorEngine()
-        
-    def generate_signal(self, data):
-        # Use Phase 1 indicators
-        rsi = self.indicator_engine.calculate_rsi(data['Close'])
-        macd = self.indicator_engine.calculate_macd(data['Close'])
-        # ... ensemble logic
+generator = EnhancedAssetTemplateGenerator()
+generator.create_asset_structure('NEW_ASSET', 'ASSET_CLASS')
 ```
 
-### Validated Performance Metrics
-- **Signal Generation**: 25+ signals generated successfully
-- **Distribution**: 80% buy signals, 20% sell signals (realistic market conditions)
-- **Integration**: 100% Phase 1 Technical Indicators Engine compatibility  
-- **Processing Speed**: Real-time capability with 30+ indicators
-- **Signal Quality**: Dynamic confidence scoring with market condition adjustments
-
-## 🔧 Usage Examples
-
-### ETH Technical Alpha Model
+### Training Models
 ```python
-from unicorn.2_alpha_models.ETH.models.enhanced_technical_alpha import EnhancedETHTechnicalAlpha
-
-# Initialize model
-alpha_model = EnhancedETHTechnicalAlpha()
-
-# Generate signal from OHLCV data
-signal_result = alpha_model.generate_signal(eth_data)
-
-print(f"Signal: {signal_result['signal']}")           # -1, 0, or 1
-print(f"Confidence: {signal_result['confidence']}")   # 0.0 to 1.0
-print(f"Metadata: {signal_result['metadata']}")       # Technical indicator values
+# Navigate to asset directory
+cd CRYPTO/BTC/scripts/
+python btc_model_builder.py
 ```
 
-### LEAN Algorithm Deployment
+### Running Tests
 ```python
-# Deploy to LEAN via QuantConnect
-from unicorn.2_alpha_models.ETH.algorithms.enhanced_technical_algorithm import ETHEnhancedTechnicalAlgorithm
-
-# Algorithm automatically integrates with LEAN framework
-# Provides real-time trading, risk management, and performance tracking
+# From asset test directory
+cd CRYPTO/BTC/tests/
+python test_btc_models.py
 ```
 
-### Validation Testing
+### Performance Tracking
 ```python
-# Run comprehensive validation
-from unicorn.2_alpha_models.ETH.scripts.alpha_validation_test import run_validation
+from shared.performance_tracker import ModelPerformanceTracker
 
-results = run_validation()
-print(f"Total signals: {results['total_signals']}")
-print(f"Buy/Sell ratio: {results['signal_distribution']}")
+tracker = ModelPerformanceTracker()
+tracker.track_validation_performance(model_id, predictions, actuals)
 ```
 
-## 🧪 Testing Framework
+## 🎯 Architecture Compliance
 
-### Comprehensive Test Suite
-- **Unit Tests**: Individual component testing for each model
-- **Integration Tests**: Phase 1 engine integration validation
-- **Performance Tests**: Signal generation speed and quality
-- **Edge Case Tests**: Insufficient data and boundary condition handling
+### Mandatory Rules
+1. **Asset Class Organization**: Assets must be in appropriate class directories
+2. **Required Subdirectories**: Each asset must have models/, algorithms/, tests/, scripts/, features/, research/
+3. **Model Types**: Each asset should implement all 4 model types
+4. **Naming Conventions**: Follow established patterns for files and classes
+5. **Testing Requirements**: All models must pass comprehensive validation
 
-### Test Execution
-```bash
-# Run all tests
-cd /workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models
-python -m pytest tests/ -v
+### Before Committing
+1. ✅ Verify architecture compliance
+2. ✅ Run comprehensive tests
+3. ✅ Generate performance metrics
+4. ✅ Update documentation
+5. ✅ Follow git commit standards
 
-# Run specific asset tests
-python -m pytest ETH/tests/ -v
+## 🔄 Migration Status
 
-# Run validation test
-python ETH/scripts/alpha_validation_test.py
-```
+### Completed ✅
+- BTC complete multi-model implementation
+- Framework infrastructure (testing, performance tracking, model framework)
+- Architecture documentation and enforcement
+- Asset template generation tools
 
-## 📈 Development Workflow
+### In Progress 🔧
+- ETH framework migration (from legacy to new framework)
+- FOREX framework migration
+- Performance optimization
 
-### Adding New Asset Classes
-1. **Use Template Generator**:
-   ```python
-   from utils.asset_template_generator import AssetTemplateGenerator
-   generator = AssetTemplateGenerator()
-   generator.create_asset_structure("BTC", "CRYPTO")
-   ```
+### Pending 📋
+- EQUITIES model implementation
+- Additional cryptocurrency assets
+- Live data integration
+- Automated retraining pipelines
 
-2. **Implement Models**: Extend base classes in `models/` directory
-3. **Create Algorithms**: Implement LEAN-compatible algorithms  
-4. **Add Tests**: Create comprehensive test suite
-5. **Validate Performance**: Run integration and performance tests
+## 📚 Documentation
 
-### Model Development Pattern
-1. **Inherit from Base Classes**: Use `TechnicalAlphaModel` or `MachineLearningAlphaModel`
-2. **Implement Required Methods**: `generate_signal()`, `get_required_columns()`
-3. **Integrate Phase 1**: Use existing Technical Indicators Engine
-4. **Add LEAN Algorithm**: Create deployable trading algorithm
-5. **Create Tests**: Validate model performance and integration
+- `ARCHITECTURE.md`: Complete architecture specifications
+- `shared/`: Framework component documentation
+- Individual asset directories: Asset-specific documentation
 
-## 🎯 Roadmap & Next Steps
+## 🚨 Important Notes
 
-### Phase 2 Continuation
-- **Task 2.2**: Fundamental Analysis Alpha (Company financials, economic indicators)
-- **Task 2.3**: Alternative Data Alpha (Social sentiment, news analysis)
-- **Task 2.4**: Multi-Asset Portfolio Alpha (Cross-asset correlations)
+- **DO NOT** place model files in the root directory
+- **DO NOT** create asset directories outside of asset class directories
+- **ALWAYS** use the enhanced asset generator for new assets
+- **ALWAYS** run comprehensive tests before committing
+- **FOLLOW** the established naming conventions
 
-### Framework Enhancements
-- **Auto-Discovery**: Automatic model registration and discovery
-- **Performance Monitoring**: Real-time model performance tracking
-- **A/B Testing**: Model comparison and selection framework
-- **Risk Attribution**: Signal-level risk analysis and attribution
-
-### Asset Class Expansion
-- **Fixed Income**: Bond and interest rate models
-- **Commodities**: Commodity-specific alpha strategies
-- **Options**: Derivatives and volatility strategies
-- **Crypto DeFi**: Decentralized finance specific models
-
-## 📚 Documentation & Resources
-
-### Key Documentation
-- `shared/base_alpha.py`: Base class documentation and patterns
-- `shared/utils.py`: Utility function reference
-- `utils/asset_template_generator.py`: Template generation guide
-- Individual model files: Comprehensive docstrings and examples
-
-### Development Guidelines
-- **Code Standards**: Follow PEP 8 and type hints
-- **Testing Requirements**: 80%+ test coverage for new models  
-- **Documentation**: Comprehensive docstrings and usage examples
-- **Integration**: Always validate Phase 1 engine integration
-
-### Performance Standards
-- **Signal Generation**: < 100ms for real-time processing
-- **Memory Usage**: Efficient data processing for large datasets
-- **Accuracy**: Validated signal generation with realistic distributions
-- **Reliability**: Robust error handling and edge case management
-
-## 🔍 Monitoring & Maintenance
-
-### Quality Assurance
-- **Automated Testing**: CI/CD integration with comprehensive test suite
-- **Performance Monitoring**: Regular signal quality and performance analysis
-- **Code Review**: Mandatory review for all model implementations
-- **Documentation Updates**: Keep documentation current with implementation
-
-### Support & Troubleshooting
-- **Integration Issues**: Check Phase 1 engine compatibility
-- **Performance Problems**: Use profiling tools and optimization techniques  
-- **Signal Quality**: Validate against historical data and benchmark models
-- **LEAN Deployment**: Follow LEAN algorithm development best practices
-
----
-
-## 📊 Phase 2 Task 2.1 Completion Summary
-
-✅ **Enhanced ETH Technical Alpha Model** - Production-ready with 30+ indicators
-✅ **LEAN Algorithm Integration** - Complete trading algorithm with risk management  
-✅ **Comprehensive Testing** - Validated integration and signal generation
-✅ **Scalable Architecture** - Asset-based organization for multi-asset development
-✅ **Documentation & Templates** - Complete development framework
-
-**Phase 2 Task 2.1 Status: COMPLETE**
-**Next Phase**: Task 2.2 - Fundamental Analysis Alpha
+For detailed architecture rules and enforcement guidelines, see `ARCHITECTURE.md`.

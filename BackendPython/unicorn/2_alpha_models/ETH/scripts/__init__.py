@@ -1,3 +1,0 @@
-"""
-Alpha Models Subpackage
-"""

@@ -1,3 +1,0 @@
-"""
-CRYPTO Research Package
-"""
