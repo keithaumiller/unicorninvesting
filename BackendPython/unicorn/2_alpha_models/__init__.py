@@ -1,51 +1,34 @@
 """
-Alpha Models - LEAN Framework Component 1
-========================================
+Unicorn Investing Alpha Models Package
 
-Signal Generation & Forecasting Components
-
-Alpha Models are responsible for:
-- Analyzing market data
-- Generating trading insights/signals
-- Forecasting price movements
-- Determining signal confidence levels
-
-Alpha Models should ONLY generate forecasts, not make trading decisions.
-
-Organization:
-- Framework Alpha Models: Clean LEAN framework implementations
-- Legacy Algorithms: Original forecasting algorithms (for reference)
-- Demos & Examples: Educational and testing implementations
-- Specialized Models: Predictive analytics and recommendation systems
+Organized by asset class for scalable development:
+- ETH/: Ethereum and crypto alpha models
+- FOREX/: Foreign exchange models  
+- CRYPTO/: General cryptocurrency models
+- EQUITIES/: Stock and equity models
+- shared/: Common utilities and templates
+- utils/: Shared utility functions
+- examples/: Example implementations
 """
 
-# Framework-ready Alpha Models
-from .AdvancedForexForecastingAlpha import AdvancedForexForecastingAlpha
-from .EthFocusedAlpha import EthFocusedAlpha
+__version__ = "2.1.0"
+__author__ = "Unicorn Investing Team"
 
-# Legacy forecasting algorithms (for reference and migration)
-# These should eventually be converted to proper Alpha Models
+# Import main asset modules
+try:
+    from .ETH import models as eth_models
+    from .FOREX import models as forex_models
+    from .CRYPTO import models as crypto_models
+    from .EQUITIES import models as equity_models
+    from .shared import utils as shared_utils
+except ImportError:
+    # Handle missing modules gracefully
+    pass
 
 __all__ = [
-    # Framework Alpha Models
-    'AdvancedForexForecastingAlpha',
-    'EthFocusedAlpha',
-    
-    # Legacy algorithms available for reference
-    # Note: Consider converting these to proper AlphaModel classes
+    'eth_models',
+    'forex_models', 
+    'crypto_models',
+    'equity_models',
+    'shared_utils'
 ]
-
-# Directory contents:
-# - AdvancedForexForecastingAlpha.py: Multi-model ensemble Alpha Model
-# - EthFocusedAlpha.py: ETH technical analysis Alpha Model  
-# - advanced_forex_forecasting_algorithm.py: Legacy complete algorithm
-# - prophet_forex_algorithm.py: Prophet-focused forecasting algorithm
-# - xgboost_forex_algorithm.py: XGBoost ML forecasting algorithm
-# - PureForecastingExample.py: Educational framework example
-# - prophet_forex_demo.py: Prophet demonstration
-# - simple_forex_forecasting_demo.py: Basic forecasting demo
-# - standalone_forex_demo.py: Standalone forecasting example
-# - quick_forecasting_comparison.py: Model comparison utility
-# - forecasting_performance_analysis.py: Performance analysis tools
-# - predictiveanalytics/: Advanced ML forecasting models
-# - recomendationsystems/: Recommendation engine components
