@@ -1,3 +1,3 @@
 """
-Alpha Models Subpackage
+CRYPTO Scripts Package
 """

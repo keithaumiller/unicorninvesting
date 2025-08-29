@@ -1,0 +1,30 @@
+================================================================================
+ALPHA MODEL TEST REPORT
+================================================================================
+Asset: BTC
+Model: BTCAlphaModel
+Test Time: 2025-08-29T17:04:26.996563
+Overall Status: PASSED
+
+TEST SUMMARY
+----------------------------------------
+Total Tests: 5
+Passed: 5
+Failed: 0
+Success Rate: 100.0%
+
+DETAILED TEST RESULTS
+----------------------------------------
+Initialization: PASS
+
+Data Validation: PASS
+
+Signal Generation: PASS
+  Signals: 10
+  Distribution: Buy=6, Sell=3, Hold=1
+  Confidence: Mean=0.560, Std=0.180
+  Performance: Avg Time=0.0020s
+
+Insufficient Data Handling: PASS
+
+Performance Tracking: PASS

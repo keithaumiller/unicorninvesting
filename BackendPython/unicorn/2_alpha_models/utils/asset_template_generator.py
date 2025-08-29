@@ -14,8 +14,207 @@ class AssetTemplateGenerator:
         self.base_path = base_path
         
     def create_asset_structure(self, asset_name: str, asset_class: str = "CRYPTO"):
-        """
-        Create complete directory structure for new asset.
+        ""# Example usage
+if __name__ == "__main__":
+    generator = AssetTemplateGenerator()
+    
+    # Create templates for common assets
+    assets = [
+        ("BTC", "CRYPTO"),
+        ("AAPL", "EQUITIES"), 
+        ("EURUSD", "FOREX"),
+        ("SPY", "EQUITIES")
+    ]
+    
+    for asset_name, asset_class in assets:
+        print(f"Creating template for {asset_name} in {asset_class}")
+        generator.create_asset_structure(asset_name, asset_class)
+        
+    print("✅ All asset templates created")
+
+    def _create_prophet_model_template(self, asset_dir: str, asset_name: str, asset_class: str):
+        """Create Prophet model template."""
+        template_path = os.path.join(asset_dir, 'models', f'{asset_name.lower()}_prophet.py')
+        
+        template_content = f'''"""
+{asset_name} Prophet Model for {asset_class}
+
+Time series forecasting model using Facebook Prophet.
+"""
+
+import pandas as pd
+import numpy as np
+from typing import Dict, Any, List, Optional
+import sys
+import os
+from datetime import datetime
+
+# Add parent directory to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from shared.model_framework import ProphetModel
+from shared.performance_tracker import ModelPerformanceTracker, ModelStage
+
+class {asset_name}ProphetModel(ProphetModel):
+    """
+    Prophet-based forecasting model for {asset_name}.
+    
+    Uses Facebook Prophet for time series forecasting with {asset_name}-specific optimizations.
+    """
+    
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        # Asset-specific Prophet configuration
+        default_config = {{
+            'seasonality_mode': 'multiplicative',
+            'yearly_seasonality': True,
+            'weekly_seasonality': True,
+            'daily_seasonality': False,
+            'changepoint_prior_scale': 0.05 if '{asset_name}' == 'ETH' else 0.1,
+            'seasonality_prior_scale': 10.0 if '{asset_name}' == 'ETH' else 15.0
+        }}
+        
+        if config:
+            default_config.update(config)
+            
+        super().__init__('{asset_name}', default_config)
+        self.performance_tracker = ModelPerformanceTracker()
+
+if __name__ == "__main__":
+    print("✅ {asset_name} Prophet Model Template Ready")
+'''
+        
+        with open(template_path, 'w') as f:
+            f.write(template_content)
+
+    def _create_xgboost_model_template(self, asset_dir: str, asset_name: str, asset_class: str):
+        """Create XGBoost model template.""" 
+        template_path = os.path.join(asset_dir, 'models', f'{asset_name.lower()}_xgboost.py')
+        
+        template_content = f'''"""
+{asset_name} XGBoost Model for {asset_class}
+
+Gradient boosting model for {asset_name} price prediction.
+"""
+
+import pandas as pd
+import numpy as np
+from typing import Dict, Any, List, Optional
+import sys
+import os
+from datetime import datetime
+
+# Add parent directory to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from shared.model_framework import XGBoostModel
+from shared.performance_tracker import ModelPerformanceTracker, ModelStage
+
+class {asset_name}XGBoostModel(XGBoostModel):
+    """
+    XGBoost-based prediction model for {asset_name}.
+    
+    Uses gradient boosting with {asset_name}-specific feature engineering.
+    """
+    
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        # Asset-specific XGBoost configuration
+        default_config = {{
+            'n_estimators': 100 if '{asset_name}' == 'ETH' else 150,
+            'max_depth': 6 if '{asset_name}' == 'ETH' else 8,
+            'learning_rate': 0.1 if '{asset_name}' == 'ETH' else 0.08
+        }}
+        
+        if config:
+            default_config.update(config)
+            
+        super().__init__('{asset_name}', default_config)
+        self.performance_tracker = ModelPerformanceTracker()
+
+if __name__ == "__main__":
+    print("✅ {asset_name} XGBoost Model Template Ready")
+'''
+        
+        with open(template_path, 'w') as f:
+            f.write(template_content)
+
+    def _create_ensemble_model_template(self, asset_dir: str, asset_name: str, asset_class: str):
+        """Create Ensemble model template."""
+        template_path = os.path.join(asset_dir, 'models', f'{asset_name.lower()}_ensemble.py')
+        
+        template_content = f'''"""
+{asset_name} Ensemble Model for {asset_class}
+
+Ensemble model combining Prophet and XGBoost for {asset_name}.
+"""
+
+import pandas as pd
+import numpy as np  
+from typing import Dict, Any, List, Optional
+import sys
+import os
+from datetime import datetime
+
+# Add parent directory to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from shared.model_framework import EnsembleModel
+from shared.performance_tracker import ModelPerformanceTracker, ModelStage
+
+class {asset_name}EnsembleModel(EnsembleModel):
+    """
+    Ensemble model for {asset_name} combining Prophet and XGBoost.
+    
+    Uses weighted combination of time series forecasting and feature-based prediction.
+    """
+    
+    def __init__(self, prophet_weight: float = 0.6, xgboost_weight: float = 0.4):
+        super().__init__('{asset_name}', prophet_weight, xgboost_weight)
+        self.performance_tracker = ModelPerformanceTracker()
+
+if __name__ == "__main__":
+    print("✅ {asset_name} Ensemble Model Template Ready")
+'''
+        
+        with open(template_path, 'w') as f:
+            f.write(template_content)
+
+    def _create_validation_script(self, asset_dir: str, asset_name: str, asset_class: str):
+        """Create comprehensive validation script."""
+        template_path = os.path.join(asset_dir, 'scripts', f'{asset_name.lower()}_validation.py')
+        
+        template_content = f'''"""
+{asset_name} Model Validation Script
+
+Comprehensive validation of all {asset_name} models.
+"""
+
+import pandas as pd
+import numpy as np
+import sys
+import os
+from datetime import datetime, timedelta
+
+# Add parent directory to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from shared.testing_framework import run_model_test_suite, generate_test_report
+
+def run_comprehensive_validation():
+    """Run comprehensive validation of all {asset_name} models."""
+    print(f"🚀 Starting Comprehensive {asset_name} Model Validation")
+    print("=" * 60)
+    
+    # Placeholder for comprehensive validation
+    # TODO: Implement full validation suite
+    
+    print(f"🏁 {asset_name} Model Validation Complete!")
+
+if __name__ == "__main__":
+    run_comprehensive_validation()
+'''
+        
+        with open(template_path, 'w') as f:
+            f.write(template_content)complete directory structure for new asset.
         
         Args:
             asset_name: Name of the asset (e.g., 'BTC', 'AAPL')
@@ -44,8 +243,12 @@ class AssetTemplateGenerator:
         
         # Create template files
         self._create_model_template(asset_dir, asset_name, asset_class)
+        self._create_prophet_model_template(asset_dir, asset_name, asset_class)
+        self._create_xgboost_model_template(asset_dir, asset_name, asset_class)
+        self._create_ensemble_model_template(asset_dir, asset_name, asset_class)
         self._create_algorithm_template(asset_dir, asset_name, asset_class)
         self._create_test_template(asset_dir, asset_name, asset_class)
+        self._create_validation_script(asset_dir, asset_name, asset_class)
         
     def _create_model_template(self, asset_dir: str, asset_name: str, asset_class: str):
         """Create alpha model template."""
