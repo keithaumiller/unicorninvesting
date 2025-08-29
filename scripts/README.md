@@ -27,14 +27,19 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 **Features:**
 - ✅ Environment variables setup
 - ✅ Bash aliases configuration
-- ✅ Complete system health checks (28 validation checks)
+- ✅ Complete system health checks (31 validation checks)
 - ✅ Drupal services startup and validation
 - ✅ Python environment validation
 - ✅ Database connectivity tests
 - ✅ Directory structure verification
 - ✅ LEAN framework validation
 - ✅ Data sources checking
-- ✅ Interactive Brokers (IBKR) integration validation
+- ✅ **Enhanced IBKR Gateway integration** with:
+  - ✅ Automatic gateway startup using codespace configuration
+  - ✅ Proper path and configuration validation
+  - ✅ Process monitoring and error recovery
+  - ✅ Authentication flow integration
+  - ✅ Comprehensive troubleshooting guidance
 - ✅ Yahoo Finance connector verification
 - ✅ Alpha Vantage connector validation
 
@@ -76,6 +81,31 @@ Drupal-specific startup script for web frontend. This functionality has been int
 - **Gateway URL**: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
 - **Data Sources**: Real-time and historical cryptocurrency data (ETH validated)
 - **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
+
+#### 🔧 IBKR Gateway Best Practices
+Based on successful manual testing and integration:
+
+**Configuration:**
+- ✅ Use `conf-codespace.yaml` for GitHub Codespaces
+- ✅ Execute from tools directory: `cd /path/to/tools && ./bin/run.sh`
+- ✅ Required files: `bin/run.sh` and `root/conf-codespace.yaml`
+
+**Startup Process:**
+```bash
+cd BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools
+./bin/run.sh root/conf-codespace.yaml
+```
+
+**Monitoring:**
+- ✅ Gateway logs: `tools/gateway.log`
+- ✅ Process monitoring: Look for `iblink.router.clientportal.gw.jar`
+- ✅ Health check: `curl http://localhost:5000/v1/api/iserver/auth/status`
+- ✅ Authentication: Manual login via external URL
+
+**Security:**
+- ✅ All log files are in `.gitignore`
+- ✅ No hardcoded credentials in codebase
+- ✅ Manual authentication prevents credential exposure
 
 ### Yahoo Finance Integration  
 - **Status**: ✅ Operational
