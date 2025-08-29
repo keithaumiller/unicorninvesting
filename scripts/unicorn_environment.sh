@@ -256,35 +256,67 @@ start_ibkr_gateway() {
         
         # Stop any existing gateway processes
         echo -e "${YELLOW}🛑 Stopping any existing IBKR Gateway processes...${NC}"
-        pkill -f "ibgroup.web.core.clientportal.gw.GatewayStart" 2>/dev/null || true
+        pkill -f "ibgroup.web.core.iblink.router.clientportal.gw.jar" 2>/dev/null || true
         sleep 2
         
-        # Start the gateway in background
-        cd "$IBKR_TOOLS_PATH"
+        # Change to IBKR tools directory (required for proper startup)
+        echo -e "${YELLOW}📁 Changing to IBKR tools directory: $IBKR_TOOLS_PATH${NC}"
+        cd "$IBKR_TOOLS_PATH" || {
+            echo -e "${RED}❌ Failed to change to IBKR tools directory${NC}"
+            return 1
+        }
         
-        # Ensure HTTP configuration exists
-        if [ ! -f "root/conf-http.yaml" ]; then
-            echo -e "${YELLOW}📝 Creating HTTP configuration...${NC}"
-            # Create HTTP config by copying and modifying SSL settings
-            sed 's/listenSsl: true/listenSsl: false/' root/conf.yaml > root/conf-http.yaml
-            # Remove SSL cert and password lines
-            sed -i '/sslCert:/d' root/conf-http.yaml
-            sed -i '/sslPwd:/d' root/conf-http.yaml
+        # Verify required files exist
+        if [ ! -f "bin/run.sh" ]; then
+            echo -e "${RED}❌ IBKR Gateway startup script not found: bin/run.sh${NC}"
+            return 1
         fi
         
-        # Start the gateway using the HTTP config
-        echo -e "${YELLOW}🚀 Starting IBKR Gateway with HTTP configuration...${NC}"
-        nohup ./bin/run.sh root/conf-http.yaml > gateway-http.log 2>&1 &
+        if [ ! -f "root/conf-codespace.yaml" ]; then
+            echo -e "${RED}❌ IBKR Gateway configuration not found: root/conf-codespace.yaml${NC}"
+            echo -e "${YELLOW}💡 Available configs:${NC}"
+            ls -la root/*.yaml 2>/dev/null || echo "   No config files found"
+            return 1
+        fi
+        
+        # Start the gateway using the codespace-optimized configuration
+        echo -e "${YELLOW}🚀 Starting IBKR Gateway with codespace configuration...${NC}"
+        echo -e "${YELLOW}   Config: root/conf-codespace.yaml${NC}"
+        echo -e "${YELLOW}   Command: ./bin/run.sh root/conf-codespace.yaml${NC}"
+        
+        nohup ./bin/run.sh root/conf-codespace.yaml > gateway.log 2>&1 &
         local GATEWAY_PID=$!
         
         echo -e "${YELLOW}⏳ Waiting for IBKR Gateway to start (PID: $GATEWAY_PID)...${NC}"
+        echo -e "${YELLOW}   Monitoring startup progress...${NC}"
         
-        # Wait up to 45 seconds for the gateway to start
+        # Wait up to 60 seconds for the gateway to start (increased timeout)
         local COUNT=0
-        while [ $COUNT -lt 45 ]; do
+        while [ $COUNT -lt 60 ]; do
+            # Check if the process is still running
+            if ! kill -0 $GATEWAY_PID 2>/dev/null; then
+                echo ""
+                echo -e "${RED}❌ IBKR Gateway process terminated unexpectedly${NC}"
+                echo -e "${YELLOW}💡 Check logs at: $IBKR_TOOLS_PATH/gateway.log${NC}"
+                if [ -f "gateway.log" ]; then
+                    echo -e "${YELLOW}🔍 Last few log lines:${NC}"
+                    tail -5 gateway.log
+                fi
+                return 1
+            fi
+            
+            # Check if gateway is responding
             if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
                 echo ""
-                echo -e "${GREEN}✅ IBKR Gateway started successfully on HTTP${NC}"
+                echo -e "${GREEN}✅ IBKR Gateway started successfully${NC}"
+                echo -e "${GREEN}   Process ID: $GATEWAY_PID${NC}"
+                echo -e "${GREEN}   Configuration: root/conf-codespace.yaml${NC}"
+                echo -e "${GREEN}   Log file: $IBKR_TOOLS_PATH/gateway.log${NC}"
+                
+                # Show gateway startup confirmation from logs
+                if [ -f "gateway.log" ] && grep -q "Open http://localhost:5000 to login" gateway.log; then
+                    echo -e "${GREEN}   Gateway ready for authentication${NC}"
+                fi
                 
                 # Automatically attempt authentication
                 echo ""
@@ -292,7 +324,7 @@ start_ibkr_gateway() {
                 
                 echo ""
                 echo -e "${BLUE}📱 Gateway accessible via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
-                echo -e "${YELLOW}💡 Note: Login URL uses HTTPS proxy but gateway runs on HTTP${NC}"
+                echo -e "${YELLOW}💡 Note: External URL uses HTTPS proxy but gateway runs on HTTP localhost:5000${NC}"
                 return 0
             fi
             sleep 1
@@ -301,9 +333,18 @@ start_ibkr_gateway() {
         done
         
         echo ""
-        echo -e "${RED}❌ IBKR Gateway failed to start within 45 seconds${NC}"
-        echo -e "${YELLOW}💡 Check logs at: $IBKR_TOOLS_PATH/gateway-http.log${NC}"
-        echo -e "${YELLOW}💡 Also check: $IBKR_TOOLS_PATH/gateway.log${NC}"
+        echo -e "${RED}❌ IBKR Gateway failed to start within 60 seconds${NC}"
+        echo -e "${YELLOW}💡 Troubleshooting:${NC}"
+        echo -e "${YELLOW}   1. Check logs at: $IBKR_TOOLS_PATH/gateway.log${NC}"
+        echo -e "${YELLOW}   2. Verify Java is available: java -version${NC}"
+        echo -e "${YELLOW}   3. Check process: ps aux | grep gateway${NC}"
+        echo -e "${YELLOW}   4. Manual start: cd $IBKR_TOOLS_PATH && ./bin/run.sh root/conf-codespace.yaml${NC}"
+        
+        # Show recent log entries for debugging
+        if [ -f "gateway.log" ]; then
+            echo -e "${YELLOW}🔍 Recent log entries:${NC}"
+            tail -10 gateway.log
+        fi
         return 1
     fi
 }
@@ -565,8 +606,28 @@ run_health_checks() {
 
     # Interactive Brokers (IBKR) Integration
     IBKR_CONNECTOR_PATH="BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers"
+    IBKR_TOOLS_PATH="$IBKR_CONNECTOR_PATH/tools"
+    
     if [ -f "$IBKR_CONNECTOR_PATH/IBKRClientPortalConnector.py" ]; then
         check_status 0 "IBKR Client Portal Connector: Available"
+        
+        # Check IBKR Gateway installation and configuration
+        if [ -d "$IBKR_TOOLS_PATH" ]; then
+            if [ -f "$IBKR_TOOLS_PATH/bin/run.sh" ]; then
+                check_status 0 "IBKR Gateway: Installation complete"
+                
+                # Check for codespace configuration
+                if [ -f "$IBKR_TOOLS_PATH/root/conf-codespace.yaml" ]; then
+                    check_status 0 "IBKR Gateway: Codespace configuration available"
+                else
+                    check_status 1 "IBKR Gateway: Missing codespace configuration" "Expected: $IBKR_TOOLS_PATH/root/conf-codespace.yaml"
+                fi
+            else
+                check_status 1 "IBKR Gateway: Missing startup script" "Expected: $IBKR_TOOLS_PATH/bin/run.sh"
+            fi
+        else
+            check_status 1 "IBKR Gateway: Tools directory not found" "Expected: $IBKR_TOOLS_PATH"
+        fi
         
         # Check if IBKR Gateway is running
         if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
@@ -580,7 +641,7 @@ run_health_checks() {
                 check_status 1 "IBKR Authentication: Not authenticated" "Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
             fi
         else
-            check_status 1 "IBKR Gateway: Not running" "Start gateway in $IBKR_CONNECTOR_PATH/tools/"
+            check_status 1 "IBKR Gateway: Not running" "Run: cd $IBKR_TOOLS_PATH && ./bin/run.sh root/conf-codespace.yaml"
         fi
         
         # Check ETH data collection capability
