@@ -662,7 +662,50 @@ run_health_checks() {
         check_status 1 "Alpha Vantage Connector: Not found"
     fi
 
-    # 7. Summary
+    # 7. Architecture Validation
+    echo -e "\n${BLUE}🏗️  Architecture Validation${NC}"
+    echo "==========================="
+
+    # Check if architecture validation script exists
+    ARCH_VALIDATOR="BackendPython/unicorn/scripts/validate_unicorn_architecture.py"
+    if [ -f "$ARCH_VALIDATOR" ]; then
+        check_status 0 "Architecture Validator: Available"
+        
+        # Run architecture validation
+        echo -e "${YELLOW}🔍 Running architecture compliance check...${NC}"
+        
+        # Activate Python environment if available
+        if [ -f ".venv/bin/activate" ]; then
+            source .venv/bin/activate
+        fi
+        
+        # Run the architecture validation
+        ARCH_RESULT=$(python3 "$ARCH_VALIDATOR" 2>&1)
+        ARCH_EXIT_CODE=$?
+        
+        if [ $ARCH_EXIT_CODE -eq 0 ]; then
+            check_status 0 "Architecture Compliance: Fully compliant"
+        elif [ $ARCH_EXIT_CODE -eq 1 ]; then
+            check_status 1 "Architecture Compliance: Compliant with warnings" "Check missing components"
+            echo -e "${YELLOW}   Architecture summary:${NC}"
+            echo "$ARCH_RESULT" | grep -A 5 "WARNINGS" | sed 's/^/   /' | head -8
+        else
+            check_status 1 "Architecture Compliance: Non-compliant" "Run: python3 $ARCH_VALIDATOR for details"
+            echo -e "${RED}   Critical issues detected:${NC}"
+            echo "$ARCH_RESULT" | grep -A 5 "ERRORS" | sed 's/^/   /' | head -8
+        fi
+    else
+        check_status 1 "Architecture Validator: Not found" "Expected: $ARCH_VALIDATOR"
+    fi
+
+    # Check for ARCHITECTURE.md documentation
+    if [ -f "BackendPython/unicorn/ARCHITECTURE.md" ]; then
+        check_status 0 "Architecture Documentation: Available"
+    else
+        check_status 1 "Architecture Documentation: Missing" "Expected: BackendPython/unicorn/ARCHITECTURE.md"
+    fi
+
+    # 8. Summary
     echo -e "\n${BLUE}📊 Summary${NC}"
     echo "==========="
 
