@@ -1,0 +1,24 @@
+{
+  "contract": {
+    "conid": "541686654",
+    "companyHeader": "Ethereum cryptocurrency",
+    "companyName": "Ethereum cryptocurrency",
+    "symbol": "ETH",
+    "description": null,
+    "restricted": null,
+    "sections": [
+      {
+        "secType": "CRYPTO",
+        "exchange": "ZEROHASH;"
+      }
+    ]
+  },
+  "market_data": [
+    {
+      "conidEx": "541686654",
+      "conid": 541686654
+    }
+  ],
+  "timestamp": "2025-08-29T15:07:32.042603",
+  "data_type": "realtime"
+}

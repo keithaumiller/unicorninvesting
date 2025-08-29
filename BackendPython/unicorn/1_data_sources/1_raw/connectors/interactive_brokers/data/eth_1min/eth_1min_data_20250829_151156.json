@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "collection_time": "2025-08-29T15:11:56.953610",
+    "contract_id": 541686654,
+    "bar_count": 1000,
+    "timeframe": "1min",
+    "statistics": {
+      "bars_collected": 1000,
+      "failed_requests": 0,
+      "last_update": 

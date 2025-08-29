@@ -1,0 +1,84 @@
+{
+  "contract": {
+    "conid": "541686654",
+    "companyHeader": "Ethereum cryptocurrency",
+    "companyName": "Ethereum cryptocurrency",
+    "symbol": "ETH",
+    "description": null,
+    "restricted": null,
+    "sections": [
+      {
+        "secType": "CRYPTO",
+        "exchange": "ZEROHASH;"
+      }
+    ]
+  },
+  "historical_data": {
+    "serverId": "1040944",
+    "symbol": "ETH",
+    "text": "Ethereum cryptocurrency",
+    "priceFactor": 20,
+    "startTime": "20250828-20:01:00",
+    "high": "90327/239.13277006/0",
+    "low": "85355/878.77840671/959",
+    "timePeriod": "1d",
+    "barLength": 14400,
+    "mdAvailability": "S",
+    "mktDataDelay": 0,
+    "outsideRth": false,
+    "tradingDayDuration": 1439,
+    "volumeFactor": 1,
+    "priceDisplayRule": 1,
+    "priceDisplayValue": "2",
+    "negativeCapable": false,
+    "messageVersion": 2,
+    "data": [
+      {
+        "o": 4433.8,
+        "c": 4512.55,
+        "h": 4516.35,
+        "l": 4433.8,
+        "v": 239.13277006,
+        "t": 1756411260000
+      },
+      {
+        "o": 4512.55,
+        "c": 4492.05,
+        "h": 4515.65,
+        "l": 4436.0,
+        "v": 325.37928053,
+        "t": 1756425600000
+      },
+      {
+        "o": 4490.75,
+        "c": 4379.95,
+        "h": 4497.95,
+        "l": 4352.5,
+        "v": 318.35521931,
+        "t": 1756440000000
+      },
+      {
+        "o": 4381.9,
+        "c": 4347.4,
+        "h": 4398.15,
+        "l": 4308.35,
+        "v": 427.77836268,
+        "t": 1756454400000
+      },
+      {
+        "o": 4350.05,
+        "c": 4318.3,
+        "h": 4453.9,
+        "l": 4267.75,
+        "v": 878.77840671,
+        "t": 1756468800000
+      }
+    ],
+    "points": 4,
+    "travelTime": 71
+  },
+  "timestamp": "2025-08-29T15:07:32.238367",
+  "data_type": "historical",
+  "period": "1d",
+  "bar_size": "5mins"
+}
