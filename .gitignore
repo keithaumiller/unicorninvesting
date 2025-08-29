@@ -35,3 +35,5 @@ WebFrontend/web/sites/default/files/php/
 BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/logs/
 BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/*.log
 BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/gateway*.log
+*.log
+logs/
