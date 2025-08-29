@@ -73,7 +73,7 @@ if [ "$UPDATE_CONFIG" = "y" ]; then
     echo "========================"
     echo ""
     echo "To use IBKR's Web API, you need:"
-    echo "1. ✅ IBKR Account (you have: U21748632)"
+    echo "1. ✅ IBKR Account (you have: [Your Account Number])"
     echo "2. ✅ API Access Enabled (confirmed by IBKR support)"
     echo "3. 🔑 API Key (we'll configure this)"
     echo ""
@@ -118,7 +118,7 @@ if [ "$UPDATE_CONFIG" = "y" ]; then
         DEFAULT_USERNAME="xyzyuc422"
         echo "📋 Using paper trading defaults (safe for testing)"
     else
-        DEFAULT_ACCOUNT="U21748632"
+        DEFAULT_ACCOUNT="[Your Account Number]"
         DEFAULT_USERNAME="[YOUR_IBKR_USERNAME]"
         echo "⚠️  Using live trading account - be careful!"
     fi

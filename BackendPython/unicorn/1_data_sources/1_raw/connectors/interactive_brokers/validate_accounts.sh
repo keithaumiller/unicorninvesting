@@ -12,7 +12,8 @@ echo "============================="
 echo ""
 echo "🏦 Live Trading Account:"
 echo "   Username: [Your IBKR Username]"
-echo "   Account:  U21748632"
+echo "   Password: [Your IBKR Password]" 
+echo "   Account:  [Your IBKR Account Number]"
 echo "   API Access: ✅ Enabled (IBKR ticket #T895507)"
 echo ""
 echo "🧪 Paper Trading Account:"
@@ -43,7 +44,7 @@ if [ -f "$CONFIG_DIR/webapi_config.json" ]; then
     
     if [ "$CONFIGURED_ACCOUNT" = "DUM785491" ]; then
         echo "   ✅ Using paper trading account (safe)"
-    elif [ "$CONFIGURED_ACCOUNT" = "U21748632" ]; then
+    elif [ "$CONFIGURED_ACCOUNT" = "[Your Account Number]" ]; then
         echo "   ⚠️  Using live trading account (be careful!)"
     fi
 else
@@ -64,7 +65,7 @@ if [ -f "$CONFIG_DIR/client_portal_config.json" ]; then
     
     if [ "$CONFIGURED_ACCOUNT" = "DUM785491" ]; then
         echo "   ✅ Using paper trading account (safe)"
-    elif [ "$CONFIGURED_ACCOUNT" = "U21748632" ]; then
+    elif [ "$CONFIGURED_ACCOUNT" = "[Your Account Number]" ]; then
         echo "   ⚠️  Using live trading account (be careful!)"
     fi
 else
