@@ -223,11 +223,117 @@ feat: Consolidate health_check.sh and setup_environment.sh scripts
 
 ## README.md Context
 When working on any part of this codebase, always consider:
+## 🎯 **GitHub Issues Management Strategy**
+
+### **Issue Creation Policy**
+- **Create GitHub Issues** for all documented but unimplemented features
+- **Track architectural decisions** that need future implementation
+- **Use epics** for high-level components and use cases
+- **Link issues** to documentation and commits for traceability
+
+### **Issue Categories & Labels**
+
+#### **Epic Issues** (`epic` label)
+- **Purpose**: Major architectural components requiring multiple sub-issues
+- **Scope**: Multi-week initiatives (4+ weeks)
+- **Examples**: "Epic: ETH Framework Implementation", "Epic: LEAN Integration"
+- **When to Create**: High-level architecture documented but not implemented
+
+#### **Feature Issues** (`feature` label)  
+- **Purpose**: Specific functionality or components to be built
+- **Scope**: 1-3 week development cycles
+- **Examples**: "Feature: Real-time ETH Data Pipeline", "Feature: ML Model Training"
+- **When to Create**: Detailed requirements exist but implementation pending
+
+#### **Task Issues** (`task` label)
+- **Purpose**: Specific coding tasks or configurations
+- **Scope**: 1-5 day implementation items
+- **Examples**: "Task: Implement Kelly Criterion", "Task: Add VaR calculations"
+- **When to Create**: Specific technical requirements identified
+
+#### **Documentation Issues** (`documentation` label)
+- **Purpose**: Missing documentation that should be created
+- **Examples**: "Docs: API documentation", "Docs: User guide for trading"
+- **When to Create**: Functionality exists but documentation missing
+
+### **Automatic Issue Creation Rules**
+
+**✅ CREATE ISSUES FOR:**
+- Any README.md that references unimplemented features
+- Use cases defined in specifications but not coded
+- Process flows documented but not built
+- Architecture diagrams with missing components
+- Data requirements specified but not collected
+- Framework components planned but not developed
+
+**🔧 ISSUE TEMPLATES:**
+
+```markdown
+## Epic Issue Template
+**Epic**: [Component Name]
+**Description**: [High-level scope and purpose]
+**Requirements**: [Major requirements and features]
+**Use Cases**: [Which use cases this epic serves]
+**Dependencies**: [Other epics or features this depends on]
+**Acceptance Criteria**: [What constitutes epic completion]
+**Estimated Timeline**: [Rough weeks estimate]
+**Priority**: [High/Medium/Low based on business impact]
+```
+
+```markdown
+## Feature Issue Template  
+**Feature**: [Specific functionality]
+**Description**: [Detailed feature description]
+**Technical Requirements**: [Specific technical specs]
+**User Story**: [As a user, I want... so that...]
+**Dependencies**: [Prerequisites for this feature]
+**Acceptance Criteria**: [Specific completion criteria]
+**Related Epic**: [Link to parent epic]
+**Estimated Effort**: [Story points or days]
+```
+
+### **Issue Management Workflow**
+
+#### **Issue Lifecycle**
+1. **Created** → Issue identified from documentation/planning
+2. **Planned** → Added to milestone and prioritized
+3. **In Progress** → Developer assigned and working
+4. **Review** → Implementation complete, under review
+5. **Done** → Merged and deployed
+
+#### **Integration with Development**
+```bash
+# Commit message format linking to issues
+git commit -m "feat: Add ETH data collector (closes #123)"
+git commit -m "docs: Update framework docs (refs #456)"
+
+# Branch naming convention
+git checkout -b "epic/123-eth-framework"
+git checkout -b "feature/456-realtime-data"
+git checkout -b "task/789-kelly-criterion"
+```
+
+#### **Progress Tracking**
+- **Milestones**: Group issues by implementation phases
+- **Projects**: Kanban boards for visual progress tracking
+- **Labels**: Priority, type, status, and component classification
+- **Assignees**: Track ownership and workload distribution
+
+### **Documentation-to-Issue Mapping**
+
+**🔍 SCAN FOR ISSUES IN:**
+- `/BackendPython/unicorn/eth_framework/*.md` - ETH framework specs
+- `/BackendPython/unicorn/*/README.md` - Component documentation  
+- `/docs/*.md` - High-level architecture docs
+- `/deployment/*.md` - Deployment and setup docs
+- Code comments with `TODO:`, `FIXME:`, `HACK:` annotations
+
 ## General Principles
 - High accuracy and security (financial platform)
 - Performance is critical for real-time trading
 - Intuitive UX for financial professionals
 - Maintainable, well-documented, auditable code
+- **Use GitHub Issues** to track all planned but unimplemented work
 
 ## Parent Directory Context
 
@@ -235,5 +341,7 @@ When working on any part of this codebase, always consider:
 ## Repo Context
 - Main repo: R scripts, data pipelines, portfolio/optimization, MySQL integration, batch jobs, research/backtesting
 - Goal: Modernize, preserve financial logic, improve scalability, maintainability, UX
+- **Track progress via GitHub Issues** for all architectural components
 
 - Always review and update README.md in the same directory after any file change.
+- **Create GitHub Issues** for any new unimplemented features discovered in documentation.
