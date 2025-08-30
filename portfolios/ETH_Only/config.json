@@ -1,0 +1,25 @@
+{
+  "portfolio_name": "ETH_Only",
+  "description": "100% Ethereum allocation portfolio optimized for high-growth cryptocurrency exposure",
+  "strategy_type": "single_asset_crypto",
+  "assets": {
+    "ETH": {
+      "allocation_percent": 100,
+      "asset_type": "cryptocurrency",
+      "data_source": "ibkr",
+      "model_type": "enhanced_technical",
+      "contract_id": "541686654",
+      "symbol": "ETHUSD",
+      "exchange": "SMART"
+    }
+  },
+  "total_allocation": 100,
+  "currency": "USD",
+  "rebalancing_frequency": "daily",
+  "minimum_trade_size": 100,
+  "target_volatility": 0.25,
+  "created_date": "2025-08-30",
+  "last_updated": "2025-08-30",
+  "status": "active"
+}
+

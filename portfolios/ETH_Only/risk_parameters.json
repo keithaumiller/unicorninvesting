@@ -1,0 +1,44 @@
+{
+  "portfolio_name": "ETH_Only",
+  "risk_profile": "medium_high",
+  "max_portfolio_volatility": 0.30,
+  "max_single_asset_weight": 1.00,
+  "var_limit_1day": 0.08,
+  "var_limit_1week": 0.15,
+  "max_drawdown": 0.20,
+  "sharpe_ratio_target": 1.2,
+  "risk_budget_allocation": {
+    "ETH": 1.00
+  },
+  "correlation_limits": {
+    "max_correlation": 1.0,
+    "note": "Single asset portfolio - correlation limits not applicable"
+  },
+  "volatility_targets": {
+    "daily": 0.04,
+    "weekly": 0.12,
+    "monthly": 0.25
+  },
+  "position_limits": {
+    "max_position_size": 0.95,
+    "min_position_size": 0.05,
+    "cash_reserve": 0.05
+  },
+  "stop_loss_settings": {
+    "enabled": true,
+    "stop_loss_percent": 0.15,
+    "trailing_stop": true,
+    "trailing_stop_percent": 0.10
+  },
+  "stress_test_scenarios": {
+    "crypto_crash": {
+      "eth_decline": 0.50,
+      "acceptable": true
+    },
+    "market_volatility": {
+      "volatility_spike": 2.0,
+      "acceptable": true
+    }
+  },
+  "last_updated": "2025-08-30"
+}

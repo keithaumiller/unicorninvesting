@@ -1,0 +1,94 @@
+🦄 UNICORN INVESTING - MODEL PERFORMANCE REPORT
+=======================================================
+Generated: 2025-08-30 16:41:52
+
+📊 MODEL DISCOVERY SUMMARY
+------------------------------
+Total Assets: 2
+Total Models: 6
+
+  BTC: ['prophet', 'xgboost', 'ensemble']
+  ETH: ['prophet', 'xgboost', 'ensemble']
+
+📈 PERFORMANCE ANALYSIS
+-------------------------
+🏆 Best R2: ETH-Ensemble (0.936)
+🏆 Best DIRECTIONAL_ACCURACY: BTC-Ensemble (80.004)
+🏆 Best SHARPE_RATIO: ETH-Ensemble (1.431)
+🏆 Best MAPE: BTC-Ensemble (4.9%)
+
+📋 DETAILED METRICS BY ASSET
+-----------------------------------
+
+BTC:
+  Prophet:
+    MSE: 5593.18
+    MAE: 747.88
+    RMSE: 74.79
+    MAPE: 7.5%
+    R2: 0.850
+    DIRECTIONAL_ACCURACY: 58.615
+    SHARPE_RATIO: 0.93
+    INFORMATION_RATIO: 0.88
+    MAX_DRAWDOWN: -6.4%
+  Xgboost:
+    MSE: 3057.93
+    MAE: 552.99
+    RMSE: 55.30
+    MAPE: 5.5%
+    R2: 0.780
+    DIRECTIONAL_ACCURACY: 71.802
+    SHARPE_RATIO: 0.78
+    INFORMATION_RATIO: 0.48
+    MAX_DRAWDOWN: -13.0%
+  Ensemble:
+    MSE: 2417.15
+    MAE: 491.64
+    RMSE: 49.16
+    MAPE: 4.9%
+    R2: 0.813
+    DIRECTIONAL_ACCURACY: 80.004
+    SHARPE_RATIO: 1.37
+    INFORMATION_RATIO: 0.44
+    MAX_DRAWDOWN: -12.1%
+
+ETH:
+  Prophet:
+    MSE: 9698.39
+    MAE: 984.80
+    RMSE: 98.48
+    MAPE: 9.8%
+    R2: 0.650
+    DIRECTIONAL_ACCURACY: 64.983
+    SHARPE_RATIO: 1.07
+    INFORMATION_RATIO: 0.61
+    MAX_DRAWDOWN: -7.8%
+  Xgboost:
+    MSE: 4380.95
+    MAE: 661.89
+    RMSE: 66.19
+    MAPE: 6.6%
+    R2: 0.731
+    DIRECTIONAL_ACCURACY: 75.475
+    SHARPE_RATIO: 1.25
+    INFORMATION_RATIO: 0.65
+    MAX_DRAWDOWN: -10.3%
+  Ensemble:
+    MSE: 3293.13
+    MAE: 573.86
+    RMSE: 57.39
+    MAPE: 5.7%
+    R2: 0.936
+    DIRECTIONAL_ACCURACY: 69.112
+    SHARPE_RATIO: 1.43
+    INFORMATION_RATIO: 0.42
+    MAX_DRAWDOWN: -9.8%
+
+💡 RECOMMENDATIONS
+--------------------
+🎯 Best Overall Model: ETH-Ensemble
+   Recommended for production deployment
+⚠️  Models with low directional accuracy (<60%): 1
+   Review feature engineering and model architecture
+
+🦄 End of Report

@@ -1,0 +1,45 @@
+{
+  "portfolio_name": "Myportolio",
+  "risk_profile": "moderate",
+  "max_portfolio_volatility": 0.25,
+  "max_single_asset_weight": 0.65,
+  "var_limit_1day": 0.06,
+  "var_limit_1week": 0.12,
+  "max_drawdown": 0.15,
+  "sharpe_ratio_target": 1.3,
+  "risk_budget_allocation": {
+    "ETH": 0.60,
+    "BTC": 0.40
+  },
+  "correlation_limits": {
+    "max_correlation": 0.85,
+    "min_correlation": 0.40
+  },
+  "volatility_targets": {
+    "daily": 0.03,
+    "weekly": 0.10,
+    "monthly": 0.20
+  },
+  "position_limits": {
+    "max_position_size": 0.65,
+    "min_position_size": 0.35,
+    "cash_reserve": 0.05
+  },
+  "stop_loss_settings": {
+    "enabled": true,
+    "stop_loss_percent": 0.12,
+    "trailing_stop": true,
+    "trailing_stop_percent": 0.08
+  },
+  "stress_test_scenarios": {
+    "market_crash": {
+      "asset_decline": 0.40,
+      "acceptable": true
+    },
+    "volatility_spike": {
+      "volatility_multiple": 2.5,
+      "acceptable": true
+    }
+  },
+  "last_updated": "2025-08-30"
+}

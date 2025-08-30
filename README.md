@@ -243,6 +243,46 @@ pip install pandas numpy scikit-learn tensorflow fastapi sqlalchemy
 python backend/main.py
 ```
 
+## 📁 Portfolio Management
+
+### Portfolio Structure
+**Location**: `BackendPython/unicorn/4_portfolios/portfolios/` (Within LEAN framework)
+**Organization**: Each portfolio in its own self-contained directory
+
+### Available Portfolios
+
+#### ✅ ETH_Only Portfolio (Ready for Deployment)
+- **Strategy**: 100% Ethereum allocation
+- **Risk Profile**: Medium-High volatility
+- **Configuration**: Complete with risk parameters and execution settings
+- **Status**: Production ready with validated alpha models
+- **Location**: `BackendPython/unicorn/4_portfolios/portfolios/ETH_Only/`
+
+#### 📋 BTC_ETH_Mixed Portfolio (Planned)
+- **Strategy**: Balanced Bitcoin (60%) + Ethereum (40%) allocation
+- **Risk Profile**: Medium volatility with diversification benefits
+- **Status**: Configuration complete, awaiting BTC model development
+- **Location**: `BackendPython/unicorn/4_portfolios/portfolios/BTC_ETH_Mixed/`
+
+#### 📋 Multi_Asset Portfolio (Planned)
+- **Strategy**: Diversified across crypto, forex, and equities
+- **Risk Profile**: Lower volatility through cross-asset diversification
+- **Status**: Planning phase
+- **Location**: `BackendPython/unicorn/4_portfolios/portfolios/Multi_Asset/`
+
+### Portfolio Configuration Standard
+Each portfolio contains:
+- `config.json` - Asset allocations and strategy parameters
+- `risk_parameters.json` - Risk management settings and limits
+- `execution_settings.json` - Trading execution configuration
+- `README.md` - Portfolio-specific documentation and strategy details
+
+### Integration with LEAN Framework
+- **Data Sources**: Real-time feeds from IBKR, Yahoo Finance, Alpha Vantage
+- **Alpha Models**: Cryptocurrency, forex, and equity forecasting models
+- **Risk Management**: Integrated risk budgeting and portfolio construction
+- **Execution**: Automated order placement and position management
+
 ## Key Features
 
 ### Algorithmic Trading

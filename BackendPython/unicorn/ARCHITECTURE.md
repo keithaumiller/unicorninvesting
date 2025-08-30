@@ -83,51 +83,60 @@ class ExecutionModel:
 - `recomendationsystems/`: Recommendation engine components
 
 ### 🎯 Portfolio Construction (Position Sizing)
-**Responsibility**: Convert insights into position sizes
+**Responsibility**: Convert insights into position sizes **WITH INTEGRATED RISK MANAGEMENT**
 
 **Input**:
 - Insights from Alpha Models
 - Current portfolio state
 - Available capital
+- **Risk budget allocation**
+- **Risk metrics and constraints**
 
 **Output**:
 - `PortfolioTarget` objects with:
   - Symbol
   - Target weight/quantity
-  - Reason for allocation
+  - **Risk contribution**
+  - **Risk-adjusted reasoning**
 
 **Strategies**:
-- Equal weighting
-- Confidence weighting
-- Kelly criterion
-- Risk parity
+- **Risk budgeting** (foundation)
+- **Risk-adjusted Kelly criterion**
+- **Risk parity with alpha tilt**
+- **Volatility-weighted allocation**
 
 **Current Implementations**:
-- `UnicornPortfolioConstruction.py`: Equal weight and confidence-weighted allocation
+- `UnicornRiskIntegratedPortfolioConstruction.py`: **INTEGRATED** risk-aware portfolio construction
 - `batchjobs/`: Batch portfolio optimization processes
 
-### 🛡️ Risk Management (Risk Controls)
-**Responsibility**: Enforce risk limits and capital protection
+**Key Principle**: Risk management IS portfolio construction - not a separate layer
 
-**Input**:
-- Proposed portfolio targets
-- Current portfolio state
-- Market conditions
+### 🛡️ Risk Management (INTEGRATED with Portfolio Construction)
+**Responsibility**: **FOUNDATIONAL COMPONENT** of portfolio construction, not separate validation
 
-**Output**:
-- Modified `PortfolioTarget` objects
-- Risk violation alerts
+**Architecture**: 
+- **Risk Budgeting Framework**: Allocates risk before allocating capital
+- **Risk Assessment Engine**: Calculates risk metrics for optimization input
+- **Dynamic Risk Monitoring**: Continuous risk budget utilization management
 
-**Controls**:
-- Stop losses
-- Position size limits
-- Sector/currency exposure limits
-- Drawdown protection
-- Volatility-based sizing
+**Integration Points**:
+- **Position sizing driven by risk budget allocation**
+- **Risk constraints as optimization inputs (not filters)**
+- **Continuous risk-return optimization**
+- **Dynamic adjustment based on risk utilization**
+
+**Risk Metrics Used IN Portfolio Construction**:
+- VaR 95% and Expected Shortfall
+- Concentration and correlation risk
+- Liquidity and execution risk
+- Maximum drawdown protection
 
 **Current Implementations**:
-- `UnicornRiskManagement.py`: General risk controls (stop losses, drawdown limits)
-- `blotterscripts/`: Trade blotter and risk monitoring scripts
+- `UnicornRiskIntegratedPortfolioConstruction.py`: Unified risk-portfolio framework
+- `RiskBudgetingFramework`: Foundation risk allocation system
+- `RiskAssessmentEngine`: Real-time risk metrics calculation
+
+**⚠️ DEPRECATED APPROACH**: Separate risk management as post-construction validation
 
 ### ⚡ Execution Models (Order Placement)
 **Responsibility**: Convert targets into actual orders

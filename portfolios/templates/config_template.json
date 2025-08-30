@@ -1,0 +1,32 @@
+{
+  "portfolio_name": "PORTFOLIO_NAME",
+  "description": "Portfolio description and investment strategy",
+  "strategy_type": "single_asset|dual_asset|multi_asset|sector_specific",
+  "assets": {
+    "SYMBOL1": {
+      "allocation_percent": 0.0,
+      "asset_type": "cryptocurrency|equity|forex|commodity",
+      "data_source": "ibkr|yahoo|alpha_vantage",
+      "model_type": "prophet|xgboost|technical|ensemble",
+      "contract_id": "optional_contract_id",
+      "symbol": "TRADING_SYMBOL",
+      "exchange": "SMART|NYSE|NASDAQ"
+    },
+    "SYMBOL2": {
+      "allocation_percent": 0.0,
+      "asset_type": "cryptocurrency|equity|forex|commodity",
+      "data_source": "ibkr|yahoo|alpha_vantage",
+      "model_type": "prophet|xgboost|technical|ensemble",
+      "symbol": "TRADING_SYMBOL",
+      "exchange": "SMART|NYSE|NASDAQ"
+    }
+  },
+  "total_allocation": 100,
+  "currency": "USD|EUR|GBP",
+  "rebalancing_frequency": "daily|weekly|monthly|quarterly",
+  "minimum_trade_size": 100,
+  "target_volatility": 0.15,
+  "created_date": "YYYY-MM-DD",
+  "last_updated": "YYYY-MM-DD",
+  "status": "planned|active|paused|archived"
+}

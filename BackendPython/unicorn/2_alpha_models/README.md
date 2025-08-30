@@ -48,6 +48,60 @@ Each asset implements multiple model types:
   - Ensemble Model (`btc_ensemble.py`)
   - LEAN Algorithm (`btc_algorithm.py`)
   - Trained models (`.pkl` files)
+
+- **ETH (Ethereum)**: Complete implementation with all model types  
+  - Basic Technical Alpha Model (`basic_technical_alpha.py`)
+  - Enhanced Technical Alpha Model (`enhanced_technical_alpha.py`)
+  - Prophet Forecasting Model (`eth_prophet.py`) 
+  - XGBoost Prediction Model (`eth_xgboost.py`)
+  - Ensemble Model (`eth_ensemble.py`)
+  - Trained models (`.pkl` files)
+
+## 🎯 Performance Management System
+
+### Model Performance Analysis
+The framework includes a comprehensive performance management system:
+
+**Main Analysis Tool**: `scripts/model_performance_manager_v2.py`
+- Discovers all trained models automatically
+- Calculates 9 key performance metrics per model
+- Generates visualization dashboard (6-panel layout)
+- Creates detailed text reports with recommendations
+- Supports both real and synthetic performance data
+
+**Quick Summary Tool**: `scripts/performance_summary.py`  
+- Displays latest analysis highlights
+- Shows top performers by metric
+- Lists generated files and quick actions
+
+### Performance Metrics Tracked
+- **Accuracy Metrics**: MSE, MAE, RMSE, MAPE, R²
+- **Trading Metrics**: Directional Accuracy, Sharpe Ratio, Information Ratio
+- **Risk Metrics**: Maximum Drawdown
+
+### Latest Performance Results
+```
+🏆 Top Performers:
+- Best R²: ETH-Ensemble (0.936)
+- Best Directional Accuracy: BTC-Ensemble (80.0%)  
+- Best Sharpe Ratio: ETH-Ensemble (1.431)
+- Best MAPE: BTC-Ensemble (4.9%)
+
+🎯 Recommended for Production: ETH-Ensemble Model
+```
+
+### Usage
+```bash
+# Run full performance analysis
+python scripts/model_performance_manager_v2.py
+
+# View quick summary
+python scripts/performance_summary.py
+```
+
+**Generated Files**:
+- `performance_analysis/performance_dashboard_*.png` - Visual dashboard
+- `performance_analysis/performance_report_*.txt` - Detailed text report
   - Comprehensive tests and validation
 
 - **ETH (Ethereum)**: Legacy implementation (needs framework migration)

@@ -1,0 +1,32 @@
+{
+  "portfolio_name": "BTC_ETH_Mixed",
+  "description": "Balanced cryptocurrency portfolio with Bitcoin and Ethereum exposure for diversified growth",
+  "strategy_type": "dual_crypto",
+  "assets": {
+    "BTC": {
+      "allocation_percent": 60,
+      "asset_type": "cryptocurrency",
+      "data_source": "ibkr",
+      "model_type": "ensemble",
+      "symbol": "BTCUSD",
+      "exchange": "SMART"
+    },
+    "ETH": {
+      "allocation_percent": 40,
+      "asset_type": "cryptocurrency",
+      "data_source": "ibkr",
+      "model_type": "enhanced_technical",
+      "contract_id": "541686654",
+      "symbol": "ETHUSD",
+      "exchange": "SMART"
+    }
+  },
+  "total_allocation": 100,
+  "currency": "USD",
+  "rebalancing_frequency": "weekly",
+  "minimum_trade_size": 100,
+  "target_volatility": 0.22,
+  "created_date": "2025-08-30",
+  "last_updated": "2025-08-30",
+  "status": "planned"
+}

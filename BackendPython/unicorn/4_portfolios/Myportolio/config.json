@@ -1,0 +1,32 @@
+{
+  "portfolio_name": "Myportolio",
+  "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+  "strategy_type": "dual_crypto",
+  "assets": {
+    "ETH": {
+      "allocation_percent": 60.0,
+      "asset_type": "cryptocurrency",
+      "data_source": "ibkr",
+      "model_type": "enhanced_technical",
+      "contract_id": "541686654",
+      "symbol": "ETHUSD",
+      "exchange": "SMART"
+    },
+    "BTC": {
+      "allocation_percent": 40.0,
+      "asset_type": "cryptocurrency",
+      "data_source": "ibkr",
+      "model_type": "ensemble",
+      "symbol": "BTCUSD",
+      "exchange": "SMART"
+    }
+  },
+  "total_allocation": 100,
+  "currency": "USD",
+  "rebalancing_frequency": "daily",
+  "minimum_trade_size": 100,
+  "target_volatility": 0.20,
+  "created_date": "2025-08-30",
+  "last_updated": "2025-08-30",
+  "status": "active"
+}

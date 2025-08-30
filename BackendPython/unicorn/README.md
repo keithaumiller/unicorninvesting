@@ -84,8 +84,21 @@ unicorn/
 - **Responsibility**: Position sizing and portfolio allocation decisions
 
 **Current Implementations**:
-- `UnicornPortfolioConstruction.py` - Core portfolio construction models
-- `batchjobs/` - Batch portfolio optimization processes
+- `UnicornRiskIntegratedPortfolioConstruction.py` - Integrated risk-portfolio framework
+- Risk budgeting as foundation for portfolio construction
+
+**📁 Portfolio Management**: Individual portfolios are managed in the `portfolios/` subdirectory:
+- **Structure**: Each portfolio in its own directory with configuration files
+- **Location**: `BackendPython/unicorn/4_portfolios/portfolios/`
+- **Available Portfolios**:
+  - ✅ `ETH_Only/` - 100% Ethereum allocation (Ready for deployment)
+  - 📋 `BTC_ETH_Mixed/` - Balanced BTC/ETH portfolio (Planned)
+  - 📋 `Multi_Asset/` - Diversified portfolio (Planned)
+- **Configuration**: Each portfolio contains:
+  - `config.json` - Asset allocations and strategy parameters
+  - `risk_parameters.json` - Risk management settings
+  - `execution_settings.json` - Trading execution configuration
+  - `README.md` - Portfolio-specific documentation
 
 ### 5. ⚡ Execution Models (`5_execution_models/`)
 **Purpose**: Convert portfolio targets into actual orders

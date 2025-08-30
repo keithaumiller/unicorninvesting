@@ -1,0 +1,68 @@
+{
+  "portfolio_name": "BTC_ETH_Mixed",
+  "execution_method": "limit",
+  "order_type": "adaptive",
+  "slippage_tolerance": 0.0025,
+  "order_size_limit": 75000,
+  "trading_session": {
+    "start_time": "00:00",
+    "end_time": "23:59",
+    "timezone": "UTC",
+    "note": "24/7 cryptocurrency trading"
+  },
+  "broker_settings": {
+    "primary_broker": "ibkr",
+    "backup_broker": "none",
+    "account_type": "paper",
+    "account_id": "DU123456"
+  },
+  "order_execution": {
+    "time_in_force": "GTC",
+    "max_order_lifetime": "24h",
+    "partial_fills": true,
+    "minimum_fill_size": 15
+  },
+  "price_improvement": {
+    "enabled": true,
+    "max_wait_time": "45s",
+    "improvement_threshold": 0.0002
+  },
+  "market_impact": {
+    "max_market_participation": 0.08,
+    "volume_limit_percent": 0.04,
+    "adaptive_sizing": true
+  },
+  "asset_specific_settings": {
+    "BTC": {
+      "order_size_limit": 45000,
+      "slippage_tolerance": 0.002,
+      "volume_participation": 0.06
+    },
+    "ETH": {
+      "order_size_limit": 30000,
+      "slippage_tolerance": 0.003,
+      "volume_participation": 0.10
+    }
+  },
+  "rebalancing_execution": {
+    "rebalancing_method": "gradual",
+    "rebalancing_window": "4h",
+    "max_trades_per_rebalance": 4,
+    "minimum_rebalancing_threshold": 0.05
+  },
+  "emergency_settings": {
+    "emergency_liquidation": true,
+    "circuit_breaker": {
+      "enabled": true,
+      "price_move_threshold": 0.08,
+      "pause_duration": "10m"
+    }
+  },
+  "monitoring": {
+    "real_time_pnl": true,
+    "execution_alerts": true,
+    "fill_notifications": true,
+    "correlation_monitoring": true
+  },
+  "last_updated": "2025-08-30"
+}
