@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="bootstrap.php"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         cacheResult="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         cacheDirectory=".phpunit.cache">
+  
+  <php>
+    <!-- Set error reporting to E_ALL -->
+    <ini name="error_reporting" value="32767"/>
+    <ini name="memory_limit" value="-1"/>
+    <!-- Test database configuration -->
+    <env name="SIMPLETEST_BASE_URL" value="http://localhost"/>
+    <env name="SIMPLETEST_DB" value="mysql://root:@localhost/unicorn_test"/>
+    <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
+    <!-- Backend API testing endpoints -->
+    <env name="BACKEND_API_BASE_URL" value="http://localhost:8000"/>
+    <env name="IBKR_GATEWAY_URL" value="http://localhost:5000"/>
+  </php>
+
+  <testsuites>
+    <!-- Unit tests for individual module components -->
+    <testsuite name="unit">
+      <directory>src/Unit</directory>
+    </testsuite>
+    
+    <!-- Functional tests for complete module workflows -->
+    <testsuite name="functional">
+      <directory>src/Functional</directory>
+    </testsuite>
+    
+    <!-- Frontend-backend integration tests -->
+    <testsuite name="integration">
+      <directory>src/Integration</directory>
+    </testsuite>
+    
+    <!-- Performance and load tests -->
+    <testsuite name="performance">
+      <directory>src/Performance</directory>
+    </testsuite>
+  </testsuites>
+
+  <coverage>
+    <include>
+      <directory suffix=".php">../web/modules/custom</directory>
+    </include>
+    <exclude>
+      <directory>../web/modules/custom/*/tests</directory>
+      <file>../web/modules/custom/*/templates/*</file>
+    </exclude>
+    <report>
+      <html outputDirectory="coverage-html"/>
+      <text outputFile="coverage.txt"/>
+    </report>
+  </coverage>
+
+  <logging>
+    <junit outputFile="test-results.xml"/>
+  </logging>
+</phpunit>
