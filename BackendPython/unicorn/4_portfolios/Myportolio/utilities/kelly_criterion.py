@@ -351,3 +351,6 @@ class ETHKellyPortfolioManager:
             },
             'signal_history_count': len(self.kelly_calculator.signal_history)
         }
+
+# Aliases for backward compatibility
+KellyCriterion = KellyCriterionCalculator

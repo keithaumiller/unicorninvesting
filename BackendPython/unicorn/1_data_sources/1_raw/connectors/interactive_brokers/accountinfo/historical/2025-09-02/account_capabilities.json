@@ -1,0 +1,134 @@
+{
+  "auth_status": {
+    "authenticated": true,
+    "competing": false,
+    "connected": true,
+    "message": "",
+    "MAC": "98:F2:B3:23:BF:A0",
+    "serverInfo": {
+      "serverName": "JifN19127",
+      "serverVersion": "Build 10.38.1d, Aug 25, 2025 11:22:48 AM"
+    },
+    "hardware_info": "26e33c0f|98:F2:B3:23:BF:A0",
+    "fail": ""
+  },
+  "account_summary": {
+    "accounts": [
+      {
+        "id": "U21748632",
+        "PrepaidCrypto-Z": false,
+        "PrepaidCrypto-P": false,
+        "brokerageAccess": true,
+        "accountId": "U21748632",
+        "accountVan": "U21748632",
+        "accountTitle": "Keith Aumiller",
+        "displayName": "Keith Aumiller",
+        "accountAlias": null,
+        "accountStatus": 1756267200000,
+        "currency": "USD",
+        "type": "INDIVIDUAL",
+        "tradingType": "STKMRGN",
+        "businessType": "INDEPENDENT",
+        "category": "",
+        "ibEntity": "IBLLC-US",
+        "faclient": false,
+        "clearingStatus": "O",
+        "covestor": false,
+        "noClientTrading": false,
+        "trackVirtualFXPortfolio": false,
+        "acctCustType": "INDIVIDUAL",
+        "parent": {
+          "mmc": [],
+          "accountId": "",
+          "isMParent": false,
+          "isMChild": false,
+          "isMultiplex": false
+        },
+        "desc": "U21748632",
+        "metadata": {
+          "id": "U21748632",
+          "PrepaidCrypto-Z": false,
+          "PrepaidCrypto-P": false,
+          "brokerageAccess": false,
+          "accountId": "U21748632",
+          "accountVan": "U21748632",
+          "accountTitle": "Keith Aumiller",
+          "displayName": "Keith Aumiller",
+          "accountAlias": null,
+          "accountStatus": 1756267200000,
+          "currency": "USD",
+          "type": "INDIVIDUAL",
+          "tradingType": "STKMRGN",
+          "businessType": "INDEPENDENT",
+          "category": "",
+          "ibEntity": "IBLLC-US",
+          "faclient": false,
+          "clearingStatus": "O",
+          "covestor": false,
+          "noClientTrading": false,
+          "trackVirtualFXPortfolio": false,
+          "acctCustType": "INDIVIDUAL",
+          "parent": {
+            "mmc": [],
+            "accountId": "",
+            "isMParent": false,
+            "isMChild": false,
+            "isMultiplex": false
+          },
+          "desc": "U21748632"
+        }
+      }
+    ],
+    "timestamp": "2025-09-02T18:59:55.047913"
+  },
+  "trading_permissions": {
+    "timestamp": "2025-09-02T18:59:55.048101",
+    "trading_capabilities": {
+      "Contract Search": {
+        "endpoint": "/v1/api/iserver/secdef/search",
+        "status_code": 500,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Market Data Snapshots": {
+        "endpoint": "/v1/api/iserver/marketdata/snapshot",
+        "status_code": 400,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Portfolio Positions": {
+        "endpoint": "/v1/api/portfolio/positions/0",
+        "status_code": 400,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Order Management": {
+        "endpoint": "/v1/api/iserver/account/orders",
+        "status_code": 200,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Market Scanner": {
+        "endpoint": "/v1/api/iserver/scanner/params",
+        "status_code": 200,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Historical Data": {
+        "endpoint": "/v1/api/hmds/history",
+        "status_code": 400,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      },
+      "Trade History": {
+        "endpoint": "/v1/api/iserver/account/trades",
+        "status_code": 200,
+        "accessible": true,
+        "response_type": "application/json; charset=utf-8"
+      }
+    },
+    "market_access": {},
+    "order_types": {},
+    "errors": []
+  }
+}

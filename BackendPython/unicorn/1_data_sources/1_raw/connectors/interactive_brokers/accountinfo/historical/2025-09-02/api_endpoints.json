@@ -1,0 +1,198 @@
+{
+  "timestamp": "2025-09-02T18:59:57.927792",
+  "authentication": {
+    "/v1/api/iserver/auth/status": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 250
+    },
+    "/v1/api/iserver/reauthenticate": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 23
+    },
+    "/v1/api/logout": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "unknown",
+      "response_size": 15
+    }
+  },
+  "portfolio": {
+    "/v1/api/portfolio/accounts": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 627
+    },
+    "/v1/api/portfolio/subaccounts": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 628
+    },
+    "/v1/api/portfolio/account/summary": {
+      "status_code": 401,
+      "accessible": true,
+      "authenticated_required": true,
+      "content_type": "text/plain; charset=utf-8",
+      "response_size": 0
+    },
+    "/v1/api/portfolio/positions/0": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 40
+    },
+    "/v1/api/portfolio/allocation": {
+      "status_code": 405,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "unknown",
+      "response_size": 0
+    }
+  },
+  "market_data": {
+    "/v1/api/iserver/marketdata/snapshot": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 51
+    },
+    "/v1/api/iserver/marketdata/history": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 51
+    },
+    "/v1/api/md/snapshot": {
+      "error": "HTTPConnectionPool(host='localhost', port=5000): Read timed out. (read timeout=5)",
+      "accessible": false
+    },
+    "/v1/api/iserver/scanner/run": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 51
+    }
+  },
+  "trading": {
+    "/v1/api/iserver/account/orders": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 51
+    },
+    "/v1/api/iserver/account/trades": {
+      "status_code": 500,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 40
+    },
+    "/v1/api/iserver/reply": {
+      "status_code": 404,
+      "accessible": false,
+      "authenticated_required": false,
+      "content_type": "text/html; charset=utf-8",
+      "response_size": 53
+    },
+    "/v1/api/iserver/account/order/preview": {
+      "status_code": 404,
+      "accessible": false,
+      "authenticated_required": false,
+      "content_type": "text/html; charset=utf-8",
+      "response_size": 53
+    }
+  },
+  "account": {
+    "/v1/api/iserver/accounts": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 1327
+    },
+    "/v1/api/iserver/account/pnl/partitioned": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 11
+    },
+    "/v1/api/iserver/account/information": {
+      "status_code": 404,
+      "accessible": false,
+      "authenticated_required": false,
+      "content_type": "text/html; charset=utf-8",
+      "response_size": 53
+    }
+  },
+  "scanner": {
+    "/v1/api/iserver/scanner/params": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 202410
+    },
+    "/v1/api/iserver/scanner/run": {
+      "status_code": 405,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "unknown",
+      "response_size": 0
+    }
+  },
+  "historical": {
+    "/v1/api/hmds/history": {
+      "status_code": 400,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 76
+    },
+    "/v1/api/hmds/scanner": {
+      "status_code": 404,
+      "accessible": false,
+      "authenticated_required": false,
+      "content_type": "text/html; charset=utf-8",
+      "response_size": 53
+    }
+  },
+  "utilities": {
+    "/v1/api/tickle": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 432
+    },
+    "/v1/api/sso/validate": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 428
+    },
+    "/v1/api/one/user": {
+      "status_code": 200,
+      "accessible": true,
+      "authenticated_required": false,
+      "content_type": "application/json; charset=utf-8",
+      "response_size": 849
+    }
+  }
+}

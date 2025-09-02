@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "model_id": "65dc86dc4ef0",
+    "asset": "ETH",
+    "timeframe": "1min",
+    "method": "prophet",
+    "created_timestamp": "2025-09-02T20:30:08.229529",
+    "training_data_points": 2881,
+    "training_mape": 10.211962014457415,
+    "training_mae": 13.266741956139773,
+    "training_r2": 0.9941443029465699,
+    "status": 

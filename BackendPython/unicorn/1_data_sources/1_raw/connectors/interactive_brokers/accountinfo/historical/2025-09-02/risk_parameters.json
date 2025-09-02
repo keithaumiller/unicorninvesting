@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-09-02T19:00:07.368635",
+  "account_risk": {},
+  "trading_limits": {},
+  "margin_requirements": {},
+  "errors": [],
+  "account_information": {
+    "error": "HTTP 404"
+  },
+  "account_summary": {
+    "error": "HTTP 401"
+  },
+  "p&l_information": {
+    "upnl": {
+      "U21748632.Core": {
+        "rowType": 1,
+        "dpl": 0.0,
+        "nl": 1000.0,
+        "upl": 0.0,
+        "el": 1000.0,
+        "uel": 1003.0,
+        "mv": 0.0
+      }
+    }
+  }
+}

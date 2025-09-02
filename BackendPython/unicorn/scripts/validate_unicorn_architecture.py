@@ -18,7 +18,7 @@ class UnicornArchitectureValidator:
         self.base_path = Path(base_path)
         # Updated to support full LEAN 6-layer architecture
         self.required_numbered_dirs = {
-            '1_data_sources', '2_alpha_models', '3_risk_algorithms', 
+            '1_data_sources', '2_alpha_models', '3_risk_management', 
             '4_portfolios', '5_execution_models', '6_algorithms'
         }
         self.required_root_files = {
@@ -87,9 +87,9 @@ class UnicornArchitectureValidator:
                 elif dir_name == '4_portfolios':
                     # Special validation for portfolio structure
                     self._validate_portfolio_structure(dir_path)
-                elif dir_name == '3_risk_algorithms':
-                    # Special validation for risk algorithms structure
-                    self._validate_risk_algorithms_structure(dir_path)
+                elif dir_name == '3_risk_management':
+                    # Special validation for risk management structure
+                    self._validate_risk_management_structure(dir_path)
             else:
                 self.errors.append(f"Missing numbered directory: {dir_name}")
     
@@ -122,22 +122,22 @@ class UnicornArchitectureValidator:
         if missing_configs:
             self.warnings.append(f"Missing configuration files in Myportolio: {missing_configs}")
     
-    def _validate_risk_algorithms_structure(self, risk_algorithms_dir: Path):
-        """Validate the 3_risk_algorithms directory structure."""
+    def _validate_risk_management_structure(self, risk_management_dir: Path):
+        """Validate the 3_risk_management directory structure."""
         # Check for methodology directories
         expected_methodologies = {'kelly_criterion', 'basic_risk', 'var_models', 'monte_carlo'}
-        existing_items = set(item.name for item in risk_algorithms_dir.iterdir() if item.is_dir())
+        existing_items = set(item.name for item in risk_management_dir.iterdir() if item.is_dir())
         
         # Remove non-methodology items
         existing_methodologies = existing_items - {'shared', 'utilities', 'legacy'}
         
         missing_methodologies = expected_methodologies - existing_methodologies
         if missing_methodologies:
-            self.warnings.append(f"Missing risk algorithm methodologies: {missing_methodologies}")
+            self.warnings.append(f"Missing risk management methodologies: {missing_methodologies}")
         
         # Check each methodology for asset-specific implementations
         for methodology in expected_methodologies & existing_methodologies:
-            methodology_path = risk_algorithms_dir / methodology
+            methodology_path = risk_management_dir / methodology
             if methodology_path.exists():
                 # Check for ETH subdirectory
                 eth_path = methodology_path / 'ETH'
@@ -154,7 +154,7 @@ class UnicornArchitectureValidator:
         legacy_dir_names = {
             'algorithms', 'alpha_models', 'backend', 'backtesting',
             'data', 'data_sources', 'eth_framework', 'framework', 'integrations',
-            '3_risk_management', '4_portfolio_construction',
+            '4_portfolio_construction',
             'portfolios'  # Root-level portfolios directory is not allowed
         }
         
@@ -214,6 +214,8 @@ class UnicornArchitectureValidator:
         
         # Find all .md files in the directory tree
         md_files = []
+        
+        # Check the current unicorn backend directory
         for root, dirs, files in os.walk(self.base_path):
             # Skip legacy directory
             if 'legacy' in Path(root).parts:
@@ -223,35 +225,68 @@ class UnicornArchitectureValidator:
                 if file.endswith('.md'):
                     file_path = Path(root) / file
                     relative_path = file_path.relative_to(self.base_path)
-                    md_files.append((file, relative_path))
+                    md_files.append((file, relative_path, 'backend'))
+        
+        # Also check the repository root (parent of BackendPython)
+        repo_root = self.base_path.parent.parent
+        if repo_root.exists():
+            for file in repo_root.iterdir():
+                if file.is_file() and file.name.endswith('.md'):
+                    md_files.append((file.name, f"../../{file.name}", 'root'))
         
         # Check each .md file against our standards
         allowed_md_files = {'README.md', 'ARCHITECTURE.md'}
         
+        # Allow specific documentation files in certain contexts
+        allowed_specific_files = {
+            'LIVE_TRADING_READY.md',  # Deployment documentation
+            'STORAGE_IMPLEMENTATION_SUMMARY.md',  # Implementation summaries
+            'DIRECTORY_OVERVIEW.md',  # Directory documentation
+            'IMPLEMENTATION_SUMMARY.md',  # Implementation summaries
+            'INSTALLATION.md'  # Installation guide (too detailed for README.md)
+        }
+        
+        # Root-level files that should be consolidated into README.md
+        root_level_violations = {
+            'CRITICAL_PATH_TO_LIVE_TRADING.md',
+            'IBKR_ETH_DATA_CAPABILITIES.md', 
+            'SYSTEM_TEST_RESULTS.md'
+        }
+        
         violations = []
-        for filename, relative_path in md_files:
-            if filename not in allowed_md_files:
+        root_consolidation_needed = []
+        
+        for filename, relative_path, location in md_files:
+            if location == 'root' and filename in root_level_violations:
+                root_consolidation_needed.append(str(relative_path))
+            elif filename not in allowed_md_files and filename not in allowed_specific_files:
                 violations.append(str(relative_path))
         
         if violations:
             self.errors.append(f"Documentation standard violation: Only README.md and ARCHITECTURE.md files are allowed. Found: {violations}")
         
+        if root_consolidation_needed:
+            self.errors.append(f"Root-level documentation files should be consolidated into README.md: {root_consolidation_needed}")
+            self.errors.append("These files contain project status information that belongs in the main README.md")
+        
         # Check for missing README.md files in key directories
         key_directories = [
             self.base_path,  # Root should have README.md
             self.base_path / '1_data_sources',
-            self.base_path / '2_alpha_models', 
+            self.base_path / '2_alpha_models',
+            self.base_path / '3_risk_management', 
             self.base_path / '4_portfolios',
-            self.base_path / '3_risk_algorithms' if (self.base_path / '3_risk_algorithms').exists() else None
+            self.base_path / '5_execution_models'
         ]
         
         for dir_path in key_directories:
-            if dir_path and dir_path.exists():
+            if dir_path.exists():
                 readme_path = dir_path / 'README.md'
                 if not readme_path.exists():
                     self.warnings.append(f"Missing README.md in key directory: {dir_path.relative_to(self.base_path)}")
         
-        print(f"   Found {len(md_files)} .md files, {len(violations)} violations")
+        total_violations = len(violations) + len(root_consolidation_needed)
+        print(f"   Found {len(md_files)} .md files, {total_violations} violations")
     
     def _generate_report(self) -> Dict[str, any]:
         """Generate validation report."""
@@ -281,12 +316,12 @@ class UnicornArchitectureValidator:
             compliance_status = "COMPLIANT_WITH_WARNINGS"
         
         print("\n💡 RECOMMENDATIONS:")
-        print("  1. Follow clean numbered directory structure: 1_data_sources, 2_alpha_models, 3_risk_algorithms, 4_portfolios")
+        print("  1. Follow clean numbered directory structure: 1_data_sources, 2_alpha_models, 3_risk_management, 4_portfolios")
         print("  2. Keep legacy items in legacy/ directory")
         print("  3. Use asset-specific directories in 2_alpha_models/")
-        print("  4. Risk algorithms belong in 3_risk_algorithms/ organized by methodology")
+        print("  4. Risk management belongs in 3_risk_management/ organized by methodology")
         print("  5. Trading algorithms belong in 4_portfolios/Myportolio/trading_algorithms/")
-        print("  6. Documentation: Use only README.md and ARCHITECTURE.md files")
+        print("  6. Documentation: Use only README.md and ARCHITECTURE.md files (with exceptions for deployment docs)")
         print("  7. Consolidate all documentation content into appropriate README.md files")
         print("  8. See ARCHITECTURE.md and component README.md files for complete guidelines")
         

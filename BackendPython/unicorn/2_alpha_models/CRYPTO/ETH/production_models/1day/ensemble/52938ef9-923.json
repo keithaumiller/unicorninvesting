@@ -1,0 +1,12 @@
+{
+  "model_id": "52938ef9-923",
+  "timeframe": "1day",
+  "method": "ensemble",
+  "prophet_model_id": "cf66b1cf161e",
+  "xgboost_model_id": "f3c4767dc447",
+  "weights": {
+    "prophet": 0.6,
+    "xgboost": 0.4
+  },
+  "created_timestamp": "2025-09-02T20:58:06.069491"
+}

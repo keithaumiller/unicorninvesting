@@ -375,19 +375,22 @@ authenticate_ibkr_gateway() {
     fi
     
     echo -e "${YELLOW}🔄 IBKR Gateway is ready for authentication${NC}"
-    echo -e "${BLUE}📱 Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+    echo -e "${RED}� CRITICAL PATH: IBKR Authentication Required for Live Trading${NC}"
+    echo -e "${BLUE}📱 Authentication URL: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
     echo ""
     echo -e "${YELLOW}📋 Use your IBKR credentials:${NC}"
     echo -e "${GREEN}   Username: [Your IBKR Username]${NC}"
     echo -e "${GREEN}   Password: [Your IBKR Password]${NC}"
     echo -e "${GREEN}   Mode: Paper Trading (toggle to Paper)${NC}"
     echo ""
-    echo -e "${YELLOW}📝 Authentication Steps:${NC}"
+    echo -e "${YELLOW}📝 CRITICAL PATH Authentication Steps:${NC}"
     echo -e "${YELLOW}   1. Open the URL above in your browser${NC}"
     echo -e "${YELLOW}   2. Enter the username and password${NC}"
     echo -e "${YELLOW}   3. Toggle the mode switch to 'Paper Trading'${NC}"
     echo -e "${YELLOW}   4. Click 'Login'${NC}"
     echo -e "${YELLOW}   5. Complete 2FA approval when prompted${NC}"
+    echo -e "${RED}   6. IMPORTANT: Re-run system check after authentication${NC}"
+    echo -e "${GREEN}      → ./scripts/unicorn_environment.sh${NC}"
     echo ""
     echo -e "${BLUE}💡 The gateway will remain running and ready for trading operations${NC}"
     
@@ -648,8 +651,13 @@ run_health_checks() {
                     fi
                 fi
             else
-                check_status 1 "IBKR Authentication: Not authenticated" "Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
-                echo -e "${YELLOW}   Dispatcher response: ${DISPATCHER_RESPONSE:-'No response'}${NC}"
+                check_status 1 "IBKR Authentication: Required for live trading" "CRITICAL PATH: Authentication needed"
+                echo -e "${RED}🚨 CRITICAL: IBKR Authentication Required${NC}"
+                echo -e "${YELLOW}   Next Steps:${NC}"
+                echo -e "${YELLOW}   1. Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+                echo -e "${YELLOW}   2. Login with your IBKR credentials${NC}"
+                echo -e "${YELLOW}   3. Re-run system check: ./scripts/unicorn_environment.sh${NC}"
+                echo -e "${YELLOW}   Status: ${DISPATCHER_RESPONSE:-'Gateway ready for login'}${NC}"
             fi
         else
             check_status 1 "IBKR Gateway: Not running" "Run: cd $IBKR_TOOLS_PATH && ./bin/run.sh root/conf-codespace.yaml"
@@ -667,6 +675,17 @@ run_health_checks() {
         echo -e "\n${BLUE}🔬 IBKR Access Validation (Post-Authentication)${NC}"
         echo "=================================================="
         echo -e "${YELLOW}   Note: These tests verify capabilities after user login${NC}"
+        
+        # Check if authenticated for advanced testing
+        if [ "$AUTH_STATUS" = "True" ]; then
+            echo -e "${GREEN}✅ IBKR Authentication: Verified - proceeding with advanced tests${NC}"
+        else
+            check_status 1 "IBKR Authentication: Not authenticated"
+            echo -e "${RED}🚨 CRITICAL PATH BLOCKED: IBKR Authentication Required${NC}"
+            echo -e "${YELLOW}      → Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+            echo -e "${YELLOW}      → After authentication, re-run: ./scripts/unicorn_environment.sh${NC}"
+            echo -e "${YELLOW}      → IBKR access tests skipped (authentication required)${NC}"
+        fi
         
         if curl -s http://localhost:5000/sso/Dispatcher >/dev/null 2>&1 && \
            curl -s http://localhost:5000/sso/Dispatcher | grep -q "Client login succeeds"; then
