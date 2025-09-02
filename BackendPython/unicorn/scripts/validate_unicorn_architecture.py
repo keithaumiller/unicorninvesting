@@ -16,8 +16,10 @@ class UnicornArchitectureValidator:
     
     def __init__(self, base_path: str = "."):
         self.base_path = Path(base_path)
+        # Updated to support full LEAN 6-layer architecture
         self.required_numbered_dirs = {
-            '1_data_sources', '2_alpha_models', '3_risk_algorithms', '4_portfolios'
+            '1_data_sources', '2_alpha_models', '3_risk_algorithms', 
+            '4_portfolios', '5_execution_models', '6_algorithms'
         }
         self.required_root_files = {
             'ARCHITECTURE.md', 'README.md'
@@ -152,7 +154,7 @@ class UnicornArchitectureValidator:
         legacy_dir_names = {
             'algorithms', 'alpha_models', 'backend', 'backtesting',
             'data', 'data_sources', 'eth_framework', 'framework', 'integrations',
-            '3_risk_management', '4_portfolio_construction', '5_execution_models', '6_algorithms',
+            '3_risk_management', '4_portfolio_construction',
             'portfolios'  # Root-level portfolios directory is not allowed
         }
         
