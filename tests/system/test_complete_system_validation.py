@@ -12,20 +12,33 @@ from datetime import datetime
 
 # Add paths for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(current_dir))  # Go up to unicorninvesting root
+backend_python = os.path.join(project_root, 'BackendPython', 'unicorn')
 sys.path.append(current_dir)
+sys.path.append(project_root)
+sys.path.append(backend_python)
 
-# Import individual test modules
+# Import individual test modules with dynamic paths
 try:
+    # Add path for Kelly Criterion tests
+    kelly_test_path = os.path.join(project_root, 'tests', 'unicorn', '4_portfolios', 'utilities')
+    sys.path.insert(0, kelly_test_path)
     from test_kelly_criterion import run_kelly_test
 except ImportError:
     run_kelly_test = None
 
 try:
+    # Add path for ETH Basic Risk tests  
+    risk_test_path = os.path.join(project_root, 'tests', 'unicorn', '3_risk_algorithms')
+    sys.path.insert(0, risk_test_path)
     from test_eth_basic_risk import run_risk_test
 except ImportError:
     run_risk_test = None
 
 try:
+    # Add path for ETH Kelly Integration tests
+    integration_test_path = os.path.join(project_root, 'tests', 'unicorn', '4_portfolios', 'Myportolio')
+    sys.path.insert(0, integration_test_path)
     from test_eth_kelly_integration import run_integration_test
 except ImportError:
     run_integration_test = None
@@ -93,7 +106,10 @@ def run_eth_models_validation():
         
         # Test 1: Model Storage Manager - Basic functionality
         try:
-            from models.model_management.model_storage_manager import ModelStorageManager
+            # Add the correct path for model_management
+            model_mgmt_path = os.path.join(eth_models_path, 'models', 'model_management')
+            sys.path.insert(0, model_mgmt_path)
+            from model_storage_manager import ModelStorageManager
             storage = ModelStorageManager()
             models = storage.list_models()
             print(f'✅ Model Storage: {len(models)} models available')
@@ -164,7 +180,7 @@ def run_myportolio_validation():
     print('=' * 45)
     
     try:
-        myportolio_path = '/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio'
+        myportolio_path = os.path.join(project_root, 'BackendPython', 'unicorn', '4_portfolios', 'Myportolio')
         
         # Create validation script
         validation_script = '''
@@ -236,8 +252,9 @@ def main():
     print('\n🎯 KELLY CRITERION TEST (SIMPLIFIED)')
     print('=' * 40)
     try:
-        # Test Kelly import and basic functionality
-        sys.path.append('/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/utilities')
+        # Test Kelly import and basic functionality - dynamic path
+        kelly_path = os.path.join(project_root, 'BackendPython', 'unicorn', '4_portfolios', 'Myportolio', 'utilities')
+        sys.path.insert(0, kelly_path)
         from kelly_criterion import KellyCriterionCalculator
         
         calculator = KellyCriterionCalculator()
@@ -253,8 +270,9 @@ def main():
     print('\n⚠️  ETH BASIC RISK TEST (SIMPLIFIED)')
     print('=' * 40)
     try:
-        # Test Risk import and basic functionality
-        sys.path.append('/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/risk_algorithms')
+        # Test Risk import and basic functionality - dynamic path
+        risk_path = os.path.join(project_root, 'BackendPython', 'unicorn', '4_portfolios', 'Myportolio', 'risk_algorithms')
+        sys.path.insert(0, risk_path)
         from eth_basic_risk import ETHBasicRisk
         
         risk_manager = ETHBasicRisk()
