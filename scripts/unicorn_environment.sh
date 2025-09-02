@@ -593,6 +593,9 @@ run_health_checks() {
     echo -e "\n${BLUE}📊 Data Sources${NC}"
     echo "==============="
 
+    # Initialize authentication status
+    AUTH_STATUS="False"
+
     # Yahoo Finance Connector
     if [ -f "BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/eth_data_collector.py" ]; then
         check_status 0 "Yahoo Finance Connector: Available"
@@ -640,6 +643,7 @@ run_health_checks() {
             DISPATCHER_RESPONSE=$(curl -s http://localhost:5000/sso/Dispatcher 2>/dev/null)
             if echo "$DISPATCHER_RESPONSE" | grep -q "Client login succeeds"; then
                 check_status 0 "IBKR Authentication: Client login succeeds"
+                AUTH_STATUS="True"  # Set AUTH_STATUS based on successful dispatcher check
                 
                 # Additional check with portfolio access for verification
                 if curl -s http://localhost:5000/v1/api/portfolio/accounts >/dev/null 2>&1; then
@@ -652,6 +656,7 @@ run_health_checks() {
                 fi
             else
                 check_status 1 "IBKR Authentication: Required for live trading" "CRITICAL PATH: Authentication needed"
+                AUTH_STATUS="False"  # Set AUTH_STATUS based on failed dispatcher check
                 echo -e "${RED}🚨 CRITICAL: IBKR Authentication Required${NC}"
                 echo -e "${YELLOW}   Next Steps:${NC}"
                 echo -e "${YELLOW}   1. Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
@@ -661,6 +666,7 @@ run_health_checks() {
             fi
         else
             check_status 1 "IBKR Gateway: Not running" "Run: cd $IBKR_TOOLS_PATH && ./bin/run.sh root/conf-codespace.yaml"
+            AUTH_STATUS="False"  # Set AUTH_STATUS when gateway is not running
         fi
         
         # Check ETH data collection capability

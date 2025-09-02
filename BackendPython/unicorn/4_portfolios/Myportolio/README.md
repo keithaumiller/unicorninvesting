@@ -1,39 +1,48 @@
-# Myportolio - Production Ready ETH Trading Portfolio
+# Myportolio - Production Ready Dual Crypto Trading Portfolio
 
-## 🚀 **PRODUCTION STATUS: LIVE & OPERATIONAL**
+## 🚀 **PRODUCTION STATUS: DUAL-CRYPTO OPERATIONAL**
 
 **Last Updated**: September 2, 2025  
 **Live Trading Status**: ✅ **PRODUCTION READY** - 85.7% system readiness confirmed  
-**Production Models**: 174 ETH models with continuous retraining  
+**Production Models**: 174 ETH models + 16 BTC models with continuous retraining  
 **Critical Path**: ✅ **SATISFIED** - All ensemble method requirements met  
+**Dual Crypto**: 🟢 **BITCOIN INTEGRATION COMPLETE** - 60% ETH / 40% BTC target allocation
 
 ## 🎯 Portfolio Overview
 
-**Myportolio** is the **production-ready ETH trading portfolio** for the Unicorn Investing platform, featuring multi-timeframe strategies with 174 live models and IBKR data integration.
+**Myportolio** is the **production-ready dual cryptocurrency trading portfolio** for the Unicorn Investing platform, featuring multi-timeframe strategies with ETH and Bitcoin integration, 190+ live models, and IBKR data connectivity.
 
 **Location**: `BackendPython/unicorn/4_portfolios/Myportolio/`
-**Strategy**: Multi-timeframe ETH trading with Prophet, XGBoost, and Ensemble forecasts
-**Status**: ✅ **LIVE & OPERATIONAL** with comprehensive status monitoring
+**Strategy**: Dual-crypto portfolio with ETH (60%) and Bitcoin (40%) allocations
+**Status**: ✅ **LIVE & OPERATIONAL** with comprehensive dual-asset monitoring
 
 ## 📊 **Production Implementation**
 
 ### **✅ LIVE TRADING COMPONENTS**
-- **174 Production Models**: 1min (71) + 1hour (54) + 1day (49)
-- **IBKR Live Data**: Real-time ETH market data (1000+ bars per timeframe)
+- **190+ Production Models**: ETH (174) + Bitcoin (16) across all timeframes
+- **IBKR Live Data**: Real-time ETH and BTC market data integration
 - **Multi-timeframe Strategies**: ScalpStrategy (1min), SwingStrategy (1hour), PositionStrategy (1day)
+- **Dual Crypto Management**: Automated ETH/BTC allocation with correlation analysis
 - **Status Monitoring**: Comprehensive portfolio readiness assessment with critical path validation
+
+### **✅ BITCOIN INTEGRATION**
+- **Bitcoin Models**: Prophet, XGBoost, and Ensemble models for 1hour and 1day timeframes
+- **Portfolio Integration**: btc_model_manager.py with signal generation and position sizing
+- **Dual Crypto Manager**: dual_crypto_portfolio_manager.py for balanced 60/40 ETH/BTC allocation
+- **Risk Management**: Correlation-adjusted allocation with individual asset limits
 
 ### **✅ CRITICAL PATH VALIDATION**
 Portfolio status check confirms production readiness:
 ```
 📊 Production Models Summary:
-   Total Models: 174
+   ETH Models: 174 (1min: 71, 1hour: 54, 1day: 49)
+   BTC Models: 16 (1hour: 6, 1day: 6, ensemble: 4)
+   Total Models: 190+
    Critical Path Status: ✅ READY
    
 🎯 Ensemble Ready: ✅ for all timeframes
-   1min: Prophet (36) + XGBoost (33) + Ensemble (2)
-   1hour: Prophet (26) + XGBoost (26) + Ensemble (2) 
-   1day: Prophet (45) + XGBoost (2) + Ensemble (2)
+   ETH: All timeframes with full Prophet + XGBoost + Ensemble coverage
+   BTC: Prophet + XGBoost + Ensemble for 1hour and 1day timeframes
 ```
 
 ## 📁 Directory Structure
@@ -41,9 +50,11 @@ Portfolio status check confirms production readiness:
 ```
 Myportolio/
 ├── README.md                   # This file - Portfolio overview
-├── config.json                # Portfolio configuration and allocations
+├── config.json                # Portfolio configuration (ETH 60%, BTC 40%)
 ├── risk_parameters.json       # Risk management settings
 ├── execution_settings.json    # Trading execution parameters
+├── btc_model_manager.py       # 🟠 Bitcoin model management and integration
+├── dual_crypto_portfolio_manager.py # 🔄 Dual crypto portfolio allocation manager
 ├── risk_algorithms/           # 🛡️ Pure risk calculation algorithms
 │   ├── README.md              # Risk algorithms documentation
 │   ├── var_calculator.py      # Value at Risk calculations
