@@ -42,12 +42,12 @@ def run_system_health_check():
     print('=' * 30)
     
     try:
-        health_check_path = '/workspaces/unicorninvesting/scripts/unicorn_environment.sh'
+        health_check_path = '/home/runner/work/unicorninvesting/unicorninvesting/scripts/unicorn_environment.sh'
         
         if os.path.exists(health_check_path):
             result = subprocess.run(
                 [health_check_path, '--check-only'],
-                cwd='/workspaces/unicorninvesting',
+                cwd='/home/runner/work/unicorninvesting/unicorninvesting',
                 capture_output=True,
                 text=True,
                 timeout=120
@@ -82,7 +82,7 @@ def run_myportolio_validation():
     print('=' * 45)
     
     try:
-        myportolio_path = '/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio'
+        myportolio_path = '/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio'
         
         # Create validation script
         validation_script = '''
@@ -155,7 +155,7 @@ def main():
     print('=' * 40)
     try:
         # Test Kelly import and basic functionality
-        sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/utilities')
+        sys.path.append('/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/utilities')
         from kelly_criterion import KellyCriterionCalculator
         
         calculator = KellyCriterionCalculator()
@@ -172,7 +172,7 @@ def main():
     print('=' * 40)
     try:
         # Test Risk import and basic functionality
-        sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/risk_algorithms')
+        sys.path.append('/home/runner/work/unicorninvesting/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/risk_algorithms')
         from eth_basic_risk import ETHBasicRisk
         
         risk_manager = ETHBasicRisk()
