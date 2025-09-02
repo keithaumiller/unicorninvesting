@@ -1,0 +1,4 @@
+services:
+  unicornmetrics.portfolio_api:
+    class: Drupal\unicornmetrics\Service\PortfolioApiService
+    arguments: ['@config.factory', '@logger.factory']
