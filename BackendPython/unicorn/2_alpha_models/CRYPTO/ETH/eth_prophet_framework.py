@@ -17,7 +17,6 @@ import os
 from datetime import datetime, timedelta
 import pickle
 import warnings
-from models.model_management.model_storage_manager import ModelStorageManager
 import os
 from datetime import datetime, timedelta
 import sqlite3
@@ -25,8 +24,10 @@ import json
 import warnings
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.append(alpha_models_dir)
 
 try:
     from prophet import Prophet
@@ -35,6 +36,7 @@ except ImportError:
     print("⚠️  Prophet not installed. Install with: pip install prophet")
     sys.exit(1)
 
+from models.model_management.model_storage_manager import ModelStorageManager
 from shared.model_framework import ProphetModel
 from shared.performance_tracker import ModelPerformanceTracker, ModelStage, MetricType, PerformanceMetric
 from models.eth_prophet import ETHProphetModel

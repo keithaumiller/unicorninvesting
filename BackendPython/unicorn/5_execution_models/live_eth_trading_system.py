@@ -42,10 +42,16 @@ except ImportError:
                 'timestamp': datetime.now().isoformat()
             }
 
-# Try to import our ETH algorithms
+# Try to import our ETH algorithms with correct paths
 try:
-    from trading_algorithms.eth_momentum_strategy import ETHMomentumStrategy
-    from risk_algorithms.eth_basic_risk import ETHBasicRisk
+    # Import from the specific subdirectories
+    trading_algorithms_dir = os.path.join(portfolio_dir, 'trading_algorithms')
+    risk_algorithms_dir = os.path.join(portfolio_dir, 'risk_algorithms')
+    sys.path.append(trading_algorithms_dir)
+    sys.path.append(risk_algorithms_dir)
+    
+    from eth_momentum_strategy import ETHMomentumStrategy
+    from eth_basic_risk import ETHBasicRisk
 except ImportError as e:
     logging.warning(f"Could not import ETH algorithms: {e}")
     # Create mock algorithms for testing

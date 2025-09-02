@@ -5,6 +5,8 @@ Enhanced XGBoost framework with scalable model storage, version control, and eas
 Integrates with ModelStorageManager for clean organization following the same pattern as Prophet.
 """
 
+import os
+import sys
 import pandas as pd
 import numpy as np
 from typing import Dict, Any, List, Optional, Tuple
@@ -13,6 +15,12 @@ import sqlite3
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
+
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.append(alpha_models_dir)
+
 from models.model_management.model_storage_manager import ModelStorageManager
 
 try:

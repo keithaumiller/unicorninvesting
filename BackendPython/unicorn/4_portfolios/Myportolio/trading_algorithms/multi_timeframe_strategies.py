@@ -28,7 +28,17 @@ try:
 except ImportError:
     print("⚠️  Prophet not installed. Install with: pip install prophet")
 
-from ..utilities.kelly_criterion import KellyCriterion
+# Import Kelly Criterion with proper path resolution
+import sys
+import os
+from pathlib import Path
+
+# Get the current file's parent directory and navigate to utilities
+current_dir = Path(__file__).parent
+utilities_dir = current_dir.parent / "utilities"
+sys.path.append(str(utilities_dir))
+
+from kelly_criterion import KellyCriterionCalculator
 
 class BaseMultiTimeframeStrategy(ABC):
     """
@@ -40,7 +50,7 @@ class BaseMultiTimeframeStrategy(ABC):
         self.timeframe = timeframe
         self.lookback_periods = lookback_periods
         self.confidence_threshold = confidence_threshold
-        self.kelly_calculator = KellyCriterion()
+        self.kelly_calculator = KellyCriterionCalculator()
         
         # Model paths based on timeframe
         self.model_dir = Path(__file__).parent.parent.parent.parent / "2_alpha_models" / "CRYPTO" / "ETH"

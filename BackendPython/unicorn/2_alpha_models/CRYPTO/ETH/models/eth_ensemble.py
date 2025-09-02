@@ -11,6 +11,30 @@ import sys
 import os
 from datetime import datetime
 
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.append(alpha_models_dir)
+
+from shared.model_framework import EnsembleModel
+from shared.performance_tracker import ModelPerformanceTracker, ModelStage
+from eth_prophet import ETHProphetModel
+from eth_xgboost import ETHXGBoostModel
+
+class ETHEnsembleModel(EnsembleModel):
+    """
+    Ensemble model for ETH combining Prophet and XGBoost.el for CRYPTO
+
+Ensemble model combining Prophet and XGBoost for ETH with optimized weighting.
+"""
+
+import pandas as pd
+import numpy as np
+from typing import Dict, Any, List, Optional
+import sys
+import os
+from datetime import datetime
+
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
