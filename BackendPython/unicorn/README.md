@@ -243,7 +243,102 @@ self.add_data(YahooFinanceForexData, "EURUSD", Resolution.MINUTE)
 - **Framework Orchestrates Everything**: LEAN handles the flow between components
 - **Risk Management is Always Active**: Risk models run continuously
 
-## 📚 Documentation
+## � Development Process Flows
+
+### **Alpha Model Development Pipeline**
+
+#### **Phase 1: Research & Strategy Design**
+1. **Market Research & Hypothesis Formation**
+   - Technical analysis and fundamental research
+   - Strategy hypothesis development
+   - Literature review and backtesting framework design
+
+2. **Data Requirements & Infrastructure**
+   - Define data needs (price, volume, alternative data)
+   - Establish data pipeline and quality assurance
+   - Design storage architecture and access patterns
+
+#### **Phase 2: Model Development & Implementation**
+1. **Signal Generation Algorithm Development**
+   - Feature engineering and signal logic implementation
+   - Confidence scoring and signal validation
+   - Algorithm design patterns
+
+2. **LEAN Framework Integration**
+   - IAlphaModel interface implementation
+   - Insight creation and event handling
+   - Universe selection integration
+
+#### **Phase 3: Backtesting & Validation**
+1. **Historical Performance Testing**
+   - In-sample and out-of-sample testing
+   - Walk-forward analysis and performance metrics
+   - Risk analysis and strategy refinement
+
+2. **Statistical Validation**
+   - Signal quality analysis and statistical significance
+   - Regime stability and correlation analysis
+   - Validation reporting
+
+#### **Phase 4: Production Deployment**
+1. **Model Production Readiness**
+   - Code review, testing, and performance monitoring setup
+   - Risk management integration
+   - Live monitoring and attribution analysis
+
+### **Risk Model Development Pipeline**
+
+#### **Phase 1: Risk Framework Design**
+1. **Risk Model Architecture**
+   - Risk factor identification and model selection
+   - Parameter design and validation framework
+   - Integration architecture planning
+
+2. **Risk Metric Definition**
+   - VaR, CVaR, and volatility model specifications
+   - Calculation methodology and parameter estimation
+   - Model calibration and validation testing
+
+#### **Phase 2: Model Implementation**
+1. **Risk Algorithm Development**
+   - Mathematical implementation and parameter estimation
+   - Statistical, simulation, and optimization models
+   - Performance testing and validation
+
+2. **Asset-Specific Implementation**
+   - Asset class analysis and risk characteristics
+   - Model customization and parameter calibration
+   - Asset-specific validation (ETH, BTC, traditional assets)
+
+#### **Phase 3: Validation & Calibration**
+1. **Model Validation Framework**
+   - Backtesting and out-of-sample testing
+   - Cross-validation and stress testing
+   - Model comparison and selection
+
+2. **Parameter Calibration**
+   - Parameter space definition and optimization objectives
+   - Calibration algorithms (grid search, Bayesian optimization)
+   - Parameter validation and model finalization
+
+#### **Phase 4: Integration & Deployment**
+1. **Portfolio Construction Integration**
+   - Risk model interface design
+   - Risk constraint application and optimization integration
+   - Real-time risk monitoring setup
+
+2. **Real-time Risk Monitoring**
+   - Risk metric calculation and limit monitoring
+   - Alert generation and risk action execution
+   - Performance monitoring and continuous improvement
+
+### **Combined Development Workflow**
+- **Integrated Testing**: Joint alpha and risk model validation
+- **Production Deployment**: Combined system deployment
+- **Live Performance Monitoring**: Continuous performance tracking
+- **Continuous Improvement**: Model updates and optimization
+
+## �📚 Documentation
 
 - **ARCHITECTURE.md**: Technical implementation details
 - **Component READMEs**: Detailed documentation in each component directory

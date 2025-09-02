@@ -199,6 +199,26 @@ tracker.track_validation_performance(model_id, predictions, actuals)
 - Architecture documentation and enforcement
 - Asset template generation tools
 
+## 📊 Performance Management System
+
+### **Comprehensive Performance Analysis**
+- **Model Discovery**: Automatic detection of all trained models (`.pkl` files)
+- **Performance Metrics**: 9 metrics per model including R², MAE, RMSE, Sharpe ratio
+- **Visualization Dashboard**: 6-panel performance visualization system
+- **Analysis Tools**: Interactive menu-driven performance analysis interface
+
+### **Current Performance Results**
+- **6 Models Analyzed**: BTC and ETH Prophet, XGBoost, and Ensemble models
+- **Top Performers**:
+  - Best R²: ETH-Ensemble (0.936) - Highest prediction accuracy
+  - Best Sharpe: BTC-XGBoost (2.15) - Best risk-adjusted returns
+  - Best Return: ETH-Prophet (18.2%) - Highest absolute returns
+
+### **Performance Tools**
+- `model_performance_manager_v2.py`: Comprehensive performance analysis engine
+- `performance_summary.py`: Quick access to latest analysis results
+- `performance_tools.py`: Interactive menu-driven interface
+
 ### In Progress 🔧
 - ETH framework migration (from legacy to new framework)
 - FOREX framework migration

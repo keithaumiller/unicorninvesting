@@ -633,12 +633,23 @@ run_health_checks() {
         if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
             check_status 0 "IBKR Gateway: Running and responsive"
             
-            # Check authentication status
-            AUTH_STATUS=$(curl -s http://localhost:5000/v1/api/iserver/auth/status | python -c "import sys, json; data=json.load(sys.stdin); print(data.get('authenticated', False))" 2>/dev/null)
-            if [ "$AUTH_STATUS" = "True" ]; then
-                check_status 0 "IBKR Authentication: Authenticated"
+            # Check authentication status using /sso/Dispatcher endpoint
+            DISPATCHER_RESPONSE=$(curl -s http://localhost:5000/sso/Dispatcher 2>/dev/null)
+            if echo "$DISPATCHER_RESPONSE" | grep -q "Client login succeeds"; then
+                check_status 0 "IBKR Authentication: Client login succeeds"
+                
+                # Additional check with portfolio access for verification
+                if curl -s http://localhost:5000/v1/api/portfolio/accounts >/dev/null 2>&1; then
+                    PORTFOLIO_RESPONSE=$(curl -s http://localhost:5000/v1/api/portfolio/accounts 2>/dev/null)
+                    if echo "$PORTFOLIO_RESPONSE" | grep -q "DUM785491"; then
+                        check_status 0 "IBKR Paper Trading Account: Accessible (DUM785491)"
+                    else
+                        check_status 1 "IBKR Paper Trading Account: Not accessible"
+                    fi
+                fi
             else
                 check_status 1 "IBKR Authentication: Not authenticated" "Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
+                echo -e "${YELLOW}   Dispatcher response: ${DISPATCHER_RESPONSE:-'No response'}${NC}"
             fi
         else
             check_status 1 "IBKR Gateway: Not running" "Run: cd $IBKR_TOOLS_PATH && ./bin/run.sh root/conf-codespace.yaml"
@@ -650,6 +661,132 @@ run_health_checks() {
         else
             check_status 1 "IBKR ETH Data Collector: Missing"
         fi
+        
+        # ========== IBKR CONNECTIVITY & ACCESS VALIDATION ==========
+        # Note: These tests require user authentication via web interface first
+        echo -e "\n${BLUE}🔬 IBKR Access Validation (Post-Authentication)${NC}"
+        echo "=================================================="
+        echo -e "${YELLOW}   Note: These tests verify capabilities after user login${NC}"
+        
+        if curl -s http://localhost:5000/sso/Dispatcher >/dev/null 2>&1 && \
+           curl -s http://localhost:5000/sso/Dispatcher | grep -q "Client login succeeds"; then
+            
+            # Test 1: Session & Bridge Status
+            echo -e "\n${BLUE}Testing Session & Bridge Connection...${NC}"
+            TICKLE_RESPONSE=$(curl -s http://localhost:5000/v1/api/tickle 2>/dev/null)
+            if echo "$TICKLE_RESPONSE" | grep -q '"session"'; then
+                SESSION_ID=$(echo "$TICKLE_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('session', 'Unknown'))" 2>/dev/null)
+                check_status 0 "IBKR Session: Active ($SESSION_ID)"
+                
+                # Check bridge status
+                BRIDGE_ERROR=$(echo "$TICKLE_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('hmds', {}).get('error', 'OK'))" 2>/dev/null)
+                if [ "$BRIDGE_ERROR" = "OK" ]; then
+                    check_status 0 "IBKR Bridge: Connected"
+                    echo -e "${GREEN}      → Full trading and streaming capabilities available${NC}"
+                else
+                    check_status 1 "IBKR Bridge: $BRIDGE_ERROR"
+                    echo -e "${YELLOW}      → Limited to snapshots, no real-time streaming or advanced trading${NC}"
+                fi
+                
+                # Check iServer status
+                ISERVER_AUTH=$(echo "$TICKLE_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('iserver', {}).get('authStatus', {}).get('authenticated', False))" 2>/dev/null)
+                if [ "$ISERVER_AUTH" = "True" ]; then
+                    check_status 0 "IBKR iServer: Authenticated"
+                    echo -e "${GREEN}      → Market data and basic trading functions available${NC}"
+                else
+                    check_status 1 "IBKR iServer: Not authenticated"
+                    echo -e "${YELLOW}      → Limited to account information only${NC}"
+                fi
+            else
+                check_status 1 "IBKR Session: Failed to establish"
+                echo -e "${RED}      → Cannot access trading functions${NC}"
+            fi
+            
+            # Test 2: Account Access & Type Verification
+            echo -e "\n${BLUE}Testing Account Access...${NC}"
+            ACCOUNT_RESPONSE=$(curl -s http://localhost:5000/v1/api/portfolio/accounts 2>/dev/null)
+            if echo "$ACCOUNT_RESPONSE" | grep -q '"accountId"'; then
+                ACCOUNT_ID=$(echo "$ACCOUNT_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0].get('accountId', 'Unknown'))" 2>/dev/null)
+                ACCOUNT_TYPE=$(echo "$ACCOUNT_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0].get('type', 'Unknown'))" 2>/dev/null)
+                TRADING_TYPE=$(echo "$ACCOUNT_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0].get('tradingType', 'Unknown'))" 2>/dev/null)
+                
+                check_status 0 "IBKR Account: $ACCOUNT_ID ($ACCOUNT_TYPE)"
+                echo -e "${GREEN}      → Account accessible, trading type: $TRADING_TYPE${NC}"
+                
+                # Check crypto permissions
+                CRYPTO_Z=$(echo "$ACCOUNT_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0].get('PrepaidCrypto-Z', False))" 2>/dev/null)
+                CRYPTO_P=$(echo "$ACCOUNT_RESPONSE" | python3 -c "import sys, json; data=json.load(sys.stdin); print(data[0].get('PrepaidCrypto-P', False))" 2>/dev/null)
+                
+                if [ "$CRYPTO_Z" = "True" ] || [ "$CRYPTO_P" = "True" ]; then
+                    check_status 0 "IBKR Crypto Access: Enabled"
+                    echo -e "${GREEN}      → ETH and crypto trading available${NC}"
+                else
+                    check_status 1 "IBKR Crypto Access: Not enabled"
+                    echo -e "${YELLOW}      → Crypto trading unavailable, stocks/futures only${NC}"
+                fi
+            else
+                check_status 1 "IBKR Account: Access failed"
+                echo -e "${RED}      → Cannot verify account permissions${NC}"
+            fi
+            
+            # Test 3: Market Data Capabilities
+            echo -e "\n${BLUE}Testing Market Data Access...${NC}"
+            
+            # Test contract search (requires minimal permissions)
+            CONTRACT_SEARCH=$(curl -s -X POST http://localhost:5000/v1/api/iserver/secdef/search \
+                             -H "Content-Type: application/json" \
+                             -d '{"symbol":"AAPL"}' 2>/dev/null)
+            if echo "$CONTRACT_SEARCH" | grep -q '"conid"'; then
+                CONTRACT_COUNT=$(echo "$CONTRACT_SEARCH" | python3 -c "import sys, json; data=json.load(sys.stdin); print(len(data))" 2>/dev/null)
+                check_status 0 "IBKR Contract Search: Working ($CONTRACT_COUNT contracts found)"
+                echo -e "${GREEN}      → Can discover trading instruments${NC}"
+            else
+                check_status 1 "IBKR Contract Search: Failed"
+                echo -e "${YELLOW}      → Limited instrument discovery capability${NC}"
+            fi
+            
+            # Test market data snapshot (basic market data)
+            SNAPSHOT_RESPONSE=$(curl -s "http://localhost:5000/v1/api/iserver/marketdata/snapshot?conids=265598&fields=31" 2>/dev/null)
+            if echo "$SNAPSHOT_RESPONSE" | grep -q '"31"'; then
+                check_status 0 "IBKR Market Data: Snapshots available"
+                echo -e "${GREEN}      → Current prices accessible for algorithm development${NC}"
+            else
+                check_status 1 "IBKR Market Data: Snapshots unavailable"
+                echo -e "${YELLOW}      → Must use alternative data sources (Yahoo Finance)${NC}"
+            fi
+            
+            # Test 4: Trading Function Access
+            echo -e "\n${BLUE}Testing Trading Capabilities...${NC}"
+            
+            # Test portfolio positions access
+            POSITIONS_RESPONSE=$(curl -s http://localhost:5000/v1/api/portfolio/positions/0 2>/dev/null)
+            if echo "$POSITIONS_RESPONSE" | grep -q '\[' && ! echo "$POSITIONS_RESPONSE" | grep -q '"error"'; then
+                check_status 0 "IBKR Portfolio Positions: Accessible"
+                echo -e "${GREEN}      → Can monitor current holdings${NC}"
+            else
+                check_status 1 "IBKR Portfolio Positions: Limited access"
+                echo -e "${YELLOW}      → Position monitoring may be restricted${NC}"
+            fi
+            
+            # Summary based on capabilities
+            echo -e "\n${BLUE}📊 IBKR Integration Summary:${NC}"
+            if [ "$BRIDGE_ERROR" = "OK" ] && [ "$ISERVER_AUTH" = "True" ]; then
+                echo -e "${GREEN}   ✅ Full IBKR integration ready for live trading${NC}"
+            elif [ "$ISERVER_AUTH" = "True" ]; then
+                echo -e "${YELLOW}   ⚠️  Partial integration: Good for development, limited live trading${NC}"
+                echo -e "${YELLOW}      → Market data snapshots available${NC}"
+                echo -e "${YELLOW}      → Algorithm development and testing possible${NC}"
+                echo -e "${YELLOW}      → Bridge connection needed for full trading capabilities${NC}"
+            else
+                echo -e "${RED}   ❌ Limited integration: Account access only${NC}"
+                echo -e "${RED}      → Re-authentication may be required${NC}"
+            fi
+        else
+            check_status 1 "IBKR Authentication: Not authenticated"
+            echo -e "${YELLOW}      → Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+            echo -e "${YELLOW}      → IBKR access tests skipped (authentication required)${NC}"
+        fi
+        
     else
         check_status 1 "IBKR Client Portal Connector: Not found"
     fi

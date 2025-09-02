@@ -1,0 +1,66 @@
+{
+  "portfolio_name": "ETH_Kelly_Portfolio",
+  "description": "ETH Portfolio with Kelly Criterion position sizing, momentum strategy, and risk management",
+  "version": "1.0.0",
+  "initial_capital": 100000.0,
+  
+  "trading": {
+    "symbol": "ETHUSD",
+    "short_ma_period": 5,
+    "long_ma_period": 20,
+    "max_position_size": 0.3,
+    "volatility_window": 14,
+    "signal_threshold": 0.1
+  },
+  
+  "risk": {
+    "max_drawdown": 0.15,
+    "max_position_pct": 0.8,
+    "var_confidence": 0.05,
+    "daily_var_limit": 0.06,
+    "portfolio_heat": 0.2
+  },
+  
+  "kelly": {
+    "lookback_window": 30,
+    "max_kelly_fraction": 0.25,
+    "min_win_rate": 0.35,
+    "risk_adjustment": 0.5,
+    "confidence_scaling": true,
+    "dynamic_adjustment": true
+  },
+  
+  "execution": {
+    "order_type": "MARKET",
+    "min_trade_value": 100.0,
+    "max_slippage": 0.002,
+    "execution_delay": 1.0
+  },
+  
+  "data_sources": {
+    "primary": "IBKR",
+    "backup": "YAHOO_FINANCE",
+    "update_frequency": "1min",
+    "historical_days": 60
+  },
+  
+  "monitoring": {
+    "log_level": "INFO",
+    "save_signals": true,
+    "save_trades": true,
+    "performance_tracking": true,
+    "alert_thresholds": {
+      "drawdown_alert": 0.05,
+      "var_breach": 0.08,
+      "position_concentration": 0.6
+    }
+  },
+  
+  "backtesting": {
+    "start_date": "2023-01-01",
+    "end_date": "2024-12-31",
+    "benchmark": "ETHUSD",
+    "transaction_costs": 0.001,
+    "slippage_model": "linear"
+  }
+}
