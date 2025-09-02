@@ -192,6 +192,35 @@ Complete workflow testing from data → analysis → signals → execution.
 - Error recovery and fault tolerance testing
 - Performance validation under realistic trading conditions
 
+## 🌐 **Web Testing Interface**
+
+### **Test Management Dashboards**
+The testing framework now includes comprehensive web-based interfaces for test management:
+
+- **Basic Dashboard**: `WebFrontend/test_dashboard.php` - Simple interface for test execution
+- **Advanced Dashboard**: `WebFrontend/advanced_test_dashboard.html` - Feature-rich interface with real-time monitoring
+- **RESTful API**: `WebFrontend/api/test_api.php` - API backend for programmatic access
+
+### **Web Interface Features**
+- ✅ **Real-time Test Execution**: Run tests directly from web browser
+- ✅ **Live System Monitoring**: Continuous health status updates
+- ✅ **Test History & Analytics**: Track success rates and performance trends
+- ✅ **Responsive Design**: Optimized for desktop and mobile viewing
+- ✅ **API Integration**: RESTful endpoints for automation
+
+### **Quick Access**
+```bash
+# Start web server
+cd WebFrontend && php -S 0.0.0.0:8080
+
+# Access dashboards
+# Basic: http://localhost:8080/test_dashboard.php
+# Advanced: http://localhost:8080/advanced_test_dashboard.html
+# API: http://localhost:8080/api/test_api.php
+```
+
+**Documentation**: See `WebFrontend/WEB_TESTING_INTEGRATION.md` for complete integration details.
+
 ## 📋 **Continuous Integration Workflow**
 
 ### **Daily Validation Routine**
