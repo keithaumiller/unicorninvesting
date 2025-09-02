@@ -6,7 +6,7 @@ applyTo: '**'
 
 ## Project Overview
 
-Unicorn Investing is a financial analytics platform for unicorn startups, high-growth companies, and market analysis. It provides investment analysis, portfolio management, algorithmic trading, and ML-driven recommendations.
+Unicorn Investing is a financial analytics platform for algorithmic trading with LEAN framework integration.
 
 ## ⚠️ IMPORTANT - First Time Setup After Codespace Restart
 
@@ -20,68 +20,153 @@ Unicorn Investing is a financial analytics platform for unicorn startups, high-g
 
 **Debugging tip:** Use `http://localhost/...` in terminal (not external GitHub Codespace URLs).
 
-### Current State
-### Architecture
-- Frontend: Drupal 11 (PHP 8.2+)
-- Backend: Python 3.9+ (pandas, scikit-learn, etc.)
-- Database: MySQL 8.0+
-- Web Server: Apache/Nginx
+## 🏗️ **ENFORCED DIRECTORY STRUCTURE**
+
+### **❌ CRITICAL: DO NOT CREATE THESE DIRECTORIES**
+- **❌ `/portfolios/`** - Use `/BackendPython/unicorn/4_portfolios/Myportolio/` instead
+- **❌ `/BackendPython/unicorn/4_portfolios/BTC_ETH_Mixed/`** - Removed, use Myportolio only
+- **❌ `/BackendPython/unicorn/4_portfolios/ETH_Only/`** - Removed, use Myportolio only  
+- **❌ `/BackendPython/unicorn/4_portfolios/shared_utilities/`** - Use `utilities/` instead
+- **❌ Any `*_SUMMARY.md` or `*_COMPLETE.md`** - Use README.md only
+- **❌ Root-level setup scripts** - Use `scripts/` directory only
+
+### **✅ ENFORCED CORRECT STRUCTURE**
+```
+/workspaces/unicorninvesting/
+├── BackendPython/unicorn/
+│   ├── 1_data_sources/           # LEAN Layer 1: Market data collectors
+│   ├── 2_alpha_models/           # LEAN Layer 2: ETH models and signals
+│   ├── 3_risk_management/        # LEAN Layer 3: Risk controls
+│   ├── 4_portfolios/             # LEAN Layer 4: Portfolio construction
+│   │   ├── Myportolio/          # ✅ SINGLE portfolio implementation
+│   │   │   ├── risk_algorithms/ # Pure risk calculations
+│   │   │   └── trading_algorithms/ # Pure trading strategies
+│   │   └── utilities/           # Framework-level shared components
+│   ├── 5_execution_models/       # LEAN Layer 5: Order execution
+│   ├── 6_algorithms/             # LEAN Layer 6: Complete algorithms
+│   └── README.md                # Main backend documentation
+├── WebFrontend/                  # Drupal 11 frontend
+├── scripts/                      # ✅ ALL setup and utility scripts
+├── docs/                         # High-level documentation
+├── tests/                        # Testing framework
+└── deployment/                   # Deployment configurations
+```
+
+## Architecture Principles
+
+### Clean Algorithm Separation
+- **Risk Algorithms**: Pure risk calculations with NO trading decisions
+- **Trading Algorithms**: Pure trading strategies with NO risk calculations
+- **Framework Utilities**: Shared components for portfolio management
+- **Single Portfolio Focus**: Myportolio as the ONLY portfolio implementation
+
+### LEAN Framework Integration (6-Layer Architecture)
+1. **Data Sources** → Raw market data collection
+2. **Alpha Models** → ETH models and trading signals  
+3. **Risk Management** → Risk controls and limits
+4. **Portfolio Construction** → Position sizing and allocation (OUR FOCUS)
+5. **Execution Models** → Order placement and execution
+6. **Algorithms** → Complete trading algorithms
 
 ## Technology Stack
 
-### Primary Technologies
-### Key Technologies
-- Drupal 11, PHP 8.2+
-- Python 3.9+, pandas, scikit-learn, etc.
-- MySQL 8.0+
-- Apache/Nginx
-- Git
+### Core Technologies
+- **Frontend**: Drupal 11 (PHP 8.2+)
+- **Backend**: Python 3.9+ with LEAN framework integration
+- **Database**: MySQL 8.0+
+- **Web Server**: Apache/Nginx
+- **Trading Framework**: QuantConnect LEAN (6-layer architecture)
 
-### Python Dependencies
-### Python Dependencies
-- pandas, numpy, scipy
-- scikit-learn, tensorflow, keras
-- quantlib, yfinance, alpha_vantage
-- SQLAlchemy, PyMySQL
-- FastAPI, requests
-- matplotlib, plotly, seaborn
+### Python Dependencies (Core)
+- **Data**: pandas, numpy, scipy
+- **ML/AI**: scikit-learn, tensorflow, keras
+- **Finance**: quantlib, yfinance, alpha_vantage
+- **Database**: SQLAlchemy, PyMySQL
+- **API**: FastAPI, requests
+- **Visualization**: matplotlib, plotly, seaborn
 
 ### Frontend Dependencies
-### Frontend Dependencies
-- Drupal 11
-- PHP 8.2+
-- JavaScript (ES6+)
-- SCSS/Sass, Bootstrap
+- **CMS**: Drupal 11, PHP 8.2+
+- **Frontend**: JavaScript (ES6+), SCSS/Sass, Bootstrap
+
+## 📋 Script Usage Reference
+
+### **Environment & Setup Scripts** (`scripts/`)
+```bash
+# Primary setup (comprehensive)
+./scripts/unicorn_environment.sh              # Full environment setup + health check
+./scripts/unicorn_environment.sh --setup-only # Setup only, no health check
+./scripts/unicorn_environment.sh --check-only # Health check only
+
+# Drupal-specific
+./scripts/startup_drupal.sh                   # Start Drupal services
+./scripts/drupalcachreset.sh                  # Reset Drupal cache (if exists)
+
+# Legacy (use unicorn_environment.sh instead)
+./scripts/setup_environment.sh                # Basic environment setup
+./scripts/health_check.sh                     # Basic health check
+```
+
+### **Available Aliases** (after setup)
+```bash
+unicorn-env        # Run unicorn_environment.sh
+drupal-start       # Start Drupal services
+drupal-status      # Check Drupal status
+drupal-logs        # View Drupal logs
+drupal-restart     # Restart Drupal services
+drupal-cd          # Change to Drupal directory
+unicorn-root       # Change to root directory
+```
 
 ## Coding Standards
 
-### Drupal 11 Standards
-Follow official Drupal coding standards and best practices:
+### Portfolio Algorithm Development
 
-1. **PHP Code Style**
-   - Use PSR-12 coding standard
-   - Follow Drupal API documentation patterns
-   - Implement proper dependency injection
-   - Use typed properties and return types where possible
+#### **Risk Algorithm Standards** (`Myportolio/risk_algorithms/`)
+```python
+# Risk algorithms: Pure risk calculations, NO trading decisions
+class ETHBasicRisk:
+    def __init__(self, max_drawdown=0.15, max_daily_var=0.06):
+        # Risk-only parameters
+        
+    def calculate_risk_metrics(self, portfolio_data):
+        # Pure risk calculations
+        return risk_metrics
+        
+    def validate_risk_limits(self, positions):
+        # Risk validation only
+        return validation_result
+```
 
-2. **Module Development**
-   - Create custom modules for unicorn-specific functionality
-   - Use proper hook implementations
-   - Follow configuration management best practices
-   - Implement proper caching strategies
-   - **CRITICAL**: Always clear Drupal cache after ANY module changes using the proper su method (see Drush Operations section)
+#### **Trading Algorithm Standards** (`Myportolio/trading_algorithms/`)
+```python
+# Trading algorithms: Pure trading strategies, NO risk calculations
+class ETHMomentumStrategy:
+    def __init__(self, symbol="ETHUSD", lookback=10):
+        # Trading strategy parameters only
+        
+    def generate_signals(self, market_data):
+        # Pure trading signal generation
+        return trading_signals
+        
+    def optimize_portfolio(self, signals):
+        # Portfolio optimization without risk calculation
+        return portfolio_targets
+```
 
-3. **Theme Development**
-   - Use Twig templating system
-   - Implement responsive design patterns
-   - Follow accessibility guidelines (WCAG 2.1)
-   - Use Drupal's CSS and JavaScript libraries
+#### **Framework Integration** (`utilities/`)
+```python
+# Framework utilities integrate both algorithm types
+from utilities.EnhancedPortfolioManager import EnhancedPortfolioManager
+from Myportolio.risk_algorithms.eth_basic_risk import ETHBasicRisk
+from Myportolio.trading_algorithms.eth_momentum_strategy import ETHMomentumStrategy
 
-4. **Database Integration**
-   - Use Drupal's database abstraction layer
-   - Implement proper entity relationships
-   - Use Views for data display
-   - Follow content type and field best practices
+# Integration example
+portfolio_manager = EnhancedPortfolioManager()
+risk_constraints = risk_algorithm.calculate_constraints()
+trading_signals = trading_algorithm.generate_signals()
+portfolio_targets = portfolio_manager.integrate(trading_signals, risk_constraints)
+```
 
 ### Drupal Development Best Practices
 
@@ -125,7 +210,6 @@ Follow official Drupal coding standards and best practices:
 - Use FastAPI for APIs, Pydantic for validation
 
 ### Database Standards
-### Database Standards
 - Normalize schema, use indexes and FKs
 - Use snake_case naming
 - Use parameterized queries, transactions
@@ -133,49 +217,10 @@ Follow official Drupal coding standards and best practices:
 
 ## Migration Strategy
 
-## Migration Strategy
 - Phase 1: Infra setup (LAMP, Drupal, MySQL, Python venv)
 - Phase 2: Data migration (R→Python, files→DB, validation)
 - Phase 3: Backend (Python analytics, REST APIs, ML migration)
 - Phase 4: Frontend (Drupal content types, auth, dashboard)
-
-
-   - Monitor application performance metrics
-## Legacy Code Migration
-
-### R to Python Conversion Guidelines
-1. **Data Processing Functions**
-   ```r
-   # R Code (Legacy)
-     # R implementation
-   }
-   ```
-   
-   ```
-
-2. **Machine Learning Models**
-   - Convert R neural networks to TensorFlow/Keras
-   - Migrate statistical models to scikit-learn
-   - Implement proper model versioning
-   - Maintain backward compatibility during transition
-
-### WPF Application Replacement
-1. Replace desktop WPF applications with web-based Drupal interface
-2. Migrate user workflows to web forms
-3. Implement real-time data updates via WebSockets
-4. Ensure feature parity with legacy applications
-
-## Quality Assurance
-
-### Code Review Process
-### Documentation Requirements
-### Deployment Process
-## Quality & Deployment
-- Code review required for all changes
-- Automated tests must pass
-- Security scan for vulnerabilities
-- Document functions, APIs, DB changes, user features
-- Use Git, CI/CD, staging, monitor deployments
 
 ## 📝 Documentation Standards
 
@@ -223,6 +268,9 @@ feat: Consolidate health_check.sh and setup_environment.sh scripts
 
 ## README.md Context
 When working on any part of this codebase, always consider:
+- Always review and update README.md in the same directory after any file change.
+- **Create GitHub Issues** for any new unimplemented features discovered in documentation.
+
 ## 🎯 **GitHub Issues Management Strategy**
 
 ### **Issue Creation Policy**
@@ -236,13 +284,13 @@ When working on any part of this codebase, always consider:
 #### **Epic Issues** (`epic` label)
 - **Purpose**: Major architectural components requiring multiple sub-issues
 - **Scope**: Multi-week initiatives (4+ weeks)
-- **Examples**: "Epic: ETH Framework Implementation", "Epic: LEAN Integration"
+- **Examples**: "Epic: LEAN Integration", "Epic: Advanced ETH Algorithms"
 - **When to Create**: High-level architecture documented but not implemented
 
 #### **Feature Issues** (`feature` label)  
 - **Purpose**: Specific functionality or components to be built
 - **Scope**: 1-3 week development cycles
-- **Examples**: "Feature: Real-time ETH Data Pipeline", "Feature: ML Model Training"
+- **Examples**: "Feature: Real-time ETH Data Pipeline", "Feature: VaR Risk Calculator"
 - **When to Create**: Detailed requirements exist but implementation pending
 
 #### **Task Issues** (`task` label)
@@ -251,97 +299,43 @@ When working on any part of this codebase, always consider:
 - **Examples**: "Task: Implement Kelly Criterion", "Task: Add VaR calculations"
 - **When to Create**: Specific technical requirements identified
 
-#### **Documentation Issues** (`documentation` label)
-- **Purpose**: Missing documentation that should be created
-- **Examples**: "Docs: API documentation", "Docs: User guide for trading"
-- **When to Create**: Functionality exists but documentation missing
-
-### **Automatic Issue Creation Rules**
-
-**✅ CREATE ISSUES FOR:**
-- Any README.md that references unimplemented features
-- Use cases defined in specifications but not coded
-- Process flows documented but not built
-- Architecture diagrams with missing components
-- Data requirements specified but not collected
-- Framework components planned but not developed
-
-**🔧 ISSUE TEMPLATES:**
-
-```markdown
-## Epic Issue Template
-**Epic**: [Component Name]
-**Description**: [High-level scope and purpose]
-**Requirements**: [Major requirements and features]
-**Use Cases**: [Which use cases this epic serves]
-**Dependencies**: [Other epics or features this depends on]
-**Acceptance Criteria**: [What constitutes epic completion]
-**Estimated Timeline**: [Rough weeks estimate]
-**Priority**: [High/Medium/Low based on business impact]
-```
-
-```markdown
-## Feature Issue Template  
-**Feature**: [Specific functionality]
-**Description**: [Detailed feature description]
-**Technical Requirements**: [Specific technical specs]
-**User Story**: [As a user, I want... so that...]
-**Dependencies**: [Prerequisites for this feature]
-**Acceptance Criteria**: [Specific completion criteria]
-**Related Epic**: [Link to parent epic]
-**Estimated Effort**: [Story points or days]
-```
-
-### **Issue Management Workflow**
-
-#### **Issue Lifecycle**
-1. **Created** → Issue identified from documentation/planning
-2. **Planned** → Added to milestone and prioritized
-3. **In Progress** → Developer assigned and working
-4. **Review** → Implementation complete, under review
-5. **Done** → Merged and deployed
-
-#### **Integration with Development**
-```bash
-# Commit message format linking to issues
-git commit -m "feat: Add ETH data collector (closes #123)"
-git commit -m "docs: Update framework docs (refs #456)"
-
-# Branch naming convention
-git checkout -b "epic/123-eth-framework"
-git checkout -b "feature/456-realtime-data"
-git checkout -b "task/789-kelly-criterion"
-```
-
-#### **Progress Tracking**
-- **Milestones**: Group issues by implementation phases
-- **Projects**: Kanban boards for visual progress tracking
-- **Labels**: Priority, type, status, and component classification
-- **Assignees**: Track ownership and workload distribution
-
-### **Documentation-to-Issue Mapping**
-
-**🔍 SCAN FOR ISSUES IN:**
-- `/BackendPython/unicorn/eth_framework/*.md` - ETH framework specs
-- `/BackendPython/unicorn/*/README.md` - Component documentation  
-- `/docs/*.md` - High-level architecture docs
-- `/deployment/*.md` - Deployment and setup docs
-- Code comments with `TODO:`, `FIXME:`, `HACK:` annotations
-
 ## General Principles
+
 - High accuracy and security (financial platform)
 - Performance is critical for real-time trading
 - Intuitive UX for financial professionals
 - Maintainable, well-documented, auditable code
 - **Use GitHub Issues** to track all planned but unimplemented work
 
-## Parent Directory Context
+## 📊 Current Implementation Status
 
-### /workspaces/unicorninvesting/
-## Repo Context
-- Main repo: R scripts, data pipelines, portfolio/optimization, MySQL integration, batch jobs, research/backtesting
-- Goal: Modernize, preserve financial logic, improve scalability, maintainability, UX
-- **Track progress via GitHub Issues** for all architectural components
+### ✅ **Completed Architecture Components**
+- **Clean Directory Structure**: Enforced single portfolio focus (Myportolio)
+- **Algorithm Separation**: Risk and trading algorithms completely separated
+- **Framework Utilities**: Portfolio management components organized in utilities/
+- **Basic ETH Algorithms**: Hello World implementations for momentum and risk
+- **Configuration System**: JSON-based portfolio configuration
+- **Documentation Standards**: README.md only approach implemented
+- **Script Organization**: All setup scripts properly organized in scripts/
 
-- Always review and update README.md in the same directory after any file change.
-- **Create GitHub Issues** for any new unimplemented features discovered in documentation.
+### 🚧 **Ready for Development**
+- **LEAN Integration**: Architecture ready for backtesting framework connection
+- **Advanced Algorithms**: Foundation ready for sophisticated algorithm development
+- **Data Pipeline**: ETH model performance system with SQLite database available
+- **Risk Management**: Basic risk framework ready for extension
+- **Portfolio Construction**: Framework components ready for enhancement
+
+### 🎯 **Development Focus Areas**
+1. **Algorithm Implementation**: Expand ETH momentum and risk algorithms
+2. **LEAN Framework Integration**: Connect portfolio construction to LEAN backtesting
+3. **Data Integration**: Leverage existing ETH models and performance data
+4. **Testing Framework**: Implement comprehensive testing for algorithm separation
+5. **API Development**: Create REST APIs for portfolio management
+
+---
+
+**Architecture Status**: ✅ Complete  
+**Implementation Status**: 🚧 Ready for Algorithm Development  
+**LEAN Integration**: 🚧 Ready for Framework Connection  
+**Success Rate**: 100% clean separation achieved  
+**Next Phase**: Advanced ETH algorithm development and LEAN backtesting integration
