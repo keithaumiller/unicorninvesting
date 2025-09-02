@@ -5,8 +5,12 @@ Quick demonstration of the new organized model storage system.
 Shows how easy it is to store, load, and manage multiple model variants.
 """
 
-from model_storage_manager import ModelStorageManager
-from eth_prophet_clean import ETHProphetFrameworkWithStorage
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
+from models.model_management.model_storage_manager import ModelStorageManager
+from legacy.eth_prophet_clean import ETHProphetFrameworkWithStorage
 
 def demo_storage_system():
     """Demonstrate the complete storage system capabilities."""

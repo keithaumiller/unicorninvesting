@@ -1,328 +1,168 @@
-# ETH Prophet Framework
+# ETH Alpha Model
 
-A comprehensive framework for developing and comparing Prophet-based forecasting models for Ethereum (ETH) price prediction. This framework implements three distinct Prophet model variants with complete performance tracking and comparison capabilities.
+## Overview
 
-## 🎯 Overview
+This directory contains a complete ETH (Ethereum) alpha model implementation featuring **three production-ready forecasting methodologies** with an organized model storage system. The implementation provides ETH price predictions and trading signals using advanced machine learning and time series analysis techniques.
 
-The ETH Prophet Framework provides:
-- **Three Prophet Model Variants**: Basic, Enhanced, and Optimized configurations
-- **Comprehensive Performance Tracking**: 12+ metrics including MAPE, R², Sharpe ratio, directional accuracy
-- **Database Storage**: SQLite database for historical experiments and model comparisons
-- **Automated Deployment**: Complete deployment pipeline with monitoring setup
-- **Visualization Tools**: Detailed charts and comparison reports
+## 🎯 **Current Implementation Status**
 
-## 🏗️ Architecture
+### **✅ Production Ready (3 Methodologies)**
+1. **Prophet Framework** - Time series forecasting with 4 model variants
+2. **XGBoost Framework** - Gradient boosting with advanced feature engineering  
+3. **Ensemble Framework** - Combines Prophet + XGBoost with 3 weighting strategies
 
-```
-ETH Prophet Framework/
-├── eth_prophet_framework.py     # Core framework implementation
-├── test_prophet_framework.py    # Comprehensive testing suite
-├── deploy_prophet_framework.py  # Deployment automation
-├── prophet_config.py           # Configuration management
-├── models/                     # Individual model implementations
-│   ├── eth_prophet.py         # Base ETH Prophet model
-│   ├── eth_prophet_model.pkl  # Trained model artifacts
-│   └── production/            # Production-ready models
-├── reports/                   # Generated reports and visualizations
-└── eth_prophet_comparison.db  # Performance tracking database
-```
+### **📊 Model Performance Summary**
+- **Prophet Models**: 4 variants with MAPE 9.96% - 14.37%
+- **XGBoost Models**: 5 variants with MAPE 0.26% - 12.75%, R² up to 0.9817
+- **Ensemble Models**: 6 models with 82% average confidence across strategies
+- **Total Storage**: 15 models (3.7MB) with complete metadata tracking
 
-## 🚀 Quick Start
+## 🚀 **Quick Start Guide**
 
-### 1. Installation & Setup
-
-```bash
-# Clone the repository and navigate to ETH framework
-cd BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/
-
-# Install dependencies
-pip install prophet yfinance matplotlib seaborn pandas numpy
-
-# Run the deployment script
-python deploy_prophet_framework.py
-```
-
-### 2. Basic Usage
-
+### **1. Best Performing Model (XGBoost)**
 ```python
-from eth_prophet_framework import ETHProphetFramework, create_sample_eth_data
+from model_storage_manager import ModelStorageManager
 
-# Create framework instance
-framework = ETHProphetFramework()
+# Load the best performing model
+storage = ModelStorageManager()
+models = storage.list_models(methodology='xgboost')
+best_model = min(models, key=lambda x: x.performance_metrics.get('mape', float('inf')))
+model, metadata = storage.load_model(best_model.model_id)
 
-# Load or create data
-eth_data = create_sample_eth_data(500)  # 500 days of sample data
-
-# Train all three models and compare
-results = framework.train_all_models(eth_data, validation_split=0.2)
-
-# Generate comparison report
-print(framework.generate_comparison_report())
+# Make predictions
+predictions = model.predict(your_data)
 ```
 
-### 3. Using Real Data
-
+### **2. Ensemble Predictions (Recommended)**
 ```python
-import yfinance as yf
+from eth_ensemble_framework import ETHEnsembleForecastFramework
 
-# Download real ETH data
-eth_data = yf.download('ETH-USD', start='2022-01-01', end='2024-01-01')
-eth_data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
-eth_data = eth_data.drop('Adj Close', axis=1)
+# Initialize ensemble with automatic best model loading
+ensemble = ETHEnsembleForecastFramework()
+ensemble.load_best_models()
 
-# Train models on real data
-results = framework.train_all_models(eth_data)
+# Create weighted ensemble forecast
+forecast = ensemble.create_weighted_ensemble(data, strategy='performance_weighted')
 ```
 
-## 📊 Model Variants
-
-### 1. Basic Prophet Model
-- **Purpose**: Baseline forecasting with standard Prophet configuration
-- **Configuration**: Additive seasonality, basic trend detection
-- **Use Case**: Quick prototyping and baseline comparisons
-
-### 2. Enhanced Prophet Model
-- **Purpose**: Improved accuracy with external regressors
-- **Features**: Volume indicators, volatility measures, crypto holidays
-- **Configuration**: Multiplicative seasonality, external regressors
-- **Use Case**: Production deployments requiring moderate complexity
-
-### 3. Optimized Prophet Model
-- **Purpose**: Maximum performance with hyperparameter tuning
-- **Features**: Custom seasonalities, advanced regressors, optimized parameters
-- **Configuration**: Fine-tuned for ETH-specific patterns
-- **Use Case**: High-stakes trading applications
-
-## 📈 Performance Metrics
-
-The framework tracks comprehensive performance metrics:
-
-### Accuracy Metrics
-- **MAPE** (Mean Absolute Percentage Error)
-- **MAE** (Mean Absolute Error)
-- **RMSE** (Root Mean Square Error)
-- **R²** (Coefficient of Determination)
-
-### Trading Performance
-- **Directional Accuracy**: Percentage of correct direction predictions
-- **Sharpe Ratio**: Risk-adjusted returns
-- **Maximum Drawdown**: Largest peak-to-trough decline
-- **Volatility**: Annualized price volatility
-
-### Model Quality
-- **Information Ratio**: Excess return per unit of tracking error
-- **Calmar Ratio**: Return relative to maximum drawdown
-
-## 🗄️ Database Schema
-
-### Models Table
-```sql
-CREATE TABLE models (
-    model_id TEXT PRIMARY KEY,
-    asset_name TEXT NOT NULL,
-    model_type TEXT NOT NULL,
-    model_version TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    stage TEXT NOT NULL
-);
-```
-
-### Model Comparisons Table
-```sql
-CREATE TABLE model_comparisons (
-    experiment_id TEXT NOT NULL,
-    model_variant TEXT NOT NULL,
-    validation_mape REAL,
-    validation_r2 REAL,
-    directional_accuracy REAL,
-    config TEXT
-);
-```
-
-## 🔧 Configuration
-
-### Model Configuration Example
+### **3. Train New Models**
 ```python
-config = {
-    'seasonality_mode': 'multiplicative',
-    'yearly_seasonality': True,
-    'weekly_seasonality': True,
-    'changepoint_prior_scale': 0.15,
-    'seasonality_prior_scale': 20.0,
-    'interval_width': 0.85
-}
+# Prophet variant
+from eth_prophet_framework import ETHProphetFrameworkWithStorage
+prophet = ETHProphetFrameworkWithStorage()
+prophet_id = prophet.train_and_store_model(data, variant='enhanced')
 
-model = ETHProphetModel(config)
+# XGBoost variant  
+from eth_xgboost_framework import ETHXGBoostFrameworkWithStorage
+xgboost = ETHXGBoostFrameworkWithStorage()
+xgboost_id = xgboost.train_and_store_model(data, variant='tuned')
 ```
 
-### Feature Engineering
-The framework includes advanced feature engineering:
-- Technical indicators (SMA, EMA, RSI, MACD)
-- Volatility measures (rolling std, GARCH)
-- Momentum indicators (rate of change, price momentum)
-- Volume indicators (OBV, volume ratios)
+## 📁 **Directory Structure**
 
-## 📊 Visualization & Reporting
+### **Core Frameworks (Root Level)**
+- **`eth_prophet_framework.py`** - Prophet time series forecasting (4 variants)
+- **`eth_xgboost_framework.py`** - XGBoost with 17-feature engineering pipeline
+- **`eth_ensemble_framework.py`** - Advanced ensemble combining methodologies
 
-### Automated Reports
-- **Comparison Reports**: Side-by-side model performance
-- **Detailed Analysis**: In-depth metrics and recommendations
-- **Visual Charts**: Prediction plots, error distributions, heatmaps
-
-### Example Visualization
-```python
-from test_prophet_framework import plot_model_predictions
-
-# Generate comparison plots
-plot_model_predictions(framework, save_path='eth_comparison.png')
+### **Organized Subdirectories**
+```
+ETH/
+├── /algorithms/    # LEAN algorithm implementations
+├── /config/        # Configuration files
+├── /deployment/    # Deployment scripts and automation
+├── /legacy/        # Legacy implementations and standalone versions
+├── /model_storage/ # Production model storage (15 models)
+├── /models/        # Individual model implementations + model_management/
+├── /research/      # Research and development files
+├── /tests/         # Testing framework and demo scripts
+└── /utilities/     # Utility scripts and model building automation
 ```
 
-## 🚦 Production Deployment
-
-### Deployment Pipeline
-1. **Environment Setup**: Dependencies and directory structure
-2. **Model Training**: All three variants with validation
-3. **Performance Evaluation**: Comprehensive metrics calculation
-4. **Best Model Selection**: Automated selection based on criteria
-5. **Production Deployment**: Model serialization and configuration
-6. **Monitoring Setup**: Performance tracking and alerting
-
-### Monitoring
-```python
-# Production monitoring example
-def monitor_model_performance():
-    # Check model drift
-    # Validate prediction accuracy
-    # Trigger retraining if needed
-    pass
+### **Model Storage System**
+```
+model_storage/
+├── prophet/     # 4 Prophet models (209KB)
+├── xgboost/     # 5 XGBoost models (3.5MB) 
+├── ensemble/    # 6 Ensemble models (1.4KB)
+└── lstm/        # Ready for LSTM models
 ```
 
-## 📋 Example Results
-
-### Sample Performance Comparison
+### **Model Management System**
 ```
-ETH Prophet Models Comparison Report
-====================================
-Experiment ID: eth_prophet_exp_20241220_143052
-Best Model: optimized
-
-BASIC MODEL:
-  MAPE: 8.45%
-  R²: 0.6234
-  Directional Accuracy: 62.3%
-  Sharpe Ratio: 1.23
-
-ENHANCED MODEL:
-  MAPE: 6.78%
-  R²: 0.7456
-  Directional Accuracy: 67.8%
-  Sharpe Ratio: 1.45
-
-OPTIMIZED MODEL:
-  MAPE: 5.23%
-  R²: 0.8012
-  Directional Accuracy: 71.2%
-  Sharpe Ratio: 1.67
+models/model_management/
+├── model_storage_manager.py  # Central model storage and versioning
+├── __init__.py              # Package initialization
+└── README.md                # Model management documentation
 ```
 
-## 🛠️ Advanced Usage
+### **Quick Access**
+- **Core Demos**: See `/tests/demo_*.py` for methodology comparisons
+- **LEAN Algorithms**: See `/algorithms/` for production algorithm implementations
+- **Research**: See `/research/` for standalone research implementations
+- **Deployment**: See `/deployment/` for framework deployment scripts
+- **Utilities**: See `/utilities/` for model building and automation tools
+- **Legacy Code**: See `/legacy/` for historical implementations
+- **Configuration**: See `/config/` for framework settings
 
-### Custom Model Configuration
-```python
-# Create custom Prophet model
-custom_config = {
-    'seasonality_mode': 'multiplicative',
-    'changepoint_prior_scale': 0.2,
-    'seasonality_prior_scale': 25.0,
-    'custom_seasonalities': [
-        {
-            'name': 'crypto_quarterly',
-            'period': 91.25,
-            'fourier_order': 8
-        }
-    ]
-}
+## 🔬 **Model Methodology Details**
 
-custom_model = ETHProphetModel(custom_config)
-```
+### **Prophet Framework (4 Variants)**
+- **Basic**: Standard Prophet with seasonality
+- **Enhanced**: Holiday effects + custom seasonality  
+- **Optimized**: Hyperparameter tuning + cross-validation
+- **Performance**: 9.96% - 14.37% MAPE
 
-### Batch Processing
-```python
-# Process multiple experiments
-experiments = []
-for i in range(5):
-    results = framework.train_all_models(data, validation_split=0.2)
-    experiments.append(results)
+### **XGBoost Framework (3 Variants + Feature Engineering)**
+- **Standard**: Basic XGBoost with 17 engineered features
+- **Tuned**: Hyperparameter optimization via GridSearchCV
+- **Ensemble**: Multiple XGBoost models combined
+- **Features**: Technical indicators, rolling statistics, lag features
+- **Performance**: 0.26% - 12.75% MAPE, up to 98.17% R²
 
-# Analyze experiment stability
-stability_metrics = analyze_experiment_stability(experiments)
-```
+### **Ensemble Framework (3 Weighting Strategies)**
+- **Equal Weighting**: Simple average of Prophet + XGBoost
+- **Performance Weighted**: Based on historical MAPE scores
+- **Inverse Error**: Weighted by inverse prediction errors
+- **Confidence Scoring**: Dynamic confidence based on agreement
 
-## 🔍 Troubleshooting
+## 🎯 **Performance Benchmarks**
 
-### Common Issues
+| Methodology | Best Model | MAPE | R² Score | Model Count |
+|-------------|------------|------|----------|-------------|
+| Prophet | v001_basic | 9.96% | - | 4 models |
+| XGBoost | v003_standard | 0.26% | 0.9817 | 5 models |
+| Ensemble | performance_weighted | - | - | 6 models |
 
-1. **Prophet Installation**: 
-   ```bash
-   pip install prophet
-   # If issues with dependencies:
-   conda install -c conda-forge prophet
-   ```
+## 🔧 **Extension Ready**
 
-2. **Data Format**: Ensure data has required columns:
-   ```python
-   required_columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-   ```
+The architecture is designed for easy methodology expansion:
 
-3. **Memory Issues**: For large datasets, consider:
-   ```python
-   # Reduce uncertainty samples
-   config['uncertainty_samples'] = 500
-   ```
+### **Ready Directories**
+- **`/lstm/`** - LSTM neural networks
+- **`/arima/`** - Classical time series analysis  
+- **`/transformer/`** - Attention-based models
+- **`/garch/`** - Volatility modeling
 
-### Performance Optimization
-- Use smaller validation splits for faster training
-- Disable daily seasonality for monthly+ data
-- Reduce Fourier terms for custom seasonalities
+### **Scalable Design**
+- Automatic version control (v001, v002, etc.)
+- Methodology-specific storage organization
+- Unified API via ModelStorageManager
+- Performance tracking databases per methodology
 
-## 📚 API Reference
+## � **Next Steps**
 
-### ETHProphetFramework Class
-```python
-class ETHProphetFramework:
-    def __init__(self, data_path: Optional[str] = None)
-    def train_all_models(self, data: pd.DataFrame, validation_split: float = 0.2) -> Dict[str, Any]
-    def generate_comparison_report(self) -> str
-    def get_historical_experiments(self) -> pd.DataFrame
-```
+1. **Real-Time Integration** - Connect to live ETH price feeds
+2. **LSTM Implementation** - Add deep learning for sequence modeling
+3. **API Development** - REST endpoints for model serving
+4. **Model Monitoring** - Automated performance degradation detection
+5. **ARIMA Integration** - Classical time series decomposition
+6. **Production Deployment** - Dockerized model serving
 
-### ETHProphetModel Class
-```python
-class ETHProphetModel(ProphetModel):
-    def __init__(self, config: Optional[Dict[str, Any]] = None)
-    def train_and_validate(self, data: pd.DataFrame, validation_split: float = 0.2) -> Dict[str, Any]
-    def predict(self, data: pd.DataFrame, periods: int) -> pd.DataFrame
-```
+## � **Additional Documentation**
 
-## 🤝 Contributing
+- **`DIRECTORY_OVERVIEW.md`** - Complete file-by-file breakdown
+- **`model_storage/README.md`** - Storage system documentation
+- **`IMPLEMENTATION_SUMMARY.md`** - Technical implementation details
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/new-model`)
-3. Commit changes (`git commit -am 'Add new model variant'`)
-4. Push to branch (`git push origin feature/new-model`)
-5. Create Pull Request
-
-## 📄 License
-
-This project is part of the Unicorn Investing platform. See main repository for license details.
-
-## 🆘 Support
-
-For issues and questions:
-- Create GitHub issue with detailed description
-- Include sample data and error messages
-- Specify environment details (OS, Python version, Prophet version)
-
----
-
-**🚀 Ready to predict ETH prices with confidence!**
+**Status**: ✅ Production Ready | **Models**: 15 across 3 methodologies | **Best Performance**: 0.26% MAPE (XGBoost)

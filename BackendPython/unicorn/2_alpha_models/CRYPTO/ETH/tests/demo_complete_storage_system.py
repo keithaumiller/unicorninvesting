@@ -13,7 +13,11 @@ import numpy as np
 from pathlib import Path
 import sqlite3
 from datetime import datetime
-from model_storage_manager import ModelStorageManager
+import sys
+
+# Add parent directory to path for imports
+sys.path.append(str(Path(__file__).parent.parent))
+from models.model_management.model_storage_manager import ModelStorageManager
 
 def demo_complete_storage_system():
     """Demonstrate the complete model storage system with multiple methodologies."""
