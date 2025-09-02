@@ -22,6 +22,151 @@ This will ensure Apache web server and MySQL database are running, and the Drupa
 
 Unicorn Investing is a sophisticated investment analysis and algorithmic trading platform that uses machine learning to optimize portfolio allocations across stocks and forex markets. The platform has been modernized with a clean separation between proprietary algorithms and the QuantConnect LEAN trading framework.
 
+## 🎯 **Platform Workstreams & Process Flows**
+
+This section outlines the comprehensive workstreams that comprise the Unicorn Investing platform, including both implemented and planned components.
+
+### **✅ IMPLEMENTED WORKSTREAMS**
+
+#### **1. Data Integration & Management**
+**Location**: `BackendPython/unicorn/1_data_sources/`
+**Status**: ✅ Operational with IBKR integration
+
+**Process Flows**:
+- Raw data collection (IBKR integration, market feeds)
+- Data quality validation and scoring (100% quality score achieved)
+- Technical indicator calculation (30+ indicators)
+- Data preprocessing and normalization
+- Real-time data streaming (1-minute bars)
+- Historical data archival (178KB ETH dataset available)
+
+#### **2. Forecasting Model Development**
+**Location**: `BackendPython/unicorn/2_alpha_models/<ASSETTYPE>/<ASSET>/`
+**Status**: ✅ ETH models operational, BTC in development
+
+**Process Flows**:
+- Model training (Prophet, XGBoost, Ensemble)
+- Feature engineering and selection
+- Hyperparameter optimization
+- Backtesting and validation
+- Performance metrics calculation (R², MAPE, Sharpe ratio)
+- Model versioning and storage
+
+#### **3. Risk Model Development**
+**Location**: `BackendPython/unicorn/3_risk_algorithms/<RISK_TYPE>/`
+**Status**: ✅ Kelly Criterion implemented, VaR in development
+
+**Process Flows**:
+- Risk algorithm development (Kelly Criterion, VaR, etc.)
+- Risk parameter optimization
+- Stress testing and scenario analysis
+- Risk constraint definition
+- Portfolio-level risk aggregation
+
+#### **4. Execution Models**
+**Location**: `BackendPython/unicorn/5_execution_models/`
+**Status**: ⚠️ Framework ready, needs implementation
+
+**Process Flows**:
+- Order routing and execution
+- Market impact minimization
+- Slippage management
+- Trade timing optimization
+- Broker integration (IBKR)
+
+#### **5. Portfolio Management (Asset Scope)**
+**Location**: `BackendPython/unicorn/4_portfolios/Myportolio/`
+**Status**: ✅ Operational with ETH focus
+
+**Process Flows**:
+- Asset universe definition
+- Portfolio composition management
+- Performance tracking (100% operational)
+- Risk budget allocation
+
+### **🚨 MISSING WORKSTREAMS (Critical Development Gaps)**
+
+#### **6. Model Production Management** ⚠️ **HIGH PRIORITY**
+**Recommended Location**: `BackendPython/unicorn/2_alpha_models/production/`
+**Status**: ❌ Critical gap - no production model selection
+
+**Missing Process Flows**:
+- Model selection and ranking (automated best model identification)
+- Production model deployment (active model per asset)
+- Model performance monitoring (live performance tracking)
+- Model rotation and updates (when to switch models)
+- A/B testing framework (comparing model performance in production)
+- Model fallback strategies (backup models when primary fails)
+
+**Impact**: Platform has excellent model development but no systematic way to determine which model to use in production per asset.
+
+#### **7. Portfolio Construction & Optimization** ⚠️ **MEDIUM PRIORITY**
+**Location**: `BackendPython/unicorn/4_portfolios/utilities/` (partially implemented)
+**Status**: ⚠️ Partially implemented, needs expansion
+
+**Missing Process Flows**:
+- Multi-asset portfolio optimization (across ETH, BTC, traditional assets)
+- Dynamic asset allocation (changing weights based on market conditions)
+- Correlation-based diversification
+- Risk budgeting and attribution
+- Rebalancing triggers and schedules
+
+#### **8. Complete Algorithm Integration** ⚠️ **HIGH PRIORITY**
+**Recommended Location**: `BackendPython/unicorn/6_algorithms/`
+**Status**: ❌ Directory exists but empty
+
+**Missing Process Flows**:
+- End-to-end algorithm orchestration (Data → Alpha → Risk → Portfolio → Execution)
+- Multi-timeframe strategies (1min, 5min, 1hour, daily)
+- Strategy performance attribution
+- Algorithm lifecycle management
+
+#### **9. Monitoring & Alerting** ⚠️ **HIGH PRIORITY**
+**Recommended Location**: `BackendPython/unicorn/monitoring/`
+**Status**: ❌ Not implemented
+
+**Missing Process Flows**:
+- Real-time performance monitoring
+- Risk limit breach detection
+- Model degradation alerts
+- Data quality monitoring
+- System health checks
+- Performance reporting and dashboards
+
+#### **10. Configuration & Parameter Management** ⚠️ **MEDIUM PRIORITY**
+**Current**: Basic JSON configs in portfolios
+**Status**: ⚠️ Partially implemented
+
+**Missing Process Flows**:
+- Centralized parameter management
+- Environment-specific configurations (dev, staging, prod)
+- Dynamic parameter updates (without restart)
+- Configuration versioning
+- Parameter optimization scheduling
+
+### **📊 Workstream Implementation Status**
+
+| Workstream | Status | Priority | Completion |
+|------------|---------|----------|------------|
+| Data Integration & Management | ✅ Operational | High | 85% |
+| Forecasting Model Development | ✅ Operational | High | 80% |
+| Risk Model Development | ✅ Operational | High | 70% |
+| Portfolio Management | ✅ Operational | High | 75% |
+| Execution Models | ⚠️ Framework Ready | High | 20% |
+| Model Production Management | ❌ Missing | **Critical** | 0% |
+| Complete Algorithm Integration | ❌ Missing | **Critical** | 0% |
+| Monitoring & Alerting | ❌ Missing | **Critical** | 0% |
+| Portfolio Construction & Optimization | ⚠️ Partial | Medium | 40% |
+| Configuration & Parameter Management | ⚠️ Partial | Medium | 30% |
+
+### **🎯 Development Priorities**
+
+1. **Critical (Immediate)**: Model Production Management, Complete Algorithm Integration, Monitoring & Alerting
+2. **High (Next Phase)**: Execution Models completion, Portfolio Construction enhancement
+3. **Medium (Future)**: Configuration Management, Advanced analytics
+
+---
+
 ## Core Technology Stack
 
 ### Current Architecture (August 2025)
