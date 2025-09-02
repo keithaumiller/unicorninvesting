@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-09-02T18:59:56.559380",
+  "data_subscriptions": {},
+  "real_time_access": {},
+  "contract_types": {
+    "US Stocks": {
+      "contract": {
+        "symbol": "AAPL",
+        "secType": "STK",
+        "exchange": "SMART",
+        "description": "US Stocks"
+      },
+      "search_status": 200,
+      "accessible": true,
+      "contracts_found": 5
+    },
+    "Forex": {
+      "contract": {
+        "symbol": "EUR",
+        "secType": "CASH",
+        "currency": "USD",
+        "description": "Forex"
+      },
+      "search_status": 200,
+      "accessible": true,
+      "contracts_found": 4
+    },
+    "Cryptocurrency": {
+      "contract": {
+        "symbol": "ETH",
+        "secType": "CRYPTO",
+        "exchange": "PAXOS",
+        "description": "Cryptocurrency"
+      },
+      "search_status": 200,
+      "accessible": true,
+      "contracts_found": 4
+    },
+    "Futures": {
+      "contract": {
+        "symbol": "ES",
+        "secType": "FUT",
+        "exchange": "CME",
+        "description": "Futures"
+      },
+      "search_status": 200,
+      "accessible": true,
+      "contracts_found": 5
+    },
+    "Options": {
+      "contract": {
+        "symbol": "SPY",
+        "secType": "OPT",
+        "exchange": "SMART",
+        "description": "Options"
+      },
+      "search_status": 200,
+      "accessible": true,
+      "contracts_found": 3
+    }
+  },
+  "errors": []
+}

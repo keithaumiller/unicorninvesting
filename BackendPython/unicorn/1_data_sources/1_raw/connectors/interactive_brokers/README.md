@@ -98,6 +98,38 @@ Interactive Brokers provides professional trading capabilities and real-time mar
 
 ## 🔌 Available Files
 
+### **Account Information Management** 🆕
+
+#### `accountinfo/` Directory
+**Purpose:** Comprehensive account capabilities and limitations tracking
+- **Features:** Complete API access mapping, trading permissions, market data capabilities
+- **Collection:** Automated account information gathering
+- **Reports:** Human-readable capability summaries and limitation analysis
+- **Status:** ✅ Ready to use
+
+**Key Files:**
+- `collect_account_info.py` - Comprehensive account data collection
+- `show_capabilities.py` - Quick capability summary and reference
+- `update_account_info.sh` - Automated collection with scheduling support
+- `reports/` - Human-readable analysis and capability matrices
+- `historical/` - Date-based snapshots for tracking changes
+
+**Quick Usage:**
+```bash
+# Collect current account information
+cd accountinfo/
+python collect_account_info.py
+
+# Show quick capabilities summary
+python show_capabilities.py
+
+# Show detailed capabilities analysis
+python show_capabilities.py --detailed
+
+# Automated update with summary
+./update_account_info.sh
+```
+
 ### **Modern Client Portal Integration**
 
 #### `IBKRClientPortalConnector.py` ⭐ **NEW**
