@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-02 22:31:13.012822",
+  "risk_metrics": {
+    "var_1day": 0.0,
+    "var_1week": 0.0,
+    "portfolio_volatility": 0.0,
+    "current_drawdown": 0.0,
+    "position_weights": {},
+    "max_position_weight": 0,
+    "estimated_correlation": 0.7,
+    "sharpe_ratio": 0.0
+  },
+  "risk_violations": [],
+  "position_recommendations": {
+    "ETH": {
+      "target_allocation": 0.6,
+      "target_value": 600.0,
+      "risk_adjusted_value": 250.0,
+      "current_value": 0,
+      "recommended_action": "BUY"
+    },
+    "BTC": {
+      "target_allocation": 0.4,
+      "target_value": 400.0,
+      "risk_adjusted_value": 250.0,
+      "current_value": 0,
+      "recommended_action": "BUY"
+    }
+  },
+  "emergency_assessment": {
+    "emergency_triggers": [],
+    "emergency_score": 0,
+    "emergency_stop_recommended": false,
+    "severity": "low"
+  },
+  "risk_alerts": [],
+  "overall_risk_score": 0,
+  "recommended_actions": [
+    "Risk levels are within acceptable parameters",
+    "Continue monitoring and maintain current risk controls"
+  ]
+}
