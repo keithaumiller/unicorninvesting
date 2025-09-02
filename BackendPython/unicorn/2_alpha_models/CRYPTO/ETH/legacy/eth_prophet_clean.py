@@ -13,7 +13,11 @@ import sqlite3
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
-from model_storage_manager import ModelStorageManager
+import sys
+
+# Add parent directory to path for imports
+sys.path.append(str(Path(__file__).parent.parent))
+from models.model_management.model_storage_manager import ModelStorageManager
 
 try:
     from prophet import Prophet
@@ -68,7 +72,7 @@ class ETHProphetFrameworkWithStorage:
                 )
             """)
     
-    def create_basic_prophet_model(self, config_override: Dict = None) -> Prophet:
+    def create_basic_prophet_model(self, config_override: Dict = None):
         """Create basic Prophet model with ETH-optimized settings."""
         if not PROPHET_AVAILABLE:
             raise ImportError("Prophet not available")
@@ -89,7 +93,7 @@ class ETHProphetFrameworkWithStorage:
         model = Prophet(**config)
         return model
     
-    def create_enhanced_prophet_model(self, config_override: Dict = None) -> Prophet:
+    def create_enhanced_prophet_model(self, config_override: Dict = None):
         """Create enhanced Prophet model with external regressors."""
         if not PROPHET_AVAILABLE:
             raise ImportError("Prophet not available")
@@ -115,7 +119,7 @@ class ETHProphetFrameworkWithStorage:
         
         return model
     
-    def create_optimized_prophet_model(self, config_override: Dict = None) -> Prophet:
+    def create_optimized_prophet_model(self, config_override: Dict = None):
         """Create optimized Prophet model with hyperparameter tuning."""
         if not PROPHET_AVAILABLE:
             raise ImportError("Prophet not available")
@@ -167,6 +171,9 @@ class ETHProphetFrameworkWithStorage:
             momentum = data['Close'].pct_change(periods=5)
             momentum_norm = (momentum - momentum.mean()) / momentum.std()
             prophet_data['momentum'] = momentum_norm.fillna(0)
+        
+        # Remove any remaining NaN values
+        prophet_data = prophet_data.fillna(0)
         
         return prophet_data
     
@@ -263,5 +270,211 @@ class ETHProphetFrameworkWithStorage:
             'variant': variant,
             'include_regressors': include_regressors,
             'validation_split': validation_split,
-            'prophet_params': model.__dict__.copy()
-        }\n        \n        # Clean prophet_params (remove non-serializable objects)\n        model_config['prophet_params'] = {\n            k: v for k, v in model_config['prophet_params'].items() \n            if isinstance(v, (str, int, float, bool, list, dict, type(None)))\n        }\n        \n        # Store model using storage manager\n        model_id = self.storage_manager.store_model(\n            model=model,\n            methodology='prophet',\n            asset='ETH',\n            model_config=model_config,\n            performance_metrics=performance_metrics,\n            description=f'ETH Prophet {variant} model with {len(train_data)} training periods',\n            variant=variant,\n            tags=['eth', 'prophet', variant, 'time_series']\n        )\n        \n        # Store performance in comparison database\n        self._store_performance_metrics(model_id, variant, performance_metrics)\n        \n        # Store predictions for analysis\n        self._store_predictions(model_id, val_data.index, actual_prices, predicted_prices, \n                              forecast['yhat_lower'].values, forecast['yhat_upper'].values)\n        \n        print(f\"✅ {variant.title()} Prophet model trained and stored successfully!\")\n        print(f\"   Model ID: {model_id}\")\n        print(f\"   MAPE: {mape:.2f}%\")\n        print(f\"   RMSE: {rmse:.2f}\")\n        print(f\"   Directional Accuracy: {directional_accuracy:.1f}%\")\n        \n        return model_id\n    \n    def _store_performance_metrics(self, model_id: str, variant: str, metrics: Dict[str, float]):\n        \"\"\"Store performance metrics in comparison database.\"\"\"\n        with sqlite3.connect(self.db_path) as conn:\n            timestamp = datetime.now().isoformat()\n            for metric_name, metric_value in metrics.items():\n                conn.execute(\"\"\"\n                    INSERT INTO model_performance \n                    (model_id, model_variant, metric_name, metric_value, created_at, data_period)\n                    VALUES (?, ?, ?, ?, ?, ?)\n                \"\"\", (model_id, variant, metric_name, metric_value, timestamp, \"validation\"))\n    \n    def _store_predictions(self, model_id: str, dates, actual_prices, predicted_prices, \n                          lower_bounds, upper_bounds):\n        \"\"\"Store prediction results for analysis.\"\"\"\n        with sqlite3.connect(self.db_path) as conn:\n            timestamp = datetime.now().isoformat()\n            for i, date in enumerate(dates):\n                conn.execute(\"\"\"\n                    INSERT INTO model_predictions\n                    (model_id, prediction_date, actual_price, predicted_price, \n                     prediction_interval_lower, prediction_interval_upper, created_at)\n                    VALUES (?, ?, ?, ?, ?, ?, ?)\n                \"\"\", (model_id, date.strftime('%Y-%m-%d'), actual_prices[i], \n                     predicted_prices[i], lower_bounds[i], upper_bounds[i], timestamp))\n    \n    def train_all_variants(self, data: pd.DataFrame, validation_split: float = 0.2) -> Dict[str, str]:\n        \"\"\"Train all three Prophet model variants.\"\"\"\n        variants = ['basic', 'enhanced', 'optimized']\n        model_ids = {}\n        \n        print(\"Training all Prophet model variants...\")\n        print(\"=\" * 50)\n        \n        for variant in variants:\n            try:\n                model_id = self.train_and_store_model(data, variant, validation_split)\n                model_ids[variant] = model_id\n                print()\n            except Exception as e:\n                print(f\"❌ Failed to train {variant} model: {e}\")\n                model_ids[variant] = None\n        \n        return model_ids\n    \n    def compare_model_performance(self, model_ids: List[str] = None) -> pd.DataFrame:\n        \"\"\"Compare performance of different model variants.\"\"\"\n        if model_ids is None:\n            # Get latest models of each variant\n            with sqlite3.connect(self.db_path) as conn:\n                cursor = conn.execute(\"\"\"\n                    SELECT DISTINCT model_id, model_variant \n                    FROM model_performance \n                    ORDER BY created_at DESC\n                \"\"\")\n                model_data = cursor.fetchall()\n                model_ids = [row[0] for row in model_data]\n        \n        # Get performance metrics\n        with sqlite3.connect(self.db_path) as conn:\n            query = \"\"\"\n                SELECT model_id, model_variant, metric_name, metric_value\n                FROM model_performance \n                WHERE model_id IN ({})\n            \"\"\".format(','.join(['?' for _ in model_ids]))\n            \n            df = pd.read_sql_query(query, conn, params=model_ids)\n        \n        # Pivot to get metrics as columns\n        comparison_df = df.pivot_table(\n            index=['model_id', 'model_variant'], \n            columns='metric_name', \n            values='metric_value'\n        ).reset_index()\n        \n        return comparison_df\n    \n    def load_model_by_variant(self, variant: str) -> Tuple[Any, Any]:\n        \"\"\"Load the latest model of a specific variant.\"\"\"\n        try:\n            return self.storage_manager.load_latest_model('prophet', 'ETH')\n        except ValueError:\n            print(f\"No {variant} Prophet models found for ETH\")\n            return None, None\n    \n    def generate_sample_data(self, periods: int = 365, start_price: float = 3000) -> pd.DataFrame:\n        \"\"\"Generate sample ETH price data for testing.\"\"\"\n        dates = pd.date_range(start='2022-01-01', periods=periods, freq='D')\n        \n        # Generate realistic price movements\n        returns = np.random.normal(0.001, 0.04, periods)  # Daily returns\n        prices = [start_price]\n        \n        for ret in returns[1:]:\n            prices.append(prices[-1] * (1 + ret))\n        \n        # Add some volatility clustering\n        volatility = np.random.gamma(2, 0.02, periods)\n        prices = np.array(prices) * (1 + np.random.normal(0, volatility))\n        \n        # Ensure positive prices\n        prices = np.maximum(prices, 100)\n        \n        # Create OHLCV data\n        data = pd.DataFrame({\n            'Open': prices * np.random.uniform(0.995, 1.005, periods),\n            'High': prices * np.random.uniform(1.001, 1.02, periods),\n            'Low': prices * np.random.uniform(0.98, 0.999, periods),\n            'Close': prices,\n            'Volume': np.random.lognormal(15, 0.5, periods)\n        }, index=dates)\n        \n        # Ensure OHLC relationships\n        data['High'] = np.maximum.reduce([data['Open'], data['High'], data['Close']])\n        data['Low'] = np.minimum.reduce([data['Open'], data['Low'], data['Close']])\n        \n        return data\n\n\ndef demo_storage_framework():\n    \"\"\"Demonstrate the enhanced framework with storage.\"\"\"\n    print(\"ETH Prophet Framework with Storage Management\")\n    print(\"=\" * 60)\n    \n    # Initialize framework\n    framework = ETHProphetFrameworkWithStorage()\n    \n    # Generate sample data\n    print(\"\\n1. Generating sample ETH data...\")\n    sample_data = framework.generate_sample_data(periods=500)\n    print(f\"   Generated {len(sample_data)} days of sample data\")\n    print(f\"   Price range: ${sample_data['Close'].min():.0f} - ${sample_data['Close'].max():.0f}\")\n    \n    # Train all model variants\n    print(\"\\n2. Training all Prophet model variants...\")\n    model_ids = framework.train_all_variants(sample_data)\n    \n    # Compare performance\n    print(\"\\n3. Model Performance Comparison:\")\n    comparison = framework.compare_model_performance()\n    if not comparison.empty:\n        print(comparison.to_string(index=False))\n    \n    # Show storage summary\n    print(\"\\n4. Storage Summary:\")\n    framework.storage_manager.print_storage_summary()\n    \n    # List stored models\n    print(\"\\n5. Stored Prophet Models:\")\n    prophet_models = framework.storage_manager.list_models(methodology='prophet', asset='ETH')\n    \n    for model in prophet_models:\n        print(f\"   {model.model_id}: {model.description}\")\n        print(f\"      Version: v{model.version:03d}, Size: {model.file_size/1024:.1f}KB\")\n        if model.performance_metrics:\n            mape = model.performance_metrics.get('mape', 'N/A')\n            print(f\"      MAPE: {mape}\")\n        print()\n    \n    return framework, model_ids\n\n\nif __name__ == \"__main__\":\n    # Run demonstration\n    framework, model_ids = demo_storage_framework()\n    \n    print(\"\\n✅ ETH Prophet Framework with Storage completed successfully!\")\n    print(\"\\nNext steps:\")\n    print(\"- Load models: framework.storage_manager.load_model(model_id)\")\n    print(\"- Compare performance: framework.compare_model_performance()\")\n    print(\"- Train new variants with real data\")
+            'prophet_params': {
+                'daily_seasonality': model.daily_seasonality,
+                'weekly_seasonality': model.weekly_seasonality,
+                'yearly_seasonality': model.yearly_seasonality,
+                'seasonality_mode': model.seasonality_mode,
+                'changepoint_prior_scale': model.changepoint_prior_scale,
+                'seasonality_prior_scale': model.seasonality_prior_scale,
+                'interval_width': model.interval_width
+            }
+        }
+        
+        # Store model using storage manager
+        model_id = self.storage_manager.store_model(
+            model=model,
+            methodology='prophet',
+            asset='ETH',
+            model_config=model_config,
+            performance_metrics=performance_metrics,
+            description=f'ETH Prophet {variant} model with {len(train_data)} training periods',
+            variant=variant,
+            tags=['eth', 'prophet', variant, 'time_series']
+        )
+        
+        # Store performance in comparison database
+        self._store_performance_metrics(model_id, variant, performance_metrics)
+        
+        # Store predictions for analysis
+        self._store_predictions(model_id, val_data.index, actual_prices, predicted_prices, 
+                              forecast['yhat_lower'].values, forecast['yhat_upper'].values)
+        
+        print(f"✅ {variant.title()} Prophet model trained and stored successfully!")
+        print(f"   Model ID: {model_id}")
+        print(f"   MAPE: {mape:.2f}%")
+        print(f"   RMSE: {rmse:.2f}")
+        print(f"   Directional Accuracy: {directional_accuracy:.1f}%")
+        
+        return model_id
+    
+    def _store_performance_metrics(self, model_id: str, variant: str, metrics: Dict[str, float]):
+        """Store performance metrics in comparison database."""
+        with sqlite3.connect(self.db_path) as conn:
+            timestamp = datetime.now().isoformat()
+            for metric_name, metric_value in metrics.items():
+                conn.execute("""
+                    INSERT INTO model_performance 
+                    (model_id, model_variant, metric_name, metric_value, created_at, data_period)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (model_id, variant, metric_name, metric_value, timestamp, "validation"))
+    
+    def _store_predictions(self, model_id: str, dates, actual_prices, predicted_prices, 
+                          lower_bounds, upper_bounds):
+        """Store prediction results for analysis."""
+        with sqlite3.connect(self.db_path) as conn:
+            timestamp = datetime.now().isoformat()
+            for i, date in enumerate(dates):
+                conn.execute("""
+                    INSERT INTO model_predictions
+                    (model_id, prediction_date, actual_price, predicted_price, 
+                     prediction_interval_lower, prediction_interval_upper, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (model_id, date.strftime('%Y-%m-%d'), actual_prices[i], 
+                     predicted_prices[i], lower_bounds[i], upper_bounds[i], timestamp))
+    
+    def train_all_variants(self, data: pd.DataFrame, validation_split: float = 0.2) -> Dict[str, str]:
+        """Train all three Prophet model variants."""
+        variants = ['basic', 'enhanced', 'optimized']
+        model_ids = {}
+        
+        print("Training all Prophet model variants...")
+        print("=" * 50)
+        
+        for variant in variants:
+            try:
+                model_id = self.train_and_store_model(data, variant, validation_split)
+                model_ids[variant] = model_id
+                print()
+            except Exception as e:
+                print(f"❌ Failed to train {variant} model: {e}")
+                model_ids[variant] = None
+        
+        return model_ids
+    
+    def compare_model_performance(self, model_ids: List[str] = None) -> pd.DataFrame:
+        """Compare performance of different model variants."""
+        if model_ids is None:
+            # Get latest models of each variant
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.execute("""
+                    SELECT DISTINCT model_id, model_variant 
+                    FROM model_performance 
+                    ORDER BY created_at DESC
+                """)
+                model_data = cursor.fetchall()
+                model_ids = [row[0] for row in model_data]
+        
+        # Get performance metrics
+        with sqlite3.connect(self.db_path) as conn:
+            query = """
+                SELECT model_id, model_variant, metric_name, metric_value
+                FROM model_performance 
+                WHERE model_id IN ({})
+            """.format(','.join(['?' for _ in model_ids]))
+            
+            df = pd.read_sql_query(query, conn, params=model_ids)
+        
+        # Pivot to get metrics as columns
+        comparison_df = df.pivot_table(
+            index=['model_id', 'model_variant'], 
+            columns='metric_name', 
+            values='metric_value'
+        ).reset_index()
+        
+        return comparison_df
+    
+    def load_model_by_variant(self, variant: str) -> Tuple[Any, Any]:
+        """Load the latest model of a specific variant."""
+        try:
+            return self.storage_manager.load_latest_model('prophet', 'ETH')
+        except ValueError:
+            print(f"No {variant} Prophet models found for ETH")
+            return None, None
+    
+    def generate_sample_data(self, periods: int = 365, start_price: float = 3000) -> pd.DataFrame:
+        """Generate sample ETH price data for testing."""
+        dates = pd.date_range(start='2022-01-01', periods=periods, freq='D')
+        
+        # Generate realistic price movements
+        returns = np.random.normal(0.001, 0.04, periods)  # Daily returns
+        prices = [start_price]
+        
+        for ret in returns[1:]:
+            prices.append(prices[-1] * (1 + ret))
+        
+        # Add some volatility clustering
+        volatility = np.random.gamma(2, 0.02, periods)
+        prices = np.array(prices) * (1 + np.random.normal(0, volatility))
+        
+        # Ensure positive prices
+        prices = np.maximum(prices, 100)
+        
+        # Create OHLCV data
+        data = pd.DataFrame({
+            'Open': prices * np.random.uniform(0.995, 1.005, periods),
+            'High': prices * np.random.uniform(1.001, 1.02, periods),
+            'Low': prices * np.random.uniform(0.98, 0.999, periods),
+            'Close': prices,
+            'Volume': np.random.lognormal(15, 0.5, periods)
+        }, index=dates)
+        
+        # Ensure OHLC relationships
+        data['High'] = np.maximum.reduce([data['Open'], data['High'], data['Close']])
+        data['Low'] = np.minimum.reduce([data['Open'], data['Low'], data['Close']])
+        
+        return data
+
+
+def demo_storage_framework():
+    """Demonstrate the enhanced framework with storage."""
+    print("ETH Prophet Framework with Storage Management")
+    print("=" * 60)
+    
+    # Initialize framework
+    framework = ETHProphetFrameworkWithStorage()
+    
+    # Generate sample data
+    print("\n1. Generating sample ETH data...")
+    sample_data = framework.generate_sample_data(periods=500)
+    print(f"   Generated {len(sample_data)} days of sample data")
+    print(f"   Price range: ${sample_data['Close'].min():.0f} - ${sample_data['Close'].max():.0f}")
+    
+    # Train all model variants
+    print("\n2. Training all Prophet model variants...")
+    model_ids = framework.train_all_variants(sample_data)
+    
+    # Compare performance
+    print("\n3. Model Performance Comparison:")
+    comparison = framework.compare_model_performance()
+    if not comparison.empty:
+        print(comparison.to_string(index=False))
+    
+    # Show storage summary
+    print("\n4. Storage Summary:")
+    framework.storage_manager.print_storage_summary()
+    
+    # List stored models
+    print("\n5. Stored Prophet Models:")
+    prophet_models = framework.storage_manager.list_models(methodology='prophet', asset='ETH')
+    
+    for model in prophet_models:
+        print(f"   {model.model_id}: {model.description}")
+        print(f"      Version: v{model.version:03d}, Size: {model.file_size/1024:.1f}KB")
+        if model.performance_metrics:
+            mape = model.performance_metrics.get('mape', 'N/A')
+            print(f"      MAPE: {mape}")
+        print()
+    
+    return framework, model_ids
+
+
+if __name__ == "__main__":
+    # Run demonstration
+    framework, model_ids = demo_storage_framework()
+    
+    print("\n✅ ETH Prophet Framework with Storage completed successfully!")
+    print("\nNext steps:")
+    print("- Load models: framework.storage_manager.load_model(model_id)")
+    print("- Compare performance: framework.compare_model_performance()")
+    print("- Train new variants with real data")

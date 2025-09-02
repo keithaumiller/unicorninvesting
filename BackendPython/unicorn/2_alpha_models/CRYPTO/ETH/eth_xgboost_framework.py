@@ -13,7 +13,7 @@ import sqlite3
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
-from model_storage_manager import ModelStorageManager
+from models.model_management.model_storage_manager import ModelStorageManager
 
 try:
     import xgboost as xgb

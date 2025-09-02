@@ -12,8 +12,9 @@ from pathlib import Path
 
 # Add current directory to path
 sys.path.append(str(Path(__file__).parent))
+sys.path.append(str(Path(__file__).parent.parent))
 
-from eth_prophet_simple import ETHProphetFramework, create_sample_data
+from legacy.eth_prophet_simple import ETHProphetFramework, create_sample_data
 
 def demo_basic_usage():
     """Demonstrate basic framework usage."""

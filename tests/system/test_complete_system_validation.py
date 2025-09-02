@@ -76,6 +76,88 @@ def run_system_health_check():
         return False
 
 
+def run_eth_models_validation():
+    """Run ETH alpha models validation - Basic ensemble model loading test"""
+    try:
+        print('🔬 Testing ETH Alpha Models (Basic Functionality)...')
+        
+        # Test ETH model storage system
+        eth_models_path = '/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH'
+        
+        if not os.path.exists(eth_models_path):
+            print('❌ ETH models directory not found')
+            return False
+        
+        # Add ETH models path for imports
+        sys.path.append(eth_models_path)
+        
+        # Test 1: Model Storage Manager - Basic functionality
+        try:
+            from models.model_management.model_storage_manager import ModelStorageManager
+            storage = ModelStorageManager()
+            models = storage.list_models()
+            print(f'✅ Model Storage: {len(models)} models available')
+            
+            if len(models) == 0:
+                print('⚠️  No models found in storage')
+                return False
+                
+        except Exception as e:
+            print(f'❌ Model Storage Manager failed: {e}')
+            return False
+        
+        # Test 2: Ensemble Model Loading - Core functionality
+        try:
+            # Find ensemble models
+            ensemble_models = [m for m in models if m.methodology == 'ensemble']
+            
+            if not ensemble_models:
+                print('⚠️  No ensemble models found')
+                return False
+            
+            # Test loading the latest ensemble model
+            latest_ensemble = max(ensemble_models, key=lambda x: x.created_at)
+            model, metadata = storage.load_model(latest_ensemble.model_id)
+            
+            print(f'✅ Ensemble Model Loading: Successfully loaded {latest_ensemble.model_id}')
+            print(f'   - Model Type: {type(model).__name__}')
+            print(f'   - Created: {latest_ensemble.created_at}')
+            print(f'   - Asset: {latest_ensemble.asset}')
+            
+        except Exception as e:
+            print(f'❌ Ensemble model loading failed: {e}')
+            return False
+        
+        # Test 3: Basic ETH Asset Validation
+        try:
+            eth_models = [m for m in models if m.asset == 'ETH']
+            
+            if not eth_models:
+                print('❌ No ETH models found')
+                return False
+            
+            print(f'✅ ETH Asset Models: {len(eth_models)} models for ETH asset')
+            
+            # Count by methodology
+            methodologies = {}
+            for model in eth_models:
+                methodologies[model.methodology] = methodologies.get(model.methodology, 0) + 1
+            
+            for methodology, count in methodologies.items():
+                print(f'   - {methodology}: {count} models')
+                
+        except Exception as e:
+            print(f'❌ ETH asset validation failed: {e}')
+            return False
+        
+        print('🎯 ETH ENSEMBLE MODEL: BASIC FUNCTIONALITY VERIFIED')
+        return True
+        
+    except Exception as e:
+        print(f'❌ ETH models validation error: {e}')
+        return False
+
+
 def run_myportolio_validation():
     """Run comprehensive Myportolio validation"""
     print('\n🎯 MYPORTOLIO INTEGRATION VALIDATION')
@@ -184,14 +266,19 @@ def main():
         print(f'❌ ETH Basic Risk: Failed ({e})')
         results['risk'] = False
     
-    # 5. ETH Kelly Integration Test
+    # 5. ETH Alpha Models Test (NEW)
+    print('\n🔬 ETH ALPHA MODELS TEST')
+    print('=' * 30)
+    results['eth_models'] = run_eth_models_validation()
+    
+    # 6. ETH Kelly Integration Test
     if run_integration_test:
         results['integration'] = run_integration_test()
     else:
         print('\n⚠️  ETH KELLY INTEGRATION TEST: SKIPPED (module not available)')
         results['integration'] = None
     
-    # 6. Myportolio Validation
+    # 7. Myportolio Validation
     results['myportolio'] = run_myportolio_validation()
     
     # Summary
