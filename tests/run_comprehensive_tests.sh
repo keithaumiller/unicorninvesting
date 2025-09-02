@@ -85,7 +85,7 @@ main() {
     echo
     
     # Change to tests directory
-    cd /workspaces/unicorninvesting/tests
+    cd /home/runner/work/unicorninvesting/unicorninvesting/tests
     
     # Test 1: Complete System Validation (Master Test)
     run_test "complete_system" \
@@ -121,7 +121,7 @@ main() {
     
     # Test 7: System Health Check (via script)
     run_test "health" \
-             "cd /workspaces/unicorninvesting && ./scripts/unicorn_environment.sh --check-only" \
+             "cd /home/runner/work/unicorninvesting/unicorninvesting && ./scripts/unicorn_environment.sh --check-only" \
              "System Health Check"
     
     show_summary
@@ -163,7 +163,7 @@ case "${1:-}" in
             echo "Started: $(date)"
             echo
             
-            cd /workspaces/unicorninvesting/tests
+            cd /home/runner/work/unicorninvesting/unicorninvesting/tests
             
             run_test "complete_system" \
                      "python system/test_complete_system_validation.py" \
@@ -183,8 +183,8 @@ case "${1:-}" in
     --clean|-c)
         echo "🧹 Cleaning test artifacts..."
         rm -f /tmp/test_*.log
-        find /workspaces/unicorninvesting/tests -name "*.pyc" -delete
-        find /workspaces/unicorninvesting/tests -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+        find /home/runner/work/unicorninvesting/unicorninvesting/tests -name "*.pyc" -delete
+        find /home/runner/work/unicorninvesting/unicorninvesting/tests -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
         echo "✅ Test artifacts cleaned"
         main
         ;;

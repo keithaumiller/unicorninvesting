@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicorn Investing - Advanced Test Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.2em;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .card h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .test-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .test-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .test-item:hover {
+            border-color: #007bff;
+            background: linear-gradient(135deg, #e7f3ff 0%, #ffffff 100%);
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .test-info h3 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        
+        .test-description {
+            color: #6c757d;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        .test-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .test-tag {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #212529;
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-running {
+            background: #d1ecf1;
+            color: #0c5460;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .output-container {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: 25px;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            border: 1px solid #444;
+        }
+        
+        .log-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85em;
+            transition: all 0.2s ease;
+        }
+        
+        .log-item:hover {
+            background: linear-gradient(135deg, #e7f3ff 0%, #ffffff 100%);
+            border-left-color: #0056b3;
+        }
+        
+        .log-meta {
+            color: #6c757d;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-left: 4px solid #007bff;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e1e5e9;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .tab.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+        
+        .tab:hover {
+            color: #0056b3;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🦄 Advanced Test Dashboard</h1>
+                <p>Unicorn Investing Platform - Real-time Test Management & Monitoring</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- System Status Card -->
+            <div class="card">
+                <h2>📊 System Status</h2>
+                <div class="stats-grid" id="system-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-tests">-</div>
+                        <div class="stat-label">Available Tests</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-php">-</div>
+                        <div class="stat-label">PHP Version</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-python">-</div>
+                        <div class="stat-label">Python</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-disk">-</div>
+                        <div class="stat-label">Disk Space</div>
+                    </div>
+                </div>
+                
+                <div class="status-indicator" id="overall-status">
+                    <span class="spinner"></span> Loading system status...
+                </div>
+            </div>
+            
+            <!-- Test History Card -->
+            <div class="card">
+                <h2>📈 Test History</h2>
+                <div id="test-history" class="loading">
+                    <div class="spinner"></div> Loading test history...
+                </div>
+            </div>
+            
+            <!-- Recent Logs Card -->
+            <div class="card">
+                <h2>📄 Recent Logs</h2>
+                <div id="recent-logs" class="loading">
+                    <div class="spinner"></div> Loading recent logs...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Management Section -->
+        <div class="card">
+            <h2>🧪 Test Management</h2>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('available')">Available Tests</button>
+                <button class="tab" onclick="switchTab('running')">Running Tests</button>
+                <button class="tab" onclick="switchTab('results')">Test Results</button>
+            </div>
+            
+            <!-- Available Tests Tab -->
+            <div id="tab-available" class="tab-content active">
+                <div class="test-grid" id="test-grid">
+                    <div class="loading">
+                        <div class="spinner"></div> Loading available tests...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Running Tests Tab -->
+            <div id="tab-running" class="tab-content">
+                <div id="running-tests">
+                    <p style="text-align: center; color: #6c757d; padding: 40px;">No tests currently running</p>
+                </div>
+            </div>
+            
+            <!-- Test Results Tab -->
+            <div id="tab-results" class="tab-content">
+                <div id="test-output" class="hidden">
+                    <div id="test-status"></div>
+                    <div id="test-result" class="output-container"></div>
+                </div>
+                <div id="no-output" style="text-align: center; color: #6c757d; padding: 40px;">
+                    Run a test to see results here
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Global state
+        let currentTests = {};
+        let runningTests = new Set();
+        let systemInfo = {};
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSystemStatus();
+            loadAvailableTests();
+            loadTestHistory();
+            loadRecentLogs();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                loadSystemStatus();
+                loadRecentLogs();
+                if (runningTests.size === 0) {
+                    loadTestHistory();
+                }
+            }, 30000);
+        });
+        
+        // API helper function
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(`/api/test_api.php${endpoint}`, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                showNotification('API Error: ' + error.message, 'error');
+                throw error;
+            }
+        }
+        
+        // Load system status
+        async function loadSystemStatus() {
+            try {
+                const data = await apiCall('?action=system');
+                systemInfo = data.system;
+                
+                document.getElementById('stat-tests').textContent = systemInfo.available_tests;
+                document.getElementById('stat-php').textContent = systemInfo.php_version.split('.').slice(0,2).join('.');
+                document.getElementById('stat-python').textContent = systemInfo.python_version.replace('Python ', '');
+                document.getElementById('stat-disk').textContent = systemInfo.disk_space;
+                
+                const statusEl = document.getElementById('overall-status');
+                if (systemInfo.tests_dir_exists && systemInfo.log_dir_writable) {
+                    statusEl.className = 'status-indicator status-success';
+                    statusEl.innerHTML = '✅ System Operational';
+                } else {
+                    statusEl.className = 'status-indicator status-error';
+                    statusEl.innerHTML = '❌ System Issues Detected';
+                }
+            } catch (error) {
+                const statusEl = document.getElementById('overall-status');
+                statusEl.className = 'status-indicator status-error';
+                statusEl.innerHTML = '❌ Status Load Failed';
+            }
+        }
+        
+        // Load available tests
+        async function loadAvailableTests() {
+            try {
+                const data = await apiCall('?action=tests');
+                currentTests = data.tests;
+                
+                const container = document.getElementById('test-grid');
+                container.innerHTML = '';
+                
+                for (const [key, test] of Object.entries(currentTests)) {
+                    const testEl = createTestElement(key, test);
+                    container.appendChild(testEl);
+                }
+            } catch (error) {
+                document.getElementById('test-grid').innerHTML = 
+                    '<p style="color: #dc3545; text-align: center; padding: 40px;">Failed to load tests: ' + error.message + '</p>';
+            }
+        }
+        
+        // Create test element
+        function createTestElement(key, test) {
+            const div = document.createElement('div');
+            div.className = 'test-item';
+            div.innerHTML = `
+                <div class="test-header">
+                    <div class="test-info">
+                        <h3>${test.name}</h3>
+                        <div class="test-description">${test.description}</div>
+                    </div>
+                </div>
+                <div class="test-meta">
+                    <span class="test-tag">${test.category}</span>
+                    ${test.tags ? test.tags.map(tag => `<span class="test-tag">${tag}</span>`).join('') : ''}
+                    <span class="test-tag">timeout: ${test.timeout}s</span>
+                </div>
+                <div class="test-actions">
+                    <button class="btn btn-primary" onclick="runTest('${key}')" id="btn-${key}">
+                        ▶️ Run Test
+                    </button>
+                </div>
+            `;
+            return div;
+        }
+        
+        // Load test history
+        async function loadTestHistory() {
+            try {
+                const data = await apiCall('?action=history');
+                const container = document.getElementById('test-history');
+                
+                if (data.history && data.history.length > 0) {
+                    container.innerHTML = data.history.slice(0, 5).map(item => `
+                        <div class="log-item" style="margin-bottom: 10px; padding: 10px;">
+                            <div class="log-meta">
+                                <span>${item.test_name}</span>
+                                <span>${item.timestamp}</span>
+                            </div>
+                            <div style="font-size: 0.9em;">
+                                Success Rate: ${item.success_rate}% 
+                                (${item.passed_tests}/${item.total_tests} passed)
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p style="color: #6c757d; text-align: center; padding: 20px;">No test history available</p>';
+                }
+            } catch (error) {
+                document.getElementById('test-history').innerHTML = 
+                    '<p style="color: #dc3545; text-align: center; padding: 20px;">Failed to load history</p>';
+            }
+        }
+        
+        // Load recent logs
+        async function loadRecentLogs() {
+            try {
+                const data = await apiCall('?action=logs&limit=3');
+                const container = document.getElementById('recent-logs');
+                
+                if (data.logs && data.logs.length > 0) {
+                    container.innerHTML = data.logs.map(log => `
+                        <div class="log-item">
+                            <div class="log-meta">
+                                <span>${log.file}</span>
+                                <span>${log.modified} (${log.size} bytes)</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p style="color: #6c757d; text-align: center; padding: 20px;">No recent logs</p>';
+                }
+            } catch (error) {
+                document.getElementById('recent-logs').innerHTML = 
+                    '<p style="color: #dc3545; text-align: center; padding: 20px;">Failed to load logs</p>';
+            }
+        }
+        
+        // Run test
+        async function runTest(testKey) {
+            if (runningTests.has(testKey)) {
+                showNotification('Test is already running', 'warning');
+                return;
+            }
+            
+            runningTests.add(testKey);
+            const btn = document.getElementById('btn-' + testKey);
+            const originalText = btn.innerHTML;
+            
+            // Update UI
+            btn.innerHTML = '<span class="spinner"></span> Running...';
+            btn.disabled = true;
+            btn.className = 'btn btn-warning';
+            
+            // Show in running tests tab
+            updateRunningTests();
+            
+            // Switch to results tab and show running state
+            switchTab('results');
+            document.getElementById('no-output').style.display = 'none';
+            document.getElementById('test-output').classList.remove('hidden');
+            document.getElementById('test-status').innerHTML = 
+                '<div class="status-indicator status-running">🔄 Running: ' + currentTests[testKey].name + '</div>';
+            document.getElementById('test-result').textContent = 'Initializing test execution...';
+            
+            try {
+                const result = await apiCall('', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({test: testKey})
+                });
+                
+                // Update UI with results
+                btn.className = result.success ? 'btn btn-success' : 'btn btn-danger';
+                btn.innerHTML = result.success ? '✅ Passed' : '❌ Failed';
+                
+                document.getElementById('test-status').innerHTML = 
+                    `<div class="status-indicator ${result.success ? 'status-success' : 'status-error'}">
+                        ${result.success ? '✅' : '❌'} ${result.test_name} - 
+                        ${result.success ? 'PASSED' : 'FAILED'} 
+                        (${result.duration}s, Exit: ${result.returnCode})
+                    </div>`;
+                document.getElementById('test-result').textContent = result.output || result.error;
+                
+                showNotification(
+                    `Test ${result.test_name} ${result.success ? 'passed' : 'failed'}`,
+                    result.success ? 'success' : 'error'
+                );
+                
+                // Auto-reset button after 5 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.className = 'btn btn-primary';
+                }, 5000);
+                
+            } catch (error) {
+                btn.innerHTML = '❌ Error';
+                btn.className = 'btn btn-danger';
+                
+                document.getElementById('test-status').innerHTML = 
+                    '<div class="status-indicator status-error">❌ Test execution failed</div>';
+                document.getElementById('test-result').textContent = 'Error: ' + error.message;
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.className = 'btn btn-primary';
+                }, 5000);
+            } finally {
+                runningTests.delete(testKey);
+                updateRunningTests();
+                
+                // Refresh history after test completion
+                setTimeout(() => {
+                    loadTestHistory();
+                }, 2000);
+            }
+        }
+        
+        // Update running tests display
+        function updateRunningTests() {
+            const container = document.getElementById('running-tests');
+            
+            if (runningTests.size === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 40px;">No tests currently running</p>';
+            } else {
+                container.innerHTML = Array.from(runningTests).map(testKey => `
+                    <div class="test-item">
+                        <div class="status-indicator status-running">
+                            🔄 Running: ${currentTests[testKey].name}
+                        </div>
+                        <div style="margin-top: 10px; color: #6c757d;">
+                            Started: ${new Date().toLocaleTimeString()}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Switch tabs
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
