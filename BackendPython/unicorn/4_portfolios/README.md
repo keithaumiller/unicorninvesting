@@ -1,103 +1,113 @@
 # Portfolio Construction & Management
 
-## 🏗️ Directory Overview
+## 🏗️ Clean Architecture Overview
 
-This directory contains the portfolio construction framework and individual portfolio configurations for the Unicorn Investing platform.
+This directory contains the portfolio construction framework with separated risk and trading algorithms.
 
 **Location**: `BackendPython/unicorn/4_portfolios/`
 
-## 📁 Directory Structure
+## 📁 Clean Directory Structure
 
 ```
 4_portfolios/
-├── README.md                                    # This file - Portfolio framework overview
-├── UnicornRiskIntegratedPortfolioConstruction.py # Main portfolio construction framework
-├── UnicornPortfolioConstruction.py             # Legacy portfolio construction (being phased out)
-├── README_ETH_PORTFOLIO.md                     # Legacy ETH portfolio documentation
-├── batchjobs/                                   # Batch portfolio optimization processes
-│   ├── Actiontime.r                            # Legacy R scripts
-│   ├── Batchscriptmaster.R                     # Legacy R batch processing
-│   └── README.md                               # Batch jobs documentation
-├── utilities/                                   # 🔧 Global utilities and shared components
-│   ├── README.md                               # Utilities documentation
-│   ├── portfolio_factory.py                   # Portfolio creation utilities
-│   ├── data_connectors.py                     # Data source connectors
-│   ├── database_utils.py                      # Database operations
-│   └── validation_framework.py                # Portfolio validation tools
-└── Myportolio/                                # 🎯 Main Portfolio Implementation
-    ├── README.md                               # Portfolio overview and architecture
-    ├── config.json                            # Portfolio configuration
-    ├── risk_parameters.json                   # Risk management settings
-    ├── execution_settings.json                # Trading execution parameters
-    ├── risk_algorithms/                       # Pure risk calculation algorithms
-    │   ├── README.md                          # Risk algorithms documentation
-    │   ├── var_calculator.py                 # Value at Risk calculations
-    │   ├── correlation_analyzer.py           # Asset correlation analysis
-    │   └── risk_budgeting.py                 # Risk budget allocation
-    ├── trading_algorithms/                    # Pure trading strategy algorithms
-    │   ├── README.md                          # Trading algorithms documentation
-    │   ├── alpha_models.py                   # Signal generation models
-    │   ├── portfolio_optimizer.py            # Portfolio optimization algorithms
-    │   └── rebalancer.py                     # Rebalancing strategies
-    └── shared_utilities/                      # Portfolio-specific shared utilities
-        ├── README.md                          # Shared utilities documentation
-        ├── data_utils.py                     # Data processing utilities
-        ├── config_loader.py                 # Configuration management
-        └── performance_tracker.py           # Performance measurement
+├── README.md                    # This file - Portfolio framework overview
+├── Myportolio/                  # 🎯 Single Consolidated Portfolio Implementation
+│   ├── README.md               # Portfolio overview and architecture
+│   ├── config.json            # Portfolio configuration
+│   ├── risk_parameters.json   # Risk management settings
+│   ├── execution_settings.json # Trading execution parameters
+│   ├── risk_algorithms/        # Pure risk calculation algorithms
+│   │   ├── README.md          # Risk algorithms documentation
+│   │   └── eth_basic_risk.py  # Basic ETH risk management
+│   └── trading_algorithms/     # Pure trading strategy algorithms
+│       ├── README.md          # Trading algorithms documentation
+│       └── eth_momentum_strategy.py # Basic ETH momentum strategy
+└── utilities/                   # 🔧 Framework-level shared components
+    ├── README.md               # Utilities documentation
+    ├── EnhancedPortfolioManager.py # Portfolio management framework
+    ├── PortfolioConfigManager.py   # Configuration management
+    └── UnicornRiskIntegratedPortfolioConstruction.py # Risk-integrated construction
 ```
 
-## 🎯 Framework Components
+## 🎯 Architecture Principles
 
-### Portfolio Construction Engine
-- **`UnicornRiskIntegratedPortfolioConstruction.py`**: Main framework implementing risk-integrated portfolio construction
-  - Risk budgeting as foundation for portfolio allocation
-  - Integrated optimization with continuous risk monitoring
-  - Dynamic position sizing and allocation decisions
-  - Real-time risk assessment and adjustment
+### Clean Separation of Concerns
+- **Risk Algorithms**: Pure risk calculations with no trading decisions
+- **Trading Algorithms**: Pure trading strategies with no risk calculations  
+- **Framework Utilities**: Shared components for portfolio management
+- **Single Portfolio Focus**: Myportolio as the consolidated implementation
 
-### Portfolio Configuration Management
-- **Location**: `portfolios/` subdirectory
-- **Structure**: Each portfolio is self-contained with complete configuration
-- **Standards**: Standardized JSON configuration files for consistency
-- **Templates**: Reusable templates for creating new portfolios
-
-## 🔄 Integration with LEAN Framework
-
-### LEAN Layer 4: Portfolio Construction
+### LEAN Framework Integration
 This directory implements **Layer 4** of the 6-layer LEAN architecture:
 
 1. **Data Sources** (`../1_data_sources/`) → Raw market data
-2. **Alpha Models** (`../2_alpha_models/`) → Trading signals and insights
+2. **Alpha Models** (`../2_alpha_models/`) → ETH models and trading signals
 3. **Risk Management** (`../3_risk_management/`) → Risk controls and limits
 4. **Portfolio Construction** (`../4_portfolios/`) → **THIS LAYER** - Position sizing and allocation
 5. **Execution Models** (`../5_execution_models/`) → Order placement and execution
 6. **Algorithms** (`../6_algorithms/`) → Complete trading algorithms
 
-### Framework Flow
+### Workflow Integration
 ```
-Alpha Insights → Risk Assessment → Portfolio Construction → Position Targets → Execution Orders
-```
-
-## 🚀 Portfolio Management Workflow
-
-### 1. Portfolio Creation
-```bash
-# Create new portfolio from template
-cd BackendPython/unicorn/4_portfolios/portfolios/
-cp -r templates New_Portfolio_Name
-cd New_Portfolio_Name
-# Edit configuration files
+ETH Alpha Models → Risk Assessment → Portfolio Construction → Position Targets → Execution
 ```
 
-### Portfolio Validation
+## 🚀 Development Workflow
+
+### 1. Algorithm Development
 ```python
-# Validate portfolio configuration
-from BackendPython.unicorn.4_portfolios import PortfolioValidator
-validator = PortfolioValidator("BackendPython/unicorn/4_portfolios/Myportolio")
-validation_result = validator.validate_all()
+# Develop risk algorithms in risk_algorithms/
+from Myportolio.risk_algorithms.eth_basic_risk import ETHBasicRisk
+
+# Develop trading algorithms in trading_algorithms/  
+from Myportolio.trading_algorithms.eth_momentum_strategy import ETHMomentumStrategy
+
+# Use framework utilities for shared functionality
+from utilities.PortfolioConfigManager import PortfolioConfigManager
 ```
 
-### Portfolio Deployment
+### 2. Portfolio Configuration
+```python
+# Load portfolio configuration
+config_manager = PortfolioConfigManager("Myportolio/config.json")
+portfolio_config = config_manager.load_portfolio_config()
+risk_params = config_manager.load_risk_parameters()
+```
+
+### 3. Integration Testing
+```python
+# Test algorithm integration
+risk = ETHBasicRisk()
+strategy = ETHMomentumStrategy()
+
+# Portfolio construction with both components
+portfolio_manager = EnhancedPortfolioManager(config_manager)
+portfolio_targets = portfolio_manager.construct_portfolio(strategy, risk)
+```
+
+## 📚 Documentation Structure
+
+- **Main README**: Framework overview and architecture (this file)
+- **Myportolio/README.md**: Portfolio-specific documentation and usage
+- **utilities/README.md**: Framework utilities documentation
+- **risk_algorithms/README.md**: Risk algorithm development guide
+- **trading_algorithms/README.md**: Trading strategy development guide
+
+## 🎯 Current Implementation Status
+
+- ✅ **Clean Architecture**: Risk and trading algorithms separated
+- ✅ **Framework Utilities**: Portfolio management components organized
+- ✅ **Basic Algorithms**: Hello World ETH momentum and risk algorithms implemented
+- ✅ **Configuration System**: JSON-based portfolio configuration
+- 🚧 **LEAN Integration**: Ready for backtesting framework integration
+- 🚧 **Advanced Algorithms**: Ready for sophisticated algorithm development
+
+---
+
+**Architecture Status**: ✅ Complete  
+**Implementation Status**: 🚧 Ready for Algorithm Development  
+**LEAN Integration**: 🚧 Ready for Framework Connection  
+**Next Phase**: Advanced algorithm implementation and backtesting
 ```python
 # Deploy portfolio for live trading
 from BackendPython.unicorn.4_portfolios import UnicornRiskIntegratedPortfolioConstruction
