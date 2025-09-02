@@ -55,3 +55,12 @@ unicornmetrics.lean_backtest_results:
     _title: 'LEAN Backtest Results'
   requirements:
     _access: 'TRUE'
+
+# Administration Routes
+unicornmetrics.admin.settings:
+  path: '/admin/config/unicornmetrics/settings'
+  defaults:
+    _form: '\Drupal\unicornmetrics\Form\AdminSettingsForm'
+    _title: 'UnicornMetrics Settings'
+  requirements:
+    _permission: 'administer unicorn metrics'
