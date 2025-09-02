@@ -268,7 +268,7 @@ feat: Consolidate health_check.sh and setup_environment.sh scripts
 
 ## README.md Context
 When working on any part of this codebase, always consider:
-- Always review and update README.md in the same directory after any file change.
+- Always review and update README.md in the same directory before and after any file change.
 - **Create GitHub Issues** for any new unimplemented features discovered in documentation.
 
 ## 🎯 **GitHub Issues Management Strategy**
