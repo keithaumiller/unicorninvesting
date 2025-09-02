@@ -10,8 +10,10 @@ from typing import Dict, Any, List
 import sys
 import os
 
-# Add parent directory to path for imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.append(alpha_models_dir)
 
 from shared.base_alpha import TechnicalAlphaModel
 

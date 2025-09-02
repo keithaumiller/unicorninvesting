@@ -5,6 +5,8 @@ Advanced ensemble framework that combines the best performing models from differ
 Integrates Prophet and XGBoost models with sophisticated weighting strategies.
 """
 
+import os
+import sys
 import pandas as pd
 import numpy as np
 from typing import Dict, Any, List, Optional, Tuple
@@ -14,6 +16,12 @@ import json
 from datetime import datetime, timedelta
 from pathlib import Path
 import pickle
+
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.append(alpha_models_dir)
+
 from models.model_management.model_storage_manager import ModelStorageManager
 
 try:

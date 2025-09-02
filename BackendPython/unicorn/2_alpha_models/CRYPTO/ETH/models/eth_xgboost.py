@@ -11,8 +11,10 @@ import sys
 import os
 from datetime import datetime
 
-# Add parent directory to path for imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+# Add parent directories to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+alpha_models_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.append(alpha_models_dir)
 
 from shared.model_framework import XGBoostModel
 from shared.performance_tracker import ModelPerformanceTracker, ModelStage
