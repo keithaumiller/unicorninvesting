@@ -20,7 +20,7 @@ DRUPAL_URL="http://localhost/"
 DRUPAL_UNICORN_URL="http://localhost/admin/metrics"
 DRUPAL_EXTERNAL_URL="https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/"
 DRUPAL_EXTERNAL_UNICORN_URL="https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics"
-WORKSPACE_ROOT="/workspaces/unicorninvesting"
+WORKSPACE_ROOT="/home/runner/work/unicorninvesting/unicorninvesting"
 DRUPAL_ROOT="$WORKSPACE_ROOT/WebFrontend"
 
 echo -e "${BLUE}========================================${NC}"
