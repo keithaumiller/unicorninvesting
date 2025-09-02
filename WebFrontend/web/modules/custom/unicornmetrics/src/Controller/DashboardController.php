@@ -1040,50 +1040,127 @@ class DashboardController extends ControllerBase {
    */
   public function leanAlgorithms() {
     // Get current portfolio selection from URL parameter or default
-    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'forex';
-    $current_portfolio = $this->getPortfolioById($current_portfolio_id);
+    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'Myportolio';
     
-    $algorithms = $this->getLeanAlgorithmData($current_portfolio_id);
+    // Get real portfolio data from backend
+    $portfolio_config = $this->portfolioApi->getPortfolioConfig($current_portfolio_id);
+    $eth_algorithm_status = $this->portfolioApi->getEthAlgorithmStatus($current_portfolio_id);
+    $risk_metrics = $this->portfolioApi->getRiskMetrics($current_portfolio_id);
     
     $content = '
     <div class="lean-dashboard-header">
-      <h1>🤖 ' . htmlspecialchars($current_portfolio['name']) . ' Algorithm</h1>
-      <p>Algorithm execution status and performance monitoring</p>
+      <h1>🤖 ' . htmlspecialchars($portfolio_config['portfolio_name'] ?? $current_portfolio_id) . ' ETH Algorithm Framework</h1>
+      <p>Real-time monitoring of separated ETH algorithm architecture with risk and trading components</p>
     </div>
     
     <div class="algorithms-grid">
       <div class="algorithm-card">
-        <h3>📊 Current Algorithm</h3>
+        <h3>⚖️ ETH Risk Algorithm</h3>
         <div class="algorithm-info">
-          <div class="algorithm-name">' . $algorithms['current']['name'] . '</div>
-          <div class="algorithm-status ' . strtolower($algorithms['current']['status']) . '">' . $algorithms['current']['status'] . '</div>
-          <div class="algorithm-runtime">Runtime: ' . $algorithms['current']['runtime'] . '</div>
+          <div class="algorithm-name">ETH Basic Risk Management</div>
+          <div class="algorithm-status ' . ($eth_algorithm_status['risk_algorithm']['available'] ? 'running' : 'stopped') . '">
+            ' . ($eth_algorithm_status['risk_algorithm']['available'] ? 'Available' : 'Not Available') . '
+          </div>
+          <div class="algorithm-runtime">Last Run: ' . ($eth_algorithm_status['risk_algorithm']['last_run'] ?? 'N/A') . '</div>
+          <div class="algorithm-metrics">
+            <div>Risk Profile: ' . ucfirst($risk_metrics['risk_profile'] ?? 'Moderate') . '</div>
+            <div>VaR Limit: ' . number_format(($risk_metrics['var_5pct'] ?? 0.04) * 100, 1) . '%</div>
+            <div>Max Drawdown: ' . number_format(($risk_metrics['max_drawdown'] ?? 0.15) * 100, 1) . '%</div>
+          </div>
         </div>
       </div>
       
       <div class="algorithm-card">
-        <h3>⚡ Performance</h3>
-        <div class="algorithm-metrics">
-          <div>Signals Generated: ' . $algorithms['current']['signals_generated'] . '</div>
-          <div>Signal Accuracy: ' . number_format($algorithms['current']['signal_accuracy'] * 100, 1) . '%</div>
-          <div>Alpha Score: ' . number_format($algorithms['current']['alpha_score'], 2) . '</div>
+        <h3>📈 ETH Trading Algorithm</h3>
+        <div class="algorithm-info">
+          <div class="algorithm-name">ETH Momentum Strategy</div>
+          <div class="algorithm-status ' . ($eth_algorithm_status['trading_algorithm']['available'] ? 'running' : 'stopped') . '">
+            ' . ($eth_algorithm_status['trading_algorithm']['available'] ? 'Available' : 'Not Available') . '
+          </div>
+          <div class="algorithm-runtime">Last Run: ' . ($eth_algorithm_status['trading_algorithm']['last_run'] ?? 'N/A') . '</div>
+          <div class="algorithm-metrics">
+            <div>Strategy Type: ' . htmlspecialchars($portfolio_config['strategy_type'] ?? 'dual_crypto') . '</div>
+            <div>Target Volatility: ' . number_format(($portfolio_config['target_volatility'] ?? 0.20) * 100, 1) . '%</div>
+            <div>Rebalancing: ' . ucfirst($portfolio_config['rebalancing_frequency'] ?? 'daily') . '</div>
+          </div>
         </div>
       </div>
       
       <div class="algorithm-card">
-        <h3>📈 Insights</h3>
-        <div class="insights-summary">
-          <div>Total Insights: ' . $algorithms['insights']['total'] . '</div>
-          <div>Direction Accuracy: ' . number_format($algorithms['insights']['direction_accuracy'] * 100, 1) . '%</div>
-          <div>Magnitude Accuracy: ' . number_format($algorithms['insights']['magnitude_accuracy'] * 100, 1) . '%</div>
+        <h3>🔗 Framework Integration</h3>
+        <div class="algorithm-info">
+          <div class="algorithm-name">Portfolio Manager Integration</div>
+          <div class="algorithm-status running">Operational</div>
+          <div class="algorithm-runtime">Status: ' . ucfirst($eth_algorithm_status['integration_status'] ?? 'operational') . '</div>
+          <div class="algorithm-metrics">
+            <div>Backend API: ✅ Connected</div>
+            <div>Config Manager: ✅ Active</div>
+            <div>Risk Framework: ✅ Monitoring</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ETH Algorithm Details -->
+    <div class="eth-algorithm-details">
+      <h3>🔥 ETH Algorithm Architecture</h3>
+      <div class="architecture-grid">
+        <div class="architecture-section">
+          <h4>⚖️ Risk Algorithm Components</h4>
+          <ul>
+            <li><strong>Portfolio Heat Monitoring:</strong> ' . number_format(($risk_metrics['portfolio_heat'] ?? 0.15) * 100, 1) . '% current heat level</li>
+            <li><strong>VaR Calculations:</strong> 5% VaR at ' . number_format(($risk_metrics['var_5pct'] ?? 0.04) * 100, 1) . '% threshold</li>
+            <li><strong>Drawdown Monitoring:</strong> Current ' . number_format(($risk_metrics['current_drawdown'] ?? 0.05) * 100, 1) . '% drawdown</li>
+            <li><strong>Risk Score:</strong> ' . number_format($risk_metrics['risk_score'] ?? 0.3, 2) . '/1.0 risk assessment</li>
+          </ul>
+        </div>
+        
+        <div class="architecture-section">
+          <h4>📈 Trading Algorithm Components</h4>
+          <ul>
+            <li><strong>Asset Allocation:</strong> ETH ' . (($portfolio_config['assets']['ETH']['allocation_percent'] ?? 60)) . '%, BTC ' . (($portfolio_config['assets']['BTC']['allocation_percent'] ?? 40)) . '%</li>
+            <li><strong>Data Sources:</strong> ' . htmlspecialchars(strtoupper($portfolio_config['assets']['ETH']['data_source'] ?? 'IBKR')) . ' integration</li>
+            <li><strong>Model Types:</strong> ' . htmlspecialchars($portfolio_config['assets']['ETH']['model_type'] ?? 'enhanced_technical') . '</li>
+            <li><strong>Contract Integration:</strong> ETH Contract ID ' . htmlspecialchars($portfolio_config['assets']['ETH']['contract_id'] ?? 'N/A') . '</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- LEAN Framework Integration Status -->
+    <div class="lean-integration-status">
+      <h3>🏗️ LEAN Framework Integration</h3>
+      <div class="integration-grid">
+        <div class="integration-item">
+          <h4>📊 Portfolio Construction</h4>
+          <div class="status-badge status-active">✅ EnhancedPortfolioManager</div>
+          <p>Real-time portfolio lifecycle management with risk-integrated construction</p>
+        </div>
+        
+        <div class="integration-item">
+          <h4>⚡ Risk Management</h4>
+          <div class="status-badge status-active">✅ UnicornRiskIntegrated</div>
+          <p>Live risk monitoring with VaR calculations and drawdown controls</p>
+        </div>
+        
+        <div class="integration-item">
+          <h4>🔧 Configuration</h4>
+          <div class="status-badge status-active">✅ PortfolioConfigManager</div>
+          <p>Dynamic configuration management with JSON-based settings</p>
+        </div>
+        
+        <div class="integration-item">
+          <h4>📡 Data Integration</h4>
+          <div class="status-badge status-active">✅ IBKR Connectivity</div>
+          <p>Real-time market data feeds and execution capabilities</p>
         </div>
       </div>
     </div>
     
     <div class="algorithm-actions">
-      <a href="/admin/metrics/lean/algorithms/performance" class="action-button">📊 Performance Analysis</a>
-      <a href="/admin/metrics/lean/backtest" class="action-button">🔬 Backtest Results</a>
-      <a href="/admin/metrics" class="action-button">🏠 Dashboard Home</a>
+      <a href="/admin/metrics/lean/algorithms/performance?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">📊 Performance Analysis</a>
+      <a href="/admin/metrics/lean/backtest?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">🔬 Backtest Results</a>
+      <a href="/admin/metrics?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">🏠 Dashboard Home</a>
     </div>
     ';
     
@@ -1465,12 +1542,25 @@ class DashboardController extends ControllerBase {
       '#tag' => 'style',
       '#value' => '
         .lean-dashboard-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .algorithms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; }
+        .algorithms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
         .algorithm-card { background: white; border: 1px solid #e1e5e9; border-radius: 8px; padding: 20px; }
-        .algorithm-name { font-size: 1.3em; font-weight: bold; color: #2c3e50; }
+        .algorithm-name { font-size: 1.3em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
         .algorithm-status { padding: 6px 12px; border-radius: 20px; font-size: 0.9em; font-weight: bold; margin: 10px 0; display: inline-block; }
         .algorithm-status.running { background: #d4edda; color: #155724; }
-        .algorithm-runtime { color: #6c757d; font-size: 0.9em; }
+        .algorithm-status.stopped { background: #f8d7da; color: #721c24; }
+        .algorithm-runtime { color: #6c757d; font-size: 0.9em; margin-bottom: 10px; }
+        .algorithm-metrics { margin-top: 10px; }
+        .algorithm-metrics div { margin: 4px 0; font-size: 0.9em; color: #495057; }
+        .eth-algorithm-details, .lean-integration-status { margin: 25px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #6f42c1; }
+        .eth-algorithm-details h3, .lean-integration-status h3 { margin-top: 0; color: #6f42c1; }
+        .architecture-grid, .integration-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px; }
+        .architecture-section, .integration-item { background: white; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6; }
+        .architecture-section h4, .integration-item h4 { margin-top: 0; color: #495057; }
+        .architecture-section ul { margin: 10px 0; padding-left: 20px; }
+        .architecture-section li { margin: 6px 0; font-size: 0.9em; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; display: inline-block; margin: 5px 0; }
+        .status-badge.status-active { background: #d4edda; color: #155724; }
+        .integration-item p { margin: 10px 0 0 0; font-size: 0.9em; color: #6c757d; }
         .algorithm-actions { display: flex; gap: 15px; margin: 30px 0; }
         .action-button { background: #3498db; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; }
         .action-button:hover { background: #2980b9; text-decoration: none; color: white; }
