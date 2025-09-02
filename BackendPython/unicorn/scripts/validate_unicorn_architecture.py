@@ -17,14 +17,13 @@ class UnicornArchitectureValidator:
     def __init__(self, base_path: str = "."):
         self.base_path = Path(base_path)
         self.required_numbered_dirs = {
-            '1_data_sources', '2_alpha_models', '3_risk_management',
-            '4_portfolio_construction', '5_execution_models', '6_algorithms'
+            '1_data_sources', '2_alpha_models', '4_portfolios'
         }
         self.required_root_files = {
             'ARCHITECTURE.md', 'README.md'
         }
         self.allowed_dirs = {
-            'config', 'docs', 'legacy', 'scripts', 'tests'
+            'config', 'docs', 'legacy', 'scripts', 'tests', 'examples'
         }
         self.errors = []
         self.warnings = []
@@ -60,16 +59,13 @@ class UnicornArchitectureValidator:
         if missing_files:
             self.errors.append(f"Missing required root files: {missing_files}")
         
-        # Check for scattered Python files (except __init__.py)
-        scattered_files = []
-        for item in self.base_path.iterdir():
-            if (item.is_file() and 
-                item.suffix == '.py' and 
-                item.name not in {'__init__.py'}):
-                scattered_files.append(item.name)
+        # Check for unexpected directories
+        all_items = set(item.name for item in self.base_path.iterdir() if item.is_dir())
+        expected_dirs = self.required_numbered_dirs | self.allowed_dirs
+        unexpected_dirs = all_items - expected_dirs
         
-        if scattered_files:
-            self.errors.append(f"Python files should be in numbered directories: {scattered_files}")
+        if unexpected_dirs:
+            self.warnings.append(f"Unexpected directories found: {unexpected_dirs}")
     
     def _validate_numbered_directories(self):
         """Validate numbered directory structure."""
@@ -83,14 +79,48 @@ class UnicornArchitectureValidator:
                 elif dir_name == '2_alpha_models':
                     # Special validation for alpha models
                     self._validate_alpha_models_content(dir_path)
+                elif dir_name == '4_portfolios':
+                    # Special validation for portfolio structure
+                    self._validate_portfolio_structure(dir_path)
             else:
                 self.errors.append(f"Missing numbered directory: {dir_name}")
+    
+    def _validate_portfolio_structure(self, portfolio_dir: Path):
+        """Validate the portfolio directory structure."""
+        # Check for Myportolio directory
+        myportolio_path = portfolio_dir / 'Myportolio'
+        if not myportolio_path.exists():
+            self.errors.append("Missing Myportolio directory in 4_portfolios")
+            return
+        
+        # Check for required subdirectories in Myportolio
+        required_subdirs = {'risk_algorithms', 'trading_algorithms'}
+        existing_subdirs = set(item.name for item in myportolio_path.iterdir() if item.is_dir())
+        missing_subdirs = required_subdirs - existing_subdirs
+        
+        if missing_subdirs:
+            self.errors.append(f"Missing algorithm directories in Myportolio: {missing_subdirs}")
+        
+        # Check for utilities directory
+        utilities_path = portfolio_dir / 'utilities'
+        if not utilities_path.exists():
+            self.warnings.append("Missing utilities directory in 4_portfolios")
+        
+        # Check for configuration files
+        config_files = {'config.json', 'risk_parameters.json', 'execution_settings.json'}
+        existing_files = set(item.name for item in myportolio_path.iterdir() if item.is_file())
+        missing_configs = config_files - existing_files
+        
+        if missing_configs:
+            self.warnings.append(f"Missing configuration files in Myportolio: {missing_configs}")
     
     def _validate_no_legacy_dirs(self):
         """Check for legacy/redundant directories that should be moved."""
         legacy_dir_names = {
             'algorithms', 'alpha_models', 'backend', 'backtesting',
-            'data', 'data_sources', 'eth_framework', 'framework', 'integrations'
+            'data', 'data_sources', 'eth_framework', 'framework', 'integrations',
+            '3_risk_management', '4_portfolio_construction', '5_execution_models', '6_algorithms',
+            'portfolios'  # Root-level portfolios directory is not allowed
         }
         
         existing_items = set(item.name for item in self.base_path.iterdir() if item.is_dir())
@@ -171,11 +201,12 @@ class UnicornArchitectureValidator:
             compliance_status = "COMPLIANT_WITH_WARNINGS"
         
         print("\n💡 RECOMMENDATIONS:")
-        print("  1. Follow numbered directory structure (1-6)")
+        print("  1. Follow clean numbered directory structure: 1_data_sources, 2_alpha_models, 4_portfolios")
         print("  2. Keep legacy items in legacy/ directory")
         print("  3. Use asset-specific directories in 2_alpha_models/")
-        print("  4. Ensure all Python files are in appropriate directories")
-        print("  5. See ARCHITECTURE.md for complete guidelines")
+        print("  4. Risk and trading algorithms belong in portfolio-specific directories")
+        print("  5. Use Myportolio as the single consolidated portfolio implementation")
+        print("  6. See ARCHITECTURE.md and 4_portfolios/README.md for complete guidelines")
         
         return {
             'status': compliance_status,

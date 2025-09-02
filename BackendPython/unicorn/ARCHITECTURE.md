@@ -1,53 +1,85 @@
 # LEAN Algorithm Framework - Technical Architecture
 
-## 🏗️ System Architecture
+## 🏗️ Clean Portfolio-Based Architecture
 
-The Unicorn Investing platform implements the **QuantConnect LEAN Algorithm Framework**, which provides institutional-grade separation of concerns for algorithmic trading systems.
+The Unicorn Investing platform implements a **clean portfolio-based architecture** that separates risk calculations from trading strategies within individual portfolios, integrated with the QuantConnect LEAN framework.
 
-## 🔄 Data Flow Architecture
+## 📁 Directory Structure
 
 ```
-Market Data → Alpha Models → Portfolio Construction → Risk Management → Execution → Orders
-     ↓              ↓                ↓                    ↓             ↓         ↓
-  Raw Prices   →  Insights    →  Targets        →   Risk Checks  →  Orders  →  Fills
+BackendPython/unicorn/
+├── 1_data_sources/           # LEAN Layer 1: Market data collection
+├── 2_alpha_models/           # LEAN Layer 2: ETH models and signals  
+├── 4_portfolios/             # LEAN Layer 4: Portfolio construction
+│   ├── Myportolio/          # Single consolidated portfolio
+│   │   ├── risk_algorithms/ # Pure risk calculations
+│   │   ├── trading_algorithms/ # Pure trading strategies
+│   │   ├── config.json      # Portfolio configuration
+│   │   ├── risk_parameters.json # Risk settings
+│   │   └── execution_settings.json # Execution parameters
+│   └── utilities/           # Framework-level utilities
+│       ├── EnhancedPortfolioManager.py
+│       ├── PortfolioConfigManager.py
+│       └── UnicornRiskIntegratedPortfolioConstruction.py
+├── legacy/                  # Legacy components
+├── scripts/                 # Utility and validation scripts
+└── tests/                   # Testing framework
 ```
 
-### Detailed Flow:
+## 🔄 Clean Algorithm Separation Flow
 
-1. **Data Ingestion**: Market data streams into the algorithm
-2. **Signal Generation**: Alpha Models analyze data and generate Insights
-3. **Position Sizing**: Portfolio Models convert Insights into PortfolioTargets
-4. **Risk Validation**: Risk Models validate and potentially modify targets
-5. **Order Execution**: Execution Models place orders to achieve targets
-6. **Portfolio Updates**: Framework updates portfolio state with fills
+```
+Market Data → ETH Alpha Models → Portfolio Construction → Risk + Trading Integration → Execution
+     ↓              ↓                    ↓                        ↓                    ↓
+  Raw Prices   →  Insights    →  Risk Constraints + Trading Signals  →  Validated Targets  →  Orders
+```
 
-## 🧩 Component Interfaces
+### Separation Principles:
 
-### Alpha Model Interface
+1. **Risk Algorithms**: Pure risk calculations (VaR, drawdown, correlation) with NO trading decisions
+2. **Trading Algorithms**: Pure trading strategies (momentum, signals) with NO risk calculations  
+3. **Framework Integration**: Portfolio utilities combine both algorithm types
+4. **Single Portfolio Focus**: Myportolio as the consolidated implementation
+
+## 🧩 Algorithm Interfaces
+
+### Risk Algorithm Interface
 ```python
-class AlphaModel:
-    def update(self, algorithm, data) -> List[Insight]:
-        """Generate trading insights from market data"""
-        pass
+class ETHBasicRisk:
+    def __init__(self, max_drawdown=0.15, max_daily_var=0.06):
+        # Risk-only parameters
+        
+    def calculate_risk_metrics(self, portfolio_data):
+        # Pure risk calculations - NO trading decisions
+        return risk_metrics
+        
+    def validate_risk_limits(self, positions):
+        # Risk validation only
+        return validation_result
 ```
 
-### Portfolio Construction Interface
+### Trading Algorithm Interface  
 ```python
-class PortfolioConstructionModel:
-    def create_targets(self, algorithm, insights) -> List[PortfolioTarget]:
-        """Convert insights into portfolio targets"""
-        pass
+class ETHMomentumStrategy:
+    def __init__(self, symbol="ETHUSD", lookback=10):
+        # Trading strategy parameters only
+        
+    def generate_signals(self, market_data):
+        # Pure trading signal generation - NO risk calculations
+        return trading_signals
+        
+    def optimize_portfolio(self, signals):
+        # Portfolio optimization without risk calculation
+        return portfolio_targets
 ```
 
-### Risk Management Interface
+### Framework Integration Interface
 ```python
-class RiskManagementModel:
-    def manage_risk(self, algorithm, targets) -> List[PortfolioTarget]:
-        """Apply risk controls to portfolio targets"""
-        pass
+class EnhancedPortfolioManager:
+    def integrate(self, trading_signals, risk_constraints):
+        # Combines risk and trading algorithms
+        return portfolio_targets
 ```
-
-### Execution Interface
 ```python
 class ExecutionModel:
     def execute(self, algorithm, targets) -> None:
