@@ -124,30 +124,36 @@ class UnicornArchitectureValidator:
     
     def _validate_risk_management_structure(self, risk_management_dir: Path):
         """Validate the 3_risk_management directory structure."""
-        # Check for methodology directories
+        # Also check portfolio-specific risk algorithms in Myportolio
+        myportolio_risk_dir = self.base_path / '4_portfolios' / 'Myportolio' / 'risk_algorithms'
+        
         expected_methodologies = {'kelly_criterion', 'basic_risk', 'var_models', 'monte_carlo'}
-        existing_items = set(item.name for item in risk_management_dir.iterdir() if item.is_dir())
         
-        # Remove non-methodology items
-        existing_methodologies = existing_items - {'shared', 'utilities', 'legacy'}
+        # Check in both 3_risk_management and Myportolio/risk_algorithms
+        found_methodologies = set()
         
-        missing_methodologies = expected_methodologies - existing_methodologies
+        # Check 3_risk_management
+        if risk_management_dir.exists():
+            existing_items = set(item.name for item in risk_management_dir.iterdir() if item.is_dir())
+            existing_methodologies = existing_items - {'shared', 'utilities', 'legacy'}
+            found_methodologies.update(existing_methodologies)
+        
+        # Check Myportolio risk_algorithms directory
+        if myportolio_risk_dir.exists():
+            myportolio_items = set(item.name for item in myportolio_risk_dir.iterdir() if item.is_dir())
+            myportolio_methodologies = myportolio_items & expected_methodologies
+            found_methodologies.update(myportolio_methodologies)
+            
+            # Check for Python implementation files in Myportolio
+            for methodology in myportolio_methodologies:
+                methodology_path = myportolio_risk_dir / methodology
+                py_files = list(methodology_path.glob('*.py'))
+                if not py_files:
+                    self.warnings.append(f"No Python implementation files in Myportolio/risk_algorithms/{methodology}")
+        
+        missing_methodologies = expected_methodologies - found_methodologies
         if missing_methodologies:
             self.warnings.append(f"Missing risk management methodologies: {missing_methodologies}")
-        
-        # Check each methodology for asset-specific implementations
-        for methodology in expected_methodologies & existing_methodologies:
-            methodology_path = risk_management_dir / methodology
-            if methodology_path.exists():
-                # Check for ETH subdirectory
-                eth_path = methodology_path / 'ETH'
-                if not eth_path.exists():
-                    self.warnings.append(f"Missing ETH implementation in {methodology}")
-                else:
-                    # Check for implementation files
-                    py_files = list(eth_path.glob('*.py'))
-                    if not py_files:
-                        self.warnings.append(f"No Python implementation files in {methodology}/ETH")
     
     def _validate_no_legacy_dirs(self):
         """Check for legacy/redundant directories that should be moved."""
@@ -201,11 +207,20 @@ class UnicornArchitectureValidator:
         if missing_subdirs:
             self.warnings.append(f"{asset_name}: Missing subdirectories: {missing_subdirs}")
         
-        # Check for model files
-        models_path = asset_path / 'models'
-        if models_path.exists():
-            model_files = list(models_path.glob('*.pkl'))
+        # Check for ensemble model files in model_storage/ensemble directory
+        ensemble_path = asset_path / 'model_storage' / 'ensemble'
+        if ensemble_path.exists():
+            model_files = list(ensemble_path.glob('*.pkl'))
             if not model_files:
+                self.warnings.append(f"{asset_name}: No trained models (.pkl files) found")
+        else:
+            # Check legacy models path for backward compatibility
+            models_path = asset_path / 'models'
+            if models_path.exists():
+                model_files = list(models_path.glob('*.pkl'))
+                if not model_files:
+                    self.warnings.append(f"{asset_name}: No trained models (.pkl files) found")
+            else:
                 self.warnings.append(f"{asset_name}: No trained models (.pkl files) found")
     
     def _validate_documentation_standards(self):
