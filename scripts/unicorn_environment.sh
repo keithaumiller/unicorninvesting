@@ -405,6 +405,39 @@ authenticate_ibkr_gateway() {
     return 0
 }
 
+# Function to run Myportolio status check
+run_myportolio_status_check() {
+    echo -e "\n${BLUE}🎯 Myportolio Live Trading Readiness${NC}"
+    echo "===================================="
+    
+    # Path to Myportolio status check script
+    MYPORTOLIO_STATUSCHECK="$UNICORN_ROOT/BackendPython/unicorn/4_portfolios/Myportolio/utilities/statuscheck.py"
+    
+    if [ -f "$MYPORTOLIO_STATUSCHECK" ]; then
+        echo "Running comprehensive Myportolio assessment..."
+        
+        # Activate Python environment if available
+        if [ -f "$UNICORN_ROOT/.venv/bin/activate" ]; then
+            source "$UNICORN_ROOT/.venv/bin/activate"
+        fi
+        
+        # Run the Myportolio status check
+        cd "$UNICORN_ROOT" && python3 "$MYPORTOLIO_STATUSCHECK"
+        MYPORTOLIO_EXIT_CODE=$?
+        
+        if [ $MYPORTOLIO_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ Myportolio status check completed successfully${NC}"
+        else
+            echo -e "\n${YELLOW}⚠️  Myportolio status check completed with warnings${NC}"
+        fi
+        
+        return $MYPORTOLIO_EXIT_CODE
+    else
+        echo -e "${RED}❌ Myportolio status check script not found: $MYPORTOLIO_STATUSCHECK${NC}"
+        return 1
+    fi
+}
+
 # Function to run health checks
 run_health_checks() {
     echo -e "${BLUE}🏥 Unicorn Platform Health Check${NC}"
@@ -934,13 +967,24 @@ run_health_checks() {
 
     if [ $FAILED_CHECKS -eq 0 ]; then
         echo -e "\n${GREEN}🎉 All checks passed! Platform is ready for use.${NC}"
-        return 0
+        HEALTH_EXIT_CODE=0
     elif [ $PASS_RATE -ge 80 ]; then
         echo -e "\n${YELLOW}⚠️  Platform is mostly functional with $FAILED_CHECKS minor issues.${NC}"
-        return 1
+        HEALTH_EXIT_CODE=1
     else
         echo -e "\n${RED}🚨 Platform has significant issues requiring attention.${NC}"
-        return 2
+        HEALTH_EXIT_CODE=2
+    fi
+    
+    # Run Myportolio-specific status check
+    run_myportolio_status_check
+    MYPORTOLIO_EXIT_CODE=$?
+    
+    # Return the more severe exit code (health checks take precedence)
+    if [ $HEALTH_EXIT_CODE -ne 0 ]; then
+        return $HEALTH_EXIT_CODE
+    else
+        return $MYPORTOLIO_EXIT_CODE
     fi
 }
 
