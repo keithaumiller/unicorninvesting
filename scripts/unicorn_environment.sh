@@ -41,13 +41,19 @@ show_help() {
     echo "  --setup-only    Setup environment variables and aliases only"
     echo "  --check-only    Run health checks only (skip environment setup)"
     echo "  --startup       Start Drupal services and run full validation"
+    echo "  --ibkr-only     Start IBKR Gateway only and wait for authentication"
     echo "  --help, -h      Show this help message"
-    echo "  (no options)    Run both environment setup and health checks"
+    echo "  (no options)    Setup environment, start IBKR Gateway first, then run health checks"
     echo ""
     echo "Available aliases after setup:"
     echo "  drupal-start    - Start Drupal services and run full platform validation"
     echo "  drupal-status   - Check Apache and MySQL status"
     echo "  drupal-logs     - View recent Drupal error logs"
+    echo "  drupal-restart  - Restart Apache and MySQL services"
+    echo "  drupal-cd       - Change to Drupal directory"
+    echo "  unicorn-root    - Change to project root directory"
+    echo "  unicorn-env     - Run this environment script"
+    echo "  ibkr-start      - Start IBKR Gateway only (critical for trading)"
     echo "  drupal-restart  - Restart Apache and MySQL services"
     echo "  drupal-cd       - Change to Drupal root directory"
     echo "  unicorn-root    - Change to project root directory"
@@ -73,6 +79,7 @@ setup_environment() {
             echo "alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
             echo "alias unicorn-root='cd /workspaces/unicorninvesting'" >> ~/.bashrc
             echo "alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'" >> ~/.bashrc
+            echo "alias ibkr-start='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --ibkr-only'" >> ~/.bashrc
             echo "" >> ~/.bashrc
             echo "# Unicorn Investing Environment" >> ~/.bashrc
             echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
@@ -94,6 +101,7 @@ setup_environment() {
     alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'
     alias unicorn-root='cd /workspaces/unicorninvesting'
     alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'
+    alias ibkr-start='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --ibkr-only'
 
     # Set environment variables for current session
     export UNICORN_ROOT='/workspaces/unicorninvesting'
@@ -494,21 +502,67 @@ run_health_checks() {
     echo -e "\n${BLUE}🌐 Web Server & Database${NC}"
     echo "========================"
 
-    # MySQL Service
-    systemctl is-active mysql >/dev/null 2>&1
-    check_status $? "MySQL Service: Running"
+    # MySQL Service (prioritize service command in container environments)
+    MYSQL_RUNNING=false
+    
+    # In container environments (like Codespaces), prefer service command over systemctl
+    if [[ -n "${CODESPACE_NAME:-}" ]] || [[ -n "${GITHUB_CODESPACES:-}" ]] || [[ -f "/.dockerenv" ]]; then
+        # Container environment - use service command
+        if service mysql status >/dev/null 2>&1; then
+            MYSQL_RUNNING=true
+        fi
+    else
+        # Standard Linux environment - try systemctl first
+        if command -v systemctl >/dev/null 2>&1 && systemctl is-active mysql >/dev/null 2>&1; then
+            MYSQL_RUNNING=true
+        # Fallback to service command
+        elif service mysql status >/dev/null 2>&1; then
+            MYSQL_RUNNING=true
+        fi
+    fi
+    
+    if $MYSQL_RUNNING; then
+        check_status 0 "MySQL Service: Running"
+    else
+        check_status 1 "MySQL Service: Stopped"
+    fi
 
-    # Apache Service
-    systemctl is-active apache2 >/dev/null 2>&1
-    check_status $? "Apache Service: Running"
+    # Apache Service (prioritize service command in container environments)
+    APACHE_RUNNING=false
+    
+    # In container environments (like Codespaces), prefer service command over systemctl
+    if [[ -n "${CODESPACE_NAME:-}" ]] || [[ -n "${GITHUB_CODESPACES:-}" ]] || [[ -f "/.dockerenv" ]]; then
+        # Container environment - use service command
+        if service apache2 status >/dev/null 2>&1; then
+            APACHE_RUNNING=true
+        fi
+    else
+        # Standard Linux environment - try systemctl first
+        if command -v systemctl >/dev/null 2>&1 && systemctl is-active apache2 >/dev/null 2>&1; then
+            APACHE_RUNNING=true
+        # Fallback to service command
+        elif service apache2 status >/dev/null 2>&1; then
+            APACHE_RUNNING=true
+        fi
+    fi
+    
+    if $APACHE_RUNNING; then
+        check_status 0 "Apache Service: Running"
+    else
+        check_status 1 "Apache Service: Stopped"
+    fi
 
     # Database Connection Test
     if command -v mysql >/dev/null 2>&1; then
-        # Test TCP connection to MySQL port instead of requiring credentials
+        # Test TCP connection to MySQL port
         if timeout 5 bash -c "</dev/tcp/localhost/3306" 2>/dev/null; then
             check_status 0 "Database Connection: Port 3306 accessible"
         else
-            check_status 1 "Database Connection: Port 3306 not accessible"
+            if $MYSQL_RUNNING; then
+                check_status 1 "Database Connection: Port 3306 not accessible (service reports running but port not responding)"
+            else
+                check_status 1 "Database Connection: Port 3306 not accessible (MySQL service is stopped)"
+            fi
         fi
     else
         check_status 1 "MySQL Client: Not installed"
@@ -920,12 +974,43 @@ case "${1:-}" in
         
         exit $HEALTH_EXIT_CODE
         ;;
+    --ibkr-only)
+        # Start IBKR Gateway only
+        echo -e "${BLUE}🏦 IBKR Gateway Standalone Startup${NC}"
+        echo "=================================="
+        echo ""
+        start_ibkr_gateway
+        IBKR_EXIT_CODE=$?
+        
+        if [ $IBKR_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ IBKR Gateway is ready for trading operations!${NC}"
+        else
+            echo -e "\n${RED}❌ IBKR Gateway startup encountered issues${NC}"
+        fi
+        
+        exit $IBKR_EXIT_CODE
+        ;;
     --help|-h)
         show_help
         ;;
     "")
-        # Run both setup and health check
+        # Enhanced startup sequence: setup environment, start IBKR gateway first, wait for auth, then health check
         setup_environment
+        echo ""
+        
+        # IBKR Gateway startup is critical for live trading - start first
+        echo -e "${BLUE}🔥 CRITICAL PATH: Starting IBKR Gateway First${NC}"
+        echo -e "${YELLOW}   IBKR authentication is required for live trading operations${NC}"
+        echo ""
+        start_ibkr_gateway
+        IBKR_EXIT_CODE=$?
+        
+        if [ $IBKR_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ IBKR Gateway startup successful - proceeding with health checks${NC}"
+        else
+            echo -e "\n${YELLOW}⚠️  IBKR Gateway startup had issues - continuing with other checks${NC}"
+        fi
+        
         echo ""
         run_health_checks
         HEALTH_EXIT_CODE=$?
