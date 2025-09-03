@@ -1,0 +1,13 @@
+{
+  "model_type": "prophet",
+  "training_data_size": 17511,
+  "training_date": "2025-09-03T16:27:14.463038",
+  "timeframe": "1hour",
+  "parameters": {
+    "growth": "linear",
+    "seasonality_mode": "multiplicative",
+    "daily_seasonality": true,
+    "weekly_seasonality": true,
+    "yearly_seasonality": false
+  }
+}

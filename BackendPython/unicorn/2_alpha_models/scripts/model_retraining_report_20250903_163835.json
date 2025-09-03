@@ -1,0 +1,90 @@
+{
+  "campaign_timestamp": "20250903_163835",
+  "configuration": {
+    "models_per_method": 2,
+    "min_datapoints": 600,
+    "timeframes": [
+      "1min",
+      "1hour",
+      "1day"
+    ],
+    "methodologies": [
+      "prophet",
+      "xgboost",
+      "ensemble"
+    ],
+    "assets": [
+      "ETH",
+      "BTC"
+    ]
+  },
+  "statistics": {
+    "total_models_trained": 6,
+    "successful_trainings": 6,
+    "failed_trainings": 0,
+    "training_duration": 60.050108909606934,
+    "models_by_asset": {},
+    "models_by_timeframe": {},
+    "models_by_methodology": {}
+  },
+  "detailed_results": [
+    {
+      "asset": "ETH",
+      "timeframe": "1hour",
+      "models_trained": 6,
+      "successful_models": 6,
+      "failed_models": 0,
+      "training_duration": 60.049663066864014,
+      "model_details": [
+        {
+          "methodology": "prophet",
+          "model_index": 0,
+          "model_id": "eth_1hour_prophet_1_20250903_163735",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 8.421582698822021
+        },
+        {
+          "methodology": "prophet",
+          "model_index": 1,
+          "model_id": "eth_1hour_prophet_2_20250903_163744",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 8.49436354637146
+        },
+        {
+          "methodology": "xgboost",
+          "model_index": 0,
+          "model_id": "eth_1hour_xgboost_1_20250903_163752",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 10.19290542602539
+        },
+        {
+          "methodology": "xgboost",
+          "model_index": 1,
+          "model_id": "eth_1hour_xgboost_2_20250903_163803",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 10.038565158843994
+        },
+        {
+          "methodology": "ensemble",
+          "model_index": 0,
+          "model_id": "eth_1hour_ensemble_1_20250903_163813",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 10.464268207550049
+        },
+        {
+          "methodology": "ensemble",
+          "model_index": 1,
+          "model_id": "eth_1hour_ensemble_2_20250903_163824",
+          "success": true,
+          "datapoints_used": 17510,
+          "training_time": 10.366396427154541
+        }
+      ]
+    }
+  ]
+}
