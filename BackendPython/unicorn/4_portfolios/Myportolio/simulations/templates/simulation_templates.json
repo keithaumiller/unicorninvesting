@@ -1,0 +1,222 @@
+{
+  "backtest_template": {
+    "name": "ETH Momentum Backtest",
+    "description": "Historical backtesting template for ETH momentum strategies with Kelly criterion risk management",
+    "environment": "backtesting",
+    "algorithm": "MyportolioETHMomentum",
+    "parameters": {
+      "strategy_type": "eth_momentum",
+      "kelly_fraction": 0.167,
+      "max_volatility": 0.25,
+      "max_drawdown": 0.15,
+      "var_limit_1day": 0.06,
+      "rebalance_frequency": "daily",
+      "lookback_period": 30,
+      "momentum_threshold": 0.02
+    },
+    "assets": ["ETHUSD"],
+    "resolution": "Hour",
+    "initial_cash": 100000,
+    "benchmark": "ETHUSD",
+    "commission": {
+      "model": "ConstantFeeModel",
+      "fee": 0.001
+    }
+  },
+  
+  "dual_crypto_template": {
+    "name": "Dual Crypto Strategy Backtest",
+    "description": "ETH-BTC dual cryptocurrency momentum strategy with correlation analysis",
+    "environment": "backtesting", 
+    "algorithm": "MyportolioMultiCrypto",
+    "parameters": {
+      "strategy_type": "dual_crypto",
+      "eth_allocation": 0.6,
+      "btc_allocation": 0.4,
+      "kelly_fraction": 0.167,
+      "correlation_threshold": 0.7,
+      "rebalance_frequency": "daily",
+      "momentum_lookback": 20,
+      "risk_lookback": 30
+    },
+    "assets": ["ETHUSD", "BTCUSD"],
+    "resolution": "Hour",
+    "initial_cash": 100000,
+    "benchmark": "ETHUSD"
+  },
+
+  "six_position_template": {
+    "name": "Six Position Strategy Backtest", 
+    "description": "Advanced six-position strategy with multi-timeframe analysis",
+    "environment": "backtesting",
+    "algorithm": "MyportolioSixPosition", 
+    "parameters": {
+      "strategy_type": "six_position",
+      "position_count": 6,
+      "timeframes": ["1min", "1hour", "1day"],
+      "kelly_fraction": 0.167,
+      "max_position_size": 0.2,
+      "correlation_threshold": 0.8,
+      "rebalance_frequency": "4hour",
+      "ensemble_weights": {
+        "prophet": 0.4,
+        "xgboost": 0.4, 
+        "ensemble": 0.2
+      }
+    },
+    "assets": ["ETHUSD"],
+    "resolution": "Minute",
+    "initial_cash": 100000,
+    "benchmark": "ETHUSD"
+  },
+
+  "paper_trading_template": {
+    "name": "Paper Trading Template",
+    "description": "Live paper trading template with real-time data feeds",
+    "environment": "paper",
+    "algorithm": "MyportolioLivePaper",
+    "parameters": {
+      "strategy_type": "eth_momentum",
+      "kelly_fraction": 0.125,
+      "max_volatility": 0.20,
+      "max_drawdown": 0.10,
+      "paper_duration_days": 30,
+      "live_data_feed": "IBKR",
+      "execution_delay": 5,
+      "slippage_model": "VolumeShareSlippageModel"
+    },
+    "assets": ["ETHUSD"],
+    "resolution": "Minute",
+    "initial_cash": 10000,
+    "data_feed": {
+      "provider": "InteractiveBrokersBrokerage",
+      "subscription": "minute"
+    }
+  },
+
+  "optimization_template": {
+    "name": "Parameter Optimization Template",
+    "description": "Template for optimizing strategy parameters using LEAN optimizer",
+    "environment": "optimization",
+    "algorithm": "MyportolioOptimization",
+    "optimization_target": "SharpeRatio",
+    "constraints": [
+      {
+        "metric": "Drawdown",
+        "operator": "LessOrEqual", 
+        "value": 0.15
+      },
+      {
+        "metric": "TotalTrades",
+        "operator": "GreaterThan",
+        "value": 20
+      }
+    ],
+    "parameter_ranges": {
+      "kelly_fraction": {
+        "min": 0.05,
+        "max": 0.25,
+        "step": 0.02
+      },
+      "momentum_threshold": {
+        "min": 0.01,
+        "max": 0.05,
+        "step": 0.005
+      },
+      "lookback_period": {
+        "min": 10,
+        "max": 60,
+        "step": 5
+      },
+      "rebalance_frequency": {
+        "values": ["4hour", "daily", "2day"]
+      }
+    },
+    "max_concurrent_backtests": 5,
+    "optimization_method": "GridSearch"
+  },
+
+  "risk_stress_test_template": {
+    "name": "Risk Stress Test Template",
+    "description": "Stress testing template for extreme market conditions",
+    "environment": "backtesting",
+    "algorithm": "MyportolioStressTest",
+    "parameters": {
+      "strategy_type": "eth_momentum",
+      "stress_scenarios": [
+        "black_monday_1987",
+        "dotcom_crash_2000", 
+        "financial_crisis_2008",
+        "covid_crash_2020",
+        "crypto_winter_2022"
+      ],
+      "kelly_fraction": 0.167,
+      "emergency_stop_loss": 0.20,
+      "correlation_breakdown_threshold": 0.9
+    },
+    "test_periods": [
+      {
+        "name": "crypto_volatility_2021",
+        "start": "2021-05-01",
+        "end": "2021-07-31"
+      },
+      {
+        "name": "crypto_crash_2022", 
+        "start": "2022-05-01",
+        "end": "2022-06-30"
+      }
+    ]
+  },
+
+  "model_validation_template": {
+    "name": "Model Validation Template",
+    "description": "Template for validating ML model performance in different market regimes",
+    "environment": "backtesting",
+    "algorithm": "MyportolioModelValidation",
+    "parameters": {
+      "model_types": ["prophet", "xgboost", "ensemble"],
+      "validation_method": "walk_forward",
+      "training_window": 180,
+      "validation_window": 30,
+      "retraining_frequency": "weekly",
+      "performance_threshold": {
+        "mape": 0.05,
+        "sharpe": 1.0,
+        "r2_score": 0.7
+      }
+    },
+    "market_regimes": [
+      "trending",
+      "sideways", 
+      "volatile",
+      "low_volume"
+    ]
+  },
+
+  "live_trading_simulation_template": {
+    "name": "Live Trading Simulation Template",
+    "description": "Template for simulating live trading conditions with realistic constraints",
+    "environment": "backtesting",
+    "algorithm": "MyportolioLiveSimulation", 
+    "parameters": {
+      "execution_constraints": {
+        "max_order_size": 0.1,
+        "min_order_interval": 300,
+        "market_hours_only": true,
+        "liquidity_constraints": true
+      },
+      "broker_simulation": {
+        "commission_rate": 0.001,
+        "slippage_model": "SquareRootMarketImpactModel",
+        "fill_probability": 0.98,
+        "partial_fills": true
+      },
+      "risk_controls": {
+        "daily_var_limit": 0.06,
+        "position_size_limit": 0.25,
+        "correlation_limit": 0.8,
+        "drawdown_stop": 0.15
+      }
+    }
+  }
+}

@@ -38,6 +38,9 @@ class MyportolioStatusChecker:
         self.execution_dir = self.unicorn_root / "5_execution_models"
         self.algorithms_dir = self.unicorn_root / "6_algorithms"
         
+        # Simulation Framework Directory
+        self.simulations_dir = self.portfolio_dir / "simulations"
+        
         # IBKR Account Information Directory
         self.ibkr_account_dir = self.data_sources_dir / "1_raw" / "connectors" / "interactive_brokers" / "accountinfo"
         
@@ -968,6 +971,173 @@ class MyportolioStatusChecker:
         
         return results
     
+    def check_simulation_framework(self) -> Dict[str, Any]:
+        """Validate simulation framework and backtesting capabilities."""
+        self.print_header("SIMULATION FRAMEWORK VALIDATION", 2)
+        
+        results = {
+            'framework_available': False,
+            'engine_operational': False,
+            'templates_configured': False,
+            'results_tracking': False,
+            'recent_simulations': [],
+            'performance_validation': {},
+            'simulation_errors': []
+        }
+        
+        try:
+            # Check simulation directory structure
+            if self.simulations_dir.exists():
+                results['framework_available'] = True
+                print("✅ Simulation Framework: Directory structure exists")
+                
+                # Check core simulation components
+                engine_file = self.simulations_dir / "lean_simulation_engine.py"
+                cli_file = self.simulations_dir / "simulation_cli.py"
+                templates_file = self.simulations_dir / "templates" / "simulation_templates.json"
+                result_handler = self.simulations_dir / "lean_result_handler.py"
+                
+                if engine_file.exists() and cli_file.exists():
+                    results['engine_operational'] = True
+                    print("✅ Simulation Engine: Core components available")
+                else:
+                    results['simulation_errors'].append("Missing core simulation files")
+                    print("❌ Simulation Engine: Core components missing")
+                
+                if templates_file.exists():
+                    try:
+                        with open(templates_file, 'r') as f:
+                            templates = json.load(f)
+                        template_count = len(templates)
+                        results['templates_configured'] = template_count > 0
+                        print(f"✅ Simulation Templates: {template_count} templates configured")
+                    except Exception as e:
+                        results['simulation_errors'].append(f"Template loading error: {str(e)}")
+                        print(f"❌ Simulation Templates: Error loading templates")
+                
+                if result_handler.exists():
+                    results['results_tracking'] = True
+                    print("✅ Results Tracking: Handler available")
+                
+                # Check for recent simulation results
+                backtests_dir = self.simulations_dir / "backtests"
+                if backtests_dir.exists():
+                    # Look for myportolio_results.json files in subdirectories
+                    result_files = list(backtests_dir.glob("*/myportolio_results.json"))
+                    recent_results = sorted(result_files, key=lambda x: x.stat().st_mtime, reverse=True)[:5]
+                    
+                    for result_file in recent_results:
+                        try:
+                            with open(result_file, 'r') as f:
+                                result_data = json.load(f)
+                            
+                            # Try to get performance from lean_results first, fallback to top-level
+                            performance_data = result_data.get('lean_results', {}).get('performance', {})
+                            if not performance_data or performance_data.get('total_return', 0) == 0:
+                                performance_data = result_data.get('performance', {})
+                            
+                            simulation_info = {
+                                'file': result_file.name,
+                                'timestamp': result_data.get('timestamp', 'Unknown'),
+                                'total_return': performance_data.get('total_return', 0),
+                                'sharpe_ratio': performance_data.get('sharpe_ratio', 0),
+                                'max_drawdown': performance_data.get('max_drawdown', 0),
+                                'total_trades': performance_data.get('trades_count', 0)
+                            }
+                            results['recent_simulations'].append(simulation_info)
+                            
+                        except Exception as e:
+                            results['simulation_errors'].append(f"Error reading {result_file.name}: {str(e)}")
+                    
+                    if results['recent_simulations']:
+                        print(f"✅ Recent Simulations: Found {len(results['recent_simulations'])} recent backtest results")
+                        
+                        # Display recent simulation performance
+                        print("📊 Recent Simulation Performance:")
+                        for sim in results['recent_simulations'][:3]:  # Show top 3
+                            print(f"   • {sim['file']}: {sim['total_return']:.2%} return, "
+                                  f"Sharpe {sim['sharpe_ratio']:.2f}, "
+                                  f"{sim['total_trades']} trades")
+                        
+                        # Validate performance metrics
+                        avg_return = sum(sim['total_return'] for sim in results['recent_simulations']) / len(results['recent_simulations'])
+                        avg_sharpe = sum(sim['sharpe_ratio'] for sim in results['recent_simulations']) / len(results['recent_simulations'])
+                        avg_drawdown = sum(sim['max_drawdown'] for sim in results['recent_simulations']) / len(results['recent_simulations'])
+                        
+                        results['performance_validation'] = {
+                            'average_return': avg_return,
+                            'average_sharpe': avg_sharpe,
+                            'average_drawdown': avg_drawdown,
+                            'positive_returns': sum(1 for sim in results['recent_simulations'] if sim['total_return'] > 0),
+                            'total_simulations': len(results['recent_simulations'])
+                        }
+                        
+                        positive_ratio = results['performance_validation']['positive_returns'] / results['performance_validation']['total_simulations']
+                        
+                        if avg_return > 0 and positive_ratio > 0.5:
+                            print(f"✅ Performance Validation: Strategy shows positive performance")
+                            print(f"   Average Return: {avg_return:.2%}, Positive Sims: {positive_ratio:.1%}")
+                        elif avg_return > 0:
+                            print(f"⚠️  Performance Validation: Strategy shows mixed performance")
+                            print(f"   Average Return: {avg_return:.2%}, Positive Sims: {positive_ratio:.1%}")
+                        else:
+                            print(f"❌ Performance Validation: Strategy performance needs review")
+                            print(f"   Average Return: {avg_return:.2%}, Positive Sims: {positive_ratio:.1%}")
+                    else:
+                        print("⚠️  Recent Simulations: No recent backtest results found")
+                else:
+                    print("⚠️  Simulation Results: Backtest directory not found")
+                
+                # Test simulation framework operability
+                try:
+                    import subprocess
+                    import sys
+                    
+                    # Quick test of simulation CLI help
+                    result = subprocess.run([
+                        sys.executable, 
+                        str(cli_file), 
+                        '--help'
+                    ], 
+                    capture_output=True, 
+                    text=True, 
+                    cwd=str(self.simulations_dir),
+                    timeout=10
+                    )
+                    
+                    if result.returncode == 0:
+                        print("✅ Simulation Framework: CLI operational")
+                    else:
+                        results['simulation_errors'].append("CLI test failed")
+                        print("❌ Simulation Framework: CLI not operational")
+                        
+                except Exception as e:
+                    results['simulation_errors'].append(f"Framework operability test failed: {str(e)}")
+                    print(f"⚠️  Simulation Framework: Operability test error")
+                
+            else:
+                results['simulation_errors'].append("Simulation directory does not exist")
+                print("❌ Simulation Framework: Directory not found")
+            
+            # Overall simulation readiness assessment
+            components_ready = sum([
+                results['framework_available'],
+                results['engine_operational'], 
+                results['templates_configured'],
+                results['results_tracking']
+            ])
+            
+            if components_ready >= 3:
+                print(f"✅ Simulation Readiness: {components_ready}/4 components operational")
+            else:
+                print(f"❌ Simulation Readiness: Only {components_ready}/4 components operational")
+                
+        except Exception as e:
+            results['simulation_errors'].append(f"Simulation check failed: {str(e)}")
+            print(f"❌ Simulation Framework Check: {str(e)}")
+        
+        return results
+    
     def calculate_portfolio_statistics(self) -> Dict[str, Any]:
         """Calculate current portfolio statistics and risk metrics."""
         self.print_header("PORTFOLIO STATISTICS", 2)
@@ -1057,7 +1227,8 @@ class MyportolioStatusChecker:
             'risk_management',
             'data_connectivity',
             'execution_readiness',
-            'algorithm_integration'
+            'algorithm_integration',
+            'simulation_framework'
         ]
         
         readiness_score = 0
@@ -1141,6 +1312,25 @@ class MyportolioStatusChecker:
                         readiness_score += 1
                     else:
                         warnings.append("Algorithm integration needs completion")
+                
+                elif component == 'simulation_framework':
+                    framework_components = sum([
+                        component_data.get('framework_available', False),
+                        component_data.get('engine_operational', False),
+                        component_data.get('templates_configured', False),
+                        component_data.get('results_tracking', False)
+                    ])
+                    if framework_components >= 3:
+                        readiness_score += 1
+                        # Check performance validation
+                        perf_validation = component_data.get('performance_validation', {})
+                        if perf_validation.get('average_return', 0) > 0:
+                            print(f"✅ Simulation validation shows positive strategy performance")
+                        else:
+                            warnings.append("Simulation results show neutral/negative performance")
+                    else:
+                        warnings.append("Simulation framework needs completion")
+                        critical_issues.append("Backtesting framework not operational")
         
         # Calculate readiness percentage
         readiness_percentage = (readiness_score / max_score) * 100
@@ -1278,6 +1468,7 @@ class MyportolioStatusChecker:
             self.status_results['component_status']['data_connectivity'] = self.check_data_connectivity()
             self.status_results['component_status']['execution_readiness'] = self.check_execution_readiness()
             self.status_results['component_status']['algorithm_integration'] = self.check_algorithm_integration()
+            self.status_results['component_status']['simulation_framework'] = self.check_simulation_framework()
             
             # IBKR account integration
             self.status_results['ibkr_trading_parameters'] = self.get_ibkr_trading_parameters()

@@ -1,0 +1,27 @@
+{
+  "environment": "backtesting",
+  "algorithm-type-name": "MyportolioETHMomentum",
+  "algorithm-language": "Python",
+  "start-date": "2024-01-01",
+  "end-date": "2024-01-05",
+  "data-folder": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "cache-location": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "live-mode": false,
+  "result-handler": "QuantConnect.Lean.Engine.Results.BacktestingResultHandler",
+  "messaging-handler": "QuantConnect.Messaging.Messaging",
+  "job-queue-handler": "QuantConnect.Queues.JobQueue",
+  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
+  "initial-cash": 100000,
+  "simulation-id": "backtest_20250903_145040_bef7f054",
+  "portfolio-name": "Myportolio",
+  "parameters": {
+    "strategy_type": "eth_momentum",
+    "kelly_fraction": 0.15,
+    "max_volatility": 0.25,
+    "max_drawdown": 0.15,
+    "var_limit_1day": 0.06,
+    "rebalance_frequency": "daily",
+    "lookback_period": 30,
+    "momentum_threshold": 0.02
+  }
+}
