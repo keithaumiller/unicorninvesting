@@ -1,0 +1,66 @@
+{
+  "campaign_timestamp": "20250903_162600",
+  "configuration": {
+    "models_per_method": 1,
+    "min_datapoints": 600,
+    "timeframes": [
+      "1min",
+      "1hour",
+      "1day"
+    ],
+    "methodologies": [
+      "prophet",
+      "xgboost",
+      "ensemble"
+    ],
+    "assets": [
+      "ETH",
+      "BTC"
+    ]
+  },
+  "statistics": {
+    "total_models_trained": 3,
+    "successful_trainings": 0,
+    "failed_trainings": 3,
+    "training_duration": 75.98434019088745,
+    "models_by_asset": {},
+    "models_by_timeframe": {},
+    "models_by_methodology": {}
+  },
+  "detailed_results": [
+    {
+      "asset": "BTC",
+      "timeframe": "1hour",
+      "models_trained": 3,
+      "successful_models": 0,
+      "failed_models": 3,
+      "training_duration": 75.984139919281,
+      "model_details": [
+        {
+          "methodology": "prophet",
+          "model_index": 0,
+          "model_id": "btc_1hour_prophet_1_20250903_162445",
+          "success": false,
+          "datapoints_used": 17511,
+          "training_time": 0.034448862075805664
+        },
+        {
+          "methodology": "xgboost",
+          "model_index": 0,
+          "model_id": "btc_1hour_xgboost_1_20250903_162445",
+          "success": false,
+          "datapoints_used": 17511,
+          "training_time": 37.60481142997742
+        },
+        {
+          "methodology": "ensemble",
+          "model_index": 0,
+          "model_id": "btc_1hour_ensemble_1_20250903_162523",
+          "success": false,
+          "datapoints_used": 17511,
+          "training_time": 37.43106770515442
+        }
+      ]
+    }
+  ]
+}

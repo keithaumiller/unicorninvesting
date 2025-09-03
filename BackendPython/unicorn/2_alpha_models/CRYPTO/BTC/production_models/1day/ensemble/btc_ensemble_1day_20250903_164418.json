@@ -1,0 +1,20 @@
+{
+  "model_type": "ensemble",
+  "components": {
+    "prophet": {
+      "model_id": "btc_prophet_1day_20250903_164418",
+      "weight": 0.952996683412925,
+      "mape": 0.09495107639812253
+    },
+    "xgboost": {
+      "model_id": "btc_xgboost_1day_20250903_164418",
+      "weight": 0.04700331658707501,
+      "mape": 1.9251420423975032
+    }
+  },
+  "ensemble_performance": {
+    "weighted_mape": 0.18097612178779604,
+    "training_date": "2025-09-03T16:44:26.923758",
+    "timeframe": "1day"
+  }
+}

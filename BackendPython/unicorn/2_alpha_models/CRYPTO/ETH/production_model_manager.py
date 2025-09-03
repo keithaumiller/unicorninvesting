@@ -482,8 +482,13 @@ class ProductionModelManager:
             return None, {"error": "Prophet not available"}
         
         try:
+            # Prepare data for Prophet - remove timezone if present
+            ds_data = data.index
+            if hasattr(ds_data, 'tz') and ds_data.tz is not None:
+                ds_data = ds_data.tz_localize(None)  # Remove timezone
+            
             prophet_data = pd.DataFrame({
-                'ds': data.index,
+                'ds': ds_data,
                 'y': data['price']
             })
             
