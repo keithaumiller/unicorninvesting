@@ -29,3 +29,17 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# Drupal cache and generated files
+WebFrontend/web/sites/default/files/css/
+WebFrontend/web/sites/default/files/js/
+WebFrontend/web/sites/default/files/php/twig/
+WebFrontend/web/sites/default/files/config_*/
+
+# Status reports and temporary outputs
+**/status_report_*.json
+**/status_report_*.txt
+
+# Temporary scripts (created during development)
+scripts/check_port_forwarding.sh
+scripts/test_port_80.sh
