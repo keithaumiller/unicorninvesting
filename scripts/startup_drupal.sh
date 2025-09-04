@@ -195,35 +195,50 @@ validate_url() {
         return 1
     fi
 }
-validate_url() {
-    local url=$1
-    local name=$2
-    
-    echo -e "${YELLOW}🔍 Checking $name at $url${NC}"
-    
-    # Use curl to check the URL, following redirects
-    local response_code=$(curl -s -o /dev/null -w "%{http_code}" -L "$url" --max-time 10)
-    
-    if [ "$response_code" = "200" ]; then
-        echo -e "${GREEN}✅ $name is accessible (HTTP $response_code)${NC}"
-        return 0
-    elif [ "$response_code" = "302" ] || [ "$response_code" = "301" ]; then
-        # Check if redirect leads to a 200
-        local final_code=$(curl -s -o /dev/null -w "%{http_code}" -L "$url" --max-time 10)
-        if [ "$final_code" = "200" ]; then
-            echo -e "${GREEN}✅ $name is accessible (HTTP $response_code → $final_code)${NC}"
-            return 0
-        else
-            echo -e "${YELLOW}⚠️  $name redirects but final destination returns HTTP $final_code${NC}"
-            return 1
-        fi
-    elif [ "$response_code" = "000" ]; then
-        echo -e "${RED}❌ $name is not accessible (Connection failed)${NC}"
-        return 1
-    else
-        echo -e "${YELLOW}⚠️  $name returned HTTP $response_code${NC}"
-        return 1
-    fi
+
+# Function to show port forwarding instructions
+show_port_forwarding_instructions() {
+    echo -e "${BLUE}🔧 MANUAL PORT FORWARDING REQUIRED${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════${NC}"
+    echo -e "${RED}⚠️  CRITICAL: Port 80 must be forwarded for external access${NC}"
+    echo ""
+    echo -e "${CYAN}🎯 STEP-BY-STEP INSTRUCTIONS:${NC}"
+    echo ""
+    echo -e "${CYAN}METHOD 1 - VS Code Ports Panel (RECOMMENDED):${NC}"
+    echo -e "${CYAN}   1. Look at the bottom of your VS Code window${NC}"
+    echo -e "${CYAN}   2. Click on the 'PORTS' tab (next to TERMINAL/PROBLEMS)${NC}"
+    echo -e "${CYAN}   3. Click the '+' button or 'Forward a Port'${NC}"
+    echo -e "${CYAN}   4. Enter: ${GREEN}80${CYAN} (just the number 80)${NC}"
+    echo -e "${CYAN}   5. Press Enter${NC}"
+    echo -e "${CYAN}   6. Right-click on the new port 80 entry${NC}"
+    echo -e "${CYAN}   7. Select 'Change Port Visibility' → 'Public'${NC}"
+    echo -e "${CYAN}   8. Look for the globe 🌐 icon next to port 80${NC}"
+    echo ""
+    echo -e "${CYAN}METHOD 2 - VS Code Command Palette:${NC}"
+    echo -e "${CYAN}   1. Press Ctrl+Shift+P (Cmd+Shift+P on Mac)${NC}"
+    echo -e "${CYAN}   2. Type: ${GREEN}Forward a Port${NC}"
+    echo -e "${CYAN}   3. Select 'Forward a Port'${NC}"
+    echo -e "${CYAN}   4. Enter: ${GREEN}80${NC}"
+    echo -e "${CYAN}   5. When prompted for visibility, choose 'Public'${NC}"
+    echo ""
+    echo -e "${CYAN}METHOD 3 - GitHub CLI (Advanced):${NC}"
+    echo -e "${CYAN}   Forward port: ${GREEN}gh codespace ports forward 80 -c ${CODESPACE_NAME:-codespace}${NC}"
+    echo -e "${CYAN}   Set to public: ${GREEN}gh codespace ports visibility 80:public -c ${CODESPACE_NAME:-codespace}${NC}"
+    echo ""
+    echo -e "${CYAN}✅ VERIFICATION:${NC}"
+    echo -e "${CYAN}   After forwarding, you should see:${NC}"
+    echo -e "${CYAN}   - Port 80 listed in the PORTS panel${NC}"
+    echo -e "${CYAN}   - A globe 🌐 icon indicating it's public${NC}"
+    echo -e "${CYAN}   - A clickable URL like: ${GREEN}https://cautious-guide-qg6vv7p4q6c6x9x-80.app.github.dev${NC}"
+    echo ""
+    echo -e "${CYAN}🧪 TEST THE FIX:${NC}"
+    echo -e "${CYAN}   Run this command to verify port forwarding works:${NC}"
+    echo -e "${GREEN}   ./scripts/startup_drupal.sh${NC}"
+    echo ""
+    echo -e "${CYAN}Expected URLs after forwarding:${NC}"
+    echo -e "${GREEN}   🌐 Homepage: https://${CODESPACE_NAME:-codespace}-80.app.github.dev/${NC}"
+    echo -e "${GREEN}   🏠 Local: http://localhost/${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════${NC}"
 }
 
 # Function to clear Drupal cache
@@ -262,58 +277,170 @@ setup_port_forwarding() {
         return 0
     fi
     
-    # Check if port 80 is already forwarded by testing external URL
-    echo -e "${YELLOW}🔍 Checking if port 80 is already accessible externally...${NC}"
-    local external_test=$(curl -s -o /dev/null -w "%{http_code}" -L "https://${CODESPACE_NAME}-80.app.github.dev/" --max-time 10 2>/dev/null || echo "000")
+    local external_url="https://${CODESPACE_NAME}-80.app.github.dev/"
     
-    if [ "$external_test" = "200" ] || [ "$external_test" = "302" ] || [ "$external_test" = "301" ]; then
-        echo -e "${GREEN}✅ Port 80 is already accessible externally (HTTP $external_test)${NC}"
+    # Function to test external accessibility with multiple methods
+    test_external_access() {
+        local test_url="$1"
+        local timeout="${2:-10}"
+        
+        # Method 1: Basic HTTP test
+        local basic_test=$(curl -s -o /dev/null -w "%{http_code}" -L "$test_url" --max-time "$timeout" 2>/dev/null || echo "000")
+        
+        # Method 2: Test with connection info
+        local connection_test=$(curl -s -w "CONN:%{http_connect}\nHTTP:%{http_code}\nREDIR:%{num_redirects}" -L "$test_url" --max-time "$timeout" 2>/dev/null || echo "CONN:000")
+        
+        echo "Basic test: $basic_test"
+        echo "Connection details: $connection_test"
+        
+        # Consider success if we get any valid HTTP response or connection
+        if [[ "$basic_test" =~ ^[23][0-9][0-9]$ ]] || [[ "$connection_test" =~ CONN:[12][0-9][0-9] ]]; then
+            return 0
+        fi
+        
+        return 1
+    }
+    
+    # Enhanced external accessibility check
+    echo -e "${YELLOW}🔍 Testing external URL accessibility: $external_url${NC}"
+    
+    if test_external_access "$external_url" 15; then
+        echo -e "${GREEN}✅ Port 80 is already accessible externally${NC}"
+        echo -e "${CYAN}ℹ️  External URL: $external_url${NC}"
         return 0
+    else
+        echo -e "${YELLOW}⚠️  External URL not immediately accessible${NC}"
     fi
     
-    # Try GitHub CLI method first
+    # Check VS Code port forwarding via environment
+    echo -e "${YELLOW}🔍 Checking VS Code port forwarding status...${NC}"
+    
+    # In Codespaces, forwarded ports are often available through GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+    if [ -n "$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" ]; then
+        local alt_url="https://${CODESPACE_NAME}-80.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN/"
+        echo -e "${CYAN}ℹ️  Testing alternative URL: $alt_url${NC}"
+        
+        if test_external_access "$alt_url" 10; then
+            echo -e "${GREEN}✅ Port accessible via alternative URL${NC}"
+            return 0
+        fi
+    fi
+    
+    # Try GitHub CLI method if available
     if command -v gh >/dev/null 2>&1; then
-        echo -e "${YELLOW}🔄 Attempting port forwarding via GitHub CLI...${NC}"
+        echo -e "${YELLOW}🔄 Checking GitHub CLI port forwarding...${NC}"
         
-        # Check if port 80 is already forwarded in gh
-        local port_status=$(gh codespace ports list 2>/dev/null | grep -E "80\s" || echo "")
+        # List current port forwards
+        local port_list=$(gh codespace ports list 2>/dev/null || echo "")
+        echo -e "${CYAN}ℹ️  Current port forwards:${NC}"
+        echo "$port_list" | sed 's/^/   /'
         
-        if [ -n "$port_status" ]; then
-            echo -e "${GREEN}✅ Port 80 is already forwarded in GitHub CLI${NC}"
-            local visibility=$(echo "$port_status" | awk '{print $3}')
-            echo -e "${CYAN}ℹ️  Current visibility: $visibility${NC}"
+        # Check if port 80 is already forwarded
+        if echo "$port_list" | grep -E "^\s*80\s" >/dev/null; then
+            local port_info=$(echo "$port_list" | grep -E "^\s*80\s" | head -1)
+            echo -e "${GREEN}✅ Port 80 is already configured in GitHub CLI${NC}"
+            echo -e "${CYAN}ℹ️  Port info: $port_info${NC}"
+            
+            # Try to update visibility to public if it's not already
+            if echo "$port_info" | grep -v "public" >/dev/null; then
+                echo -e "${YELLOW}🔄 Updating port visibility to public...${NC}"
+                if gh codespace ports visibility 80:public 2>/dev/null; then
+                    echo -e "${GREEN}✅ Port visibility updated to public${NC}"
+                    
+                    # Wait a moment and test again
+                    echo -e "${YELLOW}⏳ Waiting for changes to take effect...${NC}"
+                    sleep 10
+                    
+                    if test_external_access "$external_url" 15; then
+                        echo -e "${GREEN}✅ Port is now accessible externally${NC}"
+                        return 0
+                    fi
+                else
+                    echo -e "${YELLOW}⚠️  Failed to update port visibility${NC}"
+                fi
+            fi
         else
-            if gh codespace ports forward 80 --visibility public 2>/dev/null; then
-                echo -e "${GREEN}✅ Port 80 forwarded successfully via GitHub CLI (public visibility)${NC}"
-                return 0
+            echo -e "${YELLOW}🔄 Attempting to forward port 80 via GitHub CLI...${NC}"
+            if gh codespace ports forward 80 2>/dev/null; then
+                echo -e "${GREEN}✅ Port 80 forwarded successfully via GitHub CLI${NC}"
+                
+                # Try to set visibility to public
+                if gh codespace ports visibility 80:public -c "$CODESPACE_NAME" 2>/dev/null; then
+                    echo -e "${GREEN}✅ Port visibility set to public${NC}"
+                else
+                    echo -e "${YELLOW}⚠️  Port forwarded but visibility setting failed${NC}"
+                fi
+                
+                # Wait for forwarding to take effect
+                echo -e "${YELLOW}⏳ Waiting for port forwarding to activate...${NC}"
+                sleep 15
+                
+                if test_external_access "$external_url" 15; then
+                    echo -e "${GREEN}✅ Port forwarding is now active${NC}"
+                    return 0
+                else
+                    echo -e "${YELLOW}⚠️  Port forwarding configured but not immediately accessible${NC}"
+                fi
             else
-                echo -e "${YELLOW}⚠️  GitHub CLI port forwarding failed, trying alternative methods...${NC}"
+                echo -e "${YELLOW}⚠️  GitHub CLI port forwarding failed${NC}"
+                echo ""
+                echo -e "${RED}🛑 AUTOMATIC PORT FORWARDING FAILED${NC}"
+                echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
+                echo -e "${YELLOW}❗ The script will pause here so you can manually forward port 80${NC}"
+                echo ""
+                echo -e "${CYAN}🎯 MANUAL STEPS - Please do this now:${NC}"
+                echo -e "${CYAN}   1. Look at the bottom of VS Code for the 'PORTS' tab${NC}"
+                echo -e "${CYAN}   2. Click the '+' button to 'Forward a Port'${NC}"
+                echo -e "${CYAN}   3. Enter: 80${NC}"
+                echo -e "${CYAN}   4. Press Enter${NC}"
+                echo -e "${CYAN}   5. Right-click the new port 80 entry${NC}"
+                echo -e "${CYAN}   6. Select 'Change Port Visibility' → 'Public'${NC}"
+                echo -e "${CYAN}   7. Look for the globe 🌐 icon next to port 80${NC}"
+                echo ""
+                echo -e "${YELLOW}⏳ Once you've completed the manual port forwarding above,${NC}"
+                echo -e "${YELLOW}   press ENTER to continue the script...${NC}"
+                read -p "Press ENTER after manually forwarding port 80: "
+                echo ""
+                echo -e "${GREEN}✅ Continuing script execution...${NC}"
+                echo -e "${CYAN}ℹ️  Expected URL: $external_url${NC}"
+                return 0
             fi
         fi
     else
         echo -e "${YELLOW}⚠️  GitHub CLI (gh) not available${NC}"
     fi
     
-    # Alternative: Try using VS Code CLI tunneling (if available)
-    if command -v code >/dev/null 2>&1; then
-        echo -e "${YELLOW}🔄 Attempting to use VS Code tunnel functionality...${NC}"
-        # Note: code tunnel isn't typically available in Codespaces, but we can try
-        if code tunnel --help >/dev/null 2>&1; then
-            echo -e "${YELLOW}🔄 Setting up VS Code tunnel for port 80...${NC}"
-            # This would typically require authentication setup
-        else
-            echo -e "${YELLOW}⚠️  VS Code tunnel functionality not available${NC}"
-        fi
-    fi
+    # Final attempt: Try VS Code command palette approach (limited success in Codespaces)
+    echo -e "${YELLOW}⚠️  Automatic port forwarding methods not successful${NC}"
     
-    # If all automatic methods fail, provide manual instructions
-    echo -e "${YELLOW}⚠️  Automatic port forwarding failed${NC}"
-    echo -e "${CYAN}ℹ️  To manually forward port 80:${NC}"
-    echo -e "${CYAN}   1. Click on the 'Ports' tab in your Codespace${NC}"
-    echo -e "${CYAN}   2. Click 'Forward a port'${NC}"
-    echo -e "${CYAN}   3. Enter port number: 80${NC}"
-    echo -e "${CYAN}   4. Set visibility to 'Public' for external access${NC}"
-    echo -e "${CYAN}   5. The external URL will be: https://${CODESPACE_NAME}-80.app.github.dev/${NC}"
+    # Provide comprehensive manual instructions
+    echo -e "${BLUE}🔧 MANUAL PORT FORWARDING REQUIRED${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════${NC}"
+    echo -e "${CYAN}To manually forward port 80 in VS Code:${NC}"
+    echo ""
+    echo -e "${CYAN}METHOD 1 - Ports Panel:${NC}"
+    echo -e "${CYAN}   1. 🎯 Click on 'PORTS' tab in VS Code terminal panel${NC}"
+    echo -e "${CYAN}   2. ➕ Click 'Forward a Port' or 'Add Port'${NC}"
+    echo -e "${CYAN}   3. 🔢 Enter port number: 80${NC}"
+    echo -e "${CYAN}   4. 🌐 Set visibility to 'Public' (globe icon)${NC}"
+    echo -e "${CYAN}   5. ✨ Port should appear as: 80:80${NC}"
+    echo ""
+    echo -e "${CYAN}METHOD 2 - Command Palette:${NC}"
+    echo -e "${CYAN}   1. ⌨️  Press Ctrl+Shift+P (Cmd+Shift+P on Mac)${NC}"
+    echo -e "${CYAN}   2. 🔍 Type: 'Forward a Port'${NC}"
+    echo -e "${CYAN}   3. 🔢 Enter: 80${NC}"
+    echo -e "${CYAN}   4. 🌐 Set to public when prompted${NC}"
+    echo ""
+    echo -e "${CYAN}Expected URL after forwarding:${NC}"
+    echo -e "${GREEN}   🌐 $external_url${NC}"
+    echo ""
+    echo -e "${CYAN}To verify port forwarding worked:${NC}"
+    echo -e "${CYAN}   • Run this script again: ./scripts/startup_drupal.sh${NC}"
+    echo -e "${CYAN}   • Or test URL directly in browser${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════${NC}"
+    
+    # Return non-zero to indicate manual intervention needed
+    return 1
 }
 
 # Function to setup MySQL database and user for Drupal
@@ -579,17 +706,24 @@ EOF
         if sudo apache2ctl configtest 2>/dev/null; then
             echo -e "${GREEN}✅ Apache configuration syntax is valid${NC}"
             
-            # Reload Apache
-            echo -e "${YELLOW}🔄 Reloading Apache configuration...${NC}"
-            if sudo systemctl reload apache2 2>/dev/null; then
-                echo -e "${GREEN}✅ Apache configuration reloaded successfully${NC}"
+            # Restart Apache to ensure configuration takes effect
+            echo -e "${YELLOW}🔄 Restarting Apache to apply configuration...${NC}"
+            if sudo systemctl restart apache2 2>/dev/null; then
+                echo -e "${GREEN}✅ Apache restarted successfully${NC}"
                 
-                # Wait for Apache to fully reload
-                sleep 3
+                # Wait for Apache to fully start
+                sleep 5
                 
-                return 0
+                # Verify Apache is running
+                if sudo systemctl is-active apache2 >/dev/null 2>&1; then
+                    echo -e "${GREEN}✅ Apache is running and ready${NC}"
+                    return 0
+                else
+                    echo -e "${RED}❌ Apache failed to start properly${NC}"
+                    return 1
+                fi
             else
-                echo -e "${RED}❌ Failed to reload Apache${NC}"
+                echo -e "${RED}❌ Failed to restart Apache${NC}"
                 return 1
             fi
         else
@@ -666,7 +800,89 @@ main() {
     
     # Step 4: Setup GitHub Codespaces port forwarding
     echo -e "${BLUE}4️⃣  GitHub Codespaces Port Forwarding${NC}"
-    setup_port_forwarding
+    
+    # Check if we're in a codespace environment
+    if [ -z "$CODESPACE_NAME" ]; then
+        echo -e "${YELLOW}⚠️  Not in a GitHub Codespace environment${NC}"
+        echo -e "${GREEN}✅ Local development - port forwarding not required${NC}"
+    else
+        local external_url="https://${CODESPACE_NAME}-80.app.github.dev/"
+        
+        echo -e "${CYAN}ℹ️  Codespace: $CODESPACE_NAME${NC}"
+        echo -e "${CYAN}ℹ️  Expected External URL: $external_url${NC}"
+        
+        # Test current port forwarding status
+        echo -e "${YELLOW}🔍 Testing port forwarding status...${NC}"
+        
+        # Check GitHub CLI port status
+        local port_forwarded=false
+        local port_public=false
+        
+        if command -v gh >/dev/null 2>&1; then
+            local port_list=$(gh codespace ports list 2>/dev/null || echo "")
+            if echo "$port_list" | grep -E "^\s*80\s" >/dev/null; then
+                port_forwarded=true
+                if echo "$port_list" | grep -E "^\s*80\s.*public" >/dev/null; then
+                    port_public=true
+                fi
+                local port_80_info=$(echo "$port_list" | grep -E "^\s*80\s" | head -1)
+                echo -e "${GREEN}✅ Port 80 found in GitHub CLI: $port_80_info${NC}"
+            else
+                echo -e "${YELLOW}⚠️  Port 80 not found in GitHub CLI${NC}"
+            fi
+        fi
+        
+        # Test external accessibility
+        local external_test=$(curl -s -o /dev/null -w "%{http_code}" -L "$external_url" --max-time 15 2>/dev/null || echo "000")
+        
+        if [[ "$external_test" =~ ^[23][0-9][0-9]$ ]]; then
+            echo -e "${GREEN}✅ External URL is accessible (HTTP $external_test)${NC}"
+            echo -e "${GREEN}🎉 Port forwarding is working correctly!${NC}"
+        else
+            echo -e "${YELLOW}⚠️  External URL not accessible (HTTP $external_test)${NC}"
+            
+            # Attempt automatic fix if GitHub CLI is available
+            if command -v gh >/dev/null 2>&1; then
+                if [ "$port_forwarded" = false ]; then
+                    echo -e "${YELLOW}🔧 Attempting to forward port 80...${NC}"
+                    if gh codespace ports forward 80 -c "$CODESPACE_NAME" 2>/dev/null; then
+                        echo -e "${GREEN}✅ Port 80 forwarded successfully${NC}"
+                        
+                        # Now set it to public
+                        echo -e "${YELLOW}🔧 Setting port 80 to public visibility...${NC}"
+                        if gh codespace ports visibility 80:public -c "$CODESPACE_NAME" 2>/dev/null; then
+                            echo -e "${GREEN}✅ Port 80 set to public${NC}"
+                        else
+                            echo -e "${YELLOW}⚠️  Failed to set port to public - may need manual adjustment${NC}"
+                        fi
+                        
+                        sleep 5  # Wait for changes to take effect
+                    else
+                        echo -e "${YELLOW}⚠️  Automatic port forwarding failed${NC}"
+                    fi
+                elif [ "$port_public" = false ]; then
+                    echo -e "${YELLOW}🔧 Attempting to set port 80 to public...${NC}"
+                    if gh codespace ports visibility 80:public -c "$CODESPACE_NAME" 2>/dev/null; then
+                        echo -e "${GREEN}✅ Port 80 visibility set to public${NC}"
+                        sleep 5  # Wait for changes to take effect
+                    else
+                        echo -e "${YELLOW}⚠️  Failed to update port visibility${NC}"
+                    fi
+                fi
+                
+                # Test again after attempted fix
+                local retest=$(curl -s -o /dev/null -w "%{http_code}" -L "$external_url" --max-time 10 2>/dev/null || echo "000")
+                if [[ "$retest" =~ ^[23][0-9][0-9]$ ]]; then
+                    echo -e "${GREEN}🎉 Port forwarding fix successful! (HTTP $retest)${NC}"
+                else
+                    echo -e "${YELLOW}⚠️  Port forwarding still requires manual setup${NC}"
+                    show_port_forwarding_instructions
+                fi
+            else
+                show_port_forwarding_instructions
+            fi
+        fi
+    fi
     echo ""
     
     # Step 5: Setup Database and Drupal Installation
