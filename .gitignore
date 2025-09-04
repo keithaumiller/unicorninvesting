@@ -1,39 +1,31 @@
-# History files
-.Rhistory
-.Rapp.history
+# Virtual environment should not be committed
+.venv/
+venv/
+env/
+ENV/
 
-# Session Data files
-.RData
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 
-# Example code in package build process
-*-Ex.R
+# Node modules
+node_modules/
 
-# RStudio files
-.Rproj.user/
+# IDE files
+.vscode/
+.idea/
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# OS files
+.DS_Store
+Thumbs.db
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
-
-data/stockdata/*
-.Rproj.user
-data/results.csv
-data/GAResults.csv
-unicorninvesting.Rproj.RData
-unicorn.RData
-data/results/*
-
-# Drupal cache files
-WebFrontend/web/sites/default/files/css/
-WebFrontend/web/sites/default/files/js/
-WebFrontend/web/sites/default/files/php/
-
-# IBKR Gateway logs
-BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/logs/
-BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/*.log
-BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/tools/gateway*.log
-*.log
+# Log files
 logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
