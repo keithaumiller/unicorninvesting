@@ -429,6 +429,21 @@ run_myportolio_status_check() {
     if [ -f "$MYPORTOLIO_STATUSCHECK" ]; then
         echo "Running comprehensive Myportolio assessment..."
         
+        # Refresh IBKR account data before status check
+        echo -e "${BLUE}ℹ️  Refreshing IBKR account data...${NC}"
+        IBKR_REFRESHER="$UNICORN_ROOT/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/refresh_ibkr_data.py"
+        if [ -f "$IBKR_REFRESHER" ]; then
+            cd "$UNICORN_ROOT"
+            if [ -f "$UNICORN_ROOT/.venv/bin/activate" ]; then
+                source "$UNICORN_ROOT/.venv/bin/activate"
+                python "$IBKR_REFRESHER" 2>/dev/null || echo -e "${YELLOW}⚠️  IBKR data refresh failed - using cached data${NC}"
+            else
+                python3 "$IBKR_REFRESHER" 2>/dev/null || echo -e "${YELLOW}⚠️  IBKR data refresh failed - using cached data${NC}"
+            fi
+        else
+            echo -e "${YELLOW}⚠️  IBKR data refresher not found - using cached data${NC}"
+        fi
+        
         # Activate Python environment if available
         if [ -f "$UNICORN_ROOT/.venv/bin/activate" ]; then
             source "$UNICORN_ROOT/.venv/bin/activate"

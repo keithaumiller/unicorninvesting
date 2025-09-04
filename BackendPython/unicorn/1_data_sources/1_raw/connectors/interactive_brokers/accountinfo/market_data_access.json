@@ -1,63 +1,111 @@
 {
-  "timestamp": "2025-09-02T18:59:56.559380",
-  "data_subscriptions": {},
-  "real_time_access": {},
   "contract_types": {
-    "US Stocks": {
-      "contract": {
-        "symbol": "AAPL",
-        "secType": "STK",
-        "exchange": "SMART",
-        "description": "US Stocks"
-      },
-      "search_status": 200,
+    "Cryptocurrency": {
       "accessible": true,
-      "contracts_found": 5
+      "contracts_found": 4,
+      "contract": {
+        "conid": "541686654",
+        "companyHeader": "Ethereum cryptocurrency",
+        "companyName": "Ethereum cryptocurrency",
+        "symbol": "ETH",
+        "description": null,
+        "restricted": null,
+        "sections": [
+          {
+            "secType": "CRYPTO",
+            "exchange": "ZEROHASH;"
+          }
+        ]
+      }
+    },
+    "US Stocks": {
+      "accessible": true,
+      "contracts_found": 5,
+      "contract": {
+        "conid": "265598",
+        "companyHeader": "APPLE INC - NASDAQ",
+        "companyName": "APPLE INC",
+        "symbol": "AAPL",
+        "description": "NASDAQ",
+        "restricted": "CFD,IOPT,WAR",
+        "sections": [
+          {
+            "secType": "STK"
+          },
+          {
+            "secType": "OPT",
+            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;AUG26;SEP26;DEC26;JAN27;JUN27;DEC27",
+            "exchange": "SMART;AMEX;BATS;BOX;CBOE;CBOE2;EDGX;EMERALD;GEMINI;IBUSOPT;ISE;MEMX;MERCURY;MIAX;NASDAQBX;NASDAQOM;PEARL;PHLX;PSE;SAPPHIRE"
+          },
+          {
+            "secType": "WAR",
+            "months": "JUL25;AUG25;SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;AUG26;SEP26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;JUN28;DEC28;JAN29",
+            "exchange": "BVME;EBS;FWB;GETTEX;SBF;SWB"
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "exchange": "SMART",
+            "conid": "120549942"
+          },
+          {
+            "secType": "BAG"
+          }
+        ]
+      }
     },
     "Forex": {
+      "accessible": true,
+      "contracts_found": 4,
       "contract": {
+        "conid": "12087792",
+        "companyHeader": "European Monetary Union Euro - IDEALPRO",
+        "companyName": "European Monetary Union Euro",
         "symbol": "EUR",
-        "secType": "CASH",
-        "currency": "USD",
-        "description": "Forex"
-      },
-      "search_status": 200,
-      "accessible": true,
-      "contracts_found": 4
-    },
-    "Cryptocurrency": {
-      "contract": {
-        "symbol": "ETH",
-        "secType": "CRYPTO",
-        "exchange": "PAXOS",
-        "description": "Cryptocurrency"
-      },
-      "search_status": 200,
-      "accessible": true,
-      "contracts_found": 4
-    },
-    "Futures": {
-      "contract": {
-        "symbol": "ES",
-        "secType": "FUT",
-        "exchange": "CME",
-        "description": "Futures"
-      },
-      "search_status": 200,
-      "accessible": true,
-      "contracts_found": 5
-    },
-    "Options": {
-      "contract": {
-        "symbol": "SPY",
-        "secType": "OPT",
-        "exchange": "SMART",
-        "description": "Options"
-      },
-      "search_status": 200,
-      "accessible": true,
-      "contracts_found": 3
+        "description": "IDEALPRO",
+        "restricted": "IOPT",
+        "sections": [
+          {
+            "secType": "CASH"
+          },
+          {
+            "secType": "FUT",
+            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;MAR26;JUN26;SEP26;DEC26;MAR27;JUN27;SEP27;DEC27;MAR28;JUN28;SEP28;DEC28;MAR29;JUN29;SEP29;DEC29;MAR30;JUN30",
+            "exchange": "CME",
+            "showPrips": true
+          },
+          {
+            "secType": "FOP",
+            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;JUL26;AUG26;SEP26;DEC26;MAR27;JUN27",
+            "exchange": "CME",
+            "showPrips": true
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "showPrips": true
+          },
+          {
+            "secType": "BAG",
+            "exchange": "CME",
+            "legSecType": "FUT"
+          },
+          {
+            "secType": "BAG",
+            "exchange": "CME",
+            "legSecType": "FOP"
+          },
+          {
+            "secType": "EC"
+          }
+        ]
+      }
     }
   },
-  "errors": []
+  "data_permissions": {},
+  "last_updated": "2025-09-04T20:42:44.868651"
 }

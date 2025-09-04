@@ -93,6 +93,13 @@ log_success "Services started successfully"
 # Step 6: Set up Python virtual environment
 log_info "Setting up Python virtual environment..."
 cd /workspaces/unicorninvesting
+
+# Remove any broken virtual environment
+if [ -d ".venv" ] && [ ! -f ".venv/bin/activate" ]; then
+    log_info "Removing broken virtual environment..."
+    rm -rf .venv
+fi
+
 if [ ! -d ".venv" ]; then
     python3 -m venv .venv
     log_success "Python virtual environment created"
@@ -100,8 +107,14 @@ else
     log_success "Python virtual environment already exists"
 fi
 
-# Activate virtual environment
+# Activate virtual environment and verify it works
 source .venv/bin/activate
+if [ "$VIRTUAL_ENV" != "" ]; then
+    log_success "Virtual environment activated: $VIRTUAL_ENV"
+else
+    log_error "Failed to activate virtual environment"
+    exit 1
+fi
 
 # Step 7: Upgrade pip and install Python packages
 log_info "Installing Python packages..."
@@ -236,3 +249,16 @@ echo "Environment variables:"
 echo "  UNICORN_ROOT = $UNICORN_ROOT"
 echo "  DRUPAL_ROOT = $DRUPAL_ROOT"
 echo "  DRUPAL_URL = $DRUPAL_URL"
+
+# Ensure virtual environment is available for future sessions
+if [ -f "/workspaces/unicorninvesting/.venv/bin/activate" ]; then
+    log_success "Virtual environment ready at: /workspaces/unicorninvesting/.venv"
+else
+    log_warning "Virtual environment not found - creating it now..."
+    cd /workspaces/unicorninvesting
+    python3 -m venv .venv
+    source .venv/bin/activate
+fi
+
+# Automatically source ~/.bashrc to activate new aliases for this session
+source ~/.bashrc

@@ -57,8 +57,28 @@ class MyportolioStatusChecker:
             'account_capabilities': {},
             'market_data_access': {},
             'risk_parameters': {},
-            'available': False
+            'available': False,
+            'data_freshness': 'unknown',
+            'safe_for_live_trading': False
         }
+        
+        # First check data freshness
+        freshness_file = self.ibkr_account_dir / "data_freshness.json"
+        if freshness_file.exists():
+            try:
+                with open(freshness_file, 'r') as f:
+                    freshness_data = json.load(f)
+                    account_data['data_freshness'] = freshness_data.get('status', 'unknown')
+                    account_data['safe_for_live_trading'] = freshness_data.get('safe_for_live_trading', False)
+                    
+                    # If data is marked as stale, fail immediately for live trading
+                    if freshness_data.get('status') == 'stale':
+                        logger.error("❌ CRITICAL: IBKR account data is STALE - live trading is NOT safe")
+                        logger.error(f"   Reason: {freshness_data.get('warning', 'Unknown reason')}")
+                        logger.error("   Fix: Ensure IBKR Gateway is running and restart the environment check")
+                        return account_data  # Return with available=False
+            except Exception as e:
+                logger.warning(f"Could not read data freshness marker: {e}")
         
         try:
             # Load complete account information
@@ -85,11 +105,19 @@ class MyportolioStatusChecker:
                 with open(risk_params_file, 'r') as f:
                     account_data['risk_parameters'] = json.load(f)
             
-            account_data['available'] = True
-            logger.info("IBKR account data loaded successfully")
+            # Only mark as available if data is fresh AND safe for live trading
+            if account_data['safe_for_live_trading'] and account_data['data_freshness'] == 'fresh':
+                account_data['available'] = True
+                logger.info("✅ IBKR account data loaded successfully - FRESH DATA confirmed safe for live trading")
+            else:
+                account_data['available'] = False
+                if account_data['data_freshness'] == 'stale':
+                    logger.error("❌ IBKR account data is STALE - refusing to use for safety")
+                else:
+                    logger.warning("⚠️ IBKR account data freshness unknown - not safe for live trading")
             
         except Exception as e:
-            logger.warning(f"Error loading IBKR account data: {e}")
+            logger.error(f"Error loading IBKR account data: {e}")
             account_data['available'] = False
             
         return account_data
@@ -715,10 +743,38 @@ class MyportolioStatusChecker:
         # Extract account basic information
         account_info = self.ibkr_account_data.get('complete_account_info', {})
         account_summary = account_info.get('account_summary', {})
-        accounts = account_summary.get('accounts', [])
         
-        if accounts:
-            account = accounts[0]
+        # Handle both old and new account data structures
+        accounts_data = account_summary.get('accounts', [])
+        if isinstance(accounts_data, dict) and 'accounts' in accounts_data:
+            # New structure: accounts.accounts is a list
+            account_list = accounts_data['accounts']
+            if account_list:
+                # Get account properties if available
+                account_props = accounts_data.get('acctProps', {})
+                first_account_id = account_list[0]
+                
+                trading_params['account_id'] = first_account_id
+                
+                # Use account properties if available, otherwise use defaults
+                if first_account_id in account_props:
+                    props = account_props[first_account_id]
+                    trading_params['trading_permissions'] = {
+                        'trading_type': 'STKMRGN',  # Default for individual accounts
+                        'brokerage_access': True,   # Implied if we have account access
+                        'entity': 'IBLLC-US',      # Default
+                        'account_type': 'INDIVIDUAL'  # Default
+                    }
+                else:
+                    trading_params['trading_permissions'] = {
+                        'trading_type': 'Unknown',
+                        'brokerage_access': False,
+                        'entity': 'Unknown',
+                        'account_type': 'Unknown'
+                    }
+        elif isinstance(accounts_data, list) and accounts_data:
+            # Old structure: accounts is directly a list
+            account = accounts_data[0]
             trading_params['account_id'] = account.get('accountId')
             trading_params['trading_permissions'] = {
                 'trading_type': account.get('tradingType', 'Unknown'),
