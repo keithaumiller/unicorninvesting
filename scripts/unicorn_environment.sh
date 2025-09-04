@@ -410,7 +410,10 @@ run_myportolio_status_check() {
     echo -e "\n${BLUE}🎯 Myportolio Live Trading Readiness${NC}"
     echo "===================================="
     
-    # Path to Myportolio status check script
+    # Path to Myportolio status check script - ensure UNICORN_ROOT is set
+    if [ -z "$UNICORN_ROOT" ]; then
+        UNICORN_ROOT='/workspaces/unicorninvesting'
+    fi
     MYPORTOLIO_STATUSCHECK="$UNICORN_ROOT/BackendPython/unicorn/4_portfolios/Myportolio/utilities/statuscheck.py"
     
     if [ -f "$MYPORTOLIO_STATUSCHECK" ]; then
@@ -535,13 +538,13 @@ run_health_checks() {
     echo -e "\n${BLUE}🌐 Web Server & Database${NC}"
     echo "========================"
 
-    # MySQL Service (prioritize service command in container environments)
+    # MySQL Service (container-aware detection)
     MYSQL_RUNNING=false
     
-    # In container environments (like Codespaces), prefer service command over systemctl
+    # In container environments (like Codespaces), check process directly since service commands can be misleading
     if [[ -n "${CODESPACE_NAME:-}" ]] || [[ -n "${GITHUB_CODESPACES:-}" ]] || [[ -f "/.dockerenv" ]]; then
-        # Container environment - use service command
-        if service mysql status >/dev/null 2>&1; then
+        # Container environment - check if mysqld process is running
+        if pgrep -f "mysqld" >/dev/null 2>&1; then
             MYSQL_RUNNING=true
         fi
     else
@@ -560,13 +563,13 @@ run_health_checks() {
         check_status 1 "MySQL Service: Stopped"
     fi
 
-    # Apache Service (prioritize service command in container environments)
+    # Apache Service (container-aware detection)
     APACHE_RUNNING=false
     
-    # In container environments (like Codespaces), prefer service command over systemctl
+    # In container environments (like Codespaces), check process directly since service commands can be misleading
     if [[ -n "${CODESPACE_NAME:-}" ]] || [[ -n "${GITHUB_CODESPACES:-}" ]] || [[ -f "/.dockerenv" ]]; then
-        # Container environment - use service command
-        if service apache2 status >/dev/null 2>&1; then
+        # Container environment - check if apache2 process is running
+        if pgrep -f "apache2" >/dev/null 2>&1; then
             APACHE_RUNNING=true
         fi
     else
@@ -662,7 +665,8 @@ run_health_checks() {
     echo -e "\n${BLUE}🏗️  LEAN Framework${NC}"
     echo "=================="
 
-    if [ -f "BackendPython/Lean/readme.md" ]; then
+    # Check for LEAN Framework in BackendPython/Lean directory
+    if [ -d "BackendPython/Lean" ] && [ "$(ls -A BackendPython/Lean 2>/dev/null)" ]; then
         check_status 0 "LEAN Framework: Available"
         
         # Check for .NET (required for LEAN)
@@ -672,6 +676,8 @@ run_health_checks() {
         else
             check_status 1 ".NET Runtime: Not installed" "Required for LEAN framework"
         fi
+    elif [ -d "BackendPython/Lean" ]; then
+        check_status 1 "LEAN Framework: Directory exists but empty"
     else
         check_status 1 "LEAN Framework: Not found"
     fi
