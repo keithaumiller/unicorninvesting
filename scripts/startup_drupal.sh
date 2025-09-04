@@ -18,8 +18,8 @@ APACHE_SERVICE="apache2"
 MYSQL_SERVICE="mysql"
 DRUPAL_URL="http://localhost/"
 DRUPAL_UNICORN_URL="http://localhost/admin/metrics"
-DRUPAL_EXTERNAL_URL="https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/"
-DRUPAL_EXTERNAL_UNICORN_URL="https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics"
+DRUPAL_EXTERNAL_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/"
+DRUPAL_EXTERNAL_UNICORN_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/admin/metrics"
 WORKSPACE_ROOT="/home/runner/work/unicorninvesting/unicorninvesting"
 DRUPAL_ROOT="$WORKSPACE_ROOT/WebFrontend"
 
@@ -299,7 +299,7 @@ main() {
         echo -e "${YELLOW}⚠️  Admin URL failed, trying legacy URL...${NC}"
         
         # Fallback to old URL
-        local legacy_url="https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/unicorn"
+        local legacy_url="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/unicorn"
         if validate_url_with_content "$legacy_url" "LEAN Dashboard (legacy)" "Unicorn Metrics Dashboard"; then
             echo -e "${YELLOW}⚠️  Dashboard accessible via legacy URL: /unicorn${NC}"
             echo -e "${YELLOW}📋 Module routing may need to be refreshed${NC}"

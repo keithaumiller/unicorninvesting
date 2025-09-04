@@ -4,7 +4,7 @@
 # This script sets up the complete environment including:
 # - System packages and services (MySQL, Apache, PHP 8.3)
 # - Python virtual environment and packages
-# - LEAN framework
+# - LEAN framework (TEMPORARILY DISABLED)
 # - Aliases and environment variables
 
 set -e  # Exit on any error
@@ -149,23 +149,25 @@ else
     log_warning "Requirements file not found, skipping package installation"
 fi
 
-# Step 8: Install LEAN Framework
-log_info "Installing LEAN Framework..."
-if [ ! -d "BackendPython/Lean" ]; then
-    cd BackendPython
-    git clone https://github.com/QuantConnect/Lean.git
-    cd Lean
-    # Build LEAN (this requires .NET SDK)
-    if command -v dotnet &> /dev/null; then
-        dotnet build
-        log_success "LEAN Framework installed and built"
-    else
-        log_warning "LEAN downloaded but .NET SDK not found for building"
-    fi
-    cd /workspaces/unicorninvesting
-else
-    log_success "LEAN Framework already exists"
-fi
+# Step 8: Install LEAN Framework (TEMPORARILY DISABLED)
+# log_info "Installing LEAN Framework..."
+# if [ ! -d "BackendPython/Lean" ]; then
+#     cd BackendPython
+#     git clone https://github.com/QuantConnect/Lean.git
+#     cd Lean
+#     # Build LEAN (this requires .NET SDK)
+#     if command -v dotnet &> /dev/null; then
+#         dotnet build
+#         log_success "LEAN Framework installed and built"
+#     else
+#         log_warning "LEAN downloaded but .NET SDK not found for building"
+#     fi
+#     cd /workspaces/unicorninvesting
+# else
+#     log_success "LEAN Framework already exists"
+# fi
+log_info "LEAN Framework installation temporarily disabled - skipping..."
+log_success "LEAN Framework installation skipped (can be re-enabled)"
 
 # Step 9: Set up MySQL for Drupal
 log_info "Configuring MySQL for Drupal..."
@@ -217,7 +219,7 @@ alias unicorn-root='cd /workspaces/unicorninvesting'
 # Set environment variables for current session
 export UNICORN_ROOT='/workspaces/unicorninvesting'
 export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'
-export DRUPAL_URL='https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/'
+export DRUPAL_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/"
 
 echo ""
 echo "🦄 Unicorn Investing Environment Ready!"

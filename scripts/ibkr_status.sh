@@ -17,7 +17,7 @@ if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; the
         echo "🚀 Status: READY FOR TRADING"
     else
         echo "⚠️  Authentication: REQUIRED"
-        echo "🔗 Login URL: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
+        echo "🔗 Login URL: https://${CODESPACE_NAME:-codespace}-5000.app.github.dev/"
     fi
 else
     echo "❌ IBKR Gateway: NOT RUNNING"
@@ -37,4 +37,4 @@ echo "  drupal-start        - Start Drupal services"
 echo ""
 echo "📊 Port Status:"
 echo "  Gateway: http://localhost:5000"
-echo "  External: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/"
+echo "  External: https://${CODESPACE_NAME:-codespace}-5000.app.github.dev/"

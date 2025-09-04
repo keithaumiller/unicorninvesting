@@ -78,7 +78,7 @@ Drupal-specific startup script for web frontend. This functionality has been int
 ### Interactive Brokers (IBKR) Integration
 - **Status**: ✅ Fully operational with Client Portal Gateway
 - **Authentication**: Manual login required via web interface
-- **Gateway URL**: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
+- **Gateway URL**: https://${CODESPACE_NAME:-your-codespace}-5000.app.github.dev/ (dynamic)
 - **Data Sources**: Real-time and historical cryptocurrency data (ETH validated)
 - **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
 
