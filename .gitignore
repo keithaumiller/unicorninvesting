@@ -35,6 +35,18 @@ WebFrontend/web/sites/default/files/css/
 WebFrontend/web/sites/default/files/js/
 WebFrontend/web/sites/default/files/php/twig/
 WebFrontend/web/sites/default/files/config_*/
+WebFrontend/web/sites/default/files/styles/
+WebFrontend/web/sites/default/files/translations/
+WebFrontend/web/sites/default/files/backup_migrate/
+
+# Drupal private files and uploads (but allow structure)
+WebFrontend/web/sites/default/files/*
+!WebFrontend/web/sites/default/files/.gitkeep
+!WebFrontend/web/sites/default/files/README.txt
+
+# Drupal settings files with sensitive information
+WebFrontend/web/sites/*/settings.local.php
+WebFrontend/web/sites/*/services.local.yml
 
 # Status reports and temporary outputs
 **/status_report_*.json

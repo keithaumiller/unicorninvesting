@@ -708,23 +708,34 @@ EOF
             
             # Restart Apache to ensure configuration takes effect
             echo -e "${YELLOW}🔄 Restarting Apache to apply configuration...${NC}"
+            
+            # Try systemctl first, fallback to service command for containers
             if sudo systemctl restart apache2 2>/dev/null; then
-                echo -e "${GREEN}✅ Apache restarted successfully${NC}"
-                
+                echo -e "${GREEN}✅ Apache restarted successfully (systemctl)${NC}"
+                restart_success=true
+            elif sudo service apache2 restart 2>/dev/null; then
+                echo -e "${GREEN}✅ Apache restarted successfully (service)${NC}"
+                restart_success=true
+            else
+                echo -e "${RED}❌ Failed to restart Apache with both systemctl and service${NC}"
+                return 1
+            fi
+            
+            if [ "$restart_success" = true ]; then
                 # Wait for Apache to fully start
                 sleep 5
                 
-                # Verify Apache is running
+                # Verify Apache is running - try systemctl first, fallback to service
                 if sudo systemctl is-active apache2 >/dev/null 2>&1; then
-                    echo -e "${GREEN}✅ Apache is running and ready${NC}"
+                    echo -e "${GREEN}✅ Apache is running and ready (systemctl)${NC}"
+                    return 0
+                elif sudo service apache2 status >/dev/null 2>&1; then
+                    echo -e "${GREEN}✅ Apache is running and ready (service)${NC}"
                     return 0
                 else
                     echo -e "${RED}❌ Apache failed to start properly${NC}"
                     return 1
                 fi
-            else
-                echo -e "${RED}❌ Failed to restart Apache${NC}"
-                return 1
             fi
         else
             echo -e "${RED}❌ Apache configuration test failed${NC}"
