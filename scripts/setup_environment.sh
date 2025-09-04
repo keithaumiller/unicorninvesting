@@ -81,7 +81,7 @@ sudo a2enmod rewrite
 
 # Update alternatives to use PHP 8.3 as default
 sudo update-alternatives --install /usr/bin/php php /usr/bin/php8.3 60 --force
-# Ensure PHP 8.3 is used in PATH
+# Ensure PHP 8.3 is used in PATH (prioritize /usr/bin over codespace PHP)
 export PATH="/usr/bin:$PATH"
 
 # Step 5: Start services (using service command for containers)
@@ -109,6 +109,18 @@ pip install --upgrade pip setuptools wheel
 
 # Install core packages first
 pip install pandas numpy scipy scikit-learn
+
+# Install API and web framework packages
+log_info "Installing API and web framework packages..."
+pip install fastapi uvicorn
+
+# Install forecasting packages
+log_info "Installing forecasting packages..."
+pip install prophet
+
+# Install database packages
+log_info "Installing database packages..."
+pip install sqlalchemy pymysql
 
 # Install financial packages
 log_info "Installing financial data packages..."
@@ -182,7 +194,10 @@ if [ -f ~/.bashrc ]; then
         echo "# Unicorn Investing Environment" >> ~/.bashrc
         echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
         echo "export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
-        echo "export DRUPAL_URL='https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/'" >> ~/.bashrc
+        echo "export DRUPAL_URL='https://${CODESPACE_NAME:-codespace}-80.app.github.dev/'" >> ~/.bashrc
+        echo "" >> ~/.bashrc
+        echo "# Ensure PHP 8.3 is used by default (prioritize /usr/bin over codespace PHP)" >> ~/.bashrc
+        echo "export PATH=\"/usr/bin:\$PATH\"" >> ~/.bashrc
         
         echo "✅ Aliases added to ~/.bashrc"
         echo "💡 Run 'source ~/.bashrc' or restart your terminal to use them"

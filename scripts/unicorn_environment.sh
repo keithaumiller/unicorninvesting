@@ -16,6 +16,16 @@ TOTAL_CHECKS=0
 PASSED_CHECKS=0
 FAILED_CHECKS=0
 
+# Function to get dynamic GitHub Codespace hostname
+get_codespace_hostname() {
+    if [ -n "$CODESPACE_NAME" ]; then
+        echo "${CODESPACE_NAME}"
+    else
+        # Fallback to extracting from current hostname
+        hostname | cut -d'-' -f1-3
+    fi
+}
+
 # Function to check status and print results
 check_status() {
     TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
@@ -331,7 +341,7 @@ start_ibkr_gateway() {
                 authenticate_ibkr_gateway
                 
                 echo ""
-                echo -e "${BLUE}📱 Gateway accessible via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+                echo -e "${BLUE}📱 Gateway accessible via: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
                 echo -e "${YELLOW}💡 Note: External URL uses HTTPS proxy but gateway runs on HTTP localhost:5000${NC}"
                 return 0
             fi
@@ -384,7 +394,7 @@ authenticate_ibkr_gateway() {
     
     echo -e "${YELLOW}🔄 IBKR Gateway is ready for authentication${NC}"
     echo -e "${RED}� CRITICAL PATH: IBKR Authentication Required for Live Trading${NC}"
-    echo -e "${BLUE}📱 Authentication URL: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+    echo -e "${BLUE}📱 Authentication URL: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
     echo ""
     echo -e "${YELLOW}📋 Use your IBKR credentials:${NC}"
     echo -e "${GREEN}   Username: [Your IBKR Username]${NC}"
@@ -513,7 +523,11 @@ run_health_checks() {
         source .venv/bin/activate
         
         python -c "import fastapi, uvicorn" >/dev/null 2>&1
-        check_status $? "FastAPI Framework: Installed and importable"
+        if [ $? -eq 0 ]; then
+            check_status 0 "FastAPI Framework: Installed and importable"
+        else
+            check_status 1 "FastAPI Framework: Not installed or not importable"
+        fi
         
         python -c "import pandas, numpy, scipy" >/dev/null 2>&1
         check_status $? "Data Science Libraries: pandas, numpy, scipy"
@@ -522,13 +536,21 @@ run_health_checks() {
         check_status $? "Machine Learning Libraries: scikit-learn"
         
         python -c "import prophet" >/dev/null 2>&1
-        check_status $? "Prophet Forecasting: Installed and importable"
+        if [ $? -eq 0 ]; then
+            check_status 0 "Prophet Forecasting: Installed and importable"
+        else
+            check_status 1 "Prophet Forecasting: Not installed or not importable"
+        fi
         
         python -c "import yfinance" >/dev/null 2>&1
         check_status $? "Financial Data Libraries: yfinance"
         
         python -c "import sqlalchemy, pymysql" >/dev/null 2>&1
-        check_status $? "Database Libraries: SQLAlchemy, PyMySQL"
+        if [ $? -eq 0 ]; then
+            check_status 0 "Database Libraries: SQLAlchemy, PyMySQL"
+        else
+            check_status 1 "Database Libraries: SQLAlchemy, PyMySQL not installed"
+        fi
         
     else
         check_status 1 "Virtual Environment: Missing" "Run: python3 -m venv .venv && source .venv/bin/activate"
@@ -752,7 +774,7 @@ run_health_checks() {
                 AUTH_STATUS="False"  # Set AUTH_STATUS based on failed dispatcher check
                 echo -e "${RED}🚨 CRITICAL: IBKR Authentication Required${NC}"
                 echo -e "${YELLOW}   Next Steps:${NC}"
-                echo -e "${YELLOW}   1. Visit: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+                echo -e "${YELLOW}   1. Visit: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
                 echo -e "${YELLOW}   2. Login with your IBKR credentials${NC}"
                 echo -e "${YELLOW}   3. Re-run system check: ./scripts/unicorn_environment.sh${NC}"
                 echo -e "${YELLOW}   Status: ${DISPATCHER_RESPONSE:-'Gateway ready for login'}${NC}"
@@ -781,7 +803,7 @@ run_health_checks() {
         else
             check_status 1 "IBKR Authentication: Not authenticated"
             echo -e "${RED}🚨 CRITICAL PATH BLOCKED: IBKR Authentication Required${NC}"
-            echo -e "${YELLOW}      → Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+            echo -e "${YELLOW}      → Please authenticate via: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
             echo -e "${YELLOW}      → After authentication, re-run: ./scripts/unicorn_environment.sh${NC}"
             echo -e "${YELLOW}      → IBKR access tests skipped (authentication required)${NC}"
         fi
@@ -901,7 +923,7 @@ run_health_checks() {
             fi
         else
             check_status 1 "IBKR Authentication: Not authenticated"
-            echo -e "${YELLOW}      → Please authenticate via: https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/${NC}"
+            echo -e "${YELLOW}      → Please authenticate via: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
             echo -e "${YELLOW}      → IBKR access tests skipped (authentication required)${NC}"
         fi
         
