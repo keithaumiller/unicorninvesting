@@ -1,0 +1,514 @@
+{
+  "timestamp": "2025-09-04T15:43:49.466322",
+  "overall_readiness": "UNKNOWN",
+  "critical_issues": [],
+  "warnings": [],
+  "passed_checks": [],
+  "component_status": {
+    "portfolio_configuration": {
+      "config_loaded": true,
+      "risk_params_loaded": true,
+      "execution_settings_loaded": true,
+      "asset_allocation_valid": true,
+      "risk_limits_defined": true,
+      "configuration_errors": []
+    },
+    "alpha_models": {
+      "models_available": {
+        "eth_prophet": {
+          "framework_available": true,
+          "database_available": true,
+          "ready": true
+        },
+        "eth_xgboost": {
+          "framework_available": true,
+          "database_available": true,
+          "ready": true
+        },
+        "eth_ensemble": {
+          "framework_available": true,
+          "database_available": true,
+          "ready": true
+        }
+      },
+      "performance_metrics": {
+        "eth_prophet": {},
+        "eth_xgboost": {},
+        "eth_ensemble": {}
+      },
+      "model_freshness": {},
+      "production_ready": {},
+      "best_model": null
+    },
+    "production_models": {
+      "production_models_dir_exists": true,
+      "timeframes_coverage": {
+        "1min": {
+          "directory_exists": true,
+          "methods": {
+            "prophet": {
+              "directory_exists": true,
+              "model_count": 36,
+              "meets_minimum": true,
+              "model_files": [
+                "f108bead67fe.json",
+                "4f7b4b5cd403.json",
+                "3bf2612bb22e.json",
+                "49e1484f7690.json",
+                "19fc0ab602ab.json",
+                "7b57366b8f90.json",
+                "4a618c090548.json",
+                "28c399c1cb36.json",
+                "1782697ee9ec.json",
+                "a7054f96f12b.json",
+                "070d97f3d0b2.json",
+                "1470d138b103.json",
+                "2174700a1ef9.json",
+                "dd598eb16b28.json",
+                "3468304678bd.json",
+                "a43ea8952a9c.json",
+                "a25772bf6d80.json",
+                "a7d53e9e9003.json",
+                "f16754df943f.json",
+                "0f321f25f7e1.json",
+                "a35086124912.json",
+                "30344176f22b.json",
+                "c7e9264db0e7.json",
+                "3c38e33e7e9b.json",
+                "4c411368a34d.json",
+                "48c3034d7aca.json",
+                "7f50ec6063ea.json",
+                "5c27c9039193.json",
+                "977b32d313a4.json",
+                "67fc914959d5.json",
+                "65dc86dc4ef0.json",
+                "f5b20d67079f.json",
+                "a3a6a85e18fa.json",
+                "cf8e1b96ccb9.json",
+                "4d598a724886.json",
+                "1910d58f4a7e.json"
+              ]
+            },
+            "xgboost": {
+              "directory_exists": true,
+              "model_count": 33,
+              "meets_minimum": true,
+              "model_files": [
+                "1e99bb86cda7.json",
+                "2ed8c07f7bd3.json",
+                "8424df0d66ce.json",
+                "a63d441fdf24.json",
+                "8af580bcea85.json",
+                "c2b0d52dbde6.json",
+                "3379b763bbf4.json",
+                "05b047974720.json",
+                "37034457959d.json",
+                "475cb427d11c.json",
+                "b6354e367c8d.json",
+                "46a832af59ab.json",
+                "7af28b1e119c.json",
+                "66f6b4e9e658.json",
+                "3d48b418f526.json",
+                "53fe08002b79.json",
+                "f95cf593353a.json",
+                "1b7e9a7e6125.json",
+                "41eac629a035.json",
+                "b2b93197b1b1.json",
+                "a83455bb7b04.json",
+                "fd13f03d037e.json",
+                "993d66d9f800.json",
+                "1752dbe0e22d.json",
+                "c595f3ce42f4.json",
+                "6ab573098aac.json",
+                "854167dbcd83.json",
+                "f01435c127a7.json",
+                "467c8029f9bc.json",
+                "c3cb65a39b54.json",
+                "92e07f50d3dd.json",
+                "aafb8dcd21dd.json",
+                "4ae434e37b1f.json"
+              ]
+            },
+            "ensemble": {
+              "directory_exists": true,
+              "model_count": 2,
+              "meets_minimum": true,
+              "model_files": [
+                "3c570e5e-21b.json",
+                "71e46e0d-bca.json"
+              ]
+            }
+          },
+          "ensemble_ready": true
+        },
+        "1hour": {
+          "directory_exists": true,
+          "methods": {
+            "prophet": {
+              "directory_exists": true,
+              "model_count": 26,
+              "meets_minimum": true,
+              "model_files": [
+                "9989427d1528.json",
+                "3b6418c2b6f8.json",
+                "a9d4dd1f85ed.json",
+                "bf5135ba449b.json",
+                "dc9c124bf337.json",
+                "e0a747d9513a.json",
+                "4df4415b5c36.json",
+                "56dc8b8bec0c.json",
+                "9825acd0913a.json",
+                "06470e7d3eef.json",
+                "3b82176d54f1.json",
+                "08a0b242c2ba.json",
+                "5d361e776ae7.json",
+                "38514db16566.json",
+                "ab55188dc951.json",
+                "d6480ea925cc.json",
+                "b01ca65d5b85.json",
+                "7a8cfb1d1e41.json",
+                "3e624927138a.json",
+                "58389ac93ef0.json",
+                "386a4b98f90b.json",
+                "f036f06f0a0b.json",
+                "0dccecc6ea5d.json",
+                "67a842e3c7b5.json",
+                "3da653686b13.json",
+                "84413c55ad54.json"
+              ]
+            },
+            "xgboost": {
+              "directory_exists": true,
+              "model_count": 26,
+              "meets_minimum": true,
+              "model_files": [
+                "ca104133ffa0.json",
+                "c3e720c30c93.json",
+                "2d5d0f89153e.json",
+                "25a06c5bdf97.json",
+                "fcf96d3f671d.json",
+                "321701f0d6a4.json",
+                "a7feeed83bf2.json",
+                "f95bf7cf724b.json",
+                "9b8e3d4b0b77.json",
+                "663bf139189d.json",
+                "4978e7a142a9.json",
+                "2f0edd8601ee.json",
+                "d15571dd89ad.json",
+                "6107b7cadf44.json",
+                "a33a201ffac5.json",
+                "1d877b448f9c.json",
+                "0f0abff0d377.json",
+                "bd796427fd5c.json",
+                "2c3e36e857da.json",
+                "920e925c74c3.json",
+                "f127fd8b96f5.json",
+                "117fc9dc50cf.json",
+                "c89f3389d23c.json",
+                "1550f7048ced.json",
+                "f3791e1d07c5.json",
+                "ab0e9f246783.json"
+              ]
+            },
+            "ensemble": {
+              "directory_exists": true,
+              "model_count": 2,
+              "meets_minimum": true,
+              "model_files": [
+                "5a489d9a-8ef.json",
+                "97a5a8d9-f13.json"
+              ]
+            }
+          },
+          "ensemble_ready": true
+        },
+        "1day": {
+          "directory_exists": true,
+          "methods": {
+            "prophet": {
+              "directory_exists": true,
+              "model_count": 45,
+              "meets_minimum": true,
+              "model_files": [
+                "0d5ba76a8cf3.json",
+                "407454460f47.json",
+                "76f8b12747c0.json",
+                "21e93f114afd.json",
+                "87408cf35303.json",
+                "08aac9e9a534.json",
+                "f71178979fc0.json",
+                "825f02859d98.json",
+                "a16e9e70ed9b.json",
+                "a3047c9a5901.json",
+                "ff6e3e20f67b.json",
+                "c39da494a6bf.json",
+                "17e037a86794.json",
+                "189093d41dc4.json",
+                "a8ba555d7909.json",
+                "afe3ac5430ca.json",
+                "38ae62142ef6.json",
+                "4a924a12816b.json",
+                "48c083cd1fbb.json",
+                "f12101a99d35.json",
+                "cefeb0b0234e.json",
+                "3d5fdc6e4e1e.json",
+                "1e58ae26b8aa.json",
+                "67c1fe9bbb7c.json",
+                "f1ab88e85930.json",
+                "aa62f3668cfa.json",
+                "bcdd07a393c0.json",
+                "617a754003cd.json",
+                "bb766839a51b.json",
+                "188160f5ac83.json",
+                "81b2d18f1535.json",
+                "218557010f7b.json",
+                "8ba11a289e6a.json",
+                "87b2b47d3757.json",
+                "9c9fcab3cd33.json",
+                "af8049b107eb.json",
+                "c0135b56499a.json",
+                "4502f9c504f3.json",
+                "41a3dc1b66a8.json",
+                "c3c99dc76fb9.json",
+                "3b27ed58c0a9.json",
+                "9991ac7efbad.json",
+                "4dc5e8ba3d0f.json",
+                "69e4862ba56a.json",
+                "67c59c0863e1.json"
+              ]
+            },
+            "xgboost": {
+              "directory_exists": true,
+              "model_count": 2,
+              "meets_minimum": true,
+              "model_files": [
+                "53020b2e5c8b.json",
+                "f3c4767dc447.json"
+              ]
+            },
+            "ensemble": {
+              "directory_exists": true,
+              "model_count": 2,
+              "meets_minimum": true,
+              "model_files": [
+                "52938ef9-923.json",
+                "6d27f180-831.json"
+              ]
+            }
+          },
+          "ensemble_ready": true
+        }
+      },
+      "ensemble_readiness": {},
+      "total_models": 174,
+      "critical_path_ready": true,
+      "missing_requirements": []
+    },
+    "risk_management": {
+      "risk_algorithms_available": {
+        "eth_basic_risk": true
+      },
+      "risk_calculations_working": true,
+      "risk_limits_enforced": true,
+      "kelly_criterion_available": true,
+      "var_models_available": false
+    },
+    "data_connectivity": {
+      "ibkr_account_info_available": true,
+      "ibkr_gateway_accessible": true,
+      "ibkr_authenticated": true,
+      "eth_data_available": false,
+      "eth_contract_accessible": true,
+      "real_time_data_working": false,
+      "account_id": "U21748632",
+      "trading_permissions": {
+        "trading_type": "STKMRGN",
+        "brokerage_access": true,
+        "entity": "IBLLC-US"
+      },
+      "market_data_subscriptions": {},
+      "data_update_interval": null,
+      "last_data_timestamp": "2025-09-02T18:59:56.559380"
+    },
+    "execution_readiness": {
+      "execution_models_available": true,
+      "order_management_ready": false,
+      "execution_settings_valid": false,
+      "broker_integration_ready": false,
+      "execution_algorithms_available": []
+    },
+    "algorithm_integration": {
+      "integration_tests_available": true,
+      "workflow_components_ready": {
+        "data_collection": false,
+        "signal_generation": true,
+        "risk_management": true,
+        "portfolio_construction": true,
+        "order_execution": false
+      },
+      "end_to_end_test_passed": false,
+      "integration_errors": []
+    },
+    "simulation_framework": {
+      "framework_available": true,
+      "engine_operational": true,
+      "templates_configured": true,
+      "results_tracking": true,
+      "recent_simulations": [
+        {
+          "file": "myportolio_results.json",
+          "timestamp": "2025-09-03T14:50:40.488095",
+          "total_return": -0.006780221823689203,
+          "sharpe_ratio": -2.8167199988399423,
+          "max_drawdown": 0.01966747617652259,
+          "total_trades": 66
+        },
+        {
+          "file": "myportolio_results.json",
+          "timestamp": "2025-09-03T14:31:19.689538",
+          "total_return": 0.08479977492727397,
+          "sharpe_ratio": 1.9683774074728482,
+          "max_drawdown": 0.13174462063151468,
+          "total_trades": 1386
+        },
+        {
+          "file": "myportolio_results.json",
+          "timestamp": "2025-09-03T14:29:56.509061",
+          "total_return": 0.04314486846822119,
+          "sharpe_ratio": 0.7118974255805094,
+          "max_drawdown": 0.14564442219200882,
+          "total_trades": 2130
+        }
+      ],
+      "performance_validation": {
+        "average_return": 0.04038814052393532,
+        "average_sharpe": -0.045481721928861574,
+        "average_drawdown": 0.09901883966668203,
+        "positive_returns": 2,
+        "total_simulations": 3
+      },
+      "simulation_errors": []
+    }
+  },
+  "performance_metrics": {},
+  "recommendations": [
+    "\n\u26a1 BEFORE LIVE TRADING:",
+    "   \u2022 Test all algorithms in paper trading mode for at least 1 week",
+    "   \u2022 Validate risk limits with simulated adverse scenarios",
+    "   \u2022 Implement comprehensive logging and monitoring",
+    "   \u2022 Set up automated alerts for risk limit breaches",
+    "   \u2022 Create emergency stop procedures",
+    "\n\ud83d\udd04 ONGOING MONITORING:",
+    "   \u2022 Run this status check daily before trading",
+    "   \u2022 Monitor model performance and data quality",
+    "   \u2022 Review and update risk parameters regularly",
+    "   \u2022 Maintain backup execution procedures"
+  ],
+  "ibkr_trading_parameters": {
+    "account_id": "U21748632",
+    "trading_permissions": {
+      "trading_type": "STKMRGN",
+      "brokerage_access": true,
+      "entity": "IBLLC-US",
+      "account_type": "INDIVIDUAL"
+    },
+    "margin_requirements": {
+      "net_liquidation": 1000.0,
+      "equity_with_loan": 1000.0,
+      "unrealized_pnl": 0.0,
+      "market_value": 0.0
+    },
+    "data_intervals": {
+      "real_time": true,
+      "minimum_interval": "1_minute",
+      "supported_intervals": [
+        "1min",
+        "5min",
+        "15min",
+        "30min",
+        "1hour"
+      ],
+      "historical_data": true,
+      "actual_testing_confirmed": true,
+      "note": "IBKR provides 1-minute intervals for ETH/CRYPTO - this is the practical trading frequency"
+    },
+    "order_limits": {},
+    "available_instruments": {
+      "US Stocks": {
+        "accessible": true,
+        "contracts_found": 5,
+        "contract_details": {
+          "symbol": "AAPL",
+          "secType": "STK",
+          "exchange": "SMART",
+          "description": "US Stocks"
+        }
+      },
+      "Forex": {
+        "accessible": true,
+        "contracts_found": 4,
+        "contract_details": {
+          "symbol": "EUR",
+          "secType": "CASH",
+          "currency": "USD",
+          "description": "Forex"
+        }
+      },
+      "Cryptocurrency": {
+        "accessible": true,
+        "contracts_found": 4,
+        "contract_details": {
+          "symbol": "ETH",
+          "secType": "CRYPTO",
+          "exchange": "PAXOS",
+          "description": "Cryptocurrency"
+        }
+      },
+      "Futures": {
+        "accessible": true,
+        "contracts_found": 5,
+        "contract_details": {
+          "symbol": "ES",
+          "secType": "FUT",
+          "exchange": "CME",
+          "description": "Futures"
+        }
+      },
+      "Options": {
+        "accessible": true,
+        "contracts_found": 3,
+        "contract_details": {
+          "symbol": "SPY",
+          "secType": "OPT",
+          "exchange": "SMART",
+          "description": "Options"
+        }
+      }
+    }
+  },
+  "portfolio_statistics": {
+    "actual_allocation": {
+      "Cash": 100.0
+    },
+    "theoretical_allocation": {
+      "ETH": 60.0,
+      "BTC": 40.0
+    },
+    "risk_metrics": {
+      "max_portfolio_volatility": 0.25,
+      "max_drawdown_limit": 0.15,
+      "var_1day_limit": 0.06,
+      "sharpe_target": 1.3
+    },
+    "performance_projections": {},
+    "statistics_calculated": true
+  },
+  "live_trading_readiness": {
+    "readiness_score": 7,
+    "max_score": 8,
+    "readiness_percentage": 87.5,
+    "overall_readiness": "MOSTLY_READY",
+    "critical_issues": [],
+    "warnings": []
+  }
+}
