@@ -2,10 +2,10 @@
 
 This directory contains essential scripts for managing the Unicorn Investing platform.
 
-## 🚀 Primary Script
+## 🚀 Primary Scripts
 
 ### `unicorn_environment.sh`
-**The main comprehensive environment and health check script** - Use this one for all operations!
+**The main comprehensive environment and health check script** - Use this for overall system validation!
 
 ```bash
 # Run full setup and health check
@@ -16,8 +16,53 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 
 # Health check only
 ./scripts/unicorn_environment.sh --check-only
+```
 
-# Start Drupal services and run full validation
+### `startup_drupal.sh`
+**Comprehensive Drupal startup, installation, and validation script** - Use this for Drupal-specific operations!
+
+```bash
+# Complete Drupal startup and validation
+./scripts/startup_drupal.sh
+```
+
+**Features:**
+- Automatic Apache and MySQL service management
+- GitHub Codespaces port forwarding automation
+- Database setup and user configuration
+- Drupal installation via Drush or web installer
+- Apache virtual host configuration
+- Homepage content validation
+- Comprehensive troubleshooting guidance
+
+### `export_drupal_baseline.sh`
+**Creates exportable baselines of working Drupal installations** - Use this to backup working configurations!
+
+```bash
+# Export current Drupal installation as baseline
+./scripts/export_drupal_baseline.sh
+```
+
+**Creates:**
+- Complete database dump
+- Drupal configuration files
+- Site files and uploads
+- Settings and configuration
+- Automated restore script
+- Compressed archive for distribution
+
+**Restore Usage:**
+```bash
+# Extract exported baseline
+tar -xzf scripts/drupal_baseline_exports/[export_name].tar.gz
+
+# Restore the baseline
+cd scripts/drupal_baseline_exports/[export_name]
+./restore_baseline.sh
+
+# Validate restored installation
+./scripts/startup_drupal.sh
+```
 ./scripts/unicorn_environment.sh --startup
 
 # Show help
