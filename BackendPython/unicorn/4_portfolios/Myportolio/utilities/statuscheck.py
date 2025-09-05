@@ -325,9 +325,15 @@ class MyportolioStatusChecker:
                     results['performance_metrics'][model_type] = perf_metrics
                     
                     if perf_metrics:
-                        print(f"   📊 R² Score: {perf_metrics.get('r2_score', 'N/A'):.4f}")
-                        print(f"   📊 MAPE: {perf_metrics.get('mape', 'N/A'):.4f}")
-                        print(f"   📊 Sharpe Ratio: {perf_metrics.get('sharpe_ratio', 'N/A'):.4f}")
+                        # Display available metrics with safe formatting
+                        if perf_metrics.get('r2_score') is not None:
+                            print(f"   📊 R² Score: {perf_metrics['r2_score']:.4f}")
+                        if perf_metrics.get('mape') is not None:
+                            print(f"   📊 MAPE: {perf_metrics['mape']:.4f}")
+                        if perf_metrics.get('sharpe_ratio') is not None:
+                            print(f"   📊 Sharpe Ratio: {perf_metrics['sharpe_ratio']:.4f}")
+                        if perf_metrics.get('rmse') is not None:
+                            print(f"   📊 RMSE: {perf_metrics['rmse']:.4f}")
                         
                 except Exception as e:
                     logger.warning(f"Error getting performance for {model_type}: {e}")
@@ -345,16 +351,17 @@ class MyportolioStatusChecker:
         return results
     
     def _get_model_performance(self, db_file: Path, model_type: str) -> Dict[str, float]:
-        """Extract performance metrics from model database."""
+        """Extract performance metrics from model database (normalized schema)."""
         try:
             conn = sqlite3.connect(db_file)
             
-            # Try to get latest performance metrics using the actual schema
+            # All databases now use the normalized pivot schema
             query = """
             SELECT 
                 MAX(CASE WHEN metric_name = 'mape' THEN metric_value END) as mape,
                 MAX(CASE WHEN metric_name = 'rmse' THEN metric_value END) as rmse,
                 MAX(CASE WHEN metric_name = 'mae' THEN metric_value END) as mae,
+                MAX(CASE WHEN metric_name = 'r2_score' THEN metric_value END) as r2_score,
                 MAX(CASE WHEN metric_name = 'directional_accuracy' THEN metric_value END) as directional_accuracy,
                 created_at as training_date
             FROM model_performance 
@@ -372,6 +379,7 @@ class MyportolioStatusChecker:
                     'mape': float(df.iloc[0]['mape']) if pd.notna(df.iloc[0]['mape']) else None,
                     'rmse': float(df.iloc[0]['rmse']) if pd.notna(df.iloc[0]['rmse']) else None,
                     'mae': float(df.iloc[0]['mae']) if pd.notna(df.iloc[0]['mae']) else None,
+                    'r2_score': float(df.iloc[0]['r2_score']) if pd.notna(df.iloc[0]['r2_score']) else None,
                     'directional_accuracy': float(df.iloc[0]['directional_accuracy']) if pd.notna(df.iloc[0]['directional_accuracy']) else None,
                     'training_date': df.iloc[0]['training_date']
                 }
@@ -1203,21 +1211,51 @@ class MyportolioStatusChecker:
                     results['actual_allocation']['Cash'] = 100.0
             else:
                 print("❌ ACTUAL Portfolio Data: Unavailable (no live IBKR connection)")
-                print("📊 Current Asset Allocation: Unavailable")
+                print("📊 Current Asset Allocation: Unavailable - showing IBKR reality")
             
-            # Show theoretical allocation from configuration for comparison
+            # Show ACTUAL asset allocation based on IBKR positions vs configured targets
             if self.portfolio_config and 'assets' in self.portfolio_config:
                 assets = self.portfolio_config['assets']
-                total_allocation = 0
                 
-                print("\n� THEORETICAL Asset Allocation (from config):")
+                print("\n📊 ACTUAL Asset Allocation (IBKR vs Target):")
+                
+                # Get actual IBKR positions or default to 0%
                 for asset, config in assets.items():
-                    allocation = config.get('allocation_percent', 0)
-                    total_allocation += allocation
-                    results['theoretical_allocation'][asset] = allocation
-                    print(f"   {asset}: {allocation}%")
+                    target_allocation = config.get('allocation_percent', 0)
+                    
+                    # Check if this asset exists in actual IBKR positions
+                    actual_allocation = 0.0
+                    actual_value = 0.0
+                    
+                    if (hasattr(self, 'actual_portfolio_data') and 
+                        self.actual_portfolio_data and 
+                        self.actual_portfolio_data.get('positions')):
+                        position_data = self.actual_portfolio_data['positions'].get(asset, {})
+                        actual_allocation = position_data.get('allocation_percent', 0.0)
+                        actual_value = position_data.get('market_value', 0.0)
+                    
+                    # Show actual vs target
+                    if actual_allocation > 0:
+                        print(f"   {asset}: {actual_allocation:.1f}% actual (target: {target_allocation}%) - ${actual_value:,.2f}")
+                        results['actual_allocation'][asset] = actual_allocation
+                    else:
+                        print(f"   {asset}: 0.0% actual (target: {target_allocation}%) - No position in IBKR")
+                        results['actual_allocation'][asset] = 0.0
+                    
+                    results['theoretical_allocation'][asset] = target_allocation
                 
-                print(f"� Total Theoretical Allocation: {total_allocation}%")
+                # Show cash position if portfolio data available
+                if (hasattr(self, 'actual_portfolio_data') and 
+                    self.actual_portfolio_data and 
+                    self.actual_portfolio_data.get('cash_balance', 0) > 0):
+                    cash_balance = self.actual_portfolio_data['cash_balance']
+                    total_value = cash_balance + sum(
+                        pos.get('market_value', 0) 
+                        for pos in self.actual_portfolio_data.get('positions', {}).values()
+                    )
+                    cash_allocation = (cash_balance / total_value * 100) if total_value > 0 else 100.0
+                    print(f"   Cash: {cash_allocation:.1f}% - ${cash_balance:,.2f}")
+                    results['actual_allocation']['Cash'] = cash_allocation
                 
                 # Calculate risk metrics based on risk parameters
                 if self.risk_parameters:
