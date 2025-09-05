@@ -45,21 +45,218 @@ class PortfolioApiService {
   }
 
   /**
+   * Get list of available simulations/portfolios.
+   *
+   * @return array
+   *   Array of available simulation names with metadata.
+   */
+  public function getAvailableSimulations(): array {
+    $simulations = [];
+    
+    try {
+      // First add the main portfolio
+      $main_portfolio_path = $this->backendPath . '/Myportolio';
+      if (is_dir($main_portfolio_path)) {
+        $config_file = $main_portfolio_path . '/config.json';
+        $config_data = [];
+        if (file_exists($config_file)) {
+          $config_data = json_decode(file_get_contents($config_file), TRUE) ?: [];
+        }
+        
+        $simulations['Myportolio'] = [
+          'id' => 'Myportolio',
+          'name' => $config_data['portfolio_name'] ?? 'Myportolio (Live)',
+          'description' => $config_data['description'] ?? 'Live portfolio with real-time data',
+          'status' => 'active',
+          'type' => 'live',
+          'last_updated' => file_exists($config_file) ? filemtime($config_file) : time(),
+          'path' => $main_portfolio_path
+        ];
+      }
+      
+      // Then add simulations from backtests
+      $simulations_path = $this->backendPath . '/Myportolio/simulations/backtests';
+      if (is_dir($simulations_path)) {
+        $backtest_dirs = scandir($simulations_path);
+        
+        foreach ($backtest_dirs as $dir) {
+          if ($dir === '.' || $dir === '..') {
+            continue;
+          }
+          
+          $backtest_path = $simulations_path . '/' . $dir;
+          if (!is_dir($backtest_path)) {
+            continue;
+          }
+          
+          // Check for results file
+          $results_file = $backtest_path . '/myportolio_results.json';
+          if (file_exists($results_file)) {
+            $results_data = json_decode(file_get_contents($results_file), TRUE);
+            
+            if ($results_data) {
+              $simulation_id = $results_data['simulation_id'] ?? $dir;
+              $timestamp = $results_data['timestamp'] ?? '';
+              $performance = $this->calculateBacktestPerformance($results_data);
+              
+              $simulations[$simulation_id] = [
+                'id' => $simulation_id,
+                'name' => 'Backtest ' . substr($simulation_id, -8), // Last 8 chars of ID
+                'description' => sprintf('Backtest simulation - %s (%.2f%% return)', 
+                                       date('M j, Y', strtotime($timestamp)), 
+                                       $performance['total_return_percent']),
+                'status' => 'completed',
+                'type' => 'backtest',
+                'last_updated' => filemtime($results_file),
+                'path' => $backtest_path,
+                'performance' => $performance
+              ];
+            }
+          }
+        }
+      }
+      
+      // Sort by last updated (most recent first)
+      uasort($simulations, function($a, $b) {
+        return $b['last_updated'] - $a['last_updated'];
+      });
+      
+    } catch (\Exception $e) {
+      $this->logger->error('Error getting available simulations: @message', ['@message' => $e->getMessage()]);
+      
+      // Return default Myportolio on error
+      $simulations['Myportolio'] = [
+        'id' => 'Myportolio',
+        'name' => 'Myportolio (Default)',
+        'description' => 'Default portfolio simulation',
+        'status' => 'active',
+        'type' => 'live',
+        'last_updated' => time(),
+        'path' => $this->backendPath . '/Myportolio'
+      ];
+    }
+    
+    return $simulations;
+  }
+
+  /**
+   * Calculate performance metrics from backtest results.
+   *
+   * @param array $results_data
+   *   The backtest results data.
+   *
+   * @return array
+   *   Performance metrics.
+   */
+  private function calculateBacktestPerformance(array $results_data): array {
+    $performance = [
+      'total_return_percent' => 0.0,
+      'max_drawdown' => 0.0,
+      'sharpe_ratio' => 0.0,
+      'win_rate' => 0.0,
+      'total_trades' => 0,
+      'data_points' => 0,
+      'start_price' => 0.0,
+      'end_price' => 0.0
+    ];
+    
+    try {
+      if (isset($results_data['lean_results']['performance'])) {
+        $perf = $results_data['lean_results']['performance'];
+        $performance['total_return_percent'] = $perf['total_return'] ?? 0.0;
+        $performance['max_drawdown'] = abs($perf['max_drawdown'] ?? 0.0);
+        $performance['sharpe_ratio'] = $perf['sharpe_ratio'] ?? 0.0;
+      }
+      
+      // Calculate from market data if available
+      if (isset($results_data['lean_results']['market_data']) && !empty($results_data['lean_results']['market_data'])) {
+        $market_data = $results_data['lean_results']['market_data'];
+        $performance['data_points'] = count($market_data);
+        
+        if (count($market_data) >= 2) {
+          $first_price = (float)$market_data[0]['price'];
+          $last_price = (float)end($market_data)['price'];
+          
+          $performance['start_price'] = $first_price;
+          $performance['end_price'] = $last_price;
+          
+          if ($first_price > 0) {
+            $performance['total_return_percent'] = (($last_price - $first_price) / $first_price) * 100;
+          }
+        }
+        
+        $performance['total_trades'] = count($market_data);
+      }
+      
+      // Calculate from portfolio data if available (more accurate for actual performance)
+      if (isset($results_data['lean_results']['portfolio_data']) && !empty($results_data['lean_results']['portfolio_data'])) {
+        $portfolio_data = $results_data['lean_results']['portfolio_data'];
+        $first_value = (float)reset($portfolio_data)['portfolio_value'];
+        $last_value = (float)end($portfolio_data)['portfolio_value'];
+        
+        if ($first_value > 0) {
+          $performance['total_return_percent'] = (($last_value - $first_value) / $first_value) * 100;
+        }
+        
+        $performance['total_trades'] = count($portfolio_data);
+      }
+      
+    } catch (\Exception $e) {
+      $this->logger->warning('Error calculating backtest performance: @message', ['@message' => $e->getMessage()]);
+    }
+    
+    return $performance;
+  }
+
+  /**
+   * Validate if a simulation exists and is accessible.
+   *
+   * @param string $simulation_id
+   *   The simulation ID to validate.
+   *
+   * @return bool
+   *   TRUE if simulation exists and is valid.
+   */
+  public function isValidSimulation(string $simulation_id): bool {
+    $simulations = $this->getAvailableSimulations();
+    
+    // DEBUG: Log available simulations and the test
+    $available_keys = array_keys($simulations);
+    $this->logger->debug('DEBUG isValidSimulation: Testing @id against available: @available', [
+      '@id' => $simulation_id,
+      '@available' => implode(', ', $available_keys)
+    ]);
+    
+    $result = isset($simulations[$simulation_id]);
+    $this->logger->debug('DEBUG isValidSimulation: Result for @id is @result', [
+      '@id' => $simulation_id,
+      '@result' => $result ? 'TRUE' : 'FALSE'
+    ]);
+    
+    return $result;
+  }
+
+  /**
    * Get portfolio status from Enhanced Portfolio Manager.
    *
-   * @param string $portfolio_name
-   *   The portfolio name to query.
+   * @param string $simulation_id
+   *   The simulation ID to query.
    *
    * @return array
    *   Portfolio status data.
    */
-  public function getPortfolioStatus(string $portfolio_name = 'Myportolio'): array {
+  public function getPortfolioStatus(string $simulation_id = 'Myportolio'): array {
     try {
-      // First try to get the latest status report
-      $status_report = $this->getLatestStatusReport($portfolio_name);
+      // Check if this is a backtest simulation
+      if ($simulation_id !== 'Myportolio' && strpos($simulation_id, 'backtest_') === 0) {
+        return $this->getBacktestStatus($simulation_id);
+      }
+      
+      // Handle live portfolio
+      $status_report = $this->getLatestStatusReport($simulation_id);
       if (!empty($status_report)) {
         // Merge config data with status report
-        $config_data = $this->getPortfolioConfig($portfolio_name);
+        $config_data = $this->getPortfolioConfig($simulation_id);
         
         return array_merge($config_data, [
           'overall_readiness' => $status_report['overall_readiness'],
@@ -74,27 +271,151 @@ class PortfolioApiService {
       }
       
       // Fallback to basic config data
-      $this->logger->warning('No status reports found for portfolio: @portfolio', ['@portfolio' => $portfolio_name]);
-      return $this->getFallbackPortfolioData($portfolio_name);
+      $this->logger->warning('No status reports found for simulation: @simulation', ['@simulation' => $simulation_id]);
+      return $this->getFallbackPortfolioData($simulation_id);
       
     } catch (\Exception $e) {
       $this->logger->error('Exception getting portfolio status: @message', ['@message' => $e->getMessage()]);
-      return $this->getFallbackPortfolioData($portfolio_name);
+      return $this->getFallbackPortfolioData($simulation_id);
+    }
+  }
+
+  /**
+   * Get backtest simulation status and performance data.
+   *
+   * @param string $simulation_id
+   *   The backtest simulation ID.
+   *
+   * @return array
+   *   Backtest status and performance data.
+   */
+  private function getBacktestStatus(string $simulation_id): array {
+    $backtest_path = $this->backendPath . '/Myportolio/simulations/backtests/' . $simulation_id;
+    $results_file = $backtest_path . '/myportolio_results.json';
+    
+    if (!file_exists($results_file)) {
+      return $this->getFallbackPortfolioData($simulation_id);
+    }
+    
+    try {
+      $results_data = json_decode(file_get_contents($results_file), TRUE);
+      if (!$results_data) {
+        return $this->getFallbackPortfolioData($simulation_id);
+      }
+      
+      $performance = $this->calculateBacktestPerformance($results_data);
+      
+      // Extract asset data from backtest
+      $assets = [];
+      if (isset($results_data['lean_results']['market_data']) && !empty($results_data['lean_results']['market_data'])) {
+        // Assume ETH for now, could be expanded based on backtest data
+        $assets['ETHUSD'] = [
+          'symbol' => 'ETHUSD',
+          'allocation_percent' => 100.0,
+          'current_price' => end($results_data['lean_results']['market_data'])['price'] ?? 0
+        ];
+      }
+      
+      return [
+        'portfolio_name' => 'Backtest ' . substr($simulation_id, -8),
+        'description' => 'Historical backtest simulation',
+        'strategy_type' => 'eth_momentum_backtest',
+        'assets' => $assets,
+        'target_volatility' => 0.20,
+        'rebalancing_frequency' => 'hourly',
+        'overall_readiness' => 'COMPLETED',
+        'backend_status' => 'backtest_completed',
+        'last_status_check' => $results_data['timestamp'] ?? date('Y-m-d H:i:s'),
+        'performance' => $performance,
+        'simulation_type' => 'backtest',
+        'backtest_id' => $simulation_id
+      ];
+      
+    } catch (\Exception $e) {
+      $this->logger->error('Error loading backtest status: @message', ['@message' => $e->getMessage()]);
+      return $this->getFallbackPortfolioData($simulation_id);
+    }
+  }
+
+  /**
+   * Get backtest configuration data.
+   *
+   * @param string $simulation_id
+   *   The backtest simulation ID.
+   *
+   * @return array
+   *   Backtest configuration data.
+   */
+  private function getBacktestConfig(string $simulation_id): array {
+    $backtest_path = $this->backendPath . '/Myportolio/simulations/backtests/' . $simulation_id;
+    $lean_config_file = $backtest_path . '/lean_config.json';
+    $results_file = $backtest_path . '/myportolio_results.json';
+    
+    $config = [];
+    
+    try {
+      // Load LEAN config if available
+      if (file_exists($lean_config_file)) {
+        $lean_config = json_decode(file_get_contents($lean_config_file), TRUE);
+        if ($lean_config) {
+          $config = array_merge($config, $lean_config);
+        }
+      }
+      
+      // Load results data for additional config info
+      if (file_exists($results_file)) {
+        $results_data = json_decode(file_get_contents($results_file), TRUE);
+        if ($results_data) {
+          $config['simulation_id'] = $results_data['simulation_id'];
+          $config['portfolio_name'] = 'Backtest ' . substr($simulation_id, -8);
+          $config['description'] = 'Historical backtest simulation';
+          $config['strategy_type'] = $results_data['strategy'] ?? 'eth_momentum_backtest';
+          $config['simulation_type'] = 'backtest';
+          $config['timestamp'] = $results_data['timestamp'];
+          
+          // Extract asset info from market data
+          if (isset($results_data['lean_results']['market_data']) && !empty($results_data['lean_results']['market_data'])) {
+            $config['assets'] = [
+              'ETHUSD' => [
+                'symbol' => 'ETHUSD',
+                'allocation_percent' => 100.0,
+                'min_weight' => 0.95,
+                'max_weight' => 1.0
+              ]
+            ];
+          }
+          
+          $config['target_volatility'] = 0.20;
+          $config['rebalancing_frequency'] = 'hourly';
+        }
+      }
+      
+      return $config;
+      
+    } catch (\Exception $e) {
+      $this->logger->error('Error loading backtest config: @message', ['@message' => $e->getMessage()]);
+      return $this->getFallbackConfigData($simulation_id);
     }
   }
 
   /**
    * Get portfolio configuration data.
    *
-   * @param string $portfolio_name
-   *   The portfolio name to query.
+   * @param string $simulation_id
+   *   The simulation ID to query.
    *
    * @return array
    *   Portfolio configuration data.
    */
-  public function getPortfolioConfig(string $portfolio_name = 'Myportolio'): array {
+  public function getPortfolioConfig(string $simulation_id = 'Myportolio'): array {
     try {
-      $config_file = $this->backendPath . '/' . $portfolio_name . '/config.json';
+      // Check if this is a backtest simulation
+      if ($simulation_id !== 'Myportolio' && strpos($simulation_id, 'backtest_') === 0) {
+        return $this->getBacktestConfig($simulation_id);
+      }
+      
+      // Handle live portfolio config
+      $config_file = $this->backendPath . '/Myportolio/config.json';
       
       if (file_exists($config_file)) {
         $config_data = json_decode(file_get_contents($config_file), TRUE);
@@ -104,11 +425,11 @@ class PortfolioApiService {
       }
       
       $this->logger->warning('Portfolio config file not found: @file', ['@file' => $config_file]);
-      return $this->getFallbackConfigData($portfolio_name);
+      return $this->getFallbackConfigData($simulation_id);
       
     } catch (\Exception $e) {
       $this->logger->error('Exception reading portfolio config: @message', ['@message' => $e->getMessage()]);
-      return $this->getFallbackConfigData($portfolio_name);
+      return $this->getFallbackConfigData($simulation_id);
     }
   }
 

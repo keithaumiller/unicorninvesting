@@ -1,0 +1,96 @@
+{
+  "timestamp": "2025-09-05T00:39:50.150789",
+  "tests": {
+    "portfolio_config": {
+      "status": "PASS",
+      "data": {
+        "portfolio_name": "Myportolio",
+        "assets": [
+          "ETH",
+          "BTC"
+        ],
+        "asset_count": 2,
+        "target_volatility": 0.2,
+        "strategy_type": "dual_crypto"
+      }
+    },
+    "risk_parameters": {
+      "status": "PASS",
+      "data": {
+        "risk_profile": "moderate",
+        "max_portfolio_volatility": 0.25,
+        "max_drawdown": 0.15,
+        "sharpe_ratio_target": 1.3
+      }
+    },
+    "latest_status_report": {
+      "status": "PASS",
+      "data": {
+        "file": "status_report_20250904_204252.json",
+        "timestamp": "2025-09-04T20:42:52.227890",
+        "overall_readiness": "UNKNOWN",
+        "critical_issues": 0,
+        "warnings": 0,
+        "passed_checks": 0
+      }
+    },
+    "latest_risk_report": {
+      "status": "PASS",
+      "data": {
+        "file": "risk_report_20250902_223113.json",
+        "timestamp": "2025-09-02 22:31:13.012822",
+        "risk_metrics": {
+          "var_1day": 0.0,
+          "var_1week": 0.0,
+          "portfolio_volatility": 0.0,
+          "current_drawdown": 0.0,
+          "position_weights": {},
+          "max_position_weight": 0,
+          "estimated_correlation": 0.7,
+          "sharpe_ratio": 0.0
+        },
+        "risk_violations": 0
+      }
+    },
+    "algorithm_files": {
+      "status": "PASS",
+      "data": {
+        "risk_algorithms": {
+          "count": 9,
+          "algorithms": [
+            "eth_basic_risk",
+            "six_position_risk_manager",
+            "comprehensive_risk_manager",
+            "risk_monitor",
+            "emergency_stop",
+            "var_calculator",
+            "monte_carlo_risk",
+            "kelly_criterion",
+            "basic_risk"
+          ]
+        },
+        "trading_algorithms": {
+          "count": 3,
+          "algorithms": [
+            "multi_timeframe_strategies",
+            "eth_momentum_strategy",
+            "advanced_multi_asset_strategy"
+          ]
+        }
+      }
+    },
+    "integration_files": {
+      "status": "PASS",
+      "data": {
+        "eth_kelly_integration": true,
+        "eth_algorithm_integration": true,
+        "eth_kelly_config": true
+      }
+    }
+  },
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "warnings": 0
+  }
+}

@@ -1,0 +1,616 @@
+{
+  "timestamp": "2025-09-05T14:21:37.647713",
+  "main_page_validation": {
+    "page_data": {
+      "portfolio_name": "Myportolio",
+      "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+      "strategy_type": "dual_crypto",
+      "selected_simulation": "\ud83d\udfe2 Myportolio",
+      "simulation_options": [
+        {
+          "value": "Myportolio",
+          "text": "\ud83d\udfe2 Myportolio"
+        },
+        {
+          "value": "backtest_20250903_142955_5618caf5",
+          "text": "\ud83d\udd34 Backtest 5618caf5"
+        },
+        {
+          "value": "backtest_20250903_143119_fa83c2ff",
+          "text": "\ud83d\udd34 Backtest fa83c2ff"
+        },
+        {
+          "value": "backtest_20250903_145040_bef7f054",
+          "text": "\ud83d\udd34 Backtest bef7f054"
+        }
+      ],
+      "asset_allocations": {
+        "ETH": "60.0%",
+        "BTC": "40.0%"
+      },
+      "performance_metrics": {},
+      "risk_metrics": {
+        "current_drawdown": "0.0%",
+        "portfolio_volatility": "0.0%",
+        "var_5pct": "0.0%",
+        "risk_score": "0.30",
+        "portfolio_heat": "0.0%",
+        "risk_profile": "Moderate (moderate)",
+        "max_volatility": "0.25"
+      }
+    },
+    "data_consistency_issues": [],
+    "links": {
+      "http://localhost/core/themes/olivero/fonts/lora/lora-v14-latin-regular.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-Regular.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/algorithms?portfolio=": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/favicon.ico": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-Bold.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/user/login": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/holdings?portfolio=": {
+        "status": "error",
+        "error": "403 Client Error: Forbidden for url: http://localhost/admin/metrics/lean/holdings?portfolio="
+      },
+      "http://localhost/sites/default/files/css/css_lJMeebwSUr5u76mTD_KmKBSgORl_yFpqAYDedqzd678.css?delta=0&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE": {
+        "status": "error",
+        "error": "400 Client Error: Bad Request for url: http://localhost/sites/default/files/css/css_lJMeebwSUr5u76mTD_KmKBSgORl_yFpqAYDedqzd678.css?delta=0&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE"
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-SemiBold.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/portfolio?portfolio=": {
+        "status": "error",
+        "error": "403 Client Error: Forbidden for url: http://localhost/admin/metrics/lean/portfolio?portfolio="
+      },
+      "http://localhost/core/themes/olivero/css/components/navigation/nav-primary-no-js.css?t24d11": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/performance?portfolio=": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {
+            "total_return": "8.47%",
+            "annualized_return": "12.45%",
+            "sharpe_ratio": "1.85",
+            "max_drawdown": "-8.45%",
+            "volatility": "15.67%",
+            "var_95pct": "-2.87%",
+            "alpha": "2.34%",
+            "beta": "0.98",
+            "information_ratio": "1.23"
+          }
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": "Myportolio",
+          "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+          "strategy_type": "dual_crypto",
+          "selected_simulation": "\ud83d\udfe2 Myportolio",
+          "simulation_options": [
+            {
+              "value": "Myportolio",
+              "text": "\ud83d\udfe2 Myportolio"
+            },
+            {
+              "value": "backtest_20250903_142955_5618caf5",
+              "text": "\ud83d\udd34 Backtest 5618caf5"
+            },
+            {
+              "value": "backtest_20250903_143119_fa83c2ff",
+              "text": "\ud83d\udd34 Backtest fa83c2ff"
+            },
+            {
+              "value": "backtest_20250903_145040_bef7f054",
+              "text": "\ud83d\udd34 Backtest bef7f054"
+            }
+          ],
+          "asset_allocations": {
+            "ETH": "60.0%",
+            "BTC": "40.0%"
+          },
+          "performance_metrics": {},
+          "risk_metrics": {
+            "current_drawdown": "0.0%",
+            "portfolio_volatility": "0.0%",
+            "var_5pct": "0.0%",
+            "risk_score": "0.30",
+            "portfolio_heat": "0.0%",
+            "risk_profile": "Moderate (moderate)",
+            "max_volatility": "0.25"
+          }
+        },
+        "data_issues": [],
+        "issues_count": 0
+      },
+      "http://localhost/sites/default/files/css/css_8zWqxTDKZdGMFuyJCKE6HFRYDGNka30yDeiq1cvGa14.css?delta=1&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE": {
+        "status": "error",
+        "error": "400 Client Error: Bad Request for url: http://localhost/sites/default/files/css/css_8zWqxTDKZdGMFuyJCKE6HFRYDGNka30yDeiq1cvGa14.css?delta=1&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE"
+      }
+    }
+  },
+  "backtest_page_validation": {
+    "page_data": {
+      "portfolio_name": "Myportolio",
+      "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+      "strategy_type": "dual_crypto",
+      "selected_simulation": "\ud83d\udfe2 Myportolio",
+      "simulation_options": [
+        {
+          "value": "Myportolio",
+          "text": "\ud83d\udfe2 Myportolio"
+        },
+        {
+          "value": "backtest_20250903_142955_5618caf5",
+          "text": "\ud83d\udd34 Backtest 5618caf5"
+        },
+        {
+          "value": "backtest_20250903_143119_fa83c2ff",
+          "text": "\ud83d\udd34 Backtest fa83c2ff"
+        },
+        {
+          "value": "backtest_20250903_145040_bef7f054",
+          "text": "\ud83d\udd34 Backtest bef7f054"
+        }
+      ],
+      "asset_allocations": {
+        "ETH": "60.0%",
+        "BTC": "40.0%"
+      },
+      "performance_metrics": {},
+      "risk_metrics": {
+        "current_drawdown": "0.0%",
+        "portfolio_volatility": "0.0%",
+        "var_5pct": "0.0%",
+        "risk_score": "0.30",
+        "portfolio_heat": "0.0%",
+        "risk_profile": "Moderate (moderate)",
+        "max_volatility": "0.25"
+      }
+    },
+    "data_consistency_issues": [
+      "Expected backtest_20250903_145040_bef7f054 to be selected, but got: \ud83d\udfe2 Myportolio"
+    ],
+    "links": {
+      "http://localhost/core/themes/olivero/fonts/lora/lora-v14-latin-regular.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-Regular.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/algorithms?portfolio=": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/favicon.ico": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-Bold.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/user/login": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/holdings?portfolio=": {
+        "status": "error",
+        "error": "403 Client Error: Forbidden for url: http://localhost/admin/metrics/lean/holdings?portfolio="
+      },
+      "http://localhost/sites/default/files/css/css_lJMeebwSUr5u76mTD_KmKBSgORl_yFpqAYDedqzd678.css?delta=0&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE": {
+        "status": "error",
+        "error": "400 Client Error: Bad Request for url: http://localhost/sites/default/files/css/css_lJMeebwSUr5u76mTD_KmKBSgORl_yFpqAYDedqzd678.css?delta=0&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE"
+      },
+      "http://localhost/core/themes/olivero/fonts/metropolis/Metropolis-SemiBold.woff2": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/portfolio?portfolio=": {
+        "status": "error",
+        "error": "403 Client Error: Forbidden for url: http://localhost/admin/metrics/lean/portfolio?portfolio="
+      },
+      "http://localhost/core/themes/olivero/css/components/navigation/nav-primary-no-js.css?t24d11": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {}
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/admin/metrics/lean/performance?portfolio=": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": null,
+          "description": null,
+          "strategy_type": null,
+          "selected_simulation": null,
+          "simulation_options": [],
+          "asset_allocations": {},
+          "performance_metrics": {},
+          "risk_metrics": {
+            "total_return": "8.47%",
+            "annualized_return": "12.45%",
+            "sharpe_ratio": "1.85",
+            "max_drawdown": "-8.45%",
+            "volatility": "15.67%",
+            "var_95pct": "-2.87%",
+            "alpha": "2.34%",
+            "beta": "0.98",
+            "information_ratio": "1.23"
+          }
+        },
+        "data_issues": [
+          "Expected portfolio name 'Myportolio', but got: None",
+          "Missing asset allocation for ETH",
+          "Missing asset allocation for BTC"
+        ],
+        "issues_count": 3
+      },
+      "http://localhost/": {
+        "status": "success",
+        "expected_simulation": "Myportolio",
+        "page_data": {
+          "portfolio_name": "Myportolio",
+          "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+          "strategy_type": "dual_crypto",
+          "selected_simulation": "\ud83d\udfe2 Myportolio",
+          "simulation_options": [
+            {
+              "value": "Myportolio",
+              "text": "\ud83d\udfe2 Myportolio"
+            },
+            {
+              "value": "backtest_20250903_142955_5618caf5",
+              "text": "\ud83d\udd34 Backtest 5618caf5"
+            },
+            {
+              "value": "backtest_20250903_143119_fa83c2ff",
+              "text": "\ud83d\udd34 Backtest fa83c2ff"
+            },
+            {
+              "value": "backtest_20250903_145040_bef7f054",
+              "text": "\ud83d\udd34 Backtest bef7f054"
+            }
+          ],
+          "asset_allocations": {
+            "ETH": "60.0%",
+            "BTC": "40.0%"
+          },
+          "performance_metrics": {},
+          "risk_metrics": {
+            "current_drawdown": "0.0%",
+            "portfolio_volatility": "0.0%",
+            "var_5pct": "0.0%",
+            "risk_score": "0.30",
+            "portfolio_heat": "0.0%",
+            "risk_profile": "Moderate (moderate)",
+            "max_volatility": "0.25"
+          }
+        },
+        "data_issues": [],
+        "issues_count": 0
+      },
+      "http://localhost/sites/default/files/css/css_8zWqxTDKZdGMFuyJCKE6HFRYDGNka30yDeiq1cvGa14.css?delta=1&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE": {
+        "status": "error",
+        "error": "400 Client Error: Bad Request for url: http://localhost/sites/default/files/css/css_8zWqxTDKZdGMFuyJCKE6HFRYDGNka30yDeiq1cvGa14.css?delta=1&amp;language=en&amp;theme=olivero&amp;include=eJxdyUEKwCAMBMAPKb5p1WADaQKJKP6-l9JDrzMmvMitDLEKyTGPsI5kLysWD0w2zUHNtMPPl0HwdmWFu-2_bu6U4sSku1QEPZbEKTE"
+      }
+    }
+  },
+  "cross_validation": {
+    "simulation_options": {
+      "status": "consistent",
+      "count": 4
+    },
+    "portfolio_names": {
+      "status": "same",
+      "value": "Myportolio"
+    }
+  },
+  "summary": {
+    "total_links_tested": 28,
+    "total_successful": 2,
+    "success_rate": 7.1,
+    "main_page": {
+      "successful": 1,
+      "total": 14,
+      "data_issues": 0
+    },
+    "backtest_page": {
+      "successful": 1,
+      "total": 14,
+      "data_issues": 1
+    }
+  }
+}

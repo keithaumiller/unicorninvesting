@@ -45,14 +45,24 @@ class DashboardController extends ControllerBase {
     $module_info = \Drupal::service('extension.list.module')->getExtensionInfo('unicornmetrics');
     $version = $module_info['version'] ?? '4.1.0';
     
-    // Get current portfolio selection from URL parameter or default
-    $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'Myportolio';
+    // Get current simulation selection from URL parameter or default
+    $current_simulation_id = \Drupal::request()->query->get('simulation') ?? 'Myportolio';
     
-    // Get real portfolio data from backend
-    $portfolio_config = $this->portfolioApi->getPortfolioConfig($current_portfolio_id);
-    $portfolio_status = $this->portfolioApi->getPortfolioStatus($current_portfolio_id);
-    $eth_algorithm_status = $this->portfolioApi->getEthAlgorithmStatus($current_portfolio_id);
-    $risk_metrics = $this->portfolioApi->getRiskMetrics($current_portfolio_id);
+    // Validate simulation exists, fallback to Myportolio if not
+    if (!$this->portfolioApi->isValidSimulation($current_simulation_id)) {
+      $current_simulation_id = 'Myportolio';
+      // Add warning message for invalid simulation
+      \Drupal::messenger()->addWarning(t('The requested simulation was not found. Displaying default simulation.'));
+    }
+    
+    // Get available simulations for selector
+    $available_simulations = $this->portfolioApi->getAvailableSimulations();
+    
+    // Get real portfolio data from backend for selected simulation
+    $portfolio_config = $this->portfolioApi->getPortfolioConfig($current_simulation_id);
+    $portfolio_status = $this->portfolioApi->getPortfolioStatus($current_simulation_id);
+    $eth_algorithm_status = $this->portfolioApi->getEthAlgorithmStatus($current_simulation_id);
+    $risk_metrics = $this->portfolioApi->getRiskMetrics($current_simulation_id);
     
     // Merge portfolio data
     $current_portfolio = array_merge($portfolio_config, $portfolio_status);
@@ -84,6 +94,9 @@ class DashboardController extends ControllerBase {
     // Get real last updated timestamp
     $last_updated = $current_portfolio['last_status_check'] ?? $current_portfolio['last_updated'] ?? date('Y-m-d H:i:s');
     
+    // Set current_portfolio_id for use in links (should match current_simulation_id)
+    $current_portfolio_id = $current_simulation_id;
+    
     $metrics_table = '
     <div class="dashboard-header">
       <h1>🦄 Unicorn Portfolio Management System</h1>
@@ -94,14 +107,36 @@ class DashboardController extends ControllerBase {
       </div>
     </div>
     
+    <!-- Simulation Selector -->
+    <div class="simulation-selector-container">
+      <h3>📊 Select Simulation/Portfolio</h3>
+      <div class="simulation-selector">
+        <label for="simulation-dropdown">Current Simulation:</label>
+        <select id="simulation-dropdown" onchange="changeSimulation(this.value)">
+    ';
+    
+    foreach ($available_simulations as $sim_id => $sim_data) {
+      $selected = ($sim_id === $current_simulation_id) ? 'selected' : '';
+      $status_icon = ($sim_data['status'] === 'active') ? '🟢' : '🔴';
+      $metrics_table .= '<option value="' . htmlspecialchars($sim_id) . '" ' . $selected . '>' 
+                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . '</option>';
+    }
+    
+    $metrics_table .= '
+        </select>
+        <div class="simulation-info">
+          <small><strong>Description:</strong> ' . htmlspecialchars($available_simulations[$current_simulation_id]['description']) . '</small><br>
+          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>
+        </div>
+      </div>
+    </div>
+
     <div class="dashboard-sections">
     
     <!-- Primary Portfolio Section -->
     <div class="dashboard-section">
-      <h2>💼 ' . htmlspecialchars($current_portfolio['portfolio_name'] ?? $current_portfolio_id) . '</h2>
-      <p><strong>' . htmlspecialchars($current_portfolio['description'] ?? 'Portfolio Description') . '</strong> - Strategy: ' . htmlspecialchars($current_portfolio['strategy_type'] ?? 'dual_crypto') . '</p>
-      
-      <div class="portfolio-stats">
+      <h2>💼 ' . htmlspecialchars($current_portfolio['portfolio_name'] ?? $current_simulation_id) . '</h2>
+      <p><strong>' . htmlspecialchars($current_portfolio['description'] ?? 'Portfolio Description') . '</strong> - Strategy: ' . htmlspecialchars($current_portfolio['strategy_type'] ?? 'dual_crypto') . '</p>      <div class="portfolio-stats">
         <div class="stat-card">
           <span class="stat-value">$' . number_format($portfolio_value, 2) . '</span>
           <span class="stat-label">Portfolio Value</span>
@@ -117,6 +152,38 @@ class DashboardController extends ControllerBase {
         <div class="stat-card ' . ($is_active ? 'status-active' : 'status-inactive') . '">
           <span class="stat-value">⚡</span>
           <span class="stat-label">' . ucfirst($portfolio_status) . '</span>
+        </div>
+      </div>
+      
+      <!-- Asset Allocation Section -->
+      <div class="asset-allocation-section">
+        <h3>📈 Asset Allocation</h3>
+        <div class="allocation-grid">';
+
+    // Add asset allocations from config
+    if (!empty($current_portfolio['assets'])) {
+      foreach ($current_portfolio['assets'] as $asset_symbol => $asset_data) {
+        $allocation_percent = $asset_data['allocation_percent'] ?? 0;
+        $asset_type = $asset_data['asset_type'] ?? 'cryptocurrency';
+        $model_type = $asset_data['model_type'] ?? 'basic';
+        
+        $metrics_table .= '
+          <div class="allocation-card">
+            <div class="asset-header">
+              <span class="asset-symbol">' . htmlspecialchars($asset_symbol) . '</span>
+              <span class="allocation-percent">' . number_format($allocation_percent, 1) . '%</span>
+            </div>
+            <div class="asset-details">
+              <small>Type: ' . ucfirst($asset_type) . '</small><br>
+              <small>Model: ' . ucfirst(str_replace('_', ' ', $model_type)) . '</small>
+            </div>
+          </div>';
+      }
+    } else {
+      $metrics_table .= '<div class="allocation-card"><em>No asset allocation data available</em></div>';
+    }
+    
+    $metrics_table .= '
         </div>
       </div>
       
@@ -166,7 +233,7 @@ class DashboardController extends ControllerBase {
           </div>
           <div class="risk-metric">
             <span class="metric-name">Portfolio Volatility:</span>
-            <span class="metric-value">' . number_format(($risk_metrics['portfolio_volatility'] ?? 0.25) * 100, 1) . '%</span>
+            <span class="metric-value">' . number_format(($risk_metrics['portfolio_volatility'] ?? $risk_metrics['max_portfolio_volatility'] ?? 0.25) * 100, 1) . '%</span>
           </div>
           <div class="risk-metric">
             <span class="metric-name">VaR (5%):</span>
@@ -182,7 +249,11 @@ class DashboardController extends ControllerBase {
           </div>
           <div class="risk-metric">
             <span class="metric-name">Risk Profile:</span>
-            <span class="metric-value">' . ucfirst($risk_metrics['risk_profile'] ?? 'Moderate') . '</span>
+            <span class="metric-value">' . ucfirst($risk_metrics['risk_profile'] ?? 'moderate') . ' (' . ($risk_metrics['risk_profile'] ?? 'moderate') . ')</span>
+          </div>
+          <div class="risk-metric">
+            <span class="metric-name">Max Volatility:</span>
+            <span class="metric-value">' . number_format($risk_metrics['max_portfolio_volatility'] ?? 0.25, 2) . '</span>
           </div>
         </div>
       </div>
@@ -755,9 +826,117 @@ class DashboardController extends ControllerBase {
                     text-align: center;
                   }
                 }
+                
+                /* Simulation Selector Styles */
+                .simulation-selector-container {
+                  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                  border: 1px solid #dee2e6;
+                  border-radius: 10px;
+                  padding: 20px;
+                  margin-bottom: 30px;
+                }
+                .simulation-selector-container h3 {
+                  margin-top: 0;
+                  color: #495057;
+                  margin-bottom: 15px;
+                }
+                .simulation-selector {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                }
+                .simulation-selector label {
+                  font-weight: bold;
+                  color: #495057;
+                }
+                .simulation-selector select {
+                  padding: 10px 15px;
+                  border: 2px solid #ced4da;
+                  border-radius: 5px;
+                  font-size: 1.1em;
+                  background: white;
+                  cursor: pointer;
+                  transition: border-color 0.3s ease;
+                }
+                .simulation-selector select:hover {
+                  border-color: #80bdff;
+                }
+                .simulation-selector select:focus {
+                  border-color: #0066cc;
+                  outline: none;
+                  box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+                }
+                .simulation-info {
+                  background: rgba(255,255,255,0.8);
+                  padding: 10px;
+                  border-radius: 5px;
+                  margin-top: 10px;
+                }
+                .simulation-info small {
+                  color: #6c757d;
+                }
+                
+                /* Asset Allocation Styles */
+                .asset-allocation-section {
+                  margin: 25px 0;
+                  padding: 20px;
+                  background: #f8f9fa;
+                  border-radius: 8px;
+                  border-left: 4px solid #17a2b8;
+                }
+                .asset-allocation-section h3 {
+                  margin-top: 0;
+                  color: #0c5460;
+                }
+                .allocation-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                  gap: 15px;
+                  margin-top: 15px;
+                }
+                .allocation-card {
+                  background: white;
+                  padding: 15px;
+                  border-radius: 6px;
+                  border: 1px solid #dee2e6;
+                  text-align: center;
+                }
+                .asset-header {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 10px;
+                }
+                .asset-symbol {
+                  font-weight: bold;
+                  font-size: 1.2em;
+                  color: #495057;
+                }
+                .allocation-percent {
+                  font-weight: bold;
+                  font-size: 1.1em;
+                  color: #17a2b8;
+                }
+                .asset-details {
+                  text-align: left;
+                  color: #6c757d;
+                }
               ',
             ],
             'unicorn-metrics-dashboard-styles',
+          ],
+          [
+            [
+              '#tag' => 'script',
+              '#value' => '
+                function changeSimulation(simulationId) {
+                  const url = new URL(window.location);
+                  url.searchParams.set("simulation", simulationId);
+                  window.location.href = url.toString();
+                }
+              ',
+            ],
+            'unicorn-metrics-simulation-selector',
           ],
         ],
       ],
