@@ -949,21 +949,6 @@ class MyportolioStatusChecker:
         else:
             print("❌ Execution Settings: Not configured")
         
-        # Check broker integration (IBKR order endpoints)
-        try:
-            if results.get('ibkr_authenticated', False):  # From previous check
-                order_status = requests.get(f"{self.ibkr_base_url}/v1/api/iserver/account/orders", timeout=10)
-                if order_status.status_code in [200, 400]:  # 400 might be normal if no orders
-                    results['broker_integration_ready'] = True
-                    print("✅ Broker Integration: Order endpoints accessible")
-                else:
-                    print(f"❌ Broker Integration: Order endpoint HTTP {order_status.status_code}")
-            else:
-                print("⚠️  Broker Integration: Cannot test (authentication required)")
-        
-        except Exception as e:
-            print(f"❌ Broker Integration: Error - {str(e)}")
-        
         return results
     
     def check_algorithm_integration(self) -> Dict[str, Any]:
