@@ -1,0 +1,311 @@
+{
+  "validation_timestamp": "2025-09-05T16:05:57.713083",
+  "mapping_intelligence": {
+    "total_data_points": 25,
+    "total_mappings": 2,
+    "overall_coverage": 8.0,
+    "validation_success": false
+  },
+  "successful_mappings": {
+    "performance": {
+      "exact_matches": {},
+      "semantic_matches": {},
+      "partial_matches": {},
+      "unmapped": {
+        "page_title": {
+          "frontend_value": "LEAN Portfolio Performance | unicorninvesting.us",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "main_heading": {
+          "frontend_value": "\u26a1 Primary Forex Portfolio Performance",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        }
+      }
+    },
+    "algorithms": {
+      "exact_matches": {
+        "portfolio_identifier": {
+          "frontend_value": "Myportolio",
+          "backend_matches": [
+            {
+              "path": [
+                "config",
+                "portfolio_name"
+              ],
+              "source": "config",
+              "context": "portfolio_name"
+            },
+            {
+              "path": [
+                "risk_parameters",
+                "portfolio_name"
+              ],
+              "source": "risk_parameters",
+              "context": "portfolio_name"
+            }
+          ],
+          "match_type": "exact_value",
+          "confidence": 100
+        }
+      },
+      "semantic_matches": {
+        "allocation_percent_0": {
+          "frontend_value": "60%",
+          "backend_value": 60.0,
+          "backend_source": "config",
+          "backend_context": "eth_allocation",
+          "match_type": "semantic_allocation",
+          "confidence": 85
+        }
+      },
+      "partial_matches": {},
+      "unmapped": {
+        "page_title": {
+          "frontend_value": "LEAN Algorithm Management | unicorninvesting.us",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "main_heading": {
+          "frontend_value": "\ud83e\udd16 Myportolio ETH Algorithm Framework",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "algorithm_name_0": {
+          "frontend_value": "",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_name_1": {
+          "frontend_value": "ETH Basic Risk Management",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "algorithm_name_2": {
+          "frontend_value": "ETH Momentum Strategy",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_name_3": {
+          "frontend_value": "Portfolio Manager Integration",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_0": {
+          "frontend_value": "",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_1": {
+          "frontend_value": "Available",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_2": {
+          "frontend_value": "Available",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_3": {
+          "frontend_value": "Operational",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_4": {
+          "frontend_value": "",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_5": {
+          "frontend_value": "",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_6": {
+          "frontend_value": "\u2705 EnhancedPortfolioManager",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_7": {
+          "frontend_value": "\u2705 UnicornRiskIntegrated",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_8": {
+          "frontend_value": "\u2705 PortfolioConfigManager",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        },
+        "algorithm_status_9": {
+          "frontend_value": "\u2705 IBKR Connectivity",
+          "analysis": {
+            "value_type": "unknown",
+            "patterns_detected": [],
+            "suggestions": []
+          }
+        }
+      }
+    },
+    "algorithm_performance": {
+      "exact_matches": {},
+      "semantic_matches": {},
+      "partial_matches": {},
+      "unmapped": {
+        "page_title": {
+          "frontend_value": "LEAN Algorithm Performance | unicorninvesting.us",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "main_heading": {
+          "frontend_value": "\ud83c\udfaf Primary Forex Portfolio Algorithm Performance",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        }
+      }
+    },
+    "backtest_results": {
+      "exact_matches": {},
+      "semantic_matches": {},
+      "partial_matches": {},
+      "unmapped": {
+        "page_title": {
+          "frontend_value": "LEAN Backtest Results | unicorninvesting.us",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "main_heading": {
+          "frontend_value": "\ud83d\udd2c Primary Forex Portfolio Backtest Results",
+          "analysis": {
+            "value_type": "text_description",
+            "patterns_detected": [],
+            "suggestions": [
+              "May be computed/display text, check for source components"
+            ]
+          }
+        },
+        "return_percent_0": {
+          "frontend_value": "18.47%",
+          "analysis": {
+            "value_type": "percentage",
+            "patterns_detected": [],
+            "suggestions": [
+              "Look for decimal equivalents in backend (e.g., 10% = 0.10)"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "validation_scores": {
+    "performance": {
+      "total_data_points": 2,
+      "exact_matches": 0,
+      "semantic_matches": 0,
+      "partial_matches": 0,
+      "unmapped": 2,
+      "coverage_percentage": 0.0
+    },
+    "algorithms": {
+      "total_data_points": 18,
+      "exact_matches": 1,
+      "semantic_matches": 1,
+      "partial_matches": 0,
+      "unmapped": 16,
+      "coverage_percentage": 11.11111111111111
+    },
+    "algorithm_performance": {
+      "total_data_points": 2,
+      "exact_matches": 0,
+      "semantic_matches": 0,
+      "partial_matches": 0,
+      "unmapped": 2,
+      "coverage_percentage": 0.0
+    },
+    "backtest_results": {
+      "total_data_points": 3,
+      "exact_matches": 0,
+      "semantic_matches": 0,
+      "partial_matches": 0,
+      "unmapped": 3,
+      "coverage_percentage": 0.0
+    }
+  },
+  "recommendations": []
+}
