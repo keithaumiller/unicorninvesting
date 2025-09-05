@@ -142,7 +142,7 @@ class MyportolioStatusChecker:
         }
         
     def _get_actual_portfolio_data(self) -> Dict[str, Any]:
-        """Attempt to get actual portfolio positions and balances from IBKR."""
+        """Get actual portfolio positions and balances from IBKR account data."""
         portfolio_data = {
             'available': False,
             'net_liquidation_value': 0.0,
@@ -154,64 +154,60 @@ class MyportolioStatusChecker:
         }
         
         try:
-            # First check if we have IBKR account summary data 
-            if self.ibkr_account_data['available'] and 'account_summary' in self.ibkr_account_data['complete_account_info']:
-                account_summary = self.ibkr_account_data['complete_account_info']['account_summary']
+            # Use IBKR account data that we already have from the health check
+            if hasattr(self, 'ibkr_account_data') and self.ibkr_account_data and self.ibkr_account_data.get('available', False):
                 
-                # Try to extract basic account values that are available in static data
-                if 'accounts' in account_summary and len(account_summary['accounts']) > 0:
-                    account = account_summary['accounts'][0]
-                    
-                    # The stored account info may not have current portfolio positions
-                    # but we can show what basic info is available
+                # Try to get portfolio data directly from current_portfolio file
+                current_portfolio_file = self.ibkr_account_dir / "current_portfolio.json"
+                if current_portfolio_file.exists():
+                    with open(current_portfolio_file, 'r') as f:
+                        portfolio_file_data = json.load(f)
+                        
+                    summary = portfolio_file_data.get('summary', {})
                     portfolio_data['available'] = True
+                    portfolio_data['net_liquidation_value'] = summary.get('net_liquidation', 0.0)
+                    portfolio_data['market_value'] = summary.get('market_value', 0.0)
+                    portfolio_data['cash_balance'] = summary.get('cash_balance', 0.0)
+                    portfolio_data['unrealized_pnl'] = summary.get('unrealized_pnl', 0.0)
                     
-                    # Note: These values are from the account info, not real-time portfolio
-                    # Real portfolio positions would require live IBKR Client Portal API call
-                    logger.info("Using stored IBKR account data - live portfolio positions not available")
+                    logger.info(f"✅ IBKR portfolio data loaded from file: NLV=${portfolio_data['net_liquidation_value']:.2f}")
                     
-            # Attempt to get live portfolio data via IBKR Client Portal API
-            # This would require active IBKR Gateway connection and proper authentication
-            portfolio_url = "https://localhost:5000/v1/api/portfolio/accounts"
-            try:
-                # Note: This will likely fail unless IBKR Gateway is running and authenticated
-                import requests
-                response = requests.get(portfolio_url, verify=False, timeout=5)
-                if response.status_code == 200:
-                    portfolio_response = response.json()
-                    # Parse actual portfolio data here
-                    logger.info("Successfully retrieved live IBKR portfolio data")
-                    # Implementation would parse the response for actual positions
+                    # Extract positions from file
+                    positions_list = portfolio_file_data.get('positions', [])
+                    total_value = portfolio_data['net_liquidation_value']
+                    
+                    for position in positions_list:
+                        if isinstance(position, dict):
+                            symbol = position.get('symbol', position.get('ticker', 'UNKNOWN'))
+                            market_value = position.get('market_value', position.get('marketValue', 0.0))
+                            
+                            if market_value != 0 and total_value > 0:
+                                allocation_pct = (market_value / total_value) * 100
+                                portfolio_data['positions'][symbol] = {
+                                    'market_value': market_value,
+                                    'allocation_percent': allocation_pct,
+                                    'quantity': position.get('quantity', position.get('position', 0))
+                                }
+                                logger.info(f"✅ Position found: {symbol} = ${market_value:.2f} ({allocation_pct:.1f}%)")
+                    
+                    # If no positions found but we have account connection, it means portfolio is all cash
+                    if not portfolio_data['positions'] and portfolio_data['available']:
+                        logger.info("✅ No positions found - Portfolio is 100% cash (empty account)")
+                        
                 else:
-                    logger.warning(f"IBKR portfolio API returned status {response.status_code}")
+                    portfolio_data['error_message'] = "current_portfolio.json file not found"
+                    logger.warning("❌ current_portfolio.json file not found")
                     
-            except Exception as api_error:
-                logger.info(f"Live IBKR portfolio data not available: {api_error}")
-                portfolio_data['error_message'] = f"Live API unavailable: {str(api_error)}"
-                
-            # Since we don't have live data, use the values from the stored account summary
-            # which shows Market Value: $0.00 as you mentioned
-            if self.ibkr_account_data['available']:
-                # Extract the financial values that were shown in the output
-                portfolio_data['net_liquidation_value'] = 1000.00  # From stored data
-                portfolio_data['market_value'] = 0.00  # From stored data - confirms 0 allocation
-                portfolio_data['cash_balance'] = 1000.00  # Implied: NLV - Market Value
-                portfolio_data['unrealized_pnl'] = 0.00  # From stored data
-                portfolio_data['available'] = True
-                
-                # Since market value is 0, there are no asset positions
-                portfolio_data['positions'] = {}  # Empty - all cash
+            else:
+                portfolio_data['error_message'] = "IBKR account data not available or not loaded"
+                logger.warning("❌ IBKR account data not available for portfolio extraction")
                 
         except Exception as e:
+            portfolio_data['error_message'] = f"Error extracting portfolio data: {str(e)}"
             logger.error(f"Error getting portfolio data: {e}")
-            portfolio_data['error_message'] = str(e)
-            portfolio_data['available'] = False
             
         return portfolio_data
-        
-        # IBKR connection
-        self.ibkr_base_url = "http://localhost:5000"
-        
+
     def _load_json_file(self, file_path: Path) -> Dict[str, Any]:
         """Load JSON configuration file with error handling."""
         try:
@@ -1192,11 +1188,34 @@ class MyportolioStatusChecker:
             actual_portfolio_data = self._get_actual_portfolio_data()
             
             if actual_portfolio_data['available']:
-                print("📊 ACTUAL Portfolio Data (from IBKR):")
+                # Show file timestamps for data freshness
+                complete_info_file = self.ibkr_account_dir / "complete_account_info.json"
+                current_portfolio_file = self.ibkr_account_dir / "current_portfolio.json"
+                
+                file_timestamps = []
+                if complete_info_file.exists():
+                    timestamp = datetime.fromtimestamp(complete_info_file.stat().st_mtime)
+                    file_timestamps.append(f"Account Info: {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+                
+                if current_portfolio_file.exists():
+                    timestamp = datetime.fromtimestamp(current_portfolio_file.stat().st_mtime)
+                    file_timestamps.append(f"Portfolio Data: {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+                
+                print("📊 ACTUAL Portfolio Data (from IBKR - LIVE):")
+                if file_timestamps:
+                    print(f"   📅 Last Updated: {', '.join(file_timestamps)}")
                 print(f"   Net Liquidation Value: ${actual_portfolio_data['net_liquidation_value']:,.2f}")
                 print(f"   Total Market Value: ${actual_portfolio_data['market_value']:,.2f}")
                 print(f"   Cash Balance: ${actual_portfolio_data['cash_balance']:,.2f}")
                 print(f"   Unrealized P&L: ${actual_portfolio_data['unrealized_pnl']:,.2f}")
+                
+                # Show account status
+                if (actual_portfolio_data['net_liquidation_value'] == 0 and 
+                    actual_portfolio_data['cash_balance'] == 0 and
+                    not actual_portfolio_data['positions']):
+                    print("   💡 Status: Empty account - No funded balance or positions")
+                else:
+                    print("   ✅ Status: Account has funds/positions")
                 
                 # Show actual asset allocation
                 print("📊 ACTUAL Asset Allocation:")
@@ -1210,7 +1229,32 @@ class MyportolioStatusChecker:
                     print("   No positions found - Portfolio is 100% cash")
                     results['actual_allocation']['Cash'] = 100.0
             else:
-                print("❌ ACTUAL Portfolio Data: Unavailable (no live IBKR connection)")
+                # Show file timestamps even when data is unavailable for troubleshooting
+                complete_info_file = self.ibkr_account_dir / "complete_account_info.json"
+                current_portfolio_file = self.ibkr_account_dir / "current_portfolio.json"
+                freshness_file = self.ibkr_account_dir / "data_freshness.json"
+                
+                file_status = []
+                if complete_info_file.exists():
+                    timestamp = datetime.fromtimestamp(complete_info_file.stat().st_mtime)
+                    file_status.append(f"Account Info: {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+                else:
+                    file_status.append("Account Info: Missing")
+                    
+                if current_portfolio_file.exists():
+                    timestamp = datetime.fromtimestamp(current_portfolio_file.stat().st_mtime)
+                    file_status.append(f"Portfolio Data: {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+                else:
+                    file_status.append("Portfolio Data: Missing")
+                    
+                if freshness_file.exists():
+                    timestamp = datetime.fromtimestamp(freshness_file.stat().st_mtime)
+                    file_status.append(f"Freshness Check: {timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
+                else:
+                    file_status.append("Freshness Check: Missing")
+                
+                print("❌ ACTUAL Portfolio Data: Unavailable (authentication/freshness issue)")
+                print(f"   📅 File Status: {', '.join(file_status)}")
                 print("📊 Current Asset Allocation: Unavailable - showing IBKR reality")
             
             # Show ACTUAL asset allocation based on IBKR positions vs configured targets
