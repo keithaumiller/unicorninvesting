@@ -1,0 +1,160 @@
+{
+  "timestamp": "2025-09-05T17:26:05.035183",
+  "frontend_results": {
+    "portfolio_overview": {
+      "status": "error",
+      "url": "/admin/metrics/lean/portfolio?portfolio=Myportolio",
+      "error": "HTTP 403",
+      "data_points_found": 0
+    },
+    "holdings": {
+      "status": "error",
+      "url": "/admin/metrics/lean/holdings?portfolio=Myportolio",
+      "error": "HTTP 403",
+      "data_points_found": 0
+    },
+    "performance": {
+      "status": "success",
+      "url": "/admin/metrics/lean/performance?portfolio=Myportolio",
+      "data_points_found": 8,
+      "sample_data": {
+        "percentage_0": "79%",
+        "percentage_1": "0%",
+        "percentage_2": "100%",
+        "percentage_3": "8.47%",
+        "percentage_4": "12.45%",
+        "numeric_0": "1.85",
+        "numeric_1": "0.98",
+        "numeric_2": "1.23"
+      }
+    },
+    "algorithms": {
+      "status": "success",
+      "url": "/admin/metrics/lean/algorithms?portfolio=Myportolio",
+      "data_points_found": 7,
+      "sample_data": {
+        "percentage_0": "79%",
+        "percentage_1": "0%",
+        "percentage_2": "100%",
+        "percentage_3": "0.0%",
+        "percentage_4": "15.0%",
+        "date_0": "2025-09-04",
+        "date_1": "2025-09-04"
+      }
+    },
+    "algorithm_performance": {
+      "status": "success",
+      "url": "/admin/metrics/lean/algorithms/performance?portfolio=Myportolio",
+      "data_points_found": 6,
+      "sample_data": {
+        "percentage_0": "79%",
+        "percentage_1": "0%",
+        "percentage_2": "100%",
+        "percentage_3": "72.1%",
+        "percentage_4": "64.3%",
+        "numeric_0": "0.78"
+      }
+    },
+    "backtest_results": {
+      "status": "success",
+      "url": "/admin/metrics/lean/backtest?portfolio=Myportolio",
+      "data_points_found": 7,
+      "sample_data": {
+        "percentage_0": "79%",
+        "percentage_1": "0%",
+        "percentage_2": "100%",
+        "percentage_3": "18.47%",
+        "percentage_4": "63.4%",
+        "date_0": "2023-01-01",
+        "date_1": "2024-12-31"
+      }
+    }
+  },
+  "backend_results": {
+    "config": {
+      "status": "found",
+      "keys": [
+        "portfolio_name",
+        "description",
+        "strategy_type",
+        "assets",
+        "total_allocation",
+        "currency",
+        "rebalancing_frequency",
+        "minimum_trade_size",
+        "target_volatility",
+        "created_date",
+        "last_updated",
+        "status"
+      ],
+      "sample_data": {
+        "portfolio_name": "Myportolio",
+        "description": "Primary portfolio for cryptocurrency trading with ETH and BTC exposure",
+        "strategy_type": "dual_crypto"
+      }
+    },
+    "risk_parameters": {
+      "status": "found",
+      "keys": [
+        "portfolio_name",
+        "risk_profile",
+        "max_portfolio_volatility",
+        "max_single_asset_weight",
+        "var_limit_1day",
+        "var_limit_1week",
+        "max_drawdown",
+        "sharpe_ratio_target",
+        "risk_budget_allocation",
+        "correlation_limits",
+        "volatility_targets",
+        "position_limits",
+        "stop_loss_settings",
+        "stress_test_scenarios",
+        "last_updated"
+      ],
+      "sample_data": {
+        "portfolio_name": "Myportolio",
+        "risk_profile": "moderate",
+        "max_portfolio_volatility": 0.25
+      }
+    },
+    "status_report": {
+      "status": "found",
+      "file": "status_report_20250905_172229.json",
+      "keys": [
+        "timestamp",
+        "overall_readiness",
+        "critical_issues",
+        "warnings",
+        "passed_checks",
+        "component_status",
+        "performance_metrics",
+        "recommendations",
+        "ibkr_trading_parameters",
+        "portfolio_statistics",
+        "live_trading_readiness"
+      ],
+      "sample_data": {
+        "timestamp": "2025-09-05T17:22:28.850037",
+        "overall_readiness": "UNKNOWN",
+        "critical_issues": []
+      }
+    },
+    "simulations": {
+      "status": "found",
+      "count": 4,
+      "simulations": [
+        "backtest_20250903_142955_5618caf5",
+        "backtest_20250903_145040_bef7f054",
+        "backtest_20250903_143119_fa83c2ff",
+        "backtest_20250903_142029_f5f0889c"
+      ]
+    }
+  },
+  "summary": {
+    "total_pages": 6,
+    "successful_pages": 4,
+    "success_rate": 66.66666666666666,
+    "total_data_points": 28
+  }
+}

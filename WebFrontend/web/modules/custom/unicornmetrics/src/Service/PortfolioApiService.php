@@ -877,6 +877,97 @@ PYTHON;
   }
 
   /**
+   * Get live IBKR portfolio data.
+   *
+   * @return array
+   *   Live portfolio data from IBKR files.
+   */
+  public function getIbkrLivePortfolioData(): array {
+    try {
+      $ibkr_portfolio_file = '/workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/accountinfo/current_portfolio.json';
+      $ibkr_account_file = '/workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/accountinfo/complete_account_info.json';
+      
+      $portfolio_data = [];
+      $account_data = [];
+      
+      // Read current portfolio data
+      if (file_exists($ibkr_portfolio_file)) {
+        $portfolio_content = file_get_contents($ibkr_portfolio_file);
+        $portfolio_data = json_decode($portfolio_content, TRUE) ?: [];
+      }
+      
+      // Read account info
+      if (file_exists($ibkr_account_file)) {
+        $account_content = file_get_contents($ibkr_account_file);
+        $account_data = json_decode($account_content, TRUE) ?: [];
+      }
+      
+      // Get file timestamps for freshness info
+      $portfolio_timestamp = file_exists($ibkr_portfolio_file) ? filemtime($ibkr_portfolio_file) : null;
+      $account_timestamp = file_exists($ibkr_account_file) ? filemtime($ibkr_account_file) : null;
+      
+      // Extract key data
+      $net_liquidation = $portfolio_data['summary']['net_liquidation'] ?? 0.0;
+      $cash_balance = $portfolio_data['summary']['cash_balance'] ?? 0.0;
+      $market_value = $portfolio_data['summary']['market_value'] ?? 0.0;
+      $unrealized_pnl = $portfolio_data['summary']['unrealized_pnl'] ?? 0.0;
+      $total_positions = $portfolio_data['summary']['total_positions'] ?? 0;
+      $account_id = $portfolio_data['account_id'] ?? ($account_data['account_summary']['accounts']['accounts'][0] ?? 'Unknown');
+      
+      // Process positions
+      $positions = [];
+      if (!empty($portfolio_data['positions'])) {
+        foreach ($portfolio_data['positions'] as $position) {
+          $positions[] = [
+            'symbol' => $position['symbol'] ?? 'Unknown',
+            'quantity' => $position['quantity'] ?? 0,
+            'market_value' => $position['market_value'] ?? 0.0,
+            'unrealized_pnl' => $position['unrealized_pnl'] ?? 0.0,
+            'percentage' => $net_liquidation > 0 ? ($position['market_value'] ?? 0) / $net_liquidation * 100 : 0
+          ];
+        }
+      }
+      
+      return [
+        'account_id' => $account_id,
+        'net_liquidation' => $net_liquidation,
+        'cash_balance' => $cash_balance, 
+        'market_value' => $market_value,
+        'unrealized_pnl' => $unrealized_pnl,
+        'total_positions' => $total_positions,
+        'positions' => $positions,
+        'is_funded' => $net_liquidation > 0 || $cash_balance > 0,
+        'account_status' => $total_positions > 0 ? 'Active Trading' : ($net_liquidation > 0 ? 'Funded' : 'Empty Account'),
+        'portfolio_file_timestamp' => $portfolio_timestamp ? date('Y-m-d H:i:s', $portfolio_timestamp) : null,
+        'account_file_timestamp' => $account_timestamp ? date('Y-m-d H:i:s', $account_timestamp) : null,
+        'last_updated' => $portfolio_data['last_updated'] ?? date('Y-m-d H:i:s'),
+        'data_source' => 'IBKR Live'
+      ];
+      
+    } catch (\Exception $e) {
+      $this->logger->error('Error reading IBKR live portfolio data: @message', ['@message' => $e->getMessage()]);
+      
+      // Return empty portfolio structure on error
+      return [
+        'account_id' => 'Unknown',
+        'net_liquidation' => 0.0,
+        'cash_balance' => 0.0,
+        'market_value' => 0.0,
+        'unrealized_pnl' => 0.0,
+        'total_positions' => 0,
+        'positions' => [],
+        'is_funded' => false,
+        'account_status' => 'Data Unavailable',
+        'portfolio_file_timestamp' => null,
+        'account_file_timestamp' => null,
+        'last_updated' => null,
+        'data_source' => 'Error',
+        'error' => $e->getMessage()
+      ];
+    }
+  }
+
+  /**
    * Get fallback risk metrics.
    */
   private function getFallbackRiskMetrics(): array {
