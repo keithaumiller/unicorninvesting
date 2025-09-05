@@ -1,0 +1,179 @@
+{
+  "timestamp": "2025-09-05T15:59:34.928896",
+  "validation_summary": {
+    "overall_success": false,
+    "coverage_percentage": 0.0,
+    "accuracy_percentage": 0,
+    "total_data_points": 4,
+    "mapped_points": 0,
+    "exact_matches": 0
+  },
+  "page_validations": {
+    "portfolio_overview": {
+      "url": "/admin/metrics/lean/portfolio?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "error",
+      "error": "HTTP 403",
+      "data_points": {}
+    },
+    "holdings": {
+      "url": "/admin/metrics/lean/holdings?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "error",
+      "error": "HTTP 403",
+      "data_points": {}
+    },
+    "performance": {
+      "data_points": {
+        "page_title": "LEAN Portfolio Performance | unicorninvesting.us"
+      },
+      "total_count": 1,
+      "url": "/admin/metrics/lean/performance?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "success"
+    },
+    "algorithms": {
+      "data_points": {
+        "page_title": "LEAN Algorithm Management | unicorninvesting.us"
+      },
+      "total_count": 1,
+      "url": "/admin/metrics/lean/algorithms?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "success"
+    },
+    "algorithm_performance": {
+      "data_points": {
+        "page_title": "LEAN Algorithm Performance | unicorninvesting.us"
+      },
+      "total_count": 1,
+      "url": "/admin/metrics/lean/algorithms/performance?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "success"
+    },
+    "backtest_results": {
+      "data_points": {
+        "page_title": "LEAN Backtest Results | unicorninvesting.us"
+      },
+      "total_count": 1,
+      "url": "/admin/metrics/lean/backtest?portfolio=backtest_20250903_145040_bef7f054",
+      "status": "success"
+    }
+  },
+  "backend_mappings": {
+    "mapped_points": {
+      "portfolio_overview": {},
+      "holdings": {},
+      "performance": {},
+      "algorithms": {},
+      "algorithm_performance": {},
+      "backtest_results": {}
+    },
+    "unmapped_points": {
+      "portfolio_overview": {},
+      "holdings": {},
+      "performance": {
+        "page_title": {
+          "frontend_value": "LEAN Portfolio Performance | unicorninvesting.us",
+          "status": "no_backend_source_found"
+        }
+      },
+      "algorithms": {
+        "page_title": {
+          "frontend_value": "LEAN Algorithm Management | unicorninvesting.us",
+          "status": "no_backend_source_found"
+        }
+      },
+      "algorithm_performance": {
+        "page_title": {
+          "frontend_value": "LEAN Algorithm Performance | unicorninvesting.us",
+          "status": "no_backend_source_found"
+        }
+      },
+      "backtest_results": {
+        "page_title": {
+          "frontend_value": "LEAN Backtest Results | unicorninvesting.us",
+          "status": "no_backend_source_found"
+        }
+      }
+    },
+    "backend_unused": {},
+    "mapping_coverage": 0.0
+  },
+  "coverage_analysis": {
+    "total_data_points": 4,
+    "mapped_data_points": 0,
+    "unmapped_data_points": 4,
+    "coverage_percentage": 0.0,
+    "page_coverage": {
+      "portfolio_overview": {
+        "total_points": 0,
+        "mapped_points": 0,
+        "unmapped_points": 0,
+        "coverage_percentage": 0
+      },
+      "holdings": {
+        "total_points": 0,
+        "mapped_points": 0,
+        "unmapped_points": 0,
+        "coverage_percentage": 0
+      },
+      "performance": {
+        "total_points": 1,
+        "mapped_points": 0,
+        "unmapped_points": 1,
+        "coverage_percentage": 0.0
+      },
+      "algorithms": {
+        "total_points": 1,
+        "mapped_points": 0,
+        "unmapped_points": 1,
+        "coverage_percentage": 0.0
+      },
+      "algorithm_performance": {
+        "total_points": 1,
+        "mapped_points": 0,
+        "unmapped_points": 1,
+        "coverage_percentage": 0.0
+      },
+      "backtest_results": {
+        "total_points": 1,
+        "mapped_points": 0,
+        "unmapped_points": 1,
+        "coverage_percentage": 0.0
+      }
+    }
+  },
+  "validation_results": {
+    "portfolio_overview": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    },
+    "holdings": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    },
+    "performance": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    },
+    "algorithms": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    },
+    "algorithm_performance": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    },
+    "backtest_results": {
+      "exact_matches": 0,
+      "value_differences": 0,
+      "total_mapped": 0,
+      "match_details": {}
+    }
+  }
+}

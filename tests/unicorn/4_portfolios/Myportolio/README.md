@@ -11,6 +11,32 @@ The validation system follows the principle:
 
 This ensures 100% data integrity between the Drupal 11 frontend and the Python backend systems.
 
+## 📁 Directory Structure
+
+```
+tests/unicorn/4_portfolios/Myportolio/
+├── README.md                              # This comprehensive documentation
+├── validation_utilities.py                # Shared validation framework utilities
+├── test_basic_data_validation.py          # Foundation validation (Approach 1)
+├── test_production_data_validation.py     # Production validation (Approach 2)
+├── test_intelligent_data_validation.py    # Semantic validation (Approach 3)
+├── test_final_enhanced_validation.py      # Ultimate validation (Approach 4)
+├── test_targeted_validation.py            # Precision mapping validation (Approach 5)
+├── test_eth_kelly_integration.py          # ETH Kelly Criterion integration tests
+├── validation_results/                    # All validation outcome files
+│   ├── basic_validation_results_[timestamp].json
+│   ├── production_validation_[timestamp].json
+│   ├── intelligent_validation_[timestamp].json
+│   ├── final_enhanced_validation_[timestamp].json
+│   └── [various simulation and analysis reports]
+└── archive/                               # Archived development versions
+    ├── test_comprehensive_data_validation.py
+    ├── test_comprehensive_link_validation.py
+    ├── test_comprehensive_page_data_validation.py
+    ├── test_direct_url_simulation.py
+    └── test_focused_link_validation.py
+```
+
 ## Test Scripts Overview
 
 ### 1. Basic Data Validation (`test_basic_data_validation.py`)
