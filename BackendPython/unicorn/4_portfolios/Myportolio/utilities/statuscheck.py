@@ -887,26 +887,6 @@ class MyportolioStatusChecker:
             print(f"   Equity with Loan Value: ${margin_info.get('equity_with_loan', 0.0):,.2f}")
             print(f"   Unrealized P&L: ${margin_info.get('unrealized_pnl', 0.0):,.2f}")
             print(f"   Market Value: ${margin_info.get('market_value', 0.0):,.2f}")
-        
-        # Trading Recommendations based on account capabilities
-        print(f"\n🎯 Trading Recommendations:")
-        if data_intervals.get('real_time', False):
-            print("   ✅ Medium-frequency trading strategies supported")
-            print("   ✅ 1-minute interval execution confirmed via IBKR testing")
-            print("   ⚠️  Sub-minute execution not reliably available for crypto")
-        else:
-            print("   ⚠️  Limited to lower-frequency strategies (15min+ intervals)")
-            print("   ⚠️  Real-time execution not available")
-            
-        if margin_info.get('net_liquidation', 0) > 25000:
-            print("   ✅ Pattern Day Trading rules compliant")
-        else:
-            print("   ⚠️  Pattern Day Trading restrictions may apply")
-            
-        # Add specific note about confirmed data interval
-        if data_intervals.get('actual_testing_confirmed', False):
-            print("   📊 CONFIRMED: Live ETH data available at 1-minute intervals")
-            print("   📊 STRATEGY RECOMMENDATION: Build execution algorithms for 1-minute+ timeframes")
     
     def check_execution_readiness(self) -> Dict[str, Any]:
         """Assess execution model availability and order management capability."""
@@ -1529,8 +1509,8 @@ class MyportolioStatusChecker:
             # Overall assessment
             self.status_results['live_trading_readiness'] = self.assess_live_trading_readiness()
             
-            # Generate recommendations
-            self.status_results['recommendations'] = self.generate_recommendations()
+            # Recommendations removed for clean status reporting
+            self.status_results['recommendations'] = []
             
             # Save report
             self.save_status_report()
