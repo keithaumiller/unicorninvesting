@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraint as SymfonyConstraint;
  */
 #[Constraint(
   id: 'PortfolioData',
-  label: 'Portfolio Data',
   type: 'entity'
 )]
 class PortfolioDataConstraint extends SymfonyConstraint {

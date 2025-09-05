@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraint as SymfonyConstraint;
  */
 #[Constraint(
   id: 'ApiResponse',
-  label: 'API Response',
   type: 'string'
 )]
 class ApiResponseConstraint extends SymfonyConstraint {

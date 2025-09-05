@@ -6,6 +6,15 @@ unicornmetrics.dashboard:
   requirements:
     _permission: 'access unicorn metrics'
 
+# Public Dashboard for Homepage
+unicornmetrics.public_dashboard:
+  path: '/unicorn'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::publicDashboard'
+    _title: 'Unicorn Investing Platform'
+  requirements:
+    _access: 'TRUE'
+
 # LEAN Portfolio Management Routes
 unicornmetrics.lean_portfolio:
   path: '/admin/metrics/lean/portfolio'

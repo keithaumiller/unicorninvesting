@@ -889,6 +889,27 @@ class DashboardController extends ControllerBase {
   }
 
   /**
+   * Public dashboard page for homepage.
+   */
+  public function publicDashboard() {
+    // Use the same dashboard content but without admin restrictions
+    $dashboard_content = $this->dashboard();
+    
+    // Add welcome message for public access
+    $welcome_message = '
+    <div class="welcome-banner">
+      <h1>🦄 Welcome to Unicorn Investing Platform</h1>
+      <p class="welcome-subtitle">Advanced Algorithmic Trading with LEAN Framework Integration</p>
+      <p class="platform-description">Real-time portfolio management, ETH algorithmic strategies, and comprehensive risk management.</p>
+    </div>';
+    
+    // Prepend welcome message to existing dashboard content
+    $dashboard_content['#markup'] = Markup::create($welcome_message . $dashboard_content['#markup']->__toString());
+    
+    return $dashboard_content;
+  }
+
+  /**
    * LEAN Portfolio Holdings Detail.
    */
   public function leanHoldings() {

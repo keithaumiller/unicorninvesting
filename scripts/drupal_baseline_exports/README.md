@@ -2,18 +2,38 @@
 
 This directory contains exported Drupal baselines created by the `export_drupal_baseline.sh` script.
 
+## Current Baseline
+
+**🎯 ACTIVE BASELINE:** `unicorn_drupal_baseline_20250905_001311`
+- **Export Date:** September 5, 2025
+- **Status:** ✅ Fully Working - unicornmetrics module enabled, homepage configured
+- **Features:**
+  - ✅ unicornmetrics module enabled and working
+  - ✅ Homepage set to unicorn dashboard (/unicorn)
+  - ✅ All validation constraint errors fixed
+  - ✅ Apache restart container-friendly fallback logic
+  - ✅ Fresh data validation system implemented
+  - ✅ IBKR Gateway integration operational
+
+## Legacy Baselines
+
+**📋 OLD BASELINES:** (kept for reference)
+- `old_unicorn_drupal_baseline_20250904_190455` - Initial baseline
+- `old_unicorn_drupal_baseline_20250904_190621` - Early configuration
+
 ## Directory Structure
 
 ```
 drupal_baseline_exports/
-├── unicorn_drupal_baseline_[timestamp]/     # Extracted baseline directory
-│   ├── database_dump.sql                    # Complete database backup
-│   ├── config/                              # Drupal configuration files
-│   ├── files/                               # Site files and uploads
-│   ├── settings/                            # Settings and configuration files
-│   ├── restore_baseline.sh                  # Automated restore script
-│   └── README.md                            # Export documentation
-└── unicorn_drupal_baseline_[timestamp].tar.gz  # Compressed archive
+├── unicorn_drupal_baseline_20250905_001311/     # CURRENT WORKING BASELINE
+│   ├── database_dump.sql                         # Complete database backup
+│   ├── config/                                   # Drupal configuration files
+│   ├── files/                                    # Site files and uploads  
+│   ├── settings/                                 # Settings and configuration files
+│   ├── restore_baseline.sh                       # Automated restore script
+│   └── README.md                                 # Export documentation
+├── unicorn_drupal_baseline_20250905_001311.tar.gz  # CURRENT ARCHIVE
+└── old_*                                         # Legacy baselines (reference only)
 ```
 
 ## Usage
