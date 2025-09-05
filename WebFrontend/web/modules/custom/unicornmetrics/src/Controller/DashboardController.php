@@ -1136,15 +1136,259 @@ class DashboardController extends ControllerBase {
     // Disable caching for real-time data
     \Drupal::service('page_cache_kill_switch')->trigger();
     
+    $module_info = \Drupal::service('extension.list.module')->getExtensionInfo('unicornmetrics');
+    $version = $module_info['version'] ?? '4.1.0';
+    
+    // Get current simulation selection from URL parameter or default
+    $current_simulation_id = \Drupal::request()->query->get('simulation') ?? 'Myportolio';
+    
+    // Validate simulation exists, fallback to Myportolio if not
+    if (!$this->portfolioApi->isValidSimulation($current_simulation_id)) {
+      $current_simulation_id = 'Myportolio';
+      \Drupal::messenger()->addWarning(t('The requested simulation was not found. Displaying default simulation.'));
+    }
+    
+    // Get available simulations for selector
+    $available_simulations = $this->portfolioApi->getAvailableSimulations();
+    
     // Get live IBKR portfolio data
     $live_portfolio = $this->portfolioApi->getIbkrLivePortfolioData();
     
-    // Get configuration for comparison
-    $portfolio_config = $this->portfolioApi->getPortfolioConfig('Myportolio');
-    $portfolio_status = $this->portfolioApi->getPortfolioStatus('Myportolio');
+    // Get backend portfolio data for selected simulation
+    $portfolio_config = $this->portfolioApi->getPortfolioConfig($current_simulation_id);
+    $portfolio_status = $this->portfolioApi->getPortfolioStatus($current_simulation_id);
+    $eth_algorithm_status = $this->portfolioApi->getEthAlgorithmStatus($current_simulation_id);
+    $risk_metrics = $this->portfolioApi->getRiskMetrics($current_simulation_id);
     
-    // Build enhanced dashboard with live data
-    $dashboard_html = $this->buildLivePortfolioDashboard($live_portfolio, $portfolio_config, $portfolio_status);
+    // Merge portfolio data
+    $current_portfolio = array_merge($portfolio_config, $portfolio_status);
+    
+    // Calculate portfolio value - use live IBKR data if available, otherwise backend data
+    $portfolio_value = $live_portfolio['net_liquidation'] > 0 ? $live_portfolio['net_liquidation'] : 50000.00;
+    $asset_count = count($current_portfolio['assets'] ?? []);
+    $target_volatility = ($current_portfolio['target_volatility'] ?? 0.20) * 100;
+    
+    // Use real backend status or fallback
+    $portfolio_status = $current_portfolio['overall_readiness'] ?? 'Active';
+    $is_active = in_array($portfolio_status, ['READY', 'OPERATIONAL', 'Active']);
+    $backend_connection_status = $current_portfolio['backend_status'] ?? 'connected';
+    
+    // Get real last updated timestamp
+    $last_updated = $current_portfolio['last_status_check'] ?? $current_portfolio['last_updated'] ?? date('Y-m-d H:i:s');
+    $current_portfolio_id = $current_simulation_id;
+    
+    // Build complete dashboard HTML
+    $dashboard_html = '
+    <div class="welcome-banner">
+      <h1>🦄 Unicorn Investing Platform</h1>
+      <p class="welcome-subtitle">Advanced Algorithmic Trading with LEAN Framework Integration</p>
+      <p class="platform-description">Real-time portfolio management, ETH algorithmic strategies, and comprehensive risk management.</p>
+    </div>
+
+    <div class="dashboard-header">
+      <h1>🦄 Unicorn Portfolio Management System</h1>
+      <div class="version-info">
+        <span class="module-version">Version ' . $version . '</span>
+        <span class="last-updated">Last Updated: ' . htmlspecialchars($last_updated) . '</span>
+        <span class="backend-status ' . ($backend_connection_status == 'connected' ? 'status-active' : 'status-backend') . '">' . ucfirst($backend_connection_status) . '</span>
+      </div>
+    </div>
+    
+    <!-- Simulation Selector -->
+    <div class="simulation-selector-container">
+      <h3>📊 Select Simulation/Portfolio</h3>
+      <div class="simulation-selector">
+        <label for="simulation-dropdown">Current Simulation:</label>
+        <select id="simulation-dropdown" onchange="changeSimulation(this.value)">';
+    
+    foreach ($available_simulations as $sim_id => $sim_data) {
+      $selected = ($sim_id === $current_simulation_id) ? 'selected' : '';
+      $status_icon = ($sim_data['status'] === 'active') ? '🟢' : '🔴';
+      $details_link = strpos($sim_id, 'backtest_') === 0 ? ' <a href="/unicorn/simulation/' . urlencode($sim_id) . '" target="_blank" style="color:#6f42c1;text-decoration:none;" title="View Simulation Details">🔬</a>' : '';
+      $dashboard_html .= '<option value="' . htmlspecialchars($sim_id) . '" ' . $selected . '>'
+                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . $details_link . '</option>';
+    }
+    
+    $dashboard_html .= '
+        </select>
+        <div class="simulation-info">
+          <small><strong>Description:</strong> ' . htmlspecialchars($available_simulations[$current_simulation_id]['description']) . '</small><br>
+          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>';
+          
+    // Add simulation details link for backtests
+    if (strpos($current_simulation_id, 'backtest_') === 0) {
+      $dashboard_html .= '<br><small><a href="/unicorn/simulation/' . urlencode($current_simulation_id) . '" target="_blank" style="color:#6f42c1;font-weight:bold;">🔬 View Detailed Simulation Parameters</a></small>';
+    }
+    
+    $dashboard_html .= '
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-sections">
+    
+    <!-- Live IBKR Portfolio Section -->
+    <div class="dashboard-section live-portfolio-section">
+      <h2>💼 Live Portfolio Status (IBKR)</h2>
+      <div class="live-portfolio-integration">
+        <div class="ibkr-status-summary">
+          <div class="account-overview">
+            <h3>📈 Account Summary</h3>
+            <div class="account-info">
+              <p><strong>Account ID:</strong> ' . ($live_portfolio['account_id'] ?? 'Unknown') . '</p>
+              <p><strong>Status:</strong> <span class="account-status ' . ($live_portfolio['is_funded'] ? 'funded' : 'empty') . '">' . ($live_portfolio['account_status'] ?? 'Unknown') . '</span></p>
+            </div>
+            
+            <div class="financial-summary">
+              <div class="financial-item">
+                <span class="label">Net Liquidation Value:</span>
+                <span class="value primary">$' . number_format($live_portfolio['net_liquidation'], 2) . '</span>
+              </div>
+              <div class="financial-item">
+                <span class="label">Cash Balance:</span>
+                <span class="value">$' . number_format($live_portfolio['cash_balance'], 2) . '</span>
+              </div>
+              <div class="financial-item">
+                <span class="label">Market Value:</span>
+                <span class="value">$' . number_format($live_portfolio['market_value'], 2) . '</span>
+              </div>
+              <div class="financial-item">
+                <span class="label">Unrealized P&L:</span>
+                <span class="value ' . (($live_portfolio['unrealized_pnl'] ?? 0) >= 0 ? 'positive' : 'negative') . '">$' . number_format($live_portfolio['unrealized_pnl'], 2) . '</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="data-freshness-info">
+            <h3>📅 Data Freshness</h3>
+            <div class="timestamp-details">
+              <p><strong>Last Updated:</strong> ' . ($live_portfolio['last_updated'] ?? 'Unknown') . '</p>
+              <p><strong>Data Source:</strong> ' . ($live_portfolio['data_source'] ?? 'Unknown') . '</p>';
+              
+    if ($live_portfolio['portfolio_file_timestamp']) {
+      $dashboard_html .= '<p><strong>Portfolio File:</strong> ' . $live_portfolio['portfolio_file_timestamp'] . '</p>';
+    }
+    if ($live_portfolio['account_file_timestamp']) {
+      $dashboard_html .= '<p><strong>Account File:</strong> ' . $live_portfolio['account_file_timestamp'] . '</p>';
+    }
+    
+    $dashboard_html .= '
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Primary Portfolio Section -->
+    <div class="dashboard-section">
+      <h2>💼 ' . htmlspecialchars($current_portfolio['portfolio_name'] ?? $current_simulation_id) . ' Configuration</h2>
+      <p><strong>' . htmlspecialchars($current_portfolio['description'] ?? 'Portfolio Description') . '</strong> - Strategy: ' . htmlspecialchars($current_portfolio['strategy_type'] ?? 'dual_crypto') . '</p>
+      
+      <div class="portfolio-stats">
+        <div class="stat-card">
+          <span class="stat-value">$' . number_format($portfolio_value, 2) . '</span>
+          <span class="stat-label">Portfolio Value</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">' . $asset_count . '</span>
+          <span class="stat-label">Assets</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">' . number_format($target_volatility, 1) . '%</span>
+          <span class="stat-label">Target Volatility</span>
+        </div>
+        <div class="stat-card ' . ($is_active ? 'status-active' : 'status-inactive') . '">
+          <span class="stat-value">⚡</span>
+          <span class="stat-label">' . ucfirst($portfolio_status) . '</span>
+        </div>
+      </div>
+      
+      <!-- Asset Allocation Section -->
+      <div class="asset-allocation-section">
+        <h3>📈 Target Asset Allocation vs Live Positions</h3>
+        <div class="allocation-grid">';
+
+    // Add asset allocations comparing target vs actual
+    if (!empty($current_portfolio['assets'])) {
+      foreach ($current_portfolio['assets'] as $asset_symbol => $asset_data) {
+        $allocation_percent = $asset_data['allocation_percent'] ?? 0;
+        $asset_type = $asset_data['asset_type'] ?? 'cryptocurrency';
+        $model_type = $asset_data['model_type'] ?? 'basic';
+        
+        // Find actual position in IBKR data
+        $actual_percent = 0;
+        $actual_value = 0;
+        if (!empty($live_portfolio['positions'])) {
+          foreach ($live_portfolio['positions'] as $position) {
+            if (strpos($position['symbol'], $asset_symbol) !== false) {
+              $actual_percent = $position['percentage'] ?? 0;
+              $actual_value = $position['market_value'] ?? 0;
+              break;
+            }
+          }
+        }
+        
+        $dashboard_html .= '
+          <div class="allocation-card">
+            <div class="asset-header">
+              <span class="asset-symbol">' . htmlspecialchars($asset_symbol) . '</span>
+            </div>
+            <div class="allocation-comparison">
+              <div class="target-allocation">
+                <span class="label">Target:</span>
+                <span class="percentage">' . number_format($allocation_percent, 1) . '%</span>
+              </div>
+              <div class="actual-allocation">
+                <span class="label">Actual:</span>
+                <span class="percentage">' . number_format($actual_percent, 1) . '%</span>
+                <span class="value">($' . number_format($actual_value, 2) . ')</span>
+              </div>
+            </div>
+            <div class="asset-details">
+              <small>Type: ' . ucfirst($asset_type) . '</small><br>
+              <small>Model: ' . ucfirst(str_replace('_', ' ', $model_type)) . '</small>
+            </div>
+          </div>';
+      }
+    } else {
+      $dashboard_html .= '<div class="allocation-card"><em>No asset allocation data available</em></div>';
+    }
+
+    $dashboard_html .= '
+        </div>
+      </div>
+      
+      <!-- Navigation Links -->
+      <div class="portfolio-actions">
+        <a href="/admin/metrics/lean/holdings?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">📈 View Holdings</a>
+        <a href="/admin/metrics/lean/performance?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">⚡ Performance</a>
+        <a href="/admin/metrics/lean/algorithms?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">🤖 Algorithms</a>
+        <a href="/admin/metrics/lean/backtest?portfolio=' . urlencode($current_portfolio_id) . '" class="action-button">🔬 Backtests</a>
+      </div>
+    </div>
+    
+    <div class="system-overview">
+      <h3>🏗️ Platform Architecture</h3>
+      <ul>
+        <li><strong>Live Portfolio:</strong> ' . htmlspecialchars($current_portfolio['portfolio_name'] ?? $current_portfolio_id) . ' with IBKR integration</li>
+        <li><strong>Asset Strategy:</strong> ' . htmlspecialchars($current_portfolio['strategy_type'] ?? 'dual_crypto') . ' with ' . count($current_portfolio['assets'] ?? []) . ' configured assets</li>
+        <li><strong>Risk Management:</strong> Target volatility ' . number_format(($current_portfolio['target_volatility'] ?? 0.20) * 100, 1) . '% with real-time monitoring</li>
+        <li><strong>Algorithm Framework:</strong> ETH algorithms with separated risk and trading components</li>
+        <li><strong>Backend Integration:</strong> Live data from Python portfolio management framework</li>
+        <li><strong>IBKR Connectivity:</strong> Real-time market data and execution capabilities</li>
+        <li><strong>Rebalancing:</strong> ' . ucfirst($current_portfolio['rebalancing_frequency'] ?? 'daily') . ' frequency with automated triggers</li>
+      </ul>
+    </div>
+    
+    </div>
+    
+    <script>
+    function changeSimulation(simulationId) {
+      if (simulationId) {
+        window.location.href = "/unicorn?simulation=" + encodeURIComponent(simulationId);
+      }
+    }
+    </script>';
     
     return [
       '#markup' => Markup::create($dashboard_html),
@@ -1154,191 +1398,6 @@ class DashboardController extends ControllerBase {
     ];
   }
   
-  /**
-   * Build the live portfolio dashboard HTML.
-   */
-  private function buildLivePortfolioDashboard($live_portfolio, $config, $status) {
-    $account_status_class = $live_portfolio['is_funded'] ? 'funded' : 'empty';
-    $pnl_class = ($live_portfolio['unrealized_pnl'] ?? 0) >= 0 ? 'positive' : 'negative';
-    
-    // Format currency values
-    $net_liquidation = number_format($live_portfolio['net_liquidation'], 2);
-    $cash_balance = number_format($live_portfolio['cash_balance'], 2);
-    $market_value = number_format($live_portfolio['market_value'], 2);
-    $unrealized_pnl = number_format($live_portfolio['unrealized_pnl'], 2);
-    
-    // Get target allocations for comparison
-    $target_allocations = [];
-    if (!empty($config['assets'])) {
-      foreach ($config['assets'] as $asset => $data) {
-        $target_allocations[$asset] = $data['allocation_percent'] ?? 0;
-      }
-    }
-    
-    $dashboard_html = '
-    <div class="unicorn-public-dashboard">
-      <div class="welcome-banner">
-        <h1>🦄 Unicorn Investing Platform</h1>
-        <p class="welcome-subtitle">Live Portfolio Management with IBKR Integration</p>
-        <p class="platform-description">Real-time algorithmic trading platform powered by LEAN framework</p>
-      </div>
-      
-      <div class="live-portfolio-section">
-        <div class="section-header">
-          <h2>💼 Myportolio - Live Portfolio Status</h2>
-          <div class="data-freshness">
-            <span class="timestamp">Last Updated: ' . ($live_portfolio['last_updated'] ?? 'Unknown') . '</span>
-            <span class="data-source">📊 Source: ' . ($live_portfolio['data_source'] ?? 'Unknown') . '</span>
-          </div>
-        </div>
-        
-        <div class="portfolio-overview-grid">
-          <div class="portfolio-card account-summary">
-            <h3>📈 Account Summary</h3>
-            <div class="account-info">
-              <p><strong>Account ID:</strong> ' . ($live_portfolio['account_id'] ?? 'Unknown') . '</p>
-              <p><strong>Status:</strong> <span class="account-status ' . $account_status_class . '">' . ($live_portfolio['account_status'] ?? 'Unknown') . '</span></p>
-            </div>
-            
-            <div class="financial-summary">
-              <div class="financial-item">
-                <span class="label">Net Liquidation Value:</span>
-                <span class="value primary">$' . $net_liquidation . '</span>
-              </div>
-              <div class="financial-item">
-                <span class="label">Cash Balance:</span>
-                <span class="value">$' . $cash_balance . '</span>
-              </div>
-              <div class="financial-item">
-                <span class="label">Market Value:</span>
-                <span class="value">$' . $market_value . '</span>
-              </div>
-              <div class="financial-item">
-                <span class="label">Unrealized P&L:</span>
-                <span class="value ' . $pnl_class . '">$' . $unrealized_pnl . '</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="portfolio-card positions-summary">
-            <h3>🎯 Position Analysis</h3>';
-    
-    if ($live_portfolio['total_positions'] > 0) {
-      $dashboard_html .= '<div class="positions-list">';
-      foreach ($live_portfolio['positions'] as $position) {
-        $position_pnl_class = ($position['unrealized_pnl'] ?? 0) >= 0 ? 'positive' : 'negative';
-        $dashboard_html .= '
-        <div class="position-item">
-          <div class="position-header">
-            <span class="symbol">' . $position['symbol'] . '</span>
-            <span class="percentage">' . number_format($position['percentage'], 1) . '%</span>
-          </div>
-          <div class="position-details">
-            <span>Qty: ' . number_format($position['quantity']) . '</span>
-            <span>Value: $' . number_format($position['market_value'], 2) . '</span>
-            <span class="' . $position_pnl_class . '">P&L: $' . number_format($position['unrealized_pnl'], 2) . '</span>
-          </div>
-        </div>';
-      }
-      $dashboard_html .= '</div>';
-    } else {
-      $dashboard_html .= '
-      <div class="no-positions">
-        <p>🔄 No active positions</p>
-        <p class="empty-message">Account is ready for trading</p>';
-        
-      // Show target allocations when no positions exist
-      if (!empty($target_allocations)) {
-        $dashboard_html .= '<div class="target-allocations">
-          <h4>🎯 Target Allocations:</h4>';
-        foreach ($target_allocations as $asset => $percent) {
-          $dashboard_html .= '<div class="target-item"><span>' . $asset . ':</span> <span>' . $percent . '%</span></div>';
-        }
-        $dashboard_html .= '</div>';
-      }
-      
-      $dashboard_html .= '</div>';
-    }
-    
-    $dashboard_html .= '
-          </div>
-          
-          <div class="portfolio-card system-status">
-            <h3>⚡ System Status</h3>
-            <div class="status-grid">';
-    
-    // Add system status from backend
-    if (!empty($status['component_status'])) {
-      foreach ($status['component_status'] as $component => $component_status) {
-        // Handle case where component_status might be an array
-        $status_value = is_array($component_status) ? (string) reset($component_status) : (string) $component_status;
-        $status_class = ($status_value === 'operational' || $status_value === 'ready') ? 'operational' : 'warning';
-        $status_icon = ($status_value === 'operational' || $status_value === 'ready') ? '✅' : '⚠️';
-        $dashboard_html .= '
-        <div class="status-item ' . $status_class . '">
-          <span class="status-icon">' . $status_icon . '</span>
-          <span class="component">' . ucfirst(str_replace('_', ' ', $component)) . '</span>
-          <span class="status">' . ucfirst($status_value) . '</span>
-        </div>';
-      }
-    }
-    
-    $dashboard_html .= '
-            </div>
-          </div>
-        </div>
-        
-        <div class="data-timestamps">
-          <div class="timestamp-info">
-            <h4>📅 Data Freshness</h4>
-            <div class="timestamp-grid">';
-    
-    if ($live_portfolio['portfolio_file_timestamp']) {
-      $dashboard_html .= '<div class="timestamp-item">
-        <span>Portfolio Data:</span>
-        <span>' . $live_portfolio['portfolio_file_timestamp'] . '</span>
-      </div>';
-    }
-    
-    if ($live_portfolio['account_file_timestamp']) {
-      $dashboard_html .= '<div class="timestamp-item">
-        <span>Account Data:</span>
-        <span>' . $live_portfolio['account_file_timestamp'] . '</span>
-      </div>';
-    }
-    
-    $dashboard_html .= '
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="platform-features">
-        <h2>🛠️ Platform Features</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <h3>📊 Live Data Integration</h3>
-            <p>Real-time portfolio data from Interactive Brokers with automatic refresh and timestamp tracking.</p>
-          </div>
-          <div class="feature-card">
-            <h3>🤖 ETH Algorithm Suite</h3>
-            <p>Advanced momentum strategies and risk management for Ethereum trading.</p>
-          </div>
-          <div class="feature-card">
-            <h3>⚖️ Risk Management</h3>
-            <p>Comprehensive risk controls including Kelly Criterion position sizing and VaR limits.</p>
-          </div>
-          <div class="feature-card">
-            <h3>🔬 LEAN Framework</h3>
-            <p>Professional-grade backtesting and algorithm development environment.</p>
-          </div>
-        </div>
-      </div>
-    </div>';
-    
-    return $dashboard_html;
-  }
-
   /**
    * LEAN Portfolio Holdings Detail.
    */
