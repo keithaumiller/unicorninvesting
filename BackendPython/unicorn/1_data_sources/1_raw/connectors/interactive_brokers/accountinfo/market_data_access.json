@@ -39,7 +39,7 @@
           },
           {
             "secType": "WAR",
-            "months": "JUL25;AUG25;SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;AUG26;SEP26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;JUN28;DEC28;JAN29",
+            "months": "AUG25;SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;AUG26;SEP26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;JUN28;DEC28;JAN29",
             "exchange": "BVME;EBS;FWB;GETTEX;SBF;SWB"
           },
           {
@@ -60,7 +60,7 @@
       "accessible": true,
       "contracts_found": 4,
       "contract": {
-        "conid": "12087792",
+        "conid": "39453434",
         "companyHeader": "European Monetary Union Euro - IDEALPRO",
         "companyName": "European Monetary Union Euro",
         "symbol": "EUR",
@@ -107,5 +107,5 @@
     }
   },
   "data_permissions": {},
-  "last_updated": "2025-09-04T20:42:44.868651"
+  "last_updated": "2025-09-05T16:25:48.033918"
 }

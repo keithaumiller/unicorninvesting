@@ -349,11 +349,18 @@ class MyportolioStatusChecker:
         try:
             conn = sqlite3.connect(db_file)
             
-            # Try to get latest performance metrics
+            # Try to get latest performance metrics using the actual schema
             query = """
-            SELECT r2_score, mape, sharpe_ratio, training_date 
+            SELECT 
+                MAX(CASE WHEN metric_name = 'mape' THEN metric_value END) as mape,
+                MAX(CASE WHEN metric_name = 'rmse' THEN metric_value END) as rmse,
+                MAX(CASE WHEN metric_name = 'mae' THEN metric_value END) as mae,
+                MAX(CASE WHEN metric_name = 'directional_accuracy' THEN metric_value END) as directional_accuracy,
+                created_at as training_date
             FROM model_performance 
-            ORDER BY training_date DESC 
+            WHERE created_at = (SELECT MAX(created_at) FROM model_performance)
+            GROUP BY created_at
+            ORDER BY created_at DESC 
             LIMIT 1
             """
             
@@ -362,9 +369,10 @@ class MyportolioStatusChecker:
             
             if not df.empty:
                 return {
-                    'r2_score': float(df.iloc[0]['r2_score']) if pd.notna(df.iloc[0]['r2_score']) else None,
                     'mape': float(df.iloc[0]['mape']) if pd.notna(df.iloc[0]['mape']) else None,
-                    'sharpe_ratio': float(df.iloc[0]['sharpe_ratio']) if pd.notna(df.iloc[0]['sharpe_ratio']) else None,
+                    'rmse': float(df.iloc[0]['rmse']) if pd.notna(df.iloc[0]['rmse']) else None,
+                    'mae': float(df.iloc[0]['mae']) if pd.notna(df.iloc[0]['mae']) else None,
+                    'directional_accuracy': float(df.iloc[0]['directional_accuracy']) if pd.notna(df.iloc[0]['directional_accuracy']) else None,
                     'training_date': df.iloc[0]['training_date']
                 }
         except Exception as e:

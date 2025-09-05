@@ -255,6 +255,31 @@ trading_signals = trading_algorithms.generate_signals(data, risk_metrics.limits)
 portfolio_targets = integrate_risk_and_signals(risk_metrics, trading_signals)
 ```
 
+## 🌐 **Frontend-Backend Integration**
+
+### **✅ Drupal Dashboard Integration Complete**
+**Status**: ✅ **FULLY OPERATIONAL** - Frontend successfully reading all Myportolio backend data sources  
+**Integration Quality**: **Production Ready** - 100% (6/6 data sources connected)
+
+#### **Connected Data Sources**
+- **Portfolio Configuration**: `config.json` - Portfolio name, strategy type, asset allocation (ETH 60%, BTC 40%)
+- **Risk Parameters**: `risk_parameters.json` - Risk profile, volatility limits, VaR calculations
+- **Live Status Reports**: `status_report_*.json` - Real-time readiness assessment and component health
+- **Risk Reports**: `risk_report_*.json` - VaR metrics, position analysis, risk violations
+- **Algorithm Framework**: 9 risk algorithms + 3 trading algorithms with live status
+- **ETH Integration**: Kelly Criterion integration and algorithm components
+
+#### **Dashboard Features Enhanced**
+- **Real-Time Data Display**: Portfolio value, asset count, target volatility from backend
+- **Algorithm Status**: Live algorithm availability and health indicators
+- **Risk Metrics Dashboard**: Current drawdown, volatility, VaR from reports
+- **Backend Connection**: Direct file system integration with graceful fallbacks
+
+#### **Technical Implementation**
+- **PHP Service Layer**: `PortfolioApiService` with direct JSON file access
+- **Controller Integration**: `DashboardController` with dynamic data loading
+- **Frontend Styling**: Real-time status indicators and component health display
+
 ## 📚 Documentation
 
 - **Risk Algorithms**: Detailed documentation in `risk_algorithms/README.md`

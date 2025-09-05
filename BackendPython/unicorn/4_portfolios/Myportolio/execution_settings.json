@@ -1,7 +1,9 @@
 {
   "portfolio_name": "Myportolio",
   "execution_method": "limit",
+  "execution_algo": "adaptive",
   "order_type": "adaptive",
+  "max_order_size": 50000,
   "slippage_tolerance": 0.002,
   "order_size_limit": 50000,
   "trading_session": {
