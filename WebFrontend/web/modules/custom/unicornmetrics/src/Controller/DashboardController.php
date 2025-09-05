@@ -59,20 +59,38 @@ class DashboardController extends ControllerBase {
     
     // Calculate portfolio value based on backend data  
     $portfolio_value = 50000.00; // Default value, would be calculated from positions
+    $asset_count = 0;
+    $target_volatility = 20.0;
+    
     if (isset($current_portfolio['assets'])) {
-      // Simple calculation based on asset allocation
-      $eth_allocation = $current_portfolio['assets']['ETH']['allocation_percent'] ?? 60;
-      $btc_allocation = $current_portfolio['assets']['BTC']['allocation_percent'] ?? 40; 
-      $portfolio_value = ($eth_allocation + $btc_allocation) * 500; // Mock calculation
+      $asset_count = count($current_portfolio['assets']);
+      // Extract target volatility from config
+      $target_volatility = ($current_portfolio['target_volatility'] ?? 0.20) * 100;
+      
+      // Simple calculation based on asset allocation percentages
+      $total_allocation = 0;
+      foreach ($current_portfolio['assets'] as $asset_data) {
+        $total_allocation += $asset_data['allocation_percent'] ?? 0;
+      }
+      // Mock portfolio value calculation - in production would use real positions
+      $portfolio_value = $total_allocation * 500; // Placeholder calculation
     }
+    
+    // Use real backend status or fallback
+    $portfolio_status = $current_portfolio['overall_readiness'] ?? 'Active';
+    $is_active = in_array($portfolio_status, ['READY', 'OPERATIONAL', 'Active']);
+    $backend_connection_status = $current_portfolio['backend_status'] ?? 'connected';
+    
+    // Get real last updated timestamp
+    $last_updated = $current_portfolio['last_status_check'] ?? $current_portfolio['last_updated'] ?? date('Y-m-d H:i:s');
     
     $metrics_table = '
     <div class="dashboard-header">
       <h1>🦄 Unicorn Portfolio Management System</h1>
       <div class="version-info">
         <span class="module-version">Version ' . $version . '</span>
-        <span class="last-updated">Last Updated: ' . ($current_portfolio['last_updated'] ?? date('Y-m-d H:i:s')) . '</span>
-        <span class="backend-status">' . ($current_portfolio['backend_status'] ?? 'connected') . '</span>
+        <span class="last-updated">Last Updated: ' . htmlspecialchars($last_updated) . '</span>
+        <span class="backend-status ' . ($backend_connection_status == 'connected' ? 'status-active' : 'status-backend') . '">' . ucfirst($backend_connection_status) . '</span>
       </div>
     </div>
     
@@ -89,16 +107,16 @@ class DashboardController extends ControllerBase {
           <span class="stat-label">Portfolio Value</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">' . count($current_portfolio['assets'] ?? []) . '</span>
+          <span class="stat-value">' . $asset_count . '</span>
           <span class="stat-label">Assets</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">' . number_format(($current_portfolio['target_volatility'] ?? 0.20) * 100, 1) . '%</span>
+          <span class="stat-value">' . number_format($target_volatility, 1) . '%</span>
           <span class="stat-label">Target Volatility</span>
         </div>
-        <div class="stat-card ' . (($current_portfolio['status'] ?? 'active') == 'active' ? 'status-active' : 'status-inactive') . '">
+        <div class="stat-card ' . ($is_active ? 'status-active' : 'status-inactive') . '">
           <span class="stat-value">⚡</span>
-          <span class="stat-label">' . ucfirst($current_portfolio['status'] ?? 'Active') . '</span>
+          <span class="stat-label">' . ucfirst($portfolio_status) . '</span>
         </div>
       </div>
       
@@ -109,25 +127,31 @@ class DashboardController extends ControllerBase {
           <div class="algorithm-card">
             <h4>⚖️ Risk Algorithm</h4>
             <div class="status-indicator ' . ($eth_algorithm_status['risk_algorithm']['available'] ? 'status-active' : 'status-inactive') . '">
-              ' . ($eth_algorithm_status['risk_algorithm']['available'] ? '✅ Available' : '❌ Not Available') . '
+              ' . ($eth_algorithm_status['risk_algorithm']['available'] ? '✅ Available (' . $eth_algorithm_status['risk_algorithm']['count'] . ')' : '❌ Not Available') . '
             </div>
-            <div class="last-run">Last Run: ' . ($eth_algorithm_status['risk_algorithm']['last_run'] ?? 'N/A') . '</div>
+            <div class="algorithm-list">' . (isset($eth_algorithm_status['risk_algorithm']['algorithms']) ? implode(', ', $eth_algorithm_status['risk_algorithm']['algorithms']) : 'None') . '</div>
+            <div class="last-run">Last Updated: ' . ($eth_algorithm_status['risk_algorithm']['last_run'] ?? 'N/A') . '</div>
           </div>
           
           <div class="algorithm-card">
             <h4>📈 Trading Algorithm</h4>
             <div class="status-indicator ' . ($eth_algorithm_status['trading_algorithm']['available'] ? 'status-active' : 'status-inactive') . '">
-              ' . ($eth_algorithm_status['trading_algorithm']['available'] ? '✅ Available' : '❌ Not Available') . '
+              ' . ($eth_algorithm_status['trading_algorithm']['available'] ? '✅ Available (' . $eth_algorithm_status['trading_algorithm']['count'] . ')' : '❌ Not Available') . '
             </div>
-            <div class="last-run">Last Run: ' . ($eth_algorithm_status['trading_algorithm']['last_run'] ?? 'N/A') . '</div>
+            <div class="algorithm-list">' . (isset($eth_algorithm_status['trading_algorithm']['algorithms']) ? implode(', ', $eth_algorithm_status['trading_algorithm']['algorithms']) : 'None') . '</div>
+            <div class="last-run">Last Updated: ' . ($eth_algorithm_status['trading_algorithm']['last_run'] ?? 'N/A') . '</div>
           </div>
           
           <div class="algorithm-card">
             <h4>🔗 Integration Status</h4>
-            <div class="status-indicator status-active">
-              ✅ ' . ucfirst($eth_algorithm_status['integration_status'] ?? 'Operational') . '
+            <div class="status-indicator ' . ($eth_algorithm_status['integration_status'] == 'operational' ? 'status-active' : 'status-inactive') . '">
+              ' . ($eth_algorithm_status['integration_status'] == 'operational' ? '✅ Operational' : '⚠️ ' . ucfirst($eth_algorithm_status['integration_status'])) . '
             </div>
-            <div class="integration-info">Framework Ready</div>
+            <div class="integration-info">
+              Kelly: ' . ($eth_algorithm_status['kelly_integration'] ? '✅' : '❌') . ' | 
+              Algorithm: ' . ($eth_algorithm_status['algorithm_integration'] ? '✅' : '❌') . ' |
+              Config: ' . ($eth_algorithm_status['eth_kelly_config'] ? '✅' : '❌') . '
+            </div>
           </div>
         </div>
       </div>
@@ -182,8 +206,8 @@ class DashboardController extends ControllerBase {
           <tr>
             <td class="icon-column">├─ 🏷️</td>
             <td class="link-column"><a href="/admin/metrics/lean/holdings?portfolio=' . urlencode($current_portfolio_id) . '">📈 Asset Allocation</a></td>
-            <td class="description-column"><em>Portfolio Assets:</em> ' . implode(', ', array_keys($current_portfolio['assets'] ?? [])) . ' with configured allocations and IBKR integration.</td>
-            <td class="count-column"><span class="metric-count">' . count($current_portfolio['assets'] ?? []) . '</span></td>
+            <td class="description-column"><em>Portfolio Assets:</em> ' . $this->formatAssetList($current_portfolio['assets'] ?? []) . ' with configured allocations and IBKR integration.</td>
+            <td class="count-column"><span class="metric-count">' . $asset_count . '</span></td>
           </tr>
           <tr>
             <td class="icon-column">├─ ⚡</td>
@@ -1709,6 +1733,29 @@ class DashboardController extends ControllerBase {
         </div>
       </div>
     </div>';
+  }
+
+  /**
+   * Format asset list with allocation percentages.
+   *
+   * @param array $assets
+   *   Array of asset data.
+   *
+   * @return string
+   *   Formatted asset list.
+   */
+  private function formatAssetList(array $assets): string {
+    if (empty($assets)) {
+      return 'No assets configured';
+    }
+    
+    $formatted_assets = [];
+    foreach ($assets as $asset_symbol => $asset_data) {
+      $allocation = $asset_data['allocation_percent'] ?? 0;
+      $formatted_assets[] = $asset_symbol . ' (' . $allocation . '%)';
+    }
+    
+    return implode(', ', $formatted_assets);
   }
 
 }

@@ -26,11 +26,20 @@
 }
 
 .module-version,
-.last-updated {
+.last-updated,
+.backend-status {
   background: rgba(255, 255, 255, 0.2);
   padding: 5px 15px;
   border-radius: 15px;
   font-size: 0.9em;
+}
+
+.backend-status.status-active {
+  background: rgba(76, 175, 80, 0.8);
+}
+
+.backend-status.status-backend {
+  background: rgba(255, 193, 7, 0.8);
 }
 
 .dashboard-sections {
@@ -119,6 +128,26 @@
 .system-overview h3 {
   margin-top: 0;
   color: #2c3e50;
+}
+
+/* ETH Algorithm Status Styling */
+.algorithm-card .algorithm-list {
+  font-size: 0.85em;
+  color: #666;
+  margin: 5px 0;
+  font-style: italic;
+}
+
+.algorithm-card .integration-info {
+  font-size: 0.8em;
+  color: #777;
+  margin: 5px 0;
+  line-height: 1.3;
+}
+
+.algorithm-card .last-run {
+  font-size: 0.8em;
+  color: #888;
 }
 
 .system-overview ul {
