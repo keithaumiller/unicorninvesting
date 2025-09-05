@@ -42,18 +42,30 @@ class DashboardController extends ControllerBase {
    * Main dashboard page.
    */
   public function dashboard() {
+    // Disable caching for debugging purposes
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
     $module_info = \Drupal::service('extension.list.module')->getExtensionInfo('unicornmetrics');
     $version = $module_info['version'] ?? '4.1.0';
     
     // Get current simulation selection from URL parameter or default
     $current_simulation_id = \Drupal::request()->query->get('simulation') ?? 'Myportolio';
     
+    // DEBUG: Log the extracted simulation parameter
+    \Drupal::logger('unicornmetrics')->debug('DEBUG dashboard: URL parameter simulation = @param', ['@param' => \Drupal::request()->query->get('simulation') ?? 'NULL']);
+    \Drupal::logger('unicornmetrics')->debug('DEBUG dashboard: current_simulation_id BEFORE validation = @id', ['@id' => $current_simulation_id]);
+    
     // Validate simulation exists, fallback to Myportolio if not
     if (!$this->portfolioApi->isValidSimulation($current_simulation_id)) {
+      \Drupal::logger('unicornmetrics')->debug('DEBUG dashboard: Validation FAILED, falling back to Myportolio');
       $current_simulation_id = 'Myportolio';
       // Add warning message for invalid simulation
       \Drupal::messenger()->addWarning(t('The requested simulation was not found. Displaying default simulation.'));
+    } else {
+      \Drupal::logger('unicornmetrics')->debug('DEBUG dashboard: Validation PASSED for @id', ['@id' => $current_simulation_id]);
     }
+    
+    \Drupal::logger('unicornmetrics')->debug('DEBUG dashboard: current_simulation_id AFTER validation = @id', ['@id' => $current_simulation_id]);
     
     // Get available simulations for selector
     $available_simulations = $this->portfolioApi->getAvailableSimulations();
@@ -118,15 +130,23 @@ class DashboardController extends ControllerBase {
     foreach ($available_simulations as $sim_id => $sim_data) {
       $selected = ($sim_id === $current_simulation_id) ? 'selected' : '';
       $status_icon = ($sim_data['status'] === 'active') ? '🟢' : '🔴';
+      $details_link = strpos($sim_id, 'backtest_') === 0 ? ' <a href="/unicorn/simulation/' . urlencode($sim_id) . '" target="_blank" style="color:#6f42c1;text-decoration:none;" title="View Simulation Details">🔬</a>' : '';
       $metrics_table .= '<option value="' . htmlspecialchars($sim_id) . '" ' . $selected . '>' 
-                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . '</option>';
+                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . $details_link . '</option>';
     }
     
     $metrics_table .= '
         </select>
         <div class="simulation-info">
           <small><strong>Description:</strong> ' . htmlspecialchars($available_simulations[$current_simulation_id]['description']) . '</small><br>
-          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>
+          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>';
+    
+    // Add simulation details link for backtests
+    if (strpos($current_simulation_id, 'backtest_') === 0) {
+      $metrics_table .= '<br><small><a href="/unicorn/simulation/' . urlencode($current_simulation_id) . '" target="_blank" style="color:#6f42c1;font-weight:bold;">🔬 View Detailed Simulation Parameters</a></small>';
+    }
+    
+    $metrics_table .= '
         </div>
       </div>
     </div>
@@ -947,8 +967,19 @@ class DashboardController extends ControllerBase {
    * LEAN Portfolio Management Dashboard.
    */
   public function leanPortfolio() {
+    // Disable caching for debugging purposes
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
     // Get current portfolio selection from URL parameter or default
     $current_portfolio_id = \Drupal::request()->query->get('portfolio') ?? 'Myportolio';
+    
+    // Detect if this is a simulation and get simulation parameters
+    $is_simulation = strpos($current_portfolio_id, 'backtest_') === 0;
+    $simulation_parameters = [];
+    
+    if ($is_simulation) {
+      $simulation_parameters = $this->getSimulationParameters($current_portfolio_id);
+    }
     
     // Get real portfolio data from backend
     $portfolio_config = $this->portfolioApi->getPortfolioConfig($current_portfolio_id);
@@ -1000,7 +1031,14 @@ class DashboardController extends ControllerBase {
         </div>
         <div class="metric-label">' . number_format(($unrealized_pnl / $portfolio_value) * 100, 2) . '% of Portfolio</div>
       </div>
-    </div>
+    </div>';
+    
+    // Add simulation parameters section if this is a backtest simulation
+    if ($is_simulation && !empty($simulation_parameters)) {
+      $content .= $this->buildSimulationParametersSection($simulation_parameters, $current_portfolio_id);
+    }
+    
+    $content .= '
     
     <!-- Asset Allocation Display -->
     <div class="asset-allocation-section">
@@ -1715,6 +1753,25 @@ class DashboardController extends ControllerBase {
         .positive { color: #27ae60; }
         .negative { color: #e74c3c; }
         .last-updated { margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 6px; color: #6c757d; font-size: 0.9em; }
+        
+        /* Simulation Parameters Section Styles */
+        .simulation-parameters-section { margin: 25px 0; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px; border-left: 4px solid #6f42c1; }
+        .simulation-parameters-section h3 { margin-top: 0; color: #6f42c1; display: flex; align-items: center; gap: 8px; }
+        .simulation-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .param-card { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .param-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); transform: translateY(-2px); transition: all 0.3s ease; }
+        .param-card h4 { margin-top: 0; color: #495057; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f3f4; padding-bottom: 8px; }
+        .simulation-identity h4 { color: #17a2b8; }
+        .lean-config h4 { color: #28a745; }
+        .simulation-results h4 { color: #ffc107; }
+        .param-details { margin-top: 15px; }
+        .param-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f8f9fa; }
+        .param-row:last-child { border-bottom: none; }
+        .param-label { color: #6c757d; font-weight: 600; flex-basis: 40%; }
+        .param-value { color: #2c3e50; font-family: monospace; font-weight: bold; flex-basis: 60%; text-align: right; word-break: break-word; }
+        .simulation-details-section { margin-top: 20px; padding: 15px; background: rgba(111, 66, 193, 0.1); border-radius: 6px; }
+        .simulation-details-section h4 { color: #6f42c1; margin-top: 0; }
+        .simulation-note { color: #495057; line-height: 1.6; margin: 0; font-size: 0.95em; }
       ',
     ];
   }
@@ -1935,6 +1992,251 @@ class DashboardController extends ControllerBase {
     }
     
     return implode(', ', $formatted_assets);
+  }
+
+  /**
+   * Public simulation details page.
+   */
+  public function simulationDetails($simulation_id) {
+    // Disable caching for debugging purposes
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    // Validate that this is a simulation
+    if (!$this->portfolioApi->isValidSimulation($simulation_id)) {
+      throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Simulation not found.');
+    }
+    
+    // Get simulation parameters
+    $simulation_parameters = $this->getSimulationParameters($simulation_id);
+    
+    if (empty($simulation_parameters)) {
+      $content = '
+      <div class="simulation-error">
+        <h2>❌ Simulation Data Not Available</h2>
+        <p>The simulation data for <code>' . htmlspecialchars($simulation_id) . '</code> could not be loaded.</p>
+        <p><a href="/unicorn">← Return to Dashboard</a></p>
+      </div>';
+    } else {
+      $content = '
+      <div class="simulation-details-page">
+        <div class="page-header">
+          <h1>🔬 Simulation Details</h1>
+          <p class="breadcrumb"><a href="/unicorn">Dashboard</a> → Simulation Details</p>
+        </div>
+        
+        ' . $this->buildSimulationParametersSection($simulation_parameters, $simulation_id) . '
+        
+        <div class="navigation-actions">
+          <a href="/unicorn?simulation=' . urlencode($simulation_id) . '" class="action-button">📊 View Dashboard</a>
+          <a href="/unicorn" class="action-button secondary">🏠 Main Dashboard</a>
+        </div>
+      </div>';
+    }
+    
+    return [
+      '#markup' => $content,
+      '#attached' => [
+        'library' => [
+          'olivero/global-styling',
+        ],
+      ],
+      '#cache' => [
+        'max-age' => 0,
+      ],
+    ];
+  }
+
+  /**
+   * Get simulation parameters for backtest simulations.
+   *
+   * @param string $simulation_id
+   * @return array
+   */
+  private function getSimulationParameters(string $simulation_id): array {
+    $parameters = [];
+    
+    // Construct path to simulation data
+    $simulation_path = '/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/' . $simulation_id;
+    
+    // Load lean_config.json if available
+    $lean_config_file = $simulation_path . '/lean_config.json';
+    if (file_exists($lean_config_file)) {
+      $lean_config = json_decode(file_get_contents($lean_config_file), true);
+      if ($lean_config) {
+        $parameters['lean_config'] = $lean_config;
+      }
+    }
+    
+    // Load myportolio_results.json if available
+    $results_file = $simulation_path . '/myportolio_results.json';
+    if (file_exists($results_file)) {
+      $results = json_decode(file_get_contents($results_file), true);
+      if ($results) {
+        $parameters['results'] = $results;
+      }
+    }
+    
+    // Extract date range from simulation ID
+    if (preg_match('/backtest_(\d{8})_(\d{6})_([a-f0-9]+)/', $simulation_id, $matches)) {
+      $date_str = $matches[1];
+      $time_str = $matches[2];
+      $hash = $matches[3];
+      
+      $parameters['extracted_info'] = [
+        'date' => substr($date_str, 0, 4) . '-' . substr($date_str, 4, 2) . '-' . substr($date_str, 6, 2),
+        'time' => substr($time_str, 0, 2) . ':' . substr($time_str, 2, 2) . ':' . substr($time_str, 4, 2),
+        'hash' => $hash,
+        'timestamp' => $date_str . '_' . $time_str
+      ];
+    }
+    
+    return $parameters;
+  }
+
+  /**
+   * Build HTML section for simulation parameters display.
+   *
+   * @param array $parameters
+   * @param string $simulation_id
+   * @return string
+   */
+  private function buildSimulationParametersSection(array $parameters, string $simulation_id): string {
+    $section = '
+    <!-- Simulation Parameters Section -->
+    <div class="simulation-parameters-section">
+      <h3>🔬 Simulation Parameters</h3>
+      <div class="simulation-info-grid">
+        
+        <!-- Simulation Identity -->
+        <div class="param-card simulation-identity">
+          <h4>🆔 Simulation Identity</h4>
+          <div class="param-details">
+            <div class="param-row">
+              <span class="param-label">ID:</span>
+              <span class="param-value">' . htmlspecialchars($simulation_id) . '</span>
+            </div>';
+    
+    if (isset($parameters['extracted_info'])) {
+      $info = $parameters['extracted_info'];
+      $section .= '
+            <div class="param-row">
+              <span class="param-label">Date:</span>
+              <span class="param-value">' . htmlspecialchars($info['date']) . '</span>
+            </div>
+            <div class="param-row">
+              <span class="param-label">Time:</span>
+              <span class="param-value">' . htmlspecialchars($info['time']) . '</span>
+            </div>
+            <div class="param-row">
+              <span class="param-label">Hash:</span>
+              <span class="param-value">' . htmlspecialchars($info['hash']) . '</span>
+            </div>';
+    }
+    
+    $section .= '
+          </div>
+        </div>';
+    
+    // LEAN Configuration Parameters
+    if (isset($parameters['lean_config'])) {
+      $config = $parameters['lean_config'];
+      $section .= '
+        <!-- LEAN Configuration -->
+        <div class="param-card lean-config">
+          <h4>⚙️ LEAN Configuration</h4>
+          <div class="param-details">';
+      
+      foreach ($config as $key => $value) {
+        if (is_scalar($value)) {
+          $section .= '
+            <div class="param-row">
+              <span class="param-label">' . htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $key))) . ':</span>
+              <span class="param-value">' . htmlspecialchars((string)$value) . '</span>
+            </div>';
+        }
+      }
+      
+      $section .= '
+          </div>
+        </div>';
+    }
+    
+    // Simulation Results Summary
+    if (isset($parameters['results'])) {
+      $results = $parameters['results'];
+      $section .= '
+        <!-- Simulation Results -->
+        <div class="param-card simulation-results">
+          <h4>📊 Simulation Results</h4>
+          <div class="param-details">';
+      
+      // Display key result metrics
+      if (isset($results['performance'])) {
+        foreach ($results['performance'] as $metric => $value) {
+          $section .= '
+            <div class="param-row">
+              <span class="param-label">' . htmlspecialchars(ucwords(str_replace('_', ' ', $metric))) . ':</span>
+              <span class="param-value">' . htmlspecialchars((string)$value) . '</span>
+            </div>';
+        }
+      }
+      
+      // Display execution info
+      if (isset($results['execution'])) {
+        $execution = $results['execution'];
+        if (isset($execution['start_date'])) {
+          $section .= '
+            <div class="param-row">
+              <span class="param-label">Start Date:</span>
+              <span class="param-value">' . htmlspecialchars($execution['start_date']) . '</span>
+            </div>';
+        }
+        if (isset($execution['end_date'])) {
+          $section .= '
+            <div class="param-row">
+              <span class="param-label">End Date:</span>
+              <span class="param-value">' . htmlspecialchars($execution['end_date']) . '</span>
+            </div>';
+        }
+        if (isset($execution['total_days'])) {
+          $section .= '
+            <div class="param-row">
+              <span class="param-label">Duration:</span>
+              <span class="param-value">' . htmlspecialchars($execution['total_days']) . ' days</span>
+            </div>';
+        }
+      }
+      
+      // Display trade count
+      if (isset($results['lean_results']['trades'])) {
+        $trade_count = count($results['lean_results']['trades']);
+        $section .= '
+            <div class="param-row">
+              <span class="param-label">Total Trades:</span>
+              <span class="param-value">' . $trade_count . '</span>
+            </div>';
+      }
+      
+      $section .= '
+          </div>
+        </div>';
+    }
+    
+    $section .= '
+      </div>
+      
+      <!-- Additional Simulation Details -->
+      <div class="simulation-details-section">
+        <h4>📋 Simulation Details</h4>
+        <p class="simulation-note">
+          This is a historical backtest simulation that replayed market conditions from a specific time period. 
+          The parameters above show the exact configuration used during the simulation execution, including 
+          date ranges, algorithm settings, and performance results.
+        </p>
+      </div>
+    </div>';
+    
+    return $section;
   }
 
 }

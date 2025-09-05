@@ -5,6 +5,8 @@ unicornmetrics.dashboard:
     _title: 'LEAN Metrics Dashboard'
   requirements:
     _permission: 'access unicorn metrics'
+  options:
+    no_cache: TRUE
 
 # Public Dashboard for Homepage
 unicornmetrics.public_dashboard:
@@ -14,6 +16,19 @@ unicornmetrics.public_dashboard:
     _title: 'Unicorn Investing Platform'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+# Public Simulation Details Page
+unicornmetrics.simulation_details:
+  path: '/unicorn/simulation/{simulation_id}'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::simulationDetails'
+    _title: 'Simulation Details'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
 
 # LEAN Portfolio Management Routes
 unicornmetrics.lean_portfolio:
@@ -23,6 +38,8 @@ unicornmetrics.lean_portfolio:
     _title: 'LEAN Portfolio Management'
   requirements:
     _permission: 'access unicorn metrics'
+  options:
+    no_cache: TRUE
 
 unicornmetrics.lean_holdings:
   path: '/admin/metrics/lean/holdings'
@@ -31,6 +48,8 @@ unicornmetrics.lean_holdings:
     _title: 'LEAN Portfolio Holdings'
   requirements:
     _permission: 'access unicorn metrics'
+  options:
+    no_cache: TRUE
 
 unicornmetrics.lean_performance:
   path: '/admin/metrics/lean/performance'
@@ -39,6 +58,8 @@ unicornmetrics.lean_performance:
     _title: 'LEAN Portfolio Performance'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: TRUE
 
 # LEAN Algorithm Management Routes
 unicornmetrics.lean_algorithms:
@@ -48,6 +69,8 @@ unicornmetrics.lean_algorithms:
     _title: 'LEAN Algorithm Management'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: TRUE
 
 unicornmetrics.lean_algorithm_performance:
   path: '/admin/metrics/lean/algorithms/performance'
@@ -56,6 +79,8 @@ unicornmetrics.lean_algorithm_performance:
     _title: 'LEAN Algorithm Performance'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: TRUE
 
 unicornmetrics.lean_backtest_results:
   path: '/admin/metrics/lean/backtest'
@@ -64,6 +89,8 @@ unicornmetrics.lean_backtest_results:
     _title: 'LEAN Backtest Results'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: TRUE
 
 # Administration Routes
 unicornmetrics.admin.settings:
@@ -73,3 +100,5 @@ unicornmetrics.admin.settings:
     _title: 'UnicornMetrics Settings'
   requirements:
     _permission: 'administer unicorn metrics'
+  options:
+    no_cache: TRUE
