@@ -1550,7 +1550,11 @@ class MyportolioStatusChecker:
     
     def save_status_report(self):
         """Save comprehensive status report to file."""
-        report_file = self.portfolio_dir / f"status_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        # Ensure status_reports directory exists
+        status_reports_dir = self.portfolio_dir / "status_reports"
+        status_reports_dir.mkdir(exist_ok=True)
+        
+        report_file = status_reports_dir / f"status_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         
         try:
             with open(report_file, 'w') as f:

@@ -679,7 +679,20 @@ class PortfolioApiService {
   public function getLatestStatusReport(string $portfolio_name = 'Myportolio'): array {
     try {
       $portfolio_dir = $this->backendPath . '/' . $portfolio_name;
-      $status_reports = glob($portfolio_dir . '/status_report_*.json');
+      
+      // Look for status reports in the new organized structure first
+      $status_reports = glob($portfolio_dir . '/status_reports/status_report_*.json');
+      
+      // If no reports found in new location, check the old location for backward compatibility
+      if (empty($status_reports)) {
+        $status_reports = glob($portfolio_dir . '/status_report_*.json');
+      }
+      
+      // Also check archive directory for additional reports
+      $archived_reports = glob($portfolio_dir . '/status_reports/archive/status_report_*.json');
+      if (!empty($archived_reports)) {
+        $status_reports = array_merge($status_reports, $archived_reports);
+      }
       
       if (!empty($status_reports)) {
         // Sort by filename to get the latest
