@@ -26,7 +26,7 @@ class TestSystemArchitecture(unittest.TestCase):
         required_dirs = [
             'BackendPython/unicorn/1_data_sources',
             'BackendPython/unicorn/2_alpha_models', 
-            'BackendPython/unicorn/3_risk_algorithms',
+            'BackendPython/unicorn/3_risk_management',
             'BackendPython/unicorn/4_portfolios',
             'BackendPython/unicorn/5_execution_models',
             'BackendPython/unicorn/6_algorithms',
