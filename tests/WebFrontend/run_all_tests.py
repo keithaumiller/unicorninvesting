@@ -155,6 +155,17 @@ class WebFrontendTestRunner:
             'LEAN Simulation Management (5 pages)'
         )
     
+    def run_selector_tests(self):
+        """Run portfolio and simulation selector tests."""
+        self.log("=" * 60)
+        self.log("🦄 PORTFOLIO & SIMULATION SELECTOR TEST SUITE", 'SUMMARY')
+        self.log("=" * 60)
+        
+        return self.run_test_script(
+            'test_portfolio_simulation_selectors.py',
+            'Portfolio & Simulation Selector Functionality'
+        )
+    
     def run_comprehensive_route_test(self):
         """Test all routes for basic accessibility."""
         self.log("=" * 60)
@@ -274,6 +285,7 @@ class WebFrontendTestRunner:
             results.append(self.run_homepage_tests())
             results.append(self.run_forecasting_tests())
             results.append(self.run_simulation_tests())
+            results.append(self.run_selector_tests())
         
         # Generate final summary
         overall_success = self.generate_summary_report()

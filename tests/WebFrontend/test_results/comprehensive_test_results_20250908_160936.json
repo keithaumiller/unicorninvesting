@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-09-08T16:09:03.206749",
+  "total_tests": 6,
+  "passed_tests": 3,
+  "failed_tests": 3,
+  "test_suites": {
+    "route_accessibility": {
+      "total_routes": 14,
+      "passed_routes": 14,
+      "success_rate": 100.0,
+      "success": true
+    },
+    "test_basic_validation.py": {
+      "script": "test_basic_validation.py",
+      "description": "Basic WebFrontend Validation (10 tests)",
+      "success": false,
+      "duration": 0.7044968605041504,
+      "stdout": "\n\ud83e\uddea WebFrontend Comprehensive Test Suite\n==================================================\n\n\ud83d\udd0d Running homepage_accessibility...\n\u2705 Homepage: 200, 18615 bytes, Drupal 11 (https://www.drupal.org)\n\n\ud83d\udd0d Running homepage_performance...\n\u2705 Performance: 0.05s (target: <3.0s)\n\n\ud83d\udd0d Running dashboard_content...\n\u274c dashboard_content failed: Missing dashboard elements: ['simulation-selector', 'Platform Features']\n\n\ud83d\udd0d Running simulation_selector_restored...\n\u274c simulation_selector_restored failed: No simulation selector elements found - functionality not restored\n\n\ud83d\udd0d Running navigation_links_restored...\n\u2705 Navigation links: 4/7 links found\n\n\ud83d\udd0d Running live_ibkr_integration...\n\u2705 IBKR integration: 7/8 elements found\n\n\ud83d\udd0d Running responsive_design...\n\u2705 Responsive design: 3 indicators found\n\n\ud83d\udd0d Running css_styling_applied...\n\u2705 CSS styling: 3 indicators found\n\n\ud83d\udd0d Running portfolio_data_display...\n\u2705 Portfolio data: 2 formatting patterns found\n\n\ud83d\udd0d Running system_status_display...\n\u274c system_status_display failed: System status not properly displayed: ['status']\n\n\ud83d\udcca WebFrontend Test Results\nTotal Tests: 10\nPassed: 7\nFailed: 3\nSuccess Rate: 70.0%\n\u26a0\ufe0f WebFrontend testing needs attention\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/basic_validation_test_results_20250908_160905.json\n",
+      "stderr": "",
+      "return_code": 1
+    },
+    "simple_homepage_test.py": {
+      "script": "simple_homepage_test.py",
+      "description": "Simple Homepage Functionality Test",
+      "success": true,
+      "duration": 0.25676560401916504,
+      "stdout": "\ud83e\uddea Simple Homepage Test Suite\n==================================================\nTimestamp: 2025-09-08T16:09:05.321350\nTarget URL: http://localhost\n\ud83c\udfe0 Testing Homepage Basic Functionality\n----------------------------------------\nStatus Code: 200\nContent Length: 18615 bytes\nLoad Time: 0.05 seconds\nContent Type: text/html; charset=UTF-8\nX-Generator: Drupal 11 (https://www.drupal.org)\n\u2705 Found: Unicorn Investing Platform (Main header)\n\u2705 Found: Myportolio (Portfolio name)\n\u2705 Found: Live Portfolio Status (IBKR integration)\n\u2705 Found: Account Summary (Account information)\n\u2705 Found: Net Liquidation Value (Financial data)\n\u2705 Found: Last Updated (Data freshness)\n\u274c Missing: System Status (Component status)\n\ud83d\udd17 Navigation found: Holdings\n\ud83d\udd17 Navigation found: Performance\n\ud83d\udd17 Navigation found: Algorithms\n\n\ud83d\udcca Test Results:\nDashboard Elements: 6/7 found\nNavigation Elements: 3/5 found\nOverall Success Rate: 75.0%\n\ud83c\udf89 Homepage test PASSED!\n\n\ud83d\udd04 Testing Dashboard Restoration\n----------------------------------------\n\ud83d\udcbc IBKR feature found: Live Portfolio Status\n\ud83d\udcbc IBKR feature found: Cash Balance\n\ud83d\udcbc IBKR feature found: Market Value\n\ud83d\udcbc IBKR feature found: Unrealized P&L\n\ud83d\udcbc IBKR feature found: Data Freshness\n\ud83c\udf9b\ufe0f Original feature found: Holdings\n\ud83c\udf9b\ufe0f Original feature found: Performance\n\ud83c\udf9b\ufe0f Original feature found: Algorithms\n\n\ud83d\udccb Dashboard Restoration Results:\nIBKR Integration: 5/5 features (100.0%)\nOriginal Features: 3/6 features (50.0%)\n\u2705 Dashboard restoration SUCCESSFUL - Both IBKR and original features present!\n\n\ud83c\udfaf Final Results:\nTests Passed: 2/2\nSuccess Rate: 100.0%\n  homepage_basic: \u2705 PASSED\n  dashboard_restoration: \u2705 PASSED\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/simple_homepage_test_results_20250908_160905.json\n\n\ud83c\udf89 All tests PASSED! Homepage is fully functional.\n",
+      "stderr": "",
+      "return_code": 0
+    },
+    "test_simulation_management.py": {
+      "script": "test_simulation_management.py",
+      "description": "LEAN Simulation Management (5 pages)",
+      "success": false,
+      "duration": 0.5273182392120361,
+      "stdout": "\ud83e\uddea LEAN Simulation Management Test Suite\n==================================================\nTimestamp: 2025-09-08T16:09:35.588125\nTarget URL: http://localhost\n\n\ud83d\udd0d Running simulation_selector_page...\n\u2705 Found: Simulation Selector\n\u2705 Found: Available Simulations\n\u2705 Found: simulation-card\n\u274c Missing: ETH_Momentum_2024Q4\n\u274c Missing: BTC_Conservative_2024Q3\n\u274c Missing: Mixed_Portfolio_2024Q2\n\u2705 Found: Total Simulations\n\u274c Missing: Average Return\n\u2705 Found: navigateToSimulation\n\u2705 Found: compareSimulations\n\ud83d\udcca Elements found: 6/10 (60.0%)\n\u274c simulation_selector_page failed: Low element detection rate\n\n\ud83d\udd0d Running simulation_holdings_page...\n\u2705 Found: Holdings Analysis\n\u274c Missing: holdings-table\n\u274c Missing: ETHUSD\n\u274c Missing: BTCUSD\n\u274c Missing: Market Value\n\u274c Missing: Unrealized P&L\n\u2705 Found: Algorithm\n\u274c Missing: Performance Analysis\n\u274c Missing: Algorithm Details\n\u274c Missing: Backtest Results\n\ud83d\udcca Elements found: 2/10 (20.0%)\n\u274c simulation_holdings_page failed: Low element detection rate\n\n\ud83d\udd0d Running simulation_performance_page...\n\u274c Missing: Performance Analysis\n\u274c Missing: Total Return\n\u274c Missing: +24.3%\n\u2705 Found: Sharpe Ratio\n\u274c Missing: 1.85\n\u2705 Found: Max Drawdown\n\u274c Missing: Win Rate\n\u274c Missing: 73.4%\n\u274c Missing: 90-day simulation\n\u2705 Found: Holdings Analysis\n\ud83d\udcca Elements found: 3/10 (30.0%)\n\u274c simulation_performance_page failed: Low element detection rate\n\n\ud83d\udd0d Running simulation_algorithms_page...\n\u2705 Found: Algorithm Analysis\n\u274c Missing: ETH Momentum Algorithm v3.2\n\u274c Missing: BTC Conservative Algorithm v2.1\n\u274c Missing: Accuracy: <strong>87.3%</strong>\n\u274c Missing: Return: <strong>+26.1%</strong>\n\u274c Missing: Trades: <strong>23</strong>\n\u274c Missing: Conservative approach\n\u274c Missing: momentum strategy\n\ud83d\udcca Elements found: 1/8 (12.5%)\n\u274c simulation_algorithms_page failed: Low element detection rate\n\n\ud83d\udd0d Running simulation_backtest_page...\n\u274c Missing: Backtest Results\n\u274c Missing: Simulation Parameters\n\u274c Missing: Start Date: <strong>2024-07-01</strong>\n\u274c Missing: End Date: <strong>2024-09-30</strong>\n\u274c Missing: Initial Capital: <strong>$10,000</strong>\n\u274c Missing: Final Value: <strong>$12,430</strong>\n\u274c Missing: Total Trades: <strong>35</strong>\n\u274c Missing: Winning Trades: <strong>25\n\u274c Missing: Trade Analysis\n\ud83d\udcca Elements found: 0/9 (0.0%)\n\u274c simulation_backtest_page failed: Low element detection rate\n\n\ud83e\udded Testing Navigation Integration...\n\u2705 Simulation menu integration found\n\n\ud83d\udcca LEAN Simulation Test Results\nTotal Tests: 5\nPassed: 0\nFailed: 5\nSuccess Rate: 0.0%\n\u26a0\ufe0f LEAN Simulation testing needs attention\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/simulation_test_results_20250908_160935.json\n",
+      "stderr": "",
+      "return_code": 1
+    },
+    "test_portfolio_simulation_selectors.py": {
+      "script": "test_portfolio_simulation_selectors.py",
+      "description": "Portfolio & Simulation Selector Functionality",
+      "success": true,
+      "duration": 0.39746809005737305,
+      "stdout": "\ud83e\uddea Portfolio & Simulation Selector Test Suite\n============================================================\nTimestamp: 2025-09-08T16:09:36.186708\nTarget URL: http://localhost/admin/metrics/lean/simulations\n\ud83e\udd84 Testing Portfolio Selector\n----------------------------------------\nExpected portfolios from filesystem: ['Myportolio']\nFound portfolios in selector: ['Myportolio']\n\u2705 Expected portfolios: 1\n\u2705 Found portfolios: 1\n\u2705 All expected portfolios found\n\u2705 Portfolio info section found\n\n\ud83c\udfaf Testing Simulation Selector\n----------------------------------------\nExpected simulations for Myportolio: ['backtest_20250903_142029_f5f0889c', 'backtest_20250903_142955_5618caf5', 'backtest_20250903_143119_fa83c2ff', 'backtest_20250903_145040_bef7f054']\nFound 4 simulation cards\nFound simulations in selector: ['backtest_20250903_145040_bef7f054', 'backtest_20250903_143119_fa83c2ff', 'backtest_20250903_142955_5618caf5', 'backtest_20250903_142029_f5f0889c']\n\u2705 Expected simulations: 4\n\u2705 Found simulations: 4\n\u2705 All expected simulations found\n\u2705 Simulation cards with complete details: 4/4\n\n\ud83d\udd27 Testing Selector Interactivity\n----------------------------------------\n\u2705 JavaScript function found: loadPortfolioSimulations\n\u2705 JavaScript function found: navigateToSimulation\n\u2705 JavaScript function found: compareSimulations\n\u2705 Action button found: Analyze Selected Simulation\n\u2705 Action button found: Compare Simulations\n\u2705 Event listener setup found: addEventListener(\"click\"\n\u2705 Event listener setup found: .forEach(card =>\n\n\ud83d\udcca Interactivity Results:\nJavaScript Functions: 3/3\nAction Buttons: 2/2\nEvent Listeners: 2/2\n\n\ud83d\udd04 Testing Conditional Logic\n----------------------------------------\n\u2705 Portfolio selector has data: True\n\u2705 Simulation cards present: True\n\u2705 No-simulations message present: False\n\u2705 Statistics cards found: 3/3\n   \u2022 Total Portfolios\n   \u2022 Total Simulations\n   \u2022 Completed Simulations\n\n\ud83c\udfaf Final Results:\nTests Passed: 4/4\nSuccess Rate: 100.0%\n  portfolio_selector: \u2705 PASSED\n  simulation_selector: \u2705 PASSED\n  selector_interactivity: \u2705 PASSED\n  conditional_logic: \u2705 PASSED\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/portfolio_simulation_selector_test_results_20250908_160936.json\n\n\ud83c\udf89 All selector tests PASSED! Portfolio and simulation selectors are fully functional.\n",
+      "stderr": "",
+      "return_code": 0
+    }
+  },
+  "summary": {
+    "overall_success_rate": 50.0,
+    "total_test_suites": 6,
+    "passed_test_suites": 3,
+    "failed_test_suites": 3,
+    "overall_status": "FAILED"
+  }
+}

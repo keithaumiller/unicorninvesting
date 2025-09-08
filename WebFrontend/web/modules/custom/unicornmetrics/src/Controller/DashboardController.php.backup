@@ -2424,7 +2424,7 @@ class DashboardController extends ControllerBase {
     // Disable caching for real-time data
     \Drupal::service('page_cache_kill_switch')->trigger();
     
-    $build = [
+    return [
       '#markup' => $this->buildSimulationManagement(),
       '#attached' => [
         'library' => [
@@ -2434,8 +2434,6 @@ class DashboardController extends ControllerBase {
         ],
       ],
     ];
-    
-    return $build;
   }
 
   /**
@@ -2534,12 +2532,12 @@ class DashboardController extends ControllerBase {
    * Build simulation management content with selector.
    */
   private function buildSimulationManagement() {
-    // Get dynamic portfolio data
-    $available_portfolios = $this->getAvailablePortfolios();
-    $current_portfolio = !empty($available_portfolios) ? $available_portfolios[0] : ['id' => 'none', 'name' => 'No Portfolio', 'description' => 'No portfolios found'];
-    $available_simulations = !empty($available_portfolios) ? $this->getAvailableSimulations($current_portfolio['id']) : [];
-    
     $content = '<div class="simulation-management-container">';
+    
+    // Get dynamic data
+    $available_portfolios = $this->getAvailablePortfolios();
+    $current_portfolio = $available_portfolios[0] ?? ['id' => 'none', 'name' => 'No Portfolios Available'];
+    $available_simulations = !empty($available_portfolios) ? $this->getAvailableSimulations($current_portfolio['id']) : [];
     
     // Portfolio Selector
     $content .= '
@@ -2570,49 +2568,60 @@ class DashboardController extends ControllerBase {
     $content .= '
     <div class="simulation-selector-container">
       <h2>🎯 Simulation Selector</h2>
-      <div class="simulation-selector" id="admin-simulation-selector">
-        <div class="selector-header">
-          <h3>Available Simulations</h3>
-          <p>Select a simulation to analyze detailed performance, holdings, and algorithm data</p>
+      <div class="selector-description">
+        <p>Select from backtests in <code>Myportolio/simulations/backtests/</code> directory</p>
+      </div>
+      
+      <div class="simulation-selector" id="admin-simulation-selector">';
+    
+    if (!empty($available_simulations)) {
+      $content .= '
+        <label for="simulation-select">Available Simulations:</label>
+        <select id="simulation-select" name="simulation" onchange="loadSimulationDetails()">
+          <option value="">-- Select Simulation --</option>';
+      
+      foreach ($available_simulations as $simulation) {
+        $status_emoji = ($simulation['status'] === 'Completed') ? '✅' : (($simulation['status'] === 'Failed') ? '❌' : '⏳');
+        
+        $content .= '
+          <div class="simulation-card ' . $active_class . '" data-simulation="' . htmlspecialchars($simulation['id']) . '">
+                  . $status_emoji . ' ' . htmlspecialchars($simulation['name']) . ' (' . htmlspecialchars($simulation['status']) . ')</option>';
+            <div class="simulation-stats">
+              <span class="stat">📊 Status: <strong>' . htmlspecialchars($simulation['status']) . '</strong></span>
+              <span class="stat">� Created: <strong>' . htmlspecialchars($simulation['created']) . '</strong></span>
+              <span class="stat">📁 Portfolio: <strong>' . htmlspecialchars($simulation['portfolio']) . '</strong></span>
+            </div>
+          </div>';
+      }
+      
+      $content .= '
+        </select>
+        <div class="simulation-info" id="simulation-info" style="display: none;">
+          <h4>📊 Simulation Details</h4>
+          <p><strong>Status:</strong> <span id="sim-status">-</span></p>
+          <p><strong>Created:</strong> <span id="sim-created">-</span></p>
+          <p><strong>Portfolio:</strong> <span id="sim-portfolio">' . htmlspecialchars($current_portfolio['name']) . '</span></p>
+          <p><strong>Location:</strong> <code id="sim-location">-</code></p>
         </div>
         
-        <div class="simulation-grid">
-          <div class="simulation-card active" data-simulation="ETH_Momentum_2024Q4">
-            <h4>🔷 ETH Momentum 2024Q4</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Completed</strong></span>
-              <span class="stat">📈 Return: <strong>+24.3%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>90 days</strong></span>
-            </div>
-          </div>
-          
-          <div class="simulation-card" data-simulation="BTC_Conservative_2024Q3">
-            <h4>🟡 BTC Conservative 2024Q3</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Completed</strong></span>
-              <span class="stat">📈 Return: <strong>+18.7%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>92 days</strong></span>
-            </div>
-          </div>
-          
-          <div class="simulation-card" data-simulation="Mixed_Portfolio_2024Q2">
-            <h4>🔄 Mixed Portfolio 2024Q2</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Running</strong></span>
-              <span class="stat">📈 Return: <strong>+12.1%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>45 days</strong></span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="simulation-actions">
+        <div class="simulation-actions" id="simulation-actions" style="display: none;">
           <button class="btn btn-primary" onclick="navigateToSimulation()">
             📊 Analyze Selected Simulation
           </button>
           <button class="btn btn-secondary" onclick="compareSimulations()">
             🔍 Compare Simulations
           </button>
-        </div>
+        </div>';
+    } else {
+      $content .= '
+        <div class="no-simulations">
+          <h3>⚠️ No Simulations Available</h3>
+          <p>No backtest simulations found for the selected portfolio.</p>
+          <p>Expected location: <code>' . htmlspecialchars($current_portfolio['id']) . '/simulations/backtests/</code></p>
+        </div>';
+    }
+    
+    $content .= '
       </div>
     </div>';
     
@@ -2622,75 +2631,68 @@ class DashboardController extends ControllerBase {
       <h2>📊 Simulation Overview</h2>
       <div class="stats-grid">
         <div class="stat-card">
+          <h3>Total Portfolios</h3>
+          <div class="stat-value">' . count($available_portfolios) . '</div>
+          <div class="stat-trend">📁 In 4_portfolios directory</div>
+        </div>
+        
+        <div class="stat-card">
           <h3>Total Simulations</h3>
-          <div class="stat-value">12</div>
-          <div class="stat-trend">↗️ +3 this quarter</div>
+          <div class="stat-value">' . count($available_simulations) . '</div>
+          <div class="stat-trend">🎯 For selected portfolio</div>
         </div>
         
         <div class="stat-card">
-          <h3>Average Return</h3>
-          <div class="stat-value">+18.4%</div>
-          <div class="stat-trend">↗️ +2.1% vs benchmark</div>
+          <h3>Completed Simulations</h3>
+          <div class="stat-value">' . count(array_filter($available_simulations, function($s) { return $s['status'] === 'Completed'; })) . '</div>
+          <div class="stat-trend">✅ Ready for analysis</div>
         </div>
         
         <div class="stat-card">
-          <h3>Best Performer</h3>
-          <div class="stat-value">ETH Momentum</div>
-          <div class="stat-trend">↗️ +24.3% return</div>
-        </div>
-        
-        <div class="stat-card">
-          <h3>Success Rate</h3>
-          <div class="stat-value">91.7%</div>
-          <div class="stat-trend">↗️ 11/12 profitable</div>
+          <h3>Recent Activity</h3>
+          <div class="stat-value">' . (!empty($available_simulations) ? date('M j', strtotime('today')) : 'None') . '</div>
+          <div class="stat-trend">📅 Latest simulation</div>
         </div>
       </div>
     </div>';
     
-    $content .= '</div>';
-    
-    // Add JavaScript for simulation selector
+    // JavaScript for interactivity
     $content .= '
     <script>
-    function loadPortfolioSimulations() {
-      const portfolioSelect = document.getElementById("portfolio-select");
-      const selectedPortfolio = portfolioSelect.value;
+      function loadPortfolioSimulations() {
+        const portfolioSelect = document.getElementById("portfolio-select");
+        const selectedPortfolio = portfolioSelect.value;
+        
+        if (selectedPortfolio) {
+          // Reload page with selected portfolio
+          window.location.href = "/admin/metrics/lean/simulations?portfolio=" + encodeURIComponent(selectedPortfolio);
+        }
+      }
       
-      if (selectedPortfolio) {
-        // Update portfolio info display
-        const portfolioInfo = document.getElementById("portfolio-info");
-        const selectedOption = portfolioSelect.options[portfolioSelect.selectedIndex];
-        const portfolioName = selectedOption.text;
-        
-        // Here you would normally make an AJAX call to load simulations
-        // For now, we\'ll just update the display
-        portfolioInfo.innerHTML = "<h4>📊 " + portfolioName + "</h4><p>Loading simulations...</p>";
-        
-        // Reload the page to show simulations for selected portfolio
-        // In a production system, this would be an AJAX call
-        console.log("Selected portfolio: " + selectedPortfolio);
+      function navigateToSimulation() {
+        const selectedCard = document.querySelector(".simulation-card.active");
+        if (selectedCard) {
+          const simulationId = selectedCard.getAttribute("data-simulation");
+          window.location.href = "/admin/metrics/lean/simulations/" + encodeURIComponent(simulationId);
+        } else {
+          alert("Please select a simulation first");
+        }
       }
-    }
-    
-    function navigateToSimulation() {
-      const selected = document.querySelector(".simulation-card.active");
-      if (selected) {
-        const simId = selected.getAttribute("data-simulation");
-        window.location.href = "/admin/metrics/lean/simulations/" + simId + "/holdings";
+      
+      function compareSimulations() {
+        alert("Simulation comparison feature coming soon!");
       }
-    }
-    
-    function compareSimulations() {
-      alert("Comparison feature coming soon!");
-    }
-    
-    document.querySelectorAll(".simulation-card").forEach(card => {
-      card.addEventListener("click", function() {
-        document.querySelectorAll(".simulation-card").forEach(c => c.classList.remove("active"));
-        this.classList.add("active");
+      
+      // Add click handlers for simulation cards
+      document.querySelectorAll(".simulation-card").forEach(card => {
+        card.addEventListener("click", function() {
+          document.querySelectorAll(".simulation-card").forEach(c => c.classList.remove("active"));
+          this.classList.add("active");
+        });
       });
-    });
     </script>';
+    
+    $content .= '</div>';
     
     return Markup::create($content);
   }
@@ -2965,31 +2967,36 @@ class DashboardController extends ControllerBase {
   }
 
   /**
-   * Get available portfolios from 4_portfolios directory.
+   * Get available portfolios from the filesystem.
    */
   private function getAvailablePortfolios() {
-    $portfolios = [];
     $portfolios_path = '/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios';
+    $portfolios = [];
     
-    if (!is_dir($portfolios_path)) {
-      return $portfolios;
-    }
-    
-    $directories = scandir($portfolios_path);
-    foreach ($directories as $dir) {
-      if ($dir === '.' || $dir === '..' || $dir === 'utilities' || $dir === '__pycache__') {
-        continue;
-      }
-      
-      $portfolio_path = $portfolios_path . '/' . $dir;
-      if (is_dir($portfolio_path)) {
-        $portfolios[] = [
-          'id' => $dir,
-          'name' => $dir,
-          'description' => 'Portfolio located in 4_portfolios/' . $dir,
-          'strategy' => $this->detectPortfolioStrategy($portfolio_path),
-          'path' => $portfolio_path
-        ];
+    if (is_dir($portfolios_path)) {
+      $directories = scandir($portfolios_path);
+      foreach ($directories as $dir) {
+        // Skip hidden directories and files
+        if ($dir[0] !== '.' && is_dir($portfolios_path . '/' . $dir) && !in_array($dir, ['utilities', '__pycache__'])) {
+          $config_path = $portfolios_path . '/' . $dir . '/config.json';
+          $portfolio_info = [
+            'id' => $dir,
+            'name' => $dir,
+            'path' => $portfolios_path . '/' . $dir,
+          ];
+          
+          // Try to load portfolio config if available
+          if (file_exists($config_path)) {
+            $config_data = json_decode(file_get_contents($config_path), true);
+            if ($config_data) {
+              $portfolio_info['name'] = $config_data['portfolio_name'] ?? $dir;
+              $portfolio_info['description'] = $config_data['description'] ?? 'Portfolio managed by Enhanced Portfolio Manager framework';
+              $portfolio_info['strategy'] = $config_data['strategy_type'] ?? 'dual_crypto';
+            }
+          }
+          
+          $portfolios[] = $portfolio_info;
+        }
       }
     }
     
@@ -3000,71 +3007,51 @@ class DashboardController extends ControllerBase {
    * Get available simulations for a specific portfolio.
    */
   private function getAvailableSimulations($portfolio_id) {
+    $simulations_path = '/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/' . $portfolio_id . '/simulations/backtests';
     $simulations = [];
-    $simulations_path = "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/{$portfolio_id}/simulations/backtests";
     
-    if (!is_dir($simulations_path)) {
-      return $simulations;
-    }
-    
-    $directories = scandir($simulations_path);
-    foreach ($directories as $dir) {
-      if ($dir === '.' || $dir === '..') {
-        continue;
+    if (is_dir($simulations_path)) {
+      $directories = scandir($simulations_path);
+      foreach ($directories as $dir) {
+        if ($dir[0] !== '.' && is_dir($simulations_path . '/' . $dir)) {
+          $simulation_info = [
+            'id' => $dir,
+            'name' => $dir,
+            'portfolio' => $portfolio_id,
+            'path' => $simulations_path . '/' . $dir,
+            'status' => 'Completed',
+            'created' => 'Unknown',
+          ];
+          
+          // Try to extract date from simulation name (format: backtest_YYYYMMDD_HHMMSS_hash)
+          if (preg_match('/backtest_(\d{8})_(\d{6})_([a-f0-9]+)/', $dir, $matches)) {
+            $date_str = $matches[1] . '_' . $matches[2];
+            $simulation_info['created'] = \DateTime::createFromFormat('Ymd_His', $date_str)->format('M j, Y H:i');
+          }
+          
+          // Check for results or config files to determine status
+          $config_path = $simulations_path . '/' . $dir . '/lean_config.json';
+          $error_path = $simulations_path . '/' . $dir . '/error.json';
+          
+          if (file_exists($error_path)) {
+            $simulation_info['status'] = 'Failed';
+          } elseif (file_exists($config_path)) {
+            $simulation_info['status'] = 'Completed';
+          } else {
+            $simulation_info['status'] = 'In Progress';
+          }
+          
+          $simulations[] = $simulation_info;
+        }
       }
       
-      $simulation_path = $simulations_path . '/' . $dir;
-      if (is_dir($simulation_path)) {
-        $simulation_data = $this->analyzeSimulation($simulation_path, $dir, $portfolio_id);
-        $simulations[] = $simulation_data;
-      }
+      // Sort simulations by creation date (newest first)
+      usort($simulations, function($a, $b) {
+        return strcmp($b['id'], $a['id']);
+      });
     }
     
     return $simulations;
-  }
-
-  /**
-   * Detect portfolio strategy from directory contents.
-   */
-  private function detectPortfolioStrategy($portfolio_path) {
-    // Look for strategy indicators in file names or config files
-    if (file_exists($portfolio_path . '/trading_algorithms')) {
-      return 'algorithmic';
-    } elseif (file_exists($portfolio_path . '/risk_algorithms')) {
-      return 'risk-managed';
-    }
-    return 'unknown';
-  }
-
-  /**
-   * Analyze a simulation directory to extract metadata.
-   */
-  private function analyzeSimulation($simulation_path, $simulation_id, $portfolio_id) {
-    $simulation_data = [
-      'id' => $simulation_id,
-      'name' => $simulation_id,
-      'portfolio' => $portfolio_id,
-      'status' => 'Unknown',
-      'created' => 'Unknown',
-      'path' => $simulation_path
-    ];
-    
-    // Determine status based on files present
-    if (file_exists($simulation_path . '/error.json')) {
-      $simulation_data['status'] = 'Failed';
-    } elseif (file_exists($simulation_path . '/lean_config.json')) {
-      $simulation_data['status'] = 'Completed';
-    } else {
-      $simulation_data['status'] = 'In Progress';
-    }
-    
-    // Extract creation date from directory name if possible
-    if (preg_match('/(\d{8})/', $simulation_id, $matches)) {
-      $date_str = $matches[1];
-      $simulation_data['created'] = date('M j, Y', strtotime($date_str));
-    }
-    
-    return $simulation_data;
   }
 
 }

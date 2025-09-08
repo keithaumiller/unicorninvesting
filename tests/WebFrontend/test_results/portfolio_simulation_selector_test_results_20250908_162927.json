@@ -1,0 +1,39 @@
+{
+  "timestamp": "2025-09-08T16:29:27.531081",
+  "test_type": "portfolio_simulation_selector",
+  "target_url": "http://localhost/admin/metrics/lean/simulations",
+  "tests": [
+    {
+      "name": "portfolio_selector",
+      "passed": true
+    },
+    {
+      "name": "simulation_selector",
+      "passed": false
+    },
+    {
+      "name": "selector_interactivity",
+      "passed": true
+    },
+    {
+      "name": "conditional_logic",
+      "passed": false
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 4,
+    "success_rate": 50.0
+  },
+  "filesystem_data": {
+    "expected_portfolios": [
+      "Myportolio"
+    ],
+    "expected_simulations_myportolio": [
+      "backtest_20250903_142029_f5f0889c",
+      "backtest_20250903_142955_5618caf5",
+      "backtest_20250903_143119_fa83c2ff",
+      "backtest_20250903_145040_bef7f054"
+    ]
+  }
+}
