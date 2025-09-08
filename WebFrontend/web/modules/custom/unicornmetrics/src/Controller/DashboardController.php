@@ -1166,7 +1166,6 @@ class DashboardController extends ControllerBase {
           <div class="account-overview">
             <h3>📈 Account Summary</h3>
             <div class="account-info">
-              <p><strong>Account ID:</strong> ' . ($live_portfolio['account_id'] ?? 'Unknown') . '</p>
               <p><strong>Status:</strong> <span class="account-status ' . ($live_portfolio['is_funded'] ? 'funded' : 'empty') . '">' . ($live_portfolio['account_status'] ?? 'Unknown') . '</span></p>
             </div>
             
