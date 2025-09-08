@@ -531,10 +531,12 @@ run_health_checks() {
     fi
 
     # Python Virtual Environment
-    if [ -f ".venv/bin/activate" ]; then
+    VENV_PATH="${UNICORN_ROOT}/.venv/bin/activate"
+    if [ -f "$VENV_PATH" ]; then
         check_status 0 "Python Virtual Environment: Available"
         
-        # Activate venv and check libraries
+        # Activate venv and check libraries (change to correct directory first)
+        cd "$UNICORN_ROOT"
         source .venv/bin/activate
         
         python -c "import fastapi, uvicorn" >/dev/null 2>&1
@@ -568,7 +570,7 @@ run_health_checks() {
         fi
         
     else
-        check_status 1 "Virtual Environment: Missing" "Run: python3 -m venv .venv && source .venv/bin/activate"
+        check_status 1 "Virtual Environment: Missing" "Run: cd $UNICORN_ROOT && python3 -m venv .venv && source .venv/bin/activate"
     fi
 
     # 3. Web Server & Database

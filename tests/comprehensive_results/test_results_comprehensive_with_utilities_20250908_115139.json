@@ -1,0 +1,213 @@
+{
+  "execution_timestamp": "2025-09-08T11:51:38.171916",
+  "execution_mode": "comprehensive",
+  "test_suites": {
+    "System_Architecture": {
+      "path": "system/test_system_architecture.py",
+      "description": "Validates system architectural compliance and structure",
+      "status": "FAILED",
+      "execution_time": 0.24,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "ETH_Basic_Risk": {
+      "path": "unicorn/3_risk_algorithms/test_eth_basic_risk.py",
+      "description": "ETH basic risk management algorithm validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Kelly_Criterion": {
+      "path": "unicorn/4_portfolios/utilities/test_kelly_criterion.py",
+      "description": "Kelly Criterion position sizing algorithm validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Enhanced_ETH_Alpha": {
+      "path": "unicorn/2_alpha_models/test_enhanced_eth_alpha.py",
+      "description": "Enhanced ETH alpha model validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Data_Quality": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_data_quality.py",
+      "description": "Interactive Brokers data quality validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Integration": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_ibkr_integration.py",
+      "description": "Interactive Brokers API integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Technical_Indicators": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_technical_indicators.py",
+      "description": "Interactive Brokers technical indicators validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_E2E_Pipeline": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_e2e_pipeline.py",
+      "description": "Interactive Brokers end-to-end data pipeline validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "ETH_Kelly_Integration": {
+      "path": "unicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py",
+      "description": "ETH-Kelly Criterion complete integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Basic_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_basic_data_validation.py",
+      "description": "Basic frontend-backend data validation (Approach 1)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Production_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_production_data_validation.py",
+      "description": "Production-ready data validation (Approach 2)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Intelligent_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_intelligent_data_validation.py",
+      "description": "Intelligent semantic data validation (Approach 3)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Enhanced_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_final_enhanced_validation.py",
+      "description": "Ultimate comprehensive data validation (Approach 4)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Targeted_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_targeted_validation.py",
+      "description": "Precision component data validation (Approach 5)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "WebFrontend_Basic_Validation": {
+      "path": "WebFrontend/test_basic_validation.py",
+      "description": "WebFrontend basic functionality validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "WebFrontend_Forecasting_Dashboard": {
+      "path": "WebFrontend/test_forecasting_dashboard.py",
+      "description": "WebFrontend forecasting dashboard validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "LEAN_Insights": {
+      "path": "lean/test_lean_insights.py",
+      "description": "LEAN framework insights and integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Complete_System_Validation": {
+      "path": "system/test_complete_system_validation.py",
+      "description": "Complete end-to-end system integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    }
+  },
+  "utility_results": {
+    "Simple_Homepage_Test": {
+      "path": "WebFrontend/simple_homepage_test.py",
+      "description": "Standalone homepage functionality validation",
+      "status": "PASSED",
+      "execution_time": 1.33,
+      "stdout": "\ud83e\uddea Simple Homepage Test Suite\n==================================================\nTimestamp: 2025-09-08T11:51:39.844060\nTarget URL: http://localhost\n\ud83c\udfe0 Testing Homepage Basic Functionality\n----------------------------------------\nStatus Code: 200\nContent Length: 19727 bytes\nLoad Time: 0.07 seconds\nContent Type: text/html; charset=UTF-8\nX-Generator: Drupal 11 (https://www.drupal.org)\n\u2705 Found: Unicorn Investing Platform (Main header)\n\u2705 Found: Myportolio (Portfolio name)\n\u2705 Found: Live Portfolio Status (IBKR integration)\n\u2705 Found: Account Summary (Account information)\n\u2705 Found: Net Liquidation Value (Financial data)\n\u2705 Found: Last Updated (Data freshness)\n\u274c Missing: System Status (Component status)\n\ud83d\udd17 Navigation found: Holdings\n\ud83d\udd17 Navigation found: Performance\n\ud83d\udd17 Navigation found: Algorithms\n\ud83d\udd17 Navigation found: simulation-selector\n\n\ud83d\udcca Test Results:\nDashboard Elements: 6/7 found\nNavigation Elements: 4/5 found\nOverall Success Rate: 83.3%\n\ud83c\udf89 Homepage test PASSED!\n\n\ud83d\udd04 Testing Dashboard Restoration\n----------------------------------------\n\ud83d\udcbc IBKR feature found: Live Portfolio Status\n\ud83d\udcbc IBKR feature found: Cash Balance\n\ud83d\udcbc IBKR feature found: Market Value\n\ud83d\udcbc IBKR feature found: Unrealized P&L\n\ud83d\udcbc IBKR feature found: Data Freshness\n\ud83c\udf9b\ufe0f Original feature found: simulation-selector\n\ud83c\udf9b\ufe0f Original feature found: Select Simulation\n\ud83c\udf9b\ufe0f Original feature found: Holdings\n\ud83c\udf9b\ufe0f Original feature found: Performance\n\ud83c\udf9b\ufe0f Original feature found: Algorithms\n\n\ud83d\udccb Dashboard Restoration Results:\nIBKR Integration: 5/5 features (100.0%)\nOriginal Features: 5/6 features (83.3%)\n\u2705 Dashboard restoration SUCCESSFUL - Both IBKR and original features present!\n\n\ud83c\udfaf Final Results:\nTests Passed: 2/2\nSuccess Rate: 100.0%\n  homepage_basic: \u2705 PASSED\n  dashboard_restoration: \u2705 PASSED\n\n\ud83c\udf89 All tests PASSED! Homepage is fully functional.\n",
+      "stderr": "",
+      "return_code": 0
+    },
+    "LEAN_Compliance_Analysis": {
+      "path": "built-in",
+      "description": "LEAN framework structure and compliance analysis",
+      "status": "COMPLETED",
+      "execution_time": 0.0,
+      "analysis_result": {
+        "compliance_status": "analysis_pending",
+        "structure_valid": true,
+        "recommendations": [
+          "LEAN analysis tools not yet implemented"
+        ]
+      },
+      "return_code": 0
+    },
+    "Integration_Summary_Analysis": {
+      "path": "built-in",
+      "description": "System integration analysis and summary generation",
+      "status": "COMPLETED",
+      "execution_time": 0.0,
+      "analysis_result": {
+        "integration_status": "analysis_pending",
+        "summary": "Integration analysis functionality not yet implemented",
+        "recommendations": []
+      },
+      "return_code": 0
+    }
+  },
+  "summary": {
+    "total_suites": 0,
+    "passed_suites": 0,
+    "failed_suites": 18,
+    "skipped_suites": 0,
+    "total_execution_time": 0,
+    "utilities_executed": 3
+  }
+}

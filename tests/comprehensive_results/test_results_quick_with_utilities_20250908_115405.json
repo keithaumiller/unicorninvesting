@@ -1,0 +1,69 @@
+{
+  "execution_timestamp": "2025-09-08T11:54:03.201635",
+  "execution_mode": "quick",
+  "test_suites": {
+    "Complete_System_Validation": {
+      "path": "system/test_complete_system_validation.py",
+      "description": "Complete end-to-end system integration validation (Essential)",
+      "status": "FAILED",
+      "execution_time": 1.05,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0 -- /workspaces/unicorninvesting/.venv/bin/python\ncachedir: .pytest_cache\nbenchmark: 5.1.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nmetadata: {'Python': '3.12.3', 'Platform': 'Linux-6.8.0-1030-azure-x86_64-with-glibc2.39', 'Packages': {'pytest': '8.4.2', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.1.1', 'benchmark': '5.1.0', 'Faker': '37.6.0', 'mock': '3.15.0', 'anyio': '4.10.0', 'timeout': '2.4.0', 'cov': '6.3.0', 'metadata': '3.1.1', 'json-report': '1.5.0', 'xdist': '3.8.0'}, 'JAVA_HOME': '/usr/local/sdkman/candidates/java/current'}\nrootdir: /workspaces/unicorninvesting/tests\nconfigfile: pytest.ini\nplugins: html-4.1.1, benchmark-5.1.0, Faker-37.6.0, mock-3.15.0, anyio-4.10.0, timeout-2.4.0, cov-6.3.0, metadata-3.1.1, json-report-1.5.0, xdist-3.8.0\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.29s =============================\n",
+      "stderr": "",
+      "return_code": 5
+    },
+    "ETH_Kelly_Integration": {
+      "path": "unicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py",
+      "description": "ETH-Kelly Criterion complete integration validation (Essential)",
+      "status": "PASSED",
+      "execution_time": 0.96,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0 -- /workspaces/unicorninvesting/.venv/bin/python\ncachedir: .pytest_cache\nbenchmark: 5.1.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nmetadata: {'Python': '3.12.3', 'Platform': 'Linux-6.8.0-1030-azure-x86_64-with-glibc2.39', 'Packages': {'pytest': '8.4.2', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.1.1', 'benchmark': '5.1.0', 'Faker': '37.6.0', 'mock': '3.15.0', 'anyio': '4.10.0', 'timeout': '2.4.0', 'cov': '6.3.0', 'metadata': '3.1.1', 'json-report': '1.5.0', 'xdist': '3.8.0'}, 'JAVA_HOME': '/usr/local/sdkman/candidates/java/current'}\nrootdir: /workspaces/unicorninvesting/tests\nconfigfile: pytest.ini\nplugins: html-4.1.1, benchmark-5.1.0, Faker-37.6.0, mock-3.15.0, anyio-4.10.0, timeout-2.4.0, cov-6.3.0, metadata-3.1.1, json-report-1.5.0, xdist-3.8.0\ncollecting ... collected 4 items\n\nunicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py::TestETHKellyIntegration::test_market_data_processing PASSED [ 25%]\nunicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py::TestETHKellyIntegration::test_performance_tracking PASSED [ 50%]\nunicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py::TestETHKellyIntegration::test_portfolio_initialization PASSED [ 75%]\nunicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py::TestETHKellyIntegration::test_portfolio_summary PASSED [100%]\n\n============================== 4 passed in 0.34s ===============================\n",
+      "stderr": "",
+      "return_code": 0
+    }
+  },
+  "utility_results": {
+    "Simple_Homepage_Test": {
+      "path": "WebFrontend/simple_homepage_test.py",
+      "description": "Standalone homepage functionality validation",
+      "status": "PASSED",
+      "execution_time": 0.35,
+      "stdout": "\ud83e\uddea Simple Homepage Test Suite\n==================================================\nTimestamp: 2025-09-08T11:54:05.309505\nTarget URL: http://localhost\n\ud83c\udfe0 Testing Homepage Basic Functionality\n----------------------------------------\nStatus Code: 200\nContent Length: 19727 bytes\nLoad Time: 0.18 seconds\nContent Type: text/html; charset=UTF-8\nX-Generator: Drupal 11 (https://www.drupal.org)\n\u2705 Found: Unicorn Investing Platform (Main header)\n\u2705 Found: Myportolio (Portfolio name)\n\u2705 Found: Live Portfolio Status (IBKR integration)\n\u2705 Found: Account Summary (Account information)\n\u2705 Found: Net Liquidation Value (Financial data)\n\u2705 Found: Last Updated (Data freshness)\n\u274c Missing: System Status (Component status)\n\ud83d\udd17 Navigation found: Holdings\n\ud83d\udd17 Navigation found: Performance\n\ud83d\udd17 Navigation found: Algorithms\n\ud83d\udd17 Navigation found: simulation-selector\n\n\ud83d\udcca Test Results:\nDashboard Elements: 6/7 found\nNavigation Elements: 4/5 found\nOverall Success Rate: 83.3%\n\ud83c\udf89 Homepage test PASSED!\n\n\ud83d\udd04 Testing Dashboard Restoration\n----------------------------------------\n\ud83d\udcbc IBKR feature found: Live Portfolio Status\n\ud83d\udcbc IBKR feature found: Cash Balance\n\ud83d\udcbc IBKR feature found: Market Value\n\ud83d\udcbc IBKR feature found: Unrealized P&L\n\ud83d\udcbc IBKR feature found: Data Freshness\n\ud83c\udf9b\ufe0f Original feature found: simulation-selector\n\ud83c\udf9b\ufe0f Original feature found: Select Simulation\n\ud83c\udf9b\ufe0f Original feature found: Holdings\n\ud83c\udf9b\ufe0f Original feature found: Performance\n\ud83c\udf9b\ufe0f Original feature found: Algorithms\n\n\ud83d\udccb Dashboard Restoration Results:\nIBKR Integration: 5/5 features (100.0%)\nOriginal Features: 5/6 features (83.3%)\n\u2705 Dashboard restoration SUCCESSFUL - Both IBKR and original features present!\n\n\ud83c\udfaf Final Results:\nTests Passed: 2/2\nSuccess Rate: 100.0%\n  homepage_basic: \u2705 PASSED\n  dashboard_restoration: \u2705 PASSED\n\n\ud83c\udf89 All tests PASSED! Homepage is fully functional.\n",
+      "stderr": "",
+      "return_code": 0
+    },
+    "LEAN_Compliance_Analysis": {
+      "path": "built-in",
+      "description": "LEAN framework structure and compliance analysis",
+      "status": "COMPLETED",
+      "execution_time": 0.0,
+      "analysis_result": {
+        "compliance_status": "analysis_pending",
+        "structure_valid": true,
+        "recommendations": [
+          "LEAN analysis tools not yet implemented"
+        ]
+      },
+      "return_code": 0
+    },
+    "Integration_Summary_Analysis": {
+      "path": "built-in",
+      "description": "System integration analysis and summary generation",
+      "status": "COMPLETED",
+      "execution_time": 0.0,
+      "analysis_result": {
+        "integration_status": "analysis_pending",
+        "summary": "Integration analysis functionality not yet implemented",
+        "recommendations": []
+      },
+      "return_code": 0
+    }
+  },
+  "summary": {
+    "total_suites": 0,
+    "passed_suites": 1,
+    "failed_suites": 1,
+    "skipped_suites": 0,
+    "total_execution_time": 0,
+    "utilities_executed": 3
+  }
+}

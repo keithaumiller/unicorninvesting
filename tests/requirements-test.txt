@@ -1,0 +1,25 @@
+# Testing Dependencies for Unicorn Investing Platform
+# Core testing framework
+pytest>=8.0.0
+pytest-cov>=4.0.0
+pytest-xdist>=3.0.0
+pytest-timeout>=2.1.0
+
+# HTTP testing
+requests>=2.31.0
+responses>=0.23.0
+
+# Data validation testing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Mock and fixtures
+pytest-mock>=3.10.0
+factory-boy>=3.2.0
+
+# Test reporting
+pytest-html>=3.2.0
+pytest-json-report>=1.5.0
+
+# Performance testing
+pytest-benchmark>=4.0.0

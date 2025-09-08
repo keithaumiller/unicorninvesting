@@ -1,0 +1,175 @@
+{
+  "execution_timestamp": "2025-09-05T18:46:21.545295",
+  "execution_mode": "comprehensive",
+  "test_suites": {
+    "System_Architecture": {
+      "path": "system/test_system_architecture.py",
+      "description": "Validates system architectural compliance and structure",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "ETH_Basic_Risk": {
+      "path": "unicorn/3_risk_algorithms/test_eth_basic_risk.py",
+      "description": "ETH basic risk management algorithm validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Kelly_Criterion": {
+      "path": "unicorn/4_portfolios/utilities/test_kelly_criterion.py",
+      "description": "Kelly Criterion position sizing algorithm validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Enhanced_ETH_Alpha": {
+      "path": "unicorn/2_alpha_models/test_enhanced_eth_alpha.py",
+      "description": "Enhanced ETH alpha model validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Data_Quality": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_data_quality.py",
+      "description": "Interactive Brokers data quality validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Integration": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_ibkr_integration.py",
+      "description": "Interactive Brokers API integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_Technical_Indicators": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_technical_indicators.py",
+      "description": "Interactive Brokers technical indicators validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "IBKR_E2E_Pipeline": {
+      "path": "unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_e2e_pipeline.py",
+      "description": "Interactive Brokers end-to-end data pipeline validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "ETH_Kelly_Integration": {
+      "path": "unicorn/4_portfolios/Myportolio/test_eth_kelly_integration.py",
+      "description": "ETH-Kelly Criterion complete integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Basic_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_basic_data_validation.py",
+      "description": "Basic frontend-backend data validation (Approach 1)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Production_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_production_data_validation.py",
+      "description": "Production-ready data validation (Approach 2)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Intelligent_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_intelligent_data_validation.py",
+      "description": "Intelligent semantic data validation (Approach 3)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Enhanced_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_final_enhanced_validation.py",
+      "description": "Ultimate comprehensive data validation (Approach 4)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Targeted_Data_Validation": {
+      "path": "unicorn/4_portfolios/Myportolio/test_targeted_validation.py",
+      "description": "Precision component data validation (Approach 5)",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "WebFrontend_Basic_Validation": {
+      "path": "WebFrontend/test_basic_validation.py",
+      "description": "WebFrontend basic functionality validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "WebFrontend_Forecasting_Dashboard": {
+      "path": "WebFrontend/test_forecasting_dashboard.py",
+      "description": "WebFrontend forecasting dashboard validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "LEAN_Insights": {
+      "path": "lean/test_lean_insights.py",
+      "description": "LEAN framework insights and integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    },
+    "Complete_System_Validation": {
+      "path": "system/test_complete_system_validation.py",
+      "description": "Complete end-to-end system integration validation",
+      "status": "FAILED",
+      "execution_time": 0.01,
+      "stdout": "",
+      "stderr": "/home/codespace/.python/current/bin/python: No module named pytest\n",
+      "return_code": 1
+    }
+  },
+  "summary": {
+    "total_suites": 18,
+    "passed_suites": 0,
+    "failed_suites": 18,
+    "skipped_suites": 0,
+    "total_execution_time": 0.2473151683807373
+  }
+}

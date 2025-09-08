@@ -60,7 +60,7 @@
       "accessible": true,
       "contracts_found": 4,
       "contract": {
-        "conid": "39453434",
+        "conid": "37928764",
         "companyHeader": "European Monetary Union Euro - IDEALPRO",
         "companyName": "European Monetary Union Euro",
         "symbol": "EUR",
@@ -78,7 +78,7 @@
           },
           {
             "secType": "FOP",
-            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;JUL26;AUG26;SEP26;DEC26;MAR27;JUN27",
+            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;FEB26;MAR26;APR26;MAY26;JUN26;JUL26;AUG26;SEP26;DEC26;MAR27;JUN27;SEP27",
             "exchange": "CME",
             "showPrips": true
           },
@@ -107,5 +107,5 @@
     }
   },
   "data_permissions": {},
-  "last_updated": "2025-09-05T17:48:32.258678"
+  "last_updated": "2025-09-08T12:51:18.302745"
 }

@@ -3,16 +3,19 @@
 
 This directory contains comprehensive testing for Interactive Brokers (IBKR) data collection and processing.
 
-## Test Structure
+## 📁 **COMPLETE FILE INVENTORY**
 
-### Core Test Files
+### **📋 Documentation**
+- **`README.md`** - This comprehensive documentation for IBKR testing suite
 
-#### `test_ibkr_integration.py`
-**Purpose**: Integration testing for IBKR Gateway connectivity and data collection
+### **🧪 Active Test Files**
+
+#### **`test_ibkr_integration.py`** - ✅ **ACTIVE**
+**Purpose**: Integration testing for IBKR Gateway connectivity and data collection  
 **Coverage**:
 - Gateway authentication and connection validation
-- ETH contract data retrieval 
-- Real-time data collection performance
+- ETH contract data retrieval (Contract ID: 541686654)
+- Real-time data collection performance (>20 points/sec target)
 - Error handling and timeout scenarios
 - Data format validation
 
@@ -21,33 +24,60 @@ This directory contains comprehensive testing for Interactive Brokers (IBKR) dat
 - `TestETHDataCollection`: ETH-specific data collection
 - `TestPerformance`: Performance benchmarks and stress testing
 
-#### `test_technical_indicators.py`
-**Purpose**: Validation of technical indicator calculations
+#### **`test_technical_indicators.py`** - ✅ **ACTIVE**
+**Purpose**: Validation of 30+ technical indicator calculations  
 **Coverage**:
-- Trend indicators (SMA, EMA, MACD, etc.)
-- Momentum indicators (RSI, Stochastic, Williams %R)
-- Volatility indicators (ATR, Bollinger Bands)
-- Volume indicators (VWAP, OBV, etc.)
+- Trend indicators (SMA, EMA, MACD, Parabolic SAR, etc.)
+- Momentum indicators (RSI, Stochastic, Williams %R, CCI)
+- Volatility indicators (ATR, Bollinger Bands, Standard Deviation)
+- Volume indicators (VWAP, OBV, A/D Line, Chaikin Oscillator)
+- Pattern recognition and signal validation
 - Edge cases and error handling
 
 **Key Test Classes**:
 - `TestTrendIndicators`: Moving averages and trend analysis
-- `TestMomentumIndicators`: Oscillators and momentum metrics
+- `TestMomentumIndicators`: Oscillators and momentum metrics  
 - `TestVolatilityIndicators`: Volatility and range measurements
 - `TestVolumeIndicators`: Volume-based analysis
 
-#### `test_data_quality.py`
-**Purpose**: Data integrity and quality assurance
+#### **`test_data_quality.py`** - ✅ **ACTIVE**
+**Purpose**: Data integrity and quality assurance for IBKR market data
 **Coverage**:
-- OHLC relationship validation
-- Price reasonableness checks
-- Data completeness analysis
+- OHLC relationship validation (High ≥ max(Open,Close), Low ≤ min(Open,Close))
+- Price reasonableness checks ($1000-$8000 ETH range)
+- Data completeness analysis (>95% completeness target)
 - Gap detection and handling
 - Quality scoring algorithms
+- Timestamp consistency validation
 
 **Key Test Classes**:
 - `TestDataIntegrity`: OHLC validation and price checks
-- `TestDataCompleteness`: Gap analysis and freshness
+- `TestDataCompleteness`: Gap analysis and data freshness validation  
+- `TestQualityScoring`: Overall data quality assessment
+
+#### **`test_e2e_pipeline.py`** - ✅ **ACTIVE**
+**Purpose**: End-to-end pipeline testing for complete data flow validation
+**Coverage**:
+- Complete pipeline: IBKR Gateway → Data Collection → Processing → Indicators → Signals
+- Stress testing with 1000+ data points
+- Latency benchmarks (<2000ms target, <5000ms P95)
+- Memory efficiency validation (<500MB during collection)
+- Error recovery and fault tolerance testing
+- Concurrent operations simulation
+
+**Key Test Classes**:
+- `TestPipelineFlow`: Complete data flow validation
+- `TestStressTesting`: High-volume data processing
+- `TestErrorRecovery`: Fault tolerance and recovery scenarios
+
+### **🗄️ Cache Files (`__pycache__/`)**
+- **`test_data_quality.cpython-312-pytest-8.4.1.pyc`** - Pytest cache (auto-generated)
+- **`test_ibkr_integration.cpython-312-pytest-8.4.1.pyc`** - Pytest cache (auto-generated)  
+- **`test_technical_indicators.cpython-312-pytest-8.4.1.pyc`** - Pytest cache (auto-generated)
+
+*Note: Cache files are automatically generated for performance optimization.*
+
+## Test Structure
 - `TestDataQualityScoring`: Comprehensive quality metrics
 - `TestRealDataValidation`: Live data quality assessment
 

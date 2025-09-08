@@ -100,10 +100,10 @@
       "profiles": [],
       "selectedAccount": "U21748632",
       "serverInfo": {
-        "serverName": "JifN12101",
+        "serverName": "JisfN7062",
         "serverVersion": "Build 10.38.1d, Aug 25, 2025 11:22:48 AM"
       },
-      "sessionId": "68ba6394.00000233",
+      "sessionId": "68be5816.0000015b",
       "isFT": false,
       "isPaper": false
     }
@@ -112,5 +112,5 @@
     "authenticated": true,
     "connected": true
   },
-  "last_updated": "2025-09-05T17:48:31.977847"
+  "last_updated": "2025-09-08T12:51:18.111150"
 }
