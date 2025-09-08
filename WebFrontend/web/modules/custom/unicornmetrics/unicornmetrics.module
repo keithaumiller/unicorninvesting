@@ -161,4 +161,3 @@ function unicornmetrics_toolbar_alter(&$items) {
     ];
   }
 }
-  }
