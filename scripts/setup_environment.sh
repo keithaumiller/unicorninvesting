@@ -137,7 +137,7 @@ pip install sqlalchemy pymysql
 
 # Install financial packages
 log_info "Installing financial data packages..."
-pip install yfinance alpha-vantage quandl ccxt
+pip install yfinance alpha-vantage quandl ccxt fredapi
 
 # Install additional requirements
 log_info "Installing remaining Python packages (this may take a few minutes)..."
@@ -210,6 +210,7 @@ if [ -f ~/.bashrc ]; then
         echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
         echo "export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
         echo "export DRUPAL_URL='https://${CODESPACE_NAME:-codespace}-80.app.github.dev/'" >> ~/.bashrc
+        echo "export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'" >> ~/.bashrc
         echo "" >> ~/.bashrc
         echo "# Ensure PHP 8.3 is used by default (prioritize /usr/bin over codespace PHP)" >> ~/.bashrc
         echo "export PATH=\"/usr/bin:\$PATH\"" >> ~/.bashrc
@@ -233,6 +234,7 @@ alias unicorn-root='cd /workspaces/unicorninvesting'
 export UNICORN_ROOT='/workspaces/unicorninvesting'
 export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'
 export DRUPAL_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/"
+export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'
 
 echo ""
 echo "🦄 Unicorn Investing Environment Ready!"
