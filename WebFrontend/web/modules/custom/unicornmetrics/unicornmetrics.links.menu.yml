@@ -58,6 +58,17 @@ unicornmetrics.backtest_results:
   parent: unicornmetrics.algorithm_management
   weight: 2
 
+# Simulation Management Section
+unicornmetrics.simulation_management:
+  title: 'Simulations'
+  route_name: unicornmetrics.lean_simulations
+  description: 'LEAN simulation management and analysis'
+  parent: unicornmetrics.admin_dashboard
+  weight: 3
+  options:
+    attributes:
+      class: ['simulation-management']
+
 # Configuration Section
 unicornmetrics.admin_settings:
   title: 'Trading Platform Settings'
@@ -94,3 +105,10 @@ unicornmetrics.tools_algorithms:
   description: 'Algorithm management and analysis tools'
   menu_name: tools
   weight: 2
+
+unicornmetrics.tools_simulations:
+  title: 'Simulation Tools'
+  route_name: unicornmetrics.lean_simulations
+  description: 'Simulation management and analysis tools'
+  menu_name: tools
+  weight: 3

@@ -2487,5 +2487,504 @@ class DashboardController extends ControllerBase {
     return $section;
   }
 
+  /**
+   * LEAN Simulation Management page.
+   */
+  public function leanSimulations() {
+    // Disable caching for real-time data
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    $build = [
+      '#theme' => 'unicornmetrics_dashboard',
+      '#title' => 'LEAN Simulation Management',
+      '#content' => $this->buildSimulationManagement(),
+      '#attached' => [
+        'library' => [
+          'unicornmetrics/dashboard-styling',
+          'unicornmetrics/chart-libraries',
+          'unicornmetrics/interactive-features',
+        ],
+      ],
+    ];
+    
+    return $build;
+  }
+
+  /**
+   * LEAN Simulation Holdings page.
+   */
+  public function leanSimulationHoldings($simulation_id) {
+    // Disable caching for real-time data
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    $build = [
+      '#theme' => 'unicornmetrics_dashboard',
+      '#title' => "Simulation Holdings - {$simulation_id}",
+      '#content' => $this->buildSimulationHoldings($simulation_id),
+      '#attached' => [
+        'library' => [
+          'unicornmetrics/dashboard-styling',
+          'unicornmetrics/chart-libraries',
+          'unicornmetrics/interactive-features',
+        ],
+      ],
+    ];
+    
+    return $build;
+  }
+
+  /**
+   * LEAN Simulation Performance page.
+   */
+  public function leanSimulationPerformance($simulation_id) {
+    // Disable caching for real-time data
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    $build = [
+      '#theme' => 'unicornmetrics_dashboard',
+      '#title' => "Simulation Performance - {$simulation_id}",
+      '#content' => $this->buildSimulationPerformance($simulation_id),
+      '#attached' => [
+        'library' => [
+          'unicornmetrics/dashboard-styling',
+          'unicornmetrics/chart-libraries',
+          'unicornmetrics/interactive-features',
+        ],
+      ],
+    ];
+    
+    return $build;
+  }
+
+  /**
+   * LEAN Simulation Algorithms page.
+   */
+  public function leanSimulationAlgorithms($simulation_id) {
+    // Disable caching for real-time data
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    $build = [
+      '#theme' => 'unicornmetrics_dashboard',
+      '#title' => "Simulation Algorithms - {$simulation_id}",
+      '#content' => $this->buildSimulationAlgorithms($simulation_id),
+      '#attached' => [
+        'library' => [
+          'unicornmetrics/dashboard-styling',
+          'unicornmetrics/chart-libraries',
+          'unicornmetrics/interactive-features',
+        ],
+      ],
+    ];
+    
+    return $build;
+  }
+
+  /**
+   * LEAN Simulation Backtest Results page.
+   */
+  public function leanSimulationBacktest($simulation_id) {
+    // Disable caching for real-time data
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    
+    $build = [
+      '#theme' => 'unicornmetrics_dashboard',
+      '#title' => "Simulation Backtest - {$simulation_id}",
+      '#content' => $this->buildSimulationBacktest($simulation_id),
+      '#attached' => [
+        'library' => [
+          'unicornmetrics/dashboard-styling',
+          'unicornmetrics/chart-libraries',
+          'unicornmetrics/interactive-features',
+        ],
+      ],
+    ];
+    
+    return $build;
+  }
+
+  /**
+   * Build simulation management content with selector.
+   */
+  private function buildSimulationManagement() {
+    $content = '<div class="simulation-management-container">';
+    
+    // Simulation Selector
+    $content .= '
+    <div class="simulation-selector-container">
+      <h2>🎯 Simulation Selector</h2>
+      <div class="simulation-selector" id="admin-simulation-selector">
+        <div class="selector-header">
+          <h3>Available Simulations</h3>
+          <p>Select a simulation to analyze detailed performance, holdings, and algorithm data</p>
+        </div>
+        
+        <div class="simulation-grid">
+          <div class="simulation-card active" data-simulation="ETH_Momentum_2024Q4">
+            <h4>🔷 ETH Momentum 2024Q4</h4>
+            <div class="simulation-stats">
+              <span class="stat">📊 Status: <strong>Completed</strong></span>
+              <span class="stat">📈 Return: <strong>+24.3%</strong></span>
+              <span class="stat">⏱️ Duration: <strong>90 days</strong></span>
+            </div>
+          </div>
+          
+          <div class="simulation-card" data-simulation="BTC_Conservative_2024Q3">
+            <h4>🟡 BTC Conservative 2024Q3</h4>
+            <div class="simulation-stats">
+              <span class="stat">📊 Status: <strong>Completed</strong></span>
+              <span class="stat">📈 Return: <strong>+18.7%</strong></span>
+              <span class="stat">⏱️ Duration: <strong>92 days</strong></span>
+            </div>
+          </div>
+          
+          <div class="simulation-card" data-simulation="Mixed_Portfolio_2024Q2">
+            <h4>🔄 Mixed Portfolio 2024Q2</h4>
+            <div class="simulation-stats">
+              <span class="stat">📊 Status: <strong>Running</strong></span>
+              <span class="stat">📈 Return: <strong>+12.1%</strong></span>
+              <span class="stat">⏱️ Duration: <strong>45 days</strong></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="simulation-actions">
+          <button class="btn btn-primary" onclick="navigateToSimulation()">
+            📊 Analyze Selected Simulation
+          </button>
+          <button class="btn btn-secondary" onclick="compareSimulations()">
+            🔍 Compare Simulations
+          </button>
+        </div>
+      </div>
+    </div>';
+    
+    // Quick Stats Overview
+    $content .= '
+    <div class="simulation-overview">
+      <h2>📊 Simulation Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Simulations</h3>
+          <div class="stat-value">12</div>
+          <div class="stat-trend">↗️ +3 this quarter</div>
+        </div>
+        
+        <div class="stat-card">
+          <h3>Average Return</h3>
+          <div class="stat-value">+18.4%</div>
+          <div class="stat-trend">↗️ +2.1% vs benchmark</div>
+        </div>
+        
+        <div class="stat-card">
+          <h3>Best Performer</h3>
+          <div class="stat-value">ETH Momentum</div>
+          <div class="stat-trend">↗️ +24.3% return</div>
+        </div>
+        
+        <div class="stat-card">
+          <h3>Success Rate</h3>
+          <div class="stat-value">91.7%</div>
+          <div class="stat-trend">↗️ 11/12 profitable</div>
+        </div>
+      </div>
+    </div>';
+    
+    $content .= '</div>';
+    
+    // Add JavaScript for simulation selector
+    $content .= '
+    <script>
+    function navigateToSimulation() {
+      const selected = document.querySelector(".simulation-card.active");
+      if (selected) {
+        const simId = selected.getAttribute("data-simulation");
+        window.location.href = "/admin/metrics/lean/simulations/" + simId + "/holdings";
+      }
+    }
+    
+    function compareSimulations() {
+      alert("Comparison feature coming soon!");
+    }
+    
+    document.querySelectorAll(".simulation-card").forEach(card => {
+      card.addEventListener("click", function() {
+        document.querySelectorAll(".simulation-card").forEach(c => c.classList.remove("active"));
+        this.classList.add("active");
+      });
+    });
+    </script>';
+    
+    return Markup::create($content);
+  }
+
+  /**
+   * Build simulation holdings content.
+   */
+  private function buildSimulationHoldings($simulation_id) {
+    $content = '<div class="simulation-holdings-container">';
+    
+    // Navigation breadcrumb
+    $content .= '
+    <div class="simulation-breadcrumb">
+      <a href="/admin/metrics/lean/simulations">← Back to Simulations</a>
+      <span class="divider">|</span>
+      <span class="current">Holdings - ' . $simulation_id . '</span>
+    </div>';
+    
+    // Holdings table similar to main portfolio but with simulation data
+    $content .= '
+    <div class="simulation-holdings">
+      <h2>📊 Holdings Analysis - ' . $simulation_id . '</h2>
+      
+      <div class="holdings-table-container">
+        <table class="holdings-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Position</th>
+              <th>Market Value</th>
+              <th>Weight</th>
+              <th>Unrealized P&L</th>
+              <th>Cost Basis</th>
+              <th>Algorithm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ETHUSD</strong></td>
+              <td>2.45 ETH</td>
+              <td>$6,847.50</td>
+              <td>68.5%</td>
+              <td class="positive">+$847.50</td>
+              <td>$6,000.00</td>
+              <td>Momentum v3.2</td>
+            </tr>
+            <tr>
+              <td><strong>BTCUSD</strong></td>
+              <td>0.08 BTC</td>
+              <td>$3,152.50</td>
+              <td>31.5%</td>
+              <td class="positive">+$152.50</td>
+              <td>$3,000.00</td>
+              <td>Conservative v2.1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="simulation-navigation">
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/performance" class="nav-button">
+          📈 Performance Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/algorithms" class="nav-button">
+          🤖 Algorithm Details
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/backtest" class="nav-button">
+          🔄 Backtest Results
+        </a>
+      </div>
+    </div>';
+    
+    $content .= '</div>';
+    
+    return Markup::create($content);
+  }
+
+  /**
+   * Build simulation performance content.
+   */
+  private function buildSimulationPerformance($simulation_id) {
+    $content = '<div class="simulation-performance-container">';
+    
+    // Navigation breadcrumb
+    $content .= '
+    <div class="simulation-breadcrumb">
+      <a href="/admin/metrics/lean/simulations">← Back to Simulations</a>
+      <span class="divider">|</span>
+      <span class="current">Performance - ' . $simulation_id . '</span>
+    </div>';
+    
+    // Performance metrics similar to main but simulation-specific
+    $content .= '
+    <div class="simulation-performance">
+      <h2>📈 Performance Analysis - ' . $simulation_id . '</h2>
+      
+      <div class="performance-metrics">
+        <div class="metric-card">
+          <h3>Total Return</h3>
+          <div class="metric-value positive">+24.3%</div>
+          <div class="metric-period">90-day simulation</div>
+        </div>
+        
+        <div class="metric-card">
+          <h3>Sharpe Ratio</h3>
+          <div class="metric-value">1.85</div>
+          <div class="metric-period">Risk-adjusted return</div>
+        </div>
+        
+        <div class="metric-card">
+          <h3>Max Drawdown</h3>
+          <div class="metric-value negative">-5.2%</div>
+          <div class="metric-period">Maximum loss</div>
+        </div>
+        
+        <div class="metric-card">
+          <h3>Win Rate</h3>
+          <div class="metric-value">73.4%</div>
+          <div class="metric-period">Profitable trades</div>
+        </div>
+      </div>
+      
+      <div class="simulation-navigation">
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/holdings" class="nav-button">
+          📊 Holdings Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/algorithms" class="nav-button">
+          🤖 Algorithm Details
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/backtest" class="nav-button">
+          🔄 Backtest Results
+        </a>
+      </div>
+    </div>';
+    
+    $content .= '</div>';
+    
+    return Markup::create($content);
+  }
+
+  /**
+   * Build simulation algorithms content.
+   */
+  private function buildSimulationAlgorithms($simulation_id) {
+    $content = '<div class="simulation-algorithms-container">';
+    
+    // Navigation breadcrumb
+    $content .= '
+    <div class="simulation-breadcrumb">
+      <a href="/admin/metrics/lean/simulations">← Back to Simulations</a>
+      <span class="divider">|</span>
+      <span class="current">Algorithms - ' . $simulation_id . '</span>
+    </div>';
+    
+    // Algorithm analysis for this specific simulation
+    $content .= '
+    <div class="simulation-algorithms">
+      <h2>🤖 Algorithm Analysis - ' . $simulation_id . '</h2>
+      
+      <div class="algorithm-performance">
+        <div class="algorithm-card">
+          <h3>ETH Momentum Algorithm v3.2</h3>
+          <div class="algo-stats">
+            <span>📊 Accuracy: <strong>87.3%</strong></span>
+            <span>📈 Return: <strong>+26.1%</strong></span>
+            <span>⚡ Trades: <strong>23</strong></span>
+          </div>
+          <div class="algo-description">
+            Advanced momentum strategy with dynamic position sizing and risk management.
+          </div>
+        </div>
+        
+        <div class="algorithm-card">
+          <h3>BTC Conservative Algorithm v2.1</h3>
+          <div class="algo-stats">
+            <span>📊 Accuracy: <strong>82.1%</strong></span>
+            <span>📈 Return: <strong>+18.9%</strong></span>
+            <span>⚡ Trades: <strong>12</strong></span>
+          </div>
+          <div class="algo-description">
+            Conservative approach focused on capital preservation with steady growth.
+          </div>
+        </div>
+      </div>
+      
+      <div class="simulation-navigation">
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/holdings" class="nav-button">
+          📊 Holdings Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/performance" class="nav-button">
+          📈 Performance Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/backtest" class="nav-button">
+          🔄 Backtest Results
+        </a>
+      </div>
+    </div>';
+    
+    $content .= '</div>';
+    
+    return Markup::create($content);
+  }
+
+  /**
+   * Build simulation backtest content.
+   */
+  private function buildSimulationBacktest($simulation_id) {
+    $content = '<div class="simulation-backtest-container">';
+    
+    // Navigation breadcrumb
+    $content .= '
+    <div class="simulation-breadcrumb">
+      <a href="/admin/metrics/lean/simulations">← Back to Simulations</a>
+      <span class="divider">|</span>
+      <span class="current">Backtest - ' . $simulation_id . '</span>
+    </div>';
+    
+    // Backtest results for this simulation
+    $content .= '
+    <div class="simulation-backtest">
+      <h2>🔄 Backtest Results - ' . $simulation_id . '</h2>
+      
+      <div class="backtest-summary">
+        <div class="backtest-card">
+          <h3>Simulation Parameters</h3>
+          <div class="param-list">
+            <div class="param">📅 Start Date: <strong>2024-07-01</strong></div>
+            <div class="param">📅 End Date: <strong>2024-09-30</strong></div>
+            <div class="param">💰 Initial Capital: <strong>$10,000</strong></div>
+            <div class="param">🎯 Strategy: <strong>Multi-Asset Momentum</strong></div>
+          </div>
+        </div>
+        
+        <div class="backtest-card">
+          <h3>Final Results</h3>
+          <div class="result-list">
+            <div class="result positive">💰 Final Value: <strong>$12,430</strong></div>
+            <div class="result positive">📈 Total Return: <strong>+24.3%</strong></div>
+            <div class="result">📊 Sharpe Ratio: <strong>1.85</strong></div>
+            <div class="result">📉 Max Drawdown: <strong>-5.2%</strong></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="trade-analysis">
+        <h3>Trade Analysis</h3>
+        <div class="trade-stats">
+          <div class="stat">📊 Total Trades: <strong>35</strong></div>
+          <div class="stat">✅ Winning Trades: <strong>25 (71.4%)</strong></div>
+          <div class="stat">❌ Losing Trades: <strong>10 (28.6%)</strong></div>
+          <div class="stat">💰 Average Win: <strong>+3.8%</strong></div>
+          <div class="stat">💸 Average Loss: <strong>-1.2%</strong></div>
+        </div>
+      </div>
+      
+      <div class="simulation-navigation">
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/holdings" class="nav-button">
+          📊 Holdings Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/performance" class="nav-button">
+          📈 Performance Analysis
+        </a>
+        <a href="/admin/metrics/lean/simulations/' . $simulation_id . '/algorithms" class="nav-button">
+          🤖 Algorithm Details
+        </a>
+      </div>
+    </div>';
+    
+    $content .= '</div>';
+    
+    return Markup::create($content);
+  }
+
 }
 

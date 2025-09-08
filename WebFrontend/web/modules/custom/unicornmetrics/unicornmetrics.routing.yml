@@ -4,7 +4,7 @@ unicornmetrics.dashboard:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::dashboard'
     _title: 'LEAN Metrics Dashboard'
   requirements:
-    _permission: 'access unicorn metrics'
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 
@@ -47,7 +47,7 @@ unicornmetrics.lean_holdings:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanHoldings'
     _title: 'LEAN Portfolio Holdings'
   requirements:
-    _permission: 'access unicorn metrics'
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 
@@ -87,6 +87,57 @@ unicornmetrics.lean_backtest_results:
   defaults:
     _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanBacktestResults'
     _title: 'LEAN Backtest Results'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+# LEAN Simulation Management Routes
+unicornmetrics.lean_simulations:
+  path: '/admin/metrics/lean/simulations'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanSimulations'
+    _title: 'LEAN Simulation Management'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+unicornmetrics.lean_simulation_holdings:
+  path: '/admin/metrics/lean/simulations/{simulation_id}/holdings'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanSimulationHoldings'
+    _title: 'Simulation Holdings'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+unicornmetrics.lean_simulation_performance:
+  path: '/admin/metrics/lean/simulations/{simulation_id}/performance'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanSimulationPerformance'
+    _title: 'Simulation Performance'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+unicornmetrics.lean_simulation_algorithms:
+  path: '/admin/metrics/lean/simulations/{simulation_id}/algorithms'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanSimulationAlgorithms'
+    _title: 'Simulation Algorithms'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: TRUE
+
+unicornmetrics.lean_simulation_backtest:
+  path: '/admin/metrics/lean/simulations/{simulation_id}/backtest'
+  defaults:
+    _controller: '\Drupal\unicornmetrics\Controller\DashboardController::leanSimulationBacktest'
+    _title: 'Simulation Backtest Results'
   requirements:
     _access: 'TRUE'
   options:

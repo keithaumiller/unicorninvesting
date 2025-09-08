@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-09-08T13:42:43.144051",
+  "base_url": "http://localhost",
+  "tests": {
+    "simulation_selector_page": {
+      "url": "/admin/metrics/lean/simulations",
+      "status_code": 500,
+      "response_time": 0.039058,
+      "content_length": 61,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 500"
+    },
+    "simulation_holdings_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/holdings",
+      "status_code": 500,
+      "response_time": 0.027662,
+      "content_length": 61,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 500"
+    },
+    "simulation_performance_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/performance",
+      "status_code": 500,
+      "response_time": 0.026296,
+      "content_length": 61,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 500"
+    },
+    "simulation_algorithms_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/algorithms",
+      "status_code": 500,
+      "response_time": 0.026171,
+      "content_length": 61,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 500"
+    },
+    "simulation_backtest_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/backtest",
+      "status_code": 500,
+      "response_time": 0.026914,
+      "content_length": 61,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 500"
+    }
+  },
+  "summary": {
+    "total_tests": 5,
+    "passed_tests": 0,
+    "failed_tests": 5,
+    "success_rate": 0.0
+  },
+  "navigation_integration": {
+    "admin_dashboard_accessible": true,
+    "simulation_menu_integration": true
+  }
+}

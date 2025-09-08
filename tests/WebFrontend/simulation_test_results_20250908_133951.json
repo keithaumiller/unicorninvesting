@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-09-08T13:39:50.852297",
+  "base_url": "http://localhost",
+  "tests": {
+    "simulation_selector_page": {
+      "url": "/admin/metrics/lean/simulations",
+      "status_code": 403,
+      "response_time": 0.037786,
+      "content_length": 11839,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 403"
+    },
+    "simulation_holdings_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/holdings",
+      "status_code": 403,
+      "response_time": 0.068161,
+      "content_length": 11870,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 403"
+    },
+    "simulation_performance_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/performance",
+      "status_code": 403,
+      "response_time": 0.032461,
+      "content_length": 11873,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 403"
+    },
+    "simulation_algorithms_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/algorithms",
+      "status_code": 403,
+      "response_time": 0.029609,
+      "content_length": 11872,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 403"
+    },
+    "simulation_backtest_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/backtest",
+      "status_code": 403,
+      "response_time": 0.028115,
+      "content_length": 11870,
+      "elements_found": [],
+      "elements_missing": [],
+      "success": false,
+      "error_message": "HTTP 403"
+    }
+  },
+  "summary": {
+    "total_tests": 5,
+    "passed_tests": 0,
+    "failed_tests": 5,
+    "success_rate": 0.0
+  },
+  "navigation_integration": {
+    "admin_dashboard_accessible": true,
+    "simulation_menu_integration": false
+  }
+}
