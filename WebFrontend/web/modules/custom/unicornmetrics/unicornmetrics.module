@@ -121,6 +121,17 @@ function unicornmetrics_preprocess_breadcrumb(&$variables) {
           'url' => \Drupal\Core\Url::fromRoute('unicornmetrics.lean_algorithms'),
         ];
         break;
+        
+      case 'unicornmetrics.lean_simulations':
+      case 'unicornmetrics.lean_simulation_holdings':
+      case 'unicornmetrics.lean_simulation_performance':
+      case 'unicornmetrics.lean_simulation_algorithms':
+      case 'unicornmetrics.lean_simulation_backtest':
+        $breadcrumb[] = [
+          'text' => t('Simulation Management'),
+          'url' => \Drupal\Core\Url::fromRoute('unicornmetrics.lean_simulations'),
+        ];
+        break;
     }
     
         $variables['breadcrumb'] = $breadcrumb;

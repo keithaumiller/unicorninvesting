@@ -30,3 +30,33 @@ unicornmetrics.algorithm_analysis:
   options:
     attributes:
       class: ['button', 'button--secondary', 'analysis-action']
+
+unicornmetrics.run_simulation:
+  route_name: unicornmetrics.lean_simulations
+  title: 'Run New Simulation'
+  appears_on:
+    - unicornmetrics.lean_simulations
+  options:
+    attributes:
+      class: ['button', 'button--primary', 'simulation-action']
+
+unicornmetrics.compare_simulations:
+  route_name: unicornmetrics.lean_simulations
+  title: 'Compare Simulations'
+  appears_on:
+    - unicornmetrics.lean_simulations
+    - unicornmetrics.lean_simulation_performance
+  options:
+    attributes:
+      class: ['button', 'button--secondary', 'compare-action']
+
+unicornmetrics.export_simulation:
+  route_name: unicornmetrics.lean_simulations
+  title: 'Export Results'
+  appears_on:
+    - unicornmetrics.lean_simulation_holdings
+    - unicornmetrics.lean_simulation_performance
+    - unicornmetrics.lean_simulation_backtest
+  options:
+    attributes:
+      class: ['button', 'button--secondary', 'export-action']

@@ -69,6 +69,34 @@ unicornmetrics.simulation_management:
     attributes:
       class: ['simulation-management']
 
+unicornmetrics.simulation_holdings:
+  title: 'Simulation Holdings'
+  route_name: unicornmetrics.lean_simulation_holdings
+  description: 'Simulation portfolio positions and holdings analysis'
+  parent: unicornmetrics.simulation_management
+  weight: 1
+
+unicornmetrics.simulation_performance:
+  title: 'Simulation Performance'
+  route_name: unicornmetrics.lean_simulation_performance
+  description: 'Simulation performance and risk metrics'
+  parent: unicornmetrics.simulation_management
+  weight: 2
+
+unicornmetrics.simulation_algorithms:
+  title: 'Simulation Algorithms'
+  route_name: unicornmetrics.lean_simulation_algorithms
+  description: 'Algorithm analysis for simulations'
+  parent: unicornmetrics.simulation_management
+  weight: 3
+
+unicornmetrics.simulation_backtest:
+  title: 'Simulation Backtests'
+  route_name: unicornmetrics.lean_simulation_backtest
+  description: 'Simulation backtest results and analysis'
+  parent: unicornmetrics.simulation_management
+  weight: 4
+
 # Configuration Section
 unicornmetrics.admin_settings:
   title: 'Trading Platform Settings'
@@ -112,3 +140,17 @@ unicornmetrics.tools_simulations:
   description: 'Simulation management and analysis tools'
   menu_name: tools
   weight: 3
+
+unicornmetrics.tools_simulation_compare:
+  title: 'Compare Simulations'
+  route_name: unicornmetrics.lean_simulations
+  description: 'Compare simulation performance and results'
+  menu_name: tools
+  weight: 4
+
+unicornmetrics.tools_backtest:
+  title: 'Backtest Tools'
+  route_name: unicornmetrics.lean_backtest_results
+  description: 'Backtesting and simulation analysis tools'
+  menu_name: tools
+  weight: 5

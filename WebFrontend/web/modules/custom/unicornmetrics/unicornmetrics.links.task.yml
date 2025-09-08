@@ -31,6 +31,12 @@ unicornmetrics.algorithms_tabs:
   base_route: unicornmetrics.dashboard
   weight: 4
 
+unicornmetrics.simulations_tabs:
+  route_name: unicornmetrics.lean_simulations
+  title: 'Simulations'
+  base_route: unicornmetrics.dashboard
+  weight: 5
+
 unicornmetrics.algorithm_performance_tabs:
   route_name: unicornmetrics.lean_algorithm_performance
   title: 'Algorithm Performance'
@@ -42,3 +48,28 @@ unicornmetrics.backtest_tabs:
   title: 'Backtests'
   base_route: unicornmetrics.lean_algorithms
   weight: 2
+
+# Simulation Sub-tabs
+unicornmetrics.simulation_holdings_tabs:
+  route_name: unicornmetrics.lean_simulation_holdings
+  title: 'Holdings'
+  base_route: unicornmetrics.lean_simulations
+  weight: 1
+
+unicornmetrics.simulation_performance_tabs:
+  route_name: unicornmetrics.lean_simulation_performance
+  title: 'Performance'
+  base_route: unicornmetrics.lean_simulations
+  weight: 2
+
+unicornmetrics.simulation_algorithms_tabs:
+  route_name: unicornmetrics.lean_simulation_algorithms
+  title: 'Algorithms'
+  base_route: unicornmetrics.lean_simulations
+  weight: 3
+
+unicornmetrics.simulation_backtest_tabs:
+  route_name: unicornmetrics.lean_simulation_backtest
+  title: 'Backtests'
+  base_route: unicornmetrics.lean_simulations
+  weight: 4
