@@ -3,10 +3,11 @@
   "positions": [],
   "summary": {
     "total_positions": 0,
-    "net_liquidation": 0.0,
+    "net_liquidation": 0,
     "market_value": 0.0,
-    "cash_balance": 0.0,
-    "unrealized_pnl": 0.0
+    "cash_balance": 0,
+    "unrealized_pnl": 0.0,
+    "available_funds": 0
   },
-  "last_updated": "2025-09-08T17:20:51.777712"
+  "last_updated": "2025-09-08T17:51:34+00:00"
 }
