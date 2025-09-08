@@ -1,0 +1,32 @@
+# Contextual action links for unicornmetrics
+# These provide quick actions on relevant pages
+
+unicornmetrics.refresh_portfolio:
+  route_name: unicornmetrics.lean_portfolio
+  title: 'Refresh Portfolio Data'
+  appears_on:
+    - unicornmetrics.dashboard
+    - unicornmetrics.lean_portfolio
+    - unicornmetrics.lean_holdings
+  options:
+    attributes:
+      class: ['button', 'button--primary', 'refresh-action']
+
+unicornmetrics.run_backtest:
+  route_name: unicornmetrics.lean_backtest_results
+  title: 'Run New Backtest'
+  appears_on:
+    - unicornmetrics.lean_algorithms
+    - unicornmetrics.lean_backtest_results
+  options:
+    attributes:
+      class: ['button', 'button--primary', 'backtest-action']
+
+unicornmetrics.algorithm_analysis:
+  route_name: unicornmetrics.lean_algorithm_performance
+  title: 'Analyze Models'
+  appears_on:
+    - unicornmetrics.lean_algorithms
+  options:
+    attributes:
+      class: ['button', 'button--secondary', 'analysis-action']

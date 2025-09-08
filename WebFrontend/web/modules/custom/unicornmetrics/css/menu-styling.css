@@ -1,0 +1,134 @@
+/* Unicorn Metrics Menu Styling */
+
+/* Admin Menu Integration */
+.unicorn-menu-item {
+  position: relative;
+}
+
+.unicorn-menu-item::before {
+  content: "🦄";
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.unicorn-main-dashboard::before {
+  content: "📊";
+  margin-right: 5px;
+}
+
+.portfolio-management::before {
+  content: "💼";
+  margin-right: 5px;
+}
+
+.algorithm-management::before {
+  content: "🤖";
+  margin-right: 5px;
+}
+
+.trading-settings::before {
+  content: "⚙️";
+  margin-right: 5px;
+}
+
+/* Main Menu Items */
+.trading-main {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: white !important;
+}
+
+.trading-main:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Contextual Action Buttons */
+.refresh-action {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+.refresh-action:hover {
+  background: #218838;
+  border-color: #1e7e34;
+}
+
+.backtest-action {
+  background: #007bff;
+  border-color: #007bff;
+}
+
+.backtest-action:hover {
+  background: #0056b3;
+  border-color: #004085;
+}
+
+.analysis-action {
+  background: #6c757d;
+  border-color: #6c757d;
+}
+
+.analysis-action:hover {
+  background: #545b62;
+  border-color: #4e555b;
+}
+
+/* Local Task Tabs Styling */
+.tabs__tab {
+  position: relative;
+}
+
+.tabs__tab.is-active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.tabs__tab.is-active::before {
+  content: "🎯";
+  margin-right: 5px;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb a[href*="unicornmetrics"] {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.breadcrumb a[href*="unicornmetrics"]:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Responsive Menu Adjustments */
+@media (max-width: 768px) {
+  .unicorn-menu-item::before,
+  .unicorn-main-dashboard::before,
+  .portfolio-management::before,
+  .algorithm-management::before,
+  .trading-settings::before {
+    display: none;
+  }
+  
+  .trading-main {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .unicorn-menu-item {
+    color: #e9ecef;
+  }
+  
+  .breadcrumb a[href*="unicornmetrics"] {
+    color: #a8b8ff;
+  }
+  
+  .breadcrumb a[href*="unicornmetrics"]:hover {
+    color: #c9b3ff;
+  }
+}

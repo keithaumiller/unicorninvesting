@@ -1,0 +1,44 @@
+# Local task definitions for unicornmetrics pages
+# These create tabs within the admin interface
+
+unicornmetrics.dashboard_tabs:
+  route_name: unicornmetrics.dashboard
+  title: 'Dashboard Overview'
+  base_route: unicornmetrics.dashboard
+  weight: 0
+
+unicornmetrics.portfolio_tabs:
+  route_name: unicornmetrics.lean_portfolio
+  title: 'Portfolio Management'
+  base_route: unicornmetrics.dashboard
+  weight: 1
+
+unicornmetrics.holdings_tabs:
+  route_name: unicornmetrics.lean_holdings
+  title: 'Holdings'
+  base_route: unicornmetrics.dashboard
+  weight: 2
+
+unicornmetrics.performance_tabs:
+  route_name: unicornmetrics.lean_performance
+  title: 'Performance'
+  base_route: unicornmetrics.dashboard
+  weight: 3
+
+unicornmetrics.algorithms_tabs:
+  route_name: unicornmetrics.lean_algorithms
+  title: 'Algorithms'
+  base_route: unicornmetrics.dashboard
+  weight: 4
+
+unicornmetrics.algorithm_performance_tabs:
+  route_name: unicornmetrics.lean_algorithm_performance
+  title: 'Algorithm Performance'
+  base_route: unicornmetrics.lean_algorithms
+  weight: 1
+
+unicornmetrics.backtest_tabs:
+  route_name: unicornmetrics.lean_backtest_results
+  title: 'Backtests'
+  base_route: unicornmetrics.lean_algorithms
+  weight: 2

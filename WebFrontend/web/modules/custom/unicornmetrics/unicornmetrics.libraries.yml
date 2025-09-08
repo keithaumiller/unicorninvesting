@@ -4,6 +4,7 @@ dashboard:
     theme:
       css/dashboard.css: {}
       css/portfolio-selector.css: {}
+      css/menu-styling.css: {}
   js:
     js/portfolio-switcher.js: {}
   dependencies:
@@ -17,6 +18,7 @@ lean-framework:
       css/lean-portfolio.css: {}
       css/lean-holdings.css: {}
       css/lean-performance.css: {}
+      css/menu-styling.css: {}
   dependencies:
     - core/drupal
 
@@ -25,5 +27,18 @@ admin:
   css:
     theme:
       css/admin.css: {}
+      css/menu-styling.css: {}
   dependencies:
     - core/drupal
+
+# Global menu styling library
+menu-styling:
+  version: VERSION
+  css:
+    theme:
+      css/menu-styling.css: {}
+  js:
+    js/menu-enhancement.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

@@ -1,0 +1,96 @@
+unicornmetrics.admin_dashboard:
+  title: 'LEAN Trading Platform'
+  route_name: unicornmetrics.dashboard
+  description: 'Main dashboard for LEAN algorithmic trading platform'
+  parent: system.admin_structure
+  weight: -10
+  options:
+    attributes:
+      class: ['unicorn-main-dashboard']
+
+# Portfolio Management Section
+unicornmetrics.portfolio_management:
+  title: 'Portfolio Management'
+  route_name: unicornmetrics.lean_portfolio
+  description: 'LEAN portfolio construction and management'
+  parent: unicornmetrics.admin_dashboard
+  weight: 1
+  options:
+    attributes:
+      class: ['portfolio-management']
+
+unicornmetrics.portfolio_holdings:
+  title: 'Current Holdings'
+  route_name: unicornmetrics.lean_holdings
+  description: 'Live portfolio positions and holdings analysis'
+  parent: unicornmetrics.portfolio_management
+  weight: 1
+
+unicornmetrics.portfolio_performance:
+  title: 'Performance Analytics'
+  route_name: unicornmetrics.lean_performance
+  description: 'Historical performance and risk metrics'
+  parent: unicornmetrics.portfolio_management
+  weight: 2
+
+# Algorithm Management Section
+unicornmetrics.algorithm_management:
+  title: 'Algorithm Management'
+  route_name: unicornmetrics.lean_algorithms
+  description: 'LEAN algorithm management and best model selection'
+  parent: unicornmetrics.admin_dashboard
+  weight: 2
+  options:
+    attributes:
+      class: ['algorithm-management']
+
+unicornmetrics.algorithm_performance:
+  title: 'Model Performance'
+  route_name: unicornmetrics.lean_algorithm_performance
+  description: 'Detailed algorithm performance analysis and best model metrics'
+  parent: unicornmetrics.algorithm_management
+  weight: 1
+
+unicornmetrics.backtest_results:
+  title: 'Backtest Results'
+  route_name: unicornmetrics.lean_backtest_results
+  description: 'Historical backtesting results and simulation analysis'
+  parent: unicornmetrics.algorithm_management
+  weight: 2
+
+# Configuration Section
+unicornmetrics.admin_settings:
+  title: 'Trading Platform Settings'
+  route_name: unicornmetrics.admin.settings
+  description: 'Configure LEAN platform settings and integrations'
+  parent: system.admin_config_development
+  weight: 1
+  options:
+    attributes:
+      class: ['trading-settings']
+
+# Main Menu Items (for authenticated users)
+unicornmetrics.main_trading_dashboard:
+  title: 'Trading Dashboard'
+  route_name: unicornmetrics.dashboard
+  description: 'Access the main trading dashboard'
+  menu_name: main
+  weight: -5
+  options:
+    attributes:
+      class: ['trading-main', 'icon-dashboard']
+
+# Tools Menu Items
+unicornmetrics.tools_portfolio:
+  title: 'Portfolio Tools'
+  route_name: unicornmetrics.lean_portfolio
+  description: 'Portfolio management tools'
+  menu_name: tools
+  weight: 1
+
+unicornmetrics.tools_algorithms:
+  title: 'Algorithm Tools'
+  route_name: unicornmetrics.lean_algorithms
+  description: 'Algorithm management and analysis tools'
+  menu_name: tools
+  weight: 2

@@ -9,6 +9,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Menu\MenuTreeParameters;
 
 /**
  * Implements hook_help().
@@ -59,3 +60,105 @@ function unicornmetrics_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function unicornmetrics_menu_links_discovered_alter(&$links) {
+  // Ensure our menu items have proper weights and parents
+  if (isset($links['unicornmetrics.admin_dashboard'])) {
+    $links['unicornmetrics.admin_dashboard']['weight'] = -10;
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function unicornmetrics_preprocess_menu(&$variables) {
+  // Add custom classes to unicornmetrics menu items
+  if (isset($variables['menu_name']) && $variables['menu_name'] == 'admin') {
+    foreach ($variables['items'] as &$item) {
+      if (strpos($item['url']->getRouteName(), 'unicornmetrics.') === 0) {
+        $item['attributes']->addClass('unicorn-menu-item');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function unicornmetrics_preprocess_breadcrumb(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  
+  // Add custom breadcrumbs for unicornmetrics pages
+  if (strpos($route_name, 'unicornmetrics.') === 0) {
+    $breadcrumb = $variables['breadcrumb'];
+    
+    // Add Trading Platform to breadcrumb for all unicornmetrics pages
+    $breadcrumb[] = [
+      'text' => t('Trading Platform'),
+      'url' => \Drupal\Core\Url::fromRoute('unicornmetrics.dashboard'),
+    ];
+    
+    // Add specific breadcrumb items based on route
+    switch ($route_name) {
+      case 'unicornmetrics.lean_portfolio':
+      case 'unicornmetrics.lean_holdings':
+      case 'unicornmetrics.lean_performance':
+        $breadcrumb[] = [
+          'text' => t('Portfolio Management'),
+          'url' => \Drupal\Core\Url::fromRoute('unicornmetrics.lean_portfolio'),
+        ];
+        break;
+        
+      case 'unicornmetrics.lean_algorithms':
+      case 'unicornmetrics.lean_algorithm_performance':
+      case 'unicornmetrics.lean_backtest_results':
+        $breadcrumb[] = [
+          'text' => t('Algorithm Management'),
+          'url' => \Drupal\Core\Url::fromRoute('unicornmetrics.lean_algorithms'),
+        ];
+        break;
+    }
+    
+        $variables['breadcrumb'] = $breadcrumb;
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function unicornmetrics_page_attachments_alter(array &$attachments) {
+  $current_route = \Drupal::routeMatch()->getRouteName();
+  
+  // Attach menu styling to all admin pages and unicornmetrics pages
+  if (strpos($current_route, 'system.admin') === 0 || 
+      strpos($current_route, 'unicornmetrics.') === 0) {
+    $attachments['#attached']['library'][] = 'unicornmetrics/menu-styling';
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function unicornmetrics_toolbar_alter(&$items) {
+  // Add quick access to trading dashboard in toolbar
+  if (\Drupal::currentUser()->hasPermission('access unicorn metrics')) {
+    $items['unicorn_dashboard'] = [
+      '#type' => 'toolbar_item',
+      'tab' => [
+        '#type' => 'link',
+        '#title' => t('🦄 Trading'),
+        '#url' => \Drupal\Core\Url::fromRoute('unicornmetrics.dashboard'),
+        '#attributes' => [
+          'class' => ['toolbar-icon', 'toolbar-icon-unicorn-trading'],
+          'title' => t('Access Trading Dashboard'),
+        ],
+      ],
+      '#weight' => -15,
+    ];
+  }
+}
+  }
