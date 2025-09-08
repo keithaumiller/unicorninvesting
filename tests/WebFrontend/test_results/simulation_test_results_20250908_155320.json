@@ -1,0 +1,126 @@
+{
+  "timestamp": "2025-09-08T15:53:20.366257",
+  "base_url": "http://localhost",
+  "tests": {
+    "simulation_selector_page": {
+      "url": "/admin/metrics/lean/simulations",
+      "status_code": 200,
+      "response_time": 0.028922,
+      "content_length": 19076,
+      "elements_found": [],
+      "elements_missing": [
+        "Simulation Selector",
+        "Available Simulations",
+        "simulation-card",
+        "ETH_Momentum_2024Q4",
+        "BTC_Conservative_2024Q3",
+        "Mixed_Portfolio_2024Q2",
+        "Total Simulations",
+        "Average Return",
+        "navigateToSimulation",
+        "compareSimulations"
+      ],
+      "success": false,
+      "error_message": "Only 0.0% elements found",
+      "success_rate": 0.0
+    },
+    "simulation_holdings_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/holdings",
+      "status_code": 200,
+      "response_time": 0.068963,
+      "content_length": 19119,
+      "elements_found": [
+        "Holdings Analysis",
+        "Algorithm"
+      ],
+      "elements_missing": [
+        "holdings-table",
+        "ETHUSD",
+        "BTCUSD",
+        "Market Value",
+        "Unrealized P&L",
+        "Performance Analysis",
+        "Algorithm Details",
+        "Backtest Results"
+      ],
+      "success": false,
+      "error_message": "Only 20.0% elements found",
+      "success_rate": 20.0
+    },
+    "simulation_performance_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/performance",
+      "status_code": 200,
+      "response_time": 0.07467,
+      "content_length": 19352,
+      "elements_found": [
+        "Sharpe Ratio",
+        "Max Drawdown",
+        "Holdings Analysis"
+      ],
+      "elements_missing": [
+        "Performance Analysis",
+        "Total Return",
+        "+24.3%",
+        "1.85",
+        "Win Rate",
+        "73.4%",
+        "90-day simulation"
+      ],
+      "success": false,
+      "error_message": "Only 30.0% elements found",
+      "success_rate": 30.0
+    },
+    "simulation_algorithms_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/algorithms",
+      "status_code": 200,
+      "response_time": 0.09373,
+      "content_length": 18706,
+      "elements_found": [
+        "Algorithm Analysis"
+      ],
+      "elements_missing": [
+        "ETH Momentum Algorithm v3.2",
+        "BTC Conservative Algorithm v2.1",
+        "Accuracy: <strong>87.3%</strong>",
+        "Return: <strong>+26.1%</strong>",
+        "Trades: <strong>23</strong>",
+        "Conservative approach",
+        "momentum strategy"
+      ],
+      "success": false,
+      "error_message": "Only 12.5% elements found",
+      "success_rate": 12.5
+    },
+    "simulation_backtest_page": {
+      "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/backtest",
+      "status_code": 200,
+      "response_time": 0.081096,
+      "content_length": 19119,
+      "elements_found": [],
+      "elements_missing": [
+        "Backtest Results",
+        "Simulation Parameters",
+        "Start Date: <strong>2024-07-01</strong>",
+        "End Date: <strong>2024-09-30</strong>",
+        "Initial Capital: <strong>$10,000</strong>",
+        "Final Value: <strong>$12,430</strong>",
+        "Total Trades: <strong>35</strong>",
+        "Winning Trades: <strong>25",
+        "Trade Analysis"
+      ],
+      "success": false,
+      "error_message": "Only 0.0% elements found",
+      "success_rate": 0.0
+    }
+  },
+  "summary": {
+    "total_tests": 5,
+    "passed_tests": 0,
+    "failed_tests": 5,
+    "success_rate": 0.0
+  },
+  "navigation_integration": {
+    "admin_dashboard_accessible": true,
+    "simulation_menu_integration": true
+  }
+}

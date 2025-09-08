@@ -1339,7 +1339,7 @@ class DashboardController extends ControllerBase {
     $holdings = $this->getLeanHoldingsData($current_portfolio_id);
     
     $holdings_table = '<div class="lean-dashboard-header">
-      <h1>📈 ' . htmlspecialchars($current_portfolio['name']) . ' Holdings</h1>
+      <h1>📈 ' . htmlspecialchars($current_portfolio['name'] ?? $current_portfolio['portfolio_name'] ?? $current_portfolio_id) . ' Holdings</h1>
       <p>Detailed breakdown of individual security positions from LEAN portfolio manager</p>
     </div>';
     

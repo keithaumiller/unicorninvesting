@@ -88,37 +88,54 @@ def test_eth_specific_functionality():
         content = response.text
         
         # Test for ETH-specific elements
-        eth_elements = {
-            'ETH': 'Ethereum symbol',
-            'Ethereum': 'Ethereum full name',
-            'ETHUSD': 'ETH trading pair',
-            'crypto': 'Cryptocurrency references',
-            'blockchain': 'Blockchain references',
+        test_results = []
+        # Run forecasting tests
+        test_results.append(("forecasting_integration", test_forecasting_dashboard_integration()))
+        test_results.append(("eth_functionality", test_eth_specific_functionality()))
+        test_results.append(("performance_display", test_model_performance_display()))
+        test_results.append(("forecasting_navigation", test_forecasting_navigation()))
+
+        # Summary
+        passed_tests = sum(1 for _, result in test_results if result)
+        total_tests = len(test_results)
+
+        print(f"\n3caf Final Results:")
+        print(f"Tests Passed: {passed_tests}/{total_tests}")
+        print(f"Success Rate: {passed_tests/total_tests*100:.1f}%")
+
+        for test_name, result in test_results:
+            status = "705 PASSED" if result else "74c FAILED" 
+            print(f"  {test_name}: {status}")
+
+        # Save results to JSON file in test_results directory
+        results_dir = "/workspaces/unicorninvesting/tests/WebFrontend/test_results"
+        import os
+        os.makedirs(results_dir, exist_ok=True)
+        results_file = f"{results_dir}/forecasting_dashboard_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        results_data = {
+            "timestamp": datetime.now().isoformat(),
+            "tests": [{"name": name, "passed": result} for name, result in test_results],
+            "summary": {
+                "passed": passed_tests,
+                "total": total_tests,
+                "success_rate": passed_tests/total_tests*100
+            }
         }
-        
-        found_eth = {}
-        for element, description in eth_elements.items():
-            if element in content:
-                found_eth[element] = description
-                print(f"₿ Found: {element} ({description})")
-            else:
-                print(f"❌ Missing: {element} ({description})")
-        
-        # Test for price/value formatting (ETH-related)
-        price_patterns = [
-            r'\$[\d,]+\.?\d*',           # Dollar amounts
-            r'[\d,]+\.\d+\s*ETH',        # ETH quantities
-            r'ETH.*\$[\d,]+',            # ETH price references
-        ]
-        
-        found_patterns = 0
-        for pattern in price_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                found_patterns += 1
-                print(f"💰 Price pattern found: {pattern}")
-        
-        print(f"\n📊 ETH Functionality Results:")
-        print(f"ETH Elements: {len(found_eth)}/{len(eth_elements)} found")
+        with open(results_file, 'w') as f:
+            json.dump(results_data, f, indent=2, default=str)
+        print(f"\n3dbe Test results saved to: {results_file}")
+
+        # Interpretation of results
+        if passed_tests == total_tests:
+            print("\n3c89 Forecasting dashboard FULLY FUNCTIONAL!")
+        elif passed_tests >= total_tests * 0.75:
+            print("\n705 Forecasting dashboard MOSTLY FUNCTIONAL")
+        elif passed_tests >= total_tests * 0.5:
+            print("\n6a0fe0f Forecasting dashboard PARTIALLY FUNCTIONAL")
+        else:
+            print("\n74c Forecasting dashboard needs SIGNIFICANT WORK")
+
+        return 0 if passed_tests >= total_tests * 0.5 else 1
         print(f"Price Patterns: {found_patterns}/{len(price_patterns)} found")
         
         if len(found_eth) >= 2 or found_patterns >= 1:

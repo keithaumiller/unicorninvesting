@@ -387,13 +387,11 @@ if __name__ == "__main__":
     
     # Save results to file
     import os
-    results_dir = "/workspaces/unicorninvesting/tests/WebFrontend"
+    results_dir = "/workspaces/unicorninvesting/tests/WebFrontend/test_results"
     os.makedirs(results_dir, exist_ok=True)
-    
-    results_file = f"{results_dir}/test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    results_file = f"{results_dir}/basic_validation_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=2)
-    
     print(f"\n💾 Test results saved to: {results_file}")
     
     # Exit with appropriate code

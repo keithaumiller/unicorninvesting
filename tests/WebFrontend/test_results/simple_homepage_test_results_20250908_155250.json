@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-09-08T15:52:50.221029",
+  "tests": [
+    {
+      "name": "homepage_basic",
+      "passed": true
+    },
+    {
+      "name": "dashboard_restoration",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 2,
+    "success_rate": 100.0
+  }
+}

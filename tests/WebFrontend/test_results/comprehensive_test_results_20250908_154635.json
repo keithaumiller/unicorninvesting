@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-09-08T15:46:03.492606",
+  "total_tests": 5,
+  "passed_tests": 1,
+  "failed_tests": 4,
+  "test_suites": {
+    "route_accessibility": {
+      "total_routes": 14,
+      "passed_routes": 9,
+      "success_rate": 64.28571428571429,
+      "success": false
+    },
+    "test_basic_validation.py": {
+      "script": "test_basic_validation.py",
+      "description": "Basic WebFrontend Validation (10 tests)",
+      "success": false,
+      "duration": 0.6744639873504639,
+      "stdout": "\n\ud83e\uddea WebFrontend Comprehensive Test Suite\n==================================================\n\n\ud83d\udd0d Running homepage_accessibility...\n\u2705 Homepage: 200, 18615 bytes, Drupal 11 (https://www.drupal.org)\n\n\ud83d\udd0d Running homepage_performance...\n\u2705 Performance: 0.05s (target: <3.0s)\n\n\ud83d\udd0d Running dashboard_content...\n\u274c dashboard_content failed: Missing dashboard elements: ['simulation-selector', 'Platform Features']\n\n\ud83d\udd0d Running simulation_selector_restored...\n\u274c simulation_selector_restored failed: No simulation selector elements found - functionality not restored\n\n\ud83d\udd0d Running navigation_links_restored...\n\u2705 Navigation links: 4/7 links found\n\n\ud83d\udd0d Running live_ibkr_integration...\n\u2705 IBKR integration: 7/8 elements found\n\n\ud83d\udd0d Running responsive_design...\n\u2705 Responsive design: 3 indicators found\n\n\ud83d\udd0d Running css_styling_applied...\n\u2705 CSS styling: 3 indicators found\n\n\ud83d\udd0d Running portfolio_data_display...\n\u2705 Portfolio data: 2 formatting patterns found\n\n\ud83d\udd0d Running system_status_display...\n\u274c system_status_display failed: System status not properly displayed: ['status']\n\n\ud83d\udcca WebFrontend Test Results\nTotal Tests: 10\nPassed: 7\nFailed: 3\nSuccess Rate: 70.0%\n\u26a0\ufe0f WebFrontend testing needs attention\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/basic_validation_test_results_20250908_154605.json\n",
+      "stderr": "",
+      "return_code": 1
+    },
+    "simple_homepage_test.py": {
+      "script": "simple_homepage_test.py",
+      "description": "Simple Homepage Functionality Test",
+      "success": true,
+      "duration": 0.24603605270385742,
+      "stdout": "\ud83e\uddea Simple Homepage Test Suite\n==================================================\nTimestamp: 2025-09-08T15:46:05.237332\nTarget URL: http://localhost\n\ud83c\udfe0 Testing Homepage Basic Functionality\n----------------------------------------\nStatus Code: 200\nContent Length: 18615 bytes\nLoad Time: 0.06 seconds\nContent Type: text/html; charset=UTF-8\nX-Generator: Drupal 11 (https://www.drupal.org)\n\u2705 Found: Unicorn Investing Platform (Main header)\n\u2705 Found: Myportolio (Portfolio name)\n\u2705 Found: Live Portfolio Status (IBKR integration)\n\u2705 Found: Account Summary (Account information)\n\u2705 Found: Net Liquidation Value (Financial data)\n\u2705 Found: Last Updated (Data freshness)\n\u274c Missing: System Status (Component status)\n\ud83d\udd17 Navigation found: Holdings\n\ud83d\udd17 Navigation found: Performance\n\ud83d\udd17 Navigation found: Algorithms\n\n\ud83d\udcca Test Results:\nDashboard Elements: 6/7 found\nNavigation Elements: 3/5 found\nOverall Success Rate: 75.0%\n\ud83c\udf89 Homepage test PASSED!\n\n\ud83d\udd04 Testing Dashboard Restoration\n----------------------------------------\n\ud83d\udcbc IBKR feature found: Live Portfolio Status\n\ud83d\udcbc IBKR feature found: Cash Balance\n\ud83d\udcbc IBKR feature found: Market Value\n\ud83d\udcbc IBKR feature found: Unrealized P&L\n\ud83d\udcbc IBKR feature found: Data Freshness\n\ud83c\udf9b\ufe0f Original feature found: Holdings\n\ud83c\udf9b\ufe0f Original feature found: Performance\n\ud83c\udf9b\ufe0f Original feature found: Algorithms\n\n\ud83d\udccb Dashboard Restoration Results:\nIBKR Integration: 5/5 features (100.0%)\nOriginal Features: 3/6 features (50.0%)\n\u2705 Dashboard restoration SUCCESSFUL - Both IBKR and original features present!\n\n\ud83c\udfaf Final Results:\nTests Passed: 2/2\nSuccess Rate: 100.0%\n  homepage_basic: \u2705 PASSED\n  dashboard_restoration: \u2705 PASSED\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/simple_homepage_test_results_20250908_154605.json\n\n\ud83c\udf89 All tests PASSED! Homepage is fully functional.\n",
+      "stderr": "",
+      "return_code": 0
+    },
+    "test_simulation_management.py": {
+      "script": "test_simulation_management.py",
+      "description": "LEAN Simulation Management (5 pages)",
+      "success": false,
+      "duration": 0.2942945957183838,
+      "stdout": "\ud83e\uddea LEAN Simulation Management Test Suite\n==================================================\nTimestamp: 2025-09-08T15:46:35.492106\nTarget URL: http://localhost\n\n\ud83d\udd0d Running simulation_selector_page...\n\u274c simulation_selector_page failed: HTTP 500\n\n\ud83d\udd0d Running simulation_holdings_page...\n\u274c simulation_holdings_page failed: HTTP 500\n\n\ud83d\udd0d Running simulation_performance_page...\n\u274c simulation_performance_page failed: HTTP 500\n\n\ud83d\udd0d Running simulation_algorithms_page...\n\u274c simulation_algorithms_page failed: HTTP 500\n\n\ud83d\udd0d Running simulation_backtest_page...\n\u274c simulation_backtest_page failed: HTTP 500\n\n\ud83e\udded Testing Navigation Integration...\n\u2705 Simulation menu integration found\n\n\ud83d\udcca LEAN Simulation Test Results\nTotal Tests: 5\nPassed: 0\nFailed: 5\nSuccess Rate: 0.0%\n\u26a0\ufe0f LEAN Simulation testing needs attention\n\n\ud83d\udcbe Test results saved to: /workspaces/unicorninvesting/tests/WebFrontend/test_results/simulation_test_results_20250908_154635.json\n",
+      "stderr": "",
+      "return_code": 1
+    }
+  },
+  "summary": {
+    "overall_success_rate": 20.0,
+    "total_test_suites": 5,
+    "passed_test_suites": 1,
+    "failed_test_suites": 4,
+    "overall_status": "FAILED"
+  }
+}

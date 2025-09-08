@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-09-08T13:40:02.049242",
+  "timestamp": "2025-09-08T14:59:14.999408",
   "total_tests": 10,
-  "passed_tests": 8,
-  "failed_tests": 2,
+  "passed_tests": 7,
+  "failed_tests": 3,
   "test_details": {
     "homepage_accessibility": {
       "status": "PASSED",
@@ -10,15 +10,15 @@
     },
     "homepage_performance": {
       "status": "PASSED",
-      "result": 0.0598142147064209
+      "result": 0.061847686767578125
     },
     "dashboard_content": {
       "status": "FAILED",
-      "error": "Missing dashboard elements: ['Platform Features']"
+      "error": "Missing dashboard elements: ['simulation-selector', 'Platform Features']"
     },
     "simulation_selector_restored": {
-      "status": "PASSED",
-      "result": 2
+      "status": "FAILED",
+      "error": "No simulation selector elements found - functionality not restored"
     },
     "navigation_links_restored": {
       "status": "PASSED",

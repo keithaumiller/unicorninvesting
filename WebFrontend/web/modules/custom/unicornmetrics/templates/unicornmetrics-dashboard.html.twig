@@ -23,26 +23,30 @@
 
   <div class="dashboard-sections">
     <div class="dashboard-section">
-      <h2>💼 {{ portfolio_data.name }}</h2>
+      <h2>💼 {{ portfolio_data.name|default('Simulation') }}</h2>
       <p>
-        <strong>{{ portfolio_data.description }}</strong> - 
-        {{ 'Portfolio managed by @algorithm algorithm in @environment mode.'|t({
-          '@algorithm': portfolio_data.algorithm,
-          '@environment': portfolio_data.environment
-        }) }}
+        <strong>{{ portfolio_data.description|default('Simulation analysis and portfolio management') }}</strong> - 
+        {% if portfolio_data.algorithm and portfolio_data.environment %}
+          {{ 'Portfolio managed by @algorithm algorithm in @environment mode.'|t({
+            '@algorithm': portfolio_data.algorithm,
+            '@environment': portfolio_data.environment
+          }) }}
+        {% else %}
+          {{ 'Simulation-based portfolio analysis and management'|t }}
+        {% endif %}
       </p>
       
       <div class="portfolio-stats">
         <div class="stat-card">
-          <span class="stat-value">${{ portfolio_data.total_value|number_format(2) }}</span>
+          <span class="stat-value">${{ portfolio_data.total_value|default(0)|number_format(2) }}</span>
           <span class="stat-label">{{ 'Total Value'|t }}</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">{{ portfolio_data.positions }}</span>
+          <span class="stat-value">{{ portfolio_data.positions|default(0) }}</span>
           <span class="stat-label">{{ 'Positions'|t }}</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">{{ portfolio_data.daily_pnl }}</span>
+          <span class="stat-value">{{ portfolio_data.daily_pnl|default('$0.00') }}</span>
           <span class="stat-label">{{ "Today's P&L"|t }}</span>
         </div>
       </div>
@@ -53,19 +57,19 @@
       <div class="metrics-grid">
         <div class="metric-item">
           <span class="metric-label">{{ 'Sharpe Ratio'|t }}</span>
-          <span class="metric-value">{{ metrics.sharpe_ratio|number_format(2) }}</span>
+          <span class="metric-value">{{ metrics.sharpe_ratio|default(0)|number_format(2) }}</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">{{ 'Max Drawdown'|t }}</span>
-          <span class="metric-value">{{ (metrics.max_drawdown * 100)|number_format(1) }}%</span>
+          <span class="metric-value">{{ (metrics.max_drawdown|default(0) * 100)|number_format(1) }}%</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">{{ 'Annual Return'|t }}</span>
-          <span class="metric-value">{{ (metrics.annual_return * 100)|number_format(1) }}%</span>
+          <span class="metric-value">{{ (metrics.annual_return|default(0) * 100)|number_format(1) }}%</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">{{ 'Volatility'|t }}</span>
-          <span class="metric-value">{{ (metrics.volatility * 100)|number_format(1) }}%</span>
+          <span class="metric-value">{{ (metrics.volatility|default(0) * 100)|number_format(1) }}%</span>
         </div>
       </div>
     </div>
@@ -104,9 +108,9 @@
       <div class="system-overview">
         <h3>🦄 {{ 'System Overview'|t }}</h3>
         <ul>
-          <li><strong>{{ 'Algorithm Strategy'|t }}:</strong> {{ portfolio_data.algorithm }} {{ 'managing portfolio trades and positions'|t }}</li>
-          <li><strong>{{ 'Trading Environment'|t }}:</strong> {{ portfolio_data.environment|capitalize }} {{ 'trading mode with real-time monitoring'|t }}</li>
-          <li><strong>{{ 'Asset Classes'|t }}:</strong> {{ portfolio_data.symbols|join(', ') }}</li>
+          <li><strong>{{ 'Algorithm Strategy'|t }}:</strong> {{ portfolio_data.algorithm|default('Simulation Algorithm') }} {{ 'managing portfolio trades and positions'|t }}</li>
+          <li><strong>{{ 'Trading Environment'|t }}:</strong> {{ portfolio_data.environment|default('simulation')|capitalize }} {{ 'trading mode with real-time monitoring'|t }}</li>
+          <li><strong>{{ 'Asset Classes'|t }}:</strong> {{ portfolio_data.symbols|default(['ETH', 'BTC'])|join(', ') }}</li>
           <li><strong>{{ 'Multi-Portfolio Management'|t }}:</strong> {{ '4 total portfolios with $525,847.62 in total assets'|t }}</li>
           <li><strong>{{ 'Performance Analytics'|t }}:</strong> {{ 'Comprehensive portfolio and algorithm analysis tools'|t }}</li>
         </ul>

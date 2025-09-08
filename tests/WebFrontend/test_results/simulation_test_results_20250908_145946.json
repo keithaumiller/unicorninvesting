@@ -1,56 +1,56 @@
 {
-  "timestamp": "2025-09-08T13:39:50.852297",
+  "timestamp": "2025-09-08T14:59:46.043294",
   "base_url": "http://localhost",
   "tests": {
     "simulation_selector_page": {
       "url": "/admin/metrics/lean/simulations",
-      "status_code": 403,
-      "response_time": 0.037786,
-      "content_length": 11839,
+      "status_code": 500,
+      "response_time": 0.020446,
+      "content_length": 61,
       "elements_found": [],
       "elements_missing": [],
       "success": false,
-      "error_message": "HTTP 403"
+      "error_message": "HTTP 500"
     },
     "simulation_holdings_page": {
       "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/holdings",
-      "status_code": 403,
-      "response_time": 0.068161,
-      "content_length": 11870,
+      "status_code": 500,
+      "response_time": 0.018977,
+      "content_length": 61,
       "elements_found": [],
       "elements_missing": [],
       "success": false,
-      "error_message": "HTTP 403"
+      "error_message": "HTTP 500"
     },
     "simulation_performance_page": {
       "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/performance",
-      "status_code": 403,
-      "response_time": 0.032461,
-      "content_length": 11873,
+      "status_code": 500,
+      "response_time": 0.018237,
+      "content_length": 61,
       "elements_found": [],
       "elements_missing": [],
       "success": false,
-      "error_message": "HTTP 403"
+      "error_message": "HTTP 500"
     },
     "simulation_algorithms_page": {
       "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/algorithms",
-      "status_code": 403,
-      "response_time": 0.029609,
-      "content_length": 11872,
+      "status_code": 500,
+      "response_time": 0.017784,
+      "content_length": 61,
       "elements_found": [],
       "elements_missing": [],
       "success": false,
-      "error_message": "HTTP 403"
+      "error_message": "HTTP 500"
     },
     "simulation_backtest_page": {
       "url": "/admin/metrics/lean/simulations/ETH_Momentum_2024Q4/backtest",
-      "status_code": 403,
-      "response_time": 0.028115,
-      "content_length": 11870,
+      "status_code": 500,
+      "response_time": 0.018516,
+      "content_length": 61,
       "elements_found": [],
       "elements_missing": [],
       "success": false,
-      "error_message": "HTTP 403"
+      "error_message": "HTTP 500"
     }
   },
   "summary": {
@@ -61,6 +61,6 @@
   },
   "navigation_integration": {
     "admin_dashboard_accessible": true,
-    "simulation_menu_integration": false
+    "simulation_menu_integration": true
   }
 }

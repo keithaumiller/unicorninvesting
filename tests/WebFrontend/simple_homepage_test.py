@@ -182,6 +182,24 @@ def main():
         status = "✅ PASSED" if result else "❌ FAILED"
         print(f"  {test_name}: {status}")
     
+    # Save results to JSON file in test_results directory
+    results_dir = "/workspaces/unicorninvesting/tests/WebFrontend/test_results"
+    import os
+    os.makedirs(results_dir, exist_ok=True)
+    results_file = f"{results_dir}/simple_homepage_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    results_data = {
+        "timestamp": datetime.now().isoformat(),
+        "tests": [{"name": name, "passed": result} for name, result in test_results],
+        "summary": {
+            "passed": passed_tests,
+            "total": total_tests,
+            "success_rate": passed_tests/total_tests*100
+        }
+    }
+    with open(results_file, 'w') as f:
+        json.dump(results_data, f, indent=2, default=str)
+    print(f"\n💾 Test results saved to: {results_file}")
+
     if passed_tests == total_tests:
         print("\n🎉 All tests PASSED! Homepage is fully functional.")
         return 0

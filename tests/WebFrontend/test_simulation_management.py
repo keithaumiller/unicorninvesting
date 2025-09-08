@@ -231,7 +231,10 @@ def test_simulation_pages():
         result_code = 1
     
     # Save test results
-    results_filename = f"/workspaces/unicorninvesting/tests/WebFrontend/simulation_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    results_dir = "/workspaces/unicorninvesting/tests/WebFrontend/test_results"
+    import os
+    os.makedirs(results_dir, exist_ok=True)
+    results_filename = f"{results_dir}/simulation_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     
     try:
         with open(results_filename, 'w') as f:
