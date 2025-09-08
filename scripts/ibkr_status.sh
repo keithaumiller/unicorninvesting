@@ -10,9 +10,9 @@ echo "=================================="
 if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
     echo "✅ IBKR Gateway: RUNNING"
     
-    # Check authentication status
-    AUTH_RESPONSE=$(curl -s http://localhost:5000/v1/api/iserver/auth/status 2>/dev/null)
-    if echo "$AUTH_RESPONSE" | grep -q "authenticated.*true" 2>/dev/null; then
+    # Check authentication status using the correct SSO endpoint
+    AUTH_RESPONSE=$(curl -s "http://localhost:5000/sso/Dispatcher" 2>/dev/null)
+    if echo "$AUTH_RESPONSE" | grep -q "Client login succeeds" 2>/dev/null; then
         echo "✅ Authentication: ACTIVE"
         echo "🚀 Status: READY FOR TRADING"
     else

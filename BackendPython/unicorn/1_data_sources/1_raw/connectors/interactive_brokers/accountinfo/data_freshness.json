@@ -1,7 +1,6 @@
 {
-  "status": "stale",
-  "last_failed_refresh": "2025-09-08T15:35:56.193480",
-  "safe_for_live_trading": false,
-  "data_source": "cached_data_only",
-  "warning": "LIVE TRADING NOT SAFE - Gateway connection failed"
+  "status": "fresh",
+  "last_successful_refresh": "2025-09-08T17:20:52.395581",
+  "safe_for_live_trading": true,
+  "data_source": "live_gateway_api"
 }
