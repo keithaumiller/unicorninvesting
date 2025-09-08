@@ -2570,49 +2570,48 @@ class DashboardController extends ControllerBase {
     $content .= '
     <div class="simulation-selector-container">
       <h2>🎯 Simulation Selector</h2>
-      <div class="simulation-selector" id="admin-simulation-selector">
-        <div class="selector-header">
-          <h3>Available Simulations</h3>
-          <p>Select a simulation to analyze detailed performance, holdings, and algorithm data</p>
+      <div class="simulation-selector" id="admin-simulation-selector">';
+    
+    if (!empty($available_simulations)) {
+      $content .= '
+        <label for="simulation-select">Available Simulations:</label>
+        <select id="simulation-select" name="simulation" onchange="loadSimulationDetails()">
+          <option value="">-- Select Simulation --</option>';
+      
+      foreach ($available_simulations as $simulation) {
+        $status_emoji = ($simulation['status'] === 'Completed') ? '✅' : (($simulation['status'] === 'Failed') ? '❌' : '⏳');
+        $content .= '<option value="' . htmlspecialchars($simulation['id']) . '" data-status="' . htmlspecialchars($simulation['status']) . '" data-created="' . htmlspecialchars($simulation['created']) . '">'
+                  . $status_emoji . ' ' . htmlspecialchars($simulation['name']) . ' (' . htmlspecialchars($simulation['status']) . ')</option>';
+      }
+      
+      $content .= '
+        </select>
+        <div class="simulation-info" id="simulation-info" style="display: none;">
+          <h4>� Simulation Details</h4>
+          <p><strong>Status:</strong> <span id="sim-status">-</span></p>
+          <p><strong>Created:</strong> <span id="sim-created">-</span></p>
+          <p><strong>Portfolio:</strong> <span id="sim-portfolio">' . htmlspecialchars($current_portfolio['name']) . '</span></p>
+          <p><strong>Location:</strong> <code id="sim-location">-</code></p>
         </div>
         
-        <div class="simulation-grid">
-          <div class="simulation-card active" data-simulation="ETH_Momentum_2024Q4">
-            <h4>🔷 ETH Momentum 2024Q4</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Completed</strong></span>
-              <span class="stat">📈 Return: <strong>+24.3%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>90 days</strong></span>
-            </div>
-          </div>
-          
-          <div class="simulation-card" data-simulation="BTC_Conservative_2024Q3">
-            <h4>🟡 BTC Conservative 2024Q3</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Completed</strong></span>
-              <span class="stat">📈 Return: <strong>+18.7%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>92 days</strong></span>
-            </div>
-          </div>
-          
-          <div class="simulation-card" data-simulation="Mixed_Portfolio_2024Q2">
-            <h4>🔄 Mixed Portfolio 2024Q2</h4>
-            <div class="simulation-stats">
-              <span class="stat">📊 Status: <strong>Running</strong></span>
-              <span class="stat">📈 Return: <strong>+12.1%</strong></span>
-              <span class="stat">⏱️ Duration: <strong>45 days</strong></span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="simulation-actions">
+        <div class="simulation-actions" id="simulation-actions" style="display: none;">
           <button class="btn btn-primary" onclick="navigateToSimulation()">
             📊 Analyze Selected Simulation
           </button>
           <button class="btn btn-secondary" onclick="compareSimulations()">
             🔍 Compare Simulations
           </button>
-        </div>
+        </div>';
+    } else {
+      $content .= '
+        <div class="no-simulations">
+          <h3>⚠️ No Simulations Available</h3>
+          <p>No backtest simulations found for the selected portfolio.</p>
+          <p>Expected location: <code>' . htmlspecialchars($current_portfolio['id']) . '/simulations/backtests/</code></p>
+        </div>';
+    }
+    
+    $content .= '
       </div>
     </div>';
     
@@ -2672,11 +2671,41 @@ class DashboardController extends ControllerBase {
       }
     }
     
+    function loadSimulationDetails() {
+      const simulationSelect = document.getElementById("simulation-select");
+      const selectedOption = simulationSelect.options[simulationSelect.selectedIndex];
+      const simulationInfo = document.getElementById("simulation-info");
+      const simulationActions = document.getElementById("simulation-actions");
+      
+      if (simulationSelect.value) {
+        // Extract data from the selected option
+        const status = selectedOption.getAttribute("data-status") || "Unknown";
+        const created = selectedOption.getAttribute("data-created") || "Unknown";
+        const simulationId = simulationSelect.value;
+        
+        // Update the info display
+        document.getElementById("sim-status").textContent = status;
+        document.getElementById("sim-created").textContent = created;
+        document.getElementById("sim-location").textContent = simulationId;
+        
+        // Show the info and actions
+        simulationInfo.style.display = "block";
+        simulationActions.style.display = "block";
+      } else {
+        // Hide the info and actions when no simulation is selected
+        simulationInfo.style.display = "none";
+        simulationActions.style.display = "none";
+      }
+    }
+    
     function navigateToSimulation() {
-      const selected = document.querySelector(".simulation-card.active");
-      if (selected) {
-        const simId = selected.getAttribute("data-simulation");
-        window.location.href = "/admin/metrics/lean/simulations/" + simId + "/holdings";
+      const simulationSelect = document.getElementById("simulation-select");
+      const selectedSimulation = simulationSelect.value;
+      
+      if (selectedSimulation) {
+        window.location.href = "/admin/metrics/lean/simulations/" + selectedSimulation + "/holdings";
+      } else {
+        alert("Please select a simulation first.");
       }
     }
     
@@ -2684,12 +2713,8 @@ class DashboardController extends ControllerBase {
       alert("Comparison feature coming soon!");
     }
     
-    document.querySelectorAll(".simulation-card").forEach(card => {
-      card.addEventListener("click", function() {
-        document.querySelectorAll(".simulation-card").forEach(c => c.classList.remove("active"));
-        this.classList.add("active");
-      });
-    });
+    // Note: Simulation selection now handled by dropdown onchange event
+    // loadSimulationDetails() is called when user selects from dropdown
     </script>';
     
     return Markup::create($content);
