@@ -119,38 +119,6 @@ class DashboardController extends ControllerBase {
       </div>
     </div>
     
-    <!-- Simulation Selector -->
-    <div class="simulation-selector-container">
-      <h3>📊 Select Simulation/Portfolio</h3>
-      <div class="simulation-selector">
-        <label for="simulation-dropdown">Current Simulation:</label>
-        <select id="simulation-dropdown" onchange="changeSimulation(this.value)">
-    ';
-    
-    foreach ($available_simulations as $sim_id => $sim_data) {
-      $selected = ($sim_id === $current_simulation_id) ? 'selected' : '';
-      $status_icon = ($sim_data['status'] === 'active') ? '🟢' : '🔴';
-      $details_link = strpos($sim_id, 'backtest_') === 0 ? ' <a href="/unicorn/simulation/' . urlencode($sim_id) . '" target="_blank" style="color:#6f42c1;text-decoration:none;" title="View Simulation Details">🔬</a>' : '';
-      $metrics_table .= '<option value="' . htmlspecialchars($sim_id) . '" ' . $selected . '>' 
-                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . $details_link . '</option>';
-    }
-    
-    $metrics_table .= '
-        </select>
-        <div class="simulation-info">
-          <small><strong>Description:</strong> ' . htmlspecialchars($available_simulations[$current_simulation_id]['description']) . '</small><br>
-          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>';
-    
-    // Add simulation details link for backtests
-    if (strpos($current_simulation_id, 'backtest_') === 0) {
-      $metrics_table .= '<br><small><a href="/unicorn/simulation/' . urlencode($current_simulation_id) . '" target="_blank" style="color:#6f42c1;font-weight:bold;">🔬 View Detailed Simulation Parameters</a></small>';
-    }
-    
-    $metrics_table .= '
-        </div>
-      </div>
-    </div>
-
     <div class="dashboard-sections">
     
     <!-- Primary Portfolio Section -->
@@ -1179,12 +1147,6 @@ class DashboardController extends ControllerBase {
     
     // Build complete dashboard HTML
     $dashboard_html = '
-    <div class="welcome-banner">
-      <h1>🦄 Unicorn Investing Platform</h1>
-      <p class="welcome-subtitle">Advanced Algorithmic Trading with LEAN Framework Integration</p>
-      <p class="platform-description">Real-time portfolio management, ETH algorithmic strategies, and comprehensive risk management.</p>
-    </div>
-
     <div class="dashboard-header">
       <h1>🦄 Unicorn Portfolio Management System</h1>
       <div class="version-info">
@@ -1194,37 +1156,6 @@ class DashboardController extends ControllerBase {
       </div>
     </div>
     
-    <!-- Simulation Selector -->
-    <div class="simulation-selector-container">
-      <h3>📊 Select Simulation/Portfolio</h3>
-      <div class="simulation-selector">
-        <label for="simulation-dropdown">Current Simulation:</label>
-        <select id="simulation-dropdown" onchange="changeSimulation(this.value)">';
-    
-    foreach ($available_simulations as $sim_id => $sim_data) {
-      $selected = ($sim_id === $current_simulation_id) ? 'selected' : '';
-      $status_icon = ($sim_data['status'] === 'active') ? '🟢' : '🔴';
-      $details_link = strpos($sim_id, 'backtest_') === 0 ? ' <a href="/unicorn/simulation/' . urlencode($sim_id) . '" target="_blank" style="color:#6f42c1;text-decoration:none;" title="View Simulation Details">🔬</a>' : '';
-      $dashboard_html .= '<option value="' . htmlspecialchars($sim_id) . '" ' . $selected . '>'
-                       . $status_icon . ' ' . htmlspecialchars($sim_data['name']) . $details_link . '</option>';
-    }
-    
-    $dashboard_html .= '
-        </select>
-        <div class="simulation-info">
-          <small><strong>Description:</strong> ' . htmlspecialchars($available_simulations[$current_simulation_id]['description']) . '</small><br>
-          <small><strong>Last Updated:</strong> ' . date('Y-m-d H:i:s', $available_simulations[$current_simulation_id]['last_updated']) . '</small>';
-          
-    // Add simulation details link for backtests
-    if (strpos($current_simulation_id, 'backtest_') === 0) {
-      $dashboard_html .= '<br><small><a href="/unicorn/simulation/' . urlencode($current_simulation_id) . '" target="_blank" style="color:#6f42c1;font-weight:bold;">🔬 View Detailed Simulation Parameters</a></small>';
-    }
-    
-    $dashboard_html .= '
-        </div>
-      </div>
-    </div>
-
     <div class="dashboard-sections">
     
     <!-- Live IBKR Portfolio Section -->
