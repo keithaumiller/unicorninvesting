@@ -137,7 +137,7 @@ pip install sqlalchemy pymysql
 
 # Install financial packages
 log_info "Installing financial data packages..."
-pip install yfinance alpha-vantage quandl ccxt fredapi
+pip install yfinance alpha-vantage quandl ccxt fredapi beaapi
 
 # Install additional requirements
 log_info "Installing remaining Python packages (this may take a few minutes)..."
@@ -190,14 +190,20 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON unicorn_drupal.* TO 'unicorn'@'localhost'
 sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
 log_success "MySQL database configured"
 
-# Step 10: Set up FRED data collection cron jobs
-log_info "Setting up FRED economic data collection cron jobs..."
+# Step 10: Set up Economic Data Collection cron jobs (FRED + BEA)
+log_info "Setting up economic data collection cron jobs (FRED + BEA)..."
 
 # Create cron job for daily comprehensive FRED data collection (evening)
 DAILY_FRED_JOB="0 21 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --daily-update >> /workspaces/unicorninvesting/logs/fred_daily.log 2>&1"
 
 # Create cron job for 15-minute delta FRED data collection (critical indicators only)
 DELTA_FRED_JOB="*/15 * * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --delta-update >> /workspaces/unicorninvesting/logs/fred_delta.log 2>&1"
+
+# Create cron job for daily comprehensive BEA data collection (morning)
+DAILY_BEA_JOB="0 6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --daily-update >> /workspaces/unicorninvesting/logs/bea_daily.log 2>&1"
+
+# Create cron job for 6-hour delta BEA data collection (critical indicators)
+DELTA_BEA_JOB="0 */6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --delta-update >> /workspaces/unicorninvesting/logs/bea_delta.log 2>&1"
 
 # Create logs directory
 mkdir -p /workspaces/unicorninvesting/logs
@@ -217,6 +223,23 @@ if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --delta-update"; then
     log_success "Delta FRED data collection cron job added (every 15 minutes)"
 else
     log_success "Delta FRED cron job already exists"
+fi
+
+# Set up BEA cron jobs
+if ! crontab -l 2>/dev/null | grep -q "bea_connector.py --daily-update"; then
+    # Add daily BEA job
+    (crontab -l 2>/dev/null; echo "$DAILY_BEA_JOB") | crontab -
+    log_success "Daily BEA data collection cron job added (6 AM daily)"
+else
+    log_success "Daily BEA cron job already exists"
+fi
+
+if ! crontab -l 2>/dev/null | grep -q "bea_connector.py --delta-update"; then
+    # Add delta BEA job
+    (crontab -l 2>/dev/null; echo "$DELTA_BEA_JOB") | crontab -
+    log_success "Delta BEA data collection cron job added (every 6 hours)"
+else
+    log_success "Delta BEA cron job already exists"
 fi
 
 # Start cron service if not running
@@ -248,6 +271,8 @@ if [ -f ~/.bashrc ]; then
         echo "export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
         echo "export DRUPAL_URL='https://${CODESPACE_NAME:-codespace}-80.app.github.dev/'" >> ~/.bashrc
         echo "export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'" >> ~/.bashrc
+        echo "# BEA API key for Bureau of Economic Analysis data collection" >> ~/.bashrc
+        echo "export BEA_API_KEY='8E9AE912-2B48-435A-8910-521609627585'" >> ~/.bashrc
         echo "" >> ~/.bashrc
         echo "# Ensure PHP 8.3 is used by default (prioritize /usr/bin over codespace PHP)" >> ~/.bashrc
         echo "export PATH=\"/usr/bin:\$PATH\"" >> ~/.bashrc
@@ -272,6 +297,7 @@ export UNICORN_ROOT='/workspaces/unicorninvesting'
 export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'
 export DRUPAL_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/"
 export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'
+export BEA_API_KEY='8E9AE912-2B48-435A-8910-521609627585'
 
 echo ""
 echo "🦄 Unicorn Investing Environment Ready!"
@@ -288,6 +314,15 @@ echo "Environment variables:"
 echo "  UNICORN_ROOT = $UNICORN_ROOT"
 echo "  DRUPAL_ROOT = $DRUPAL_ROOT"
 echo "  DRUPAL_URL = $DRUPAL_URL"
+echo ""
+echo "🔑 API Keys Setup:"
+echo "  ✅ FRED API Key: Configured for Federal Reserve data"
+echo "  ✅ BEA API Key: Configured and activated for Bureau of Economic Analysis data"
+echo ""
+echo "📊 Automated Data Collection:"
+echo "  • FRED: Every 15 minutes (delta) + Daily at 9 PM (comprehensive)"
+echo "  • BEA: Every 6 hours (delta) + Daily at 6 AM (comprehensive)"
+echo "  • Logs: /workspaces/unicorninvesting/logs/"
 
 # Ensure virtual environment is available for future sessions
 if [ -f "/workspaces/unicorninvesting/.venv/bin/activate" ]; then

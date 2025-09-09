@@ -58,6 +58,12 @@ External APIs → Connectors → Staging → Bronze → Silver → Gold → Data
   - **Automation**: Delta updates every 15 minutes, daily updates at 9 PM
   - **Integration**: Economic features ready for ETH alpha model enhancement
   - **Key Indicators**: Fed Funds (4.33%), Treasury yields, inflation, employment
+- ✅ **Bureau of Economic Analysis (BEA)** - Macroeconomic data automation
+  - **Status**: Production ready with comprehensive automation
+  - **Coverage**: 15+ datasets across 6 categories (2000-present), GDP, consumption, investment
+  - **Automation**: Delta updates every 6 hours, daily updates at 6 AM
+  - **Integration**: 50+ alpha model features with economic regime detection
+  - **Key Indicators**: Real GDP growth, personal consumption, business investment, trade balance
 - `YahooFinanceMinuteData.py` - Yahoo Finance free API integration
 - `AlphaVantageMinuteData.py` - Alpha Vantage API connector
 - `YAHOO_FINANCE_INTEGRATION_GUIDE.md` - Integration documentation
