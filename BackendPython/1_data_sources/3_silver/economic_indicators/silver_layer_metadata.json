@@ -1,0 +1,70 @@
+{
+  "silver_layer_metadata": {
+    "creation_timestamp": "2025-09-09T20:08:40.704593",
+    "data_sources_path": "/workspaces/unicorninvesting/BackendPython/1_data_sources/2_bronze/economic_indicators",
+    "silver_output_path": "/workspaces/unicorninvesting/BackendPython/1_data_sources/3_silver/economic_indicators",
+    "schema_version": "1.0",
+    "processing_results": {
+      "processed_categories": [],
+      "total_indicators": 0,
+      "quality_summary": {},
+      "processing_time": null,
+      "errors": [
+        "No bronze data found for category: economic_growth",
+        "No bronze data found for category: consumer_business",
+        "No bronze data found for category: monetary_policy",
+        "No bronze data found for category: international_trade"
+      ]
+    },
+    "schema_definition": {
+      "timestamp": "datetime64[ns]",
+      "indicator_category": "string",
+      "indicator_name": "string",
+      "indicator_value": "float64",
+      "unit": "string",
+      "frequency": "string",
+      "source": "string",
+      "quality_score": "float64",
+      "is_interpolated": "bool",
+      "is_seasonally_adjusted": "bool",
+      "metadata": "string"
+    },
+    "quality_thresholds": {
+      "missing_data_max": 0.1,
+      "outlier_zscore_max": 4.0,
+      "freshness_days_max": 90,
+      "frequency_consistency_min": 0.9
+    },
+    "indicator_categories": {
+      "economic_growth": [
+        "gdp_growth",
+        "industrial_production",
+        "productivity"
+      ],
+      "consumer_business": [
+        "consumer_confidence",
+        "retail_sales",
+        "housing_starts",
+        "business_investment",
+        "consumer_spending"
+      ],
+      "monetary_policy": [
+        "interest_rates",
+        "money_supply",
+        "bank_lending",
+        "yield_curve",
+        "pmi_manufacturing",
+        "corporate_earnings"
+      ],
+      "international_trade": [
+        "trade_balance",
+        "exports",
+        "imports",
+        "current_account",
+        "currency_exchange_rates",
+        "treasury_yields",
+        "commodity_prices"
+      ]
+    }
+  }
+}
