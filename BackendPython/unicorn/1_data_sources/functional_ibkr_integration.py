@@ -104,10 +104,10 @@ class FunctionalIBKRIntegration:
     - Simulate ETH trading using proxy instruments
     """
     
-    def __init__(self, account_id="DUM785491"):
+    def __init__(self, account_id=None):
         self.base_url = "http://localhost:5000"
         self.session = requests.Session()
-        self.account_id = account_id
+        self.account_id = account_id or DEFAULT_ACCOUNT_ID
         
         # Portfolio state
         self.portfolio_data = {}

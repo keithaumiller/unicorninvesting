@@ -2,6 +2,17 @@
 
 Interactive Brokers provides professional trading capabilities and real-time market data. **Your account already has API access enabled!** 🎉
 
+> ## ⚠️ **CRITICAL AUTHENTICATION LIMITATION**
+> 
+> **AUTOMATED AUTHENTICATION IS NOT POSSIBLE** with IBKR Gateway for individual clients.
+> 
+> - 🔐 **Manual login required** via web interface for each session
+> - 📱 **Two-factor authentication (2FA)** must be completed manually  
+> - 🚫 **No programmatic authentication** - OAuth 2.0 not available for individual accounts
+> - ⏰ **Session expires** periodically, requiring re-authentication
+> 
+> This means **all trading algorithms must account for manual authentication steps** and cannot run fully unattended.
+
 ## ✅ Current Status (August 2025)
 
 **IBKR Integration**: 🟢 **FULLY OPERATIONAL**

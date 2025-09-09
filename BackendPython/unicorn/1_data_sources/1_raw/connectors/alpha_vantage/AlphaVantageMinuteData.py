@@ -28,8 +28,18 @@ class AlphaVantageMinuteData(PythonData):
     Automatically handles API rate limiting and data formatting.
     """
     
-    # Class-level API configuration
-    API_KEY = "demo"  # Replace with your actual API key
+    # Class-level API configuration - Load from secure config
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
+    
+    try:
+        from config.config_manager import get_api_key
+        API_KEY = get_api_key('alpha_vantage')
+    except Exception as e:
+        print(f"⚠️ Could not load Alpha Vantage API key from config: {e}")
+        API_KEY = "demo"  # Fallback for development/testing
+        
     BASE_URL = "https://www.alphavantage.co/query"
     RATE_LIMIT_DELAY = 12  # Seconds between API calls (5 calls/minute limit)
     
