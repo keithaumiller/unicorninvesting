@@ -190,25 +190,56 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON unicorn_drupal.* TO 'unicorn'@'localhost'
 sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
 log_success "MySQL database configured"
 
-# Step 10: Set up Economic Data Collection cron jobs (FRED + BEA)
-log_info "Setting up economic data collection cron jobs (FRED + BEA)..."
+# Step 10: Set up Economic Data Collection cron jobs (FRED + BEA + Bronze Layer Processing)
+log_info "Setting up economic data collection cron jobs (FRED + BEA + Bronze Processing)..."
 
-# Create cron job for daily comprehensive FRED data collection (evening)
+# Create cron job for comprehensive daily pipeline (FRED + BEA + Bronze Layer)
+DAILY_PIPELINE_JOB="0 22 * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --daily >> /workspaces/unicorninvesting/logs/daily_pipeline.log 2>&1"
+
+# Create cron job for delta pipeline (quick updates with bronze processing)
+DELTA_PIPELINE_JOB="*/30 * * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --delta >> /workspaces/unicorninvesting/logs/delta_pipeline.log 2>&1"
+
+# Create cron job for hourly bronze layer processing (high-frequency data)
+HOURLY_PROCESSING_JOB="0 * * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --hourly >> /workspaces/unicorninvesting/logs/hourly_processing.log 2>&1"
+
+# Legacy individual connector jobs (kept for compatibility)
 DAILY_FRED_JOB="0 21 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --daily-update >> /workspaces/unicorninvesting/logs/fred_daily.log 2>&1"
-
-# Create cron job for 15-minute delta FRED data collection (critical indicators only)
 DELTA_FRED_JOB="*/15 * * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --delta-update >> /workspaces/unicorninvesting/logs/fred_delta.log 2>&1"
-
-# Create cron job for daily comprehensive BEA data collection (morning)
 DAILY_BEA_JOB="0 6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --daily-update >> /workspaces/unicorninvesting/logs/bea_daily.log 2>&1"
-
-# Create cron job for 6-hour delta BEA data collection (critical indicators)
 DELTA_BEA_JOB="0 */6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --delta-update >> /workspaces/unicorninvesting/logs/bea_delta.log 2>&1"
 
 # Create logs directory
 mkdir -p /workspaces/unicorninvesting/logs
 
-# Check if cron jobs already exist
+# Set up comprehensive data pipeline cron jobs (primary approach)
+log_info "Setting up comprehensive data pipeline cron jobs..."
+
+if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --daily"; then
+    (crontab -l 2>/dev/null; echo "$DAILY_PIPELINE_JOB") | crontab -
+    log_success "Daily data pipeline cron job added (10 PM daily - FRED + BEA + Bronze Processing)"
+else
+    log_success "Daily data pipeline cron job already exists"
+fi
+
+if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --delta"; then
+    (crontab -l 2>/dev/null; echo "$DELTA_PIPELINE_JOB") | crontab -
+    log_success "Delta data pipeline cron job added (every 30 minutes - quick updates + bronze processing)"
+else
+    log_success "Delta data pipeline cron job already exists"
+fi
+
+if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --hourly"; then
+    (crontab -l 2>/dev/null; echo "$HOURLY_PROCESSING_JOB") | crontab -
+    log_success "Hourly bronze processing cron job added (every hour - high-frequency datasets)"
+else
+    log_success "Hourly bronze processing cron job already exists"
+fi
+
+# Legacy individual connector jobs (for compatibility and backup)
+log_info "Setting up individual connector cron jobs (backup/compatibility)..."
+# Legacy individual connector jobs (for compatibility and backup)
+log_info "Setting up individual connector cron jobs (backup/compatibility)..."
+
 if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --daily-update"; then
     # Add daily job
     (crontab -l 2>/dev/null; echo "$DAILY_FRED_JOB") | crontab -
@@ -241,6 +272,16 @@ if ! crontab -l 2>/dev/null | grep -q "bea_connector.py --delta-update"; then
 else
     log_success "Delta BEA cron job already exists"
 fi
+
+# Display comprehensive cron schedule
+log_info "📅 Complete cron schedule:"
+echo "  • Daily Pipeline (10 PM): FRED + BEA + Bronze Layer Processing"
+echo "  • Delta Pipeline (every 30 min): Quick updates + Bronze Processing"  
+echo "  • Hourly Processing (hourly): High-frequency bronze datasets"
+echo "  • Legacy FRED Daily (9 PM): Individual FRED connector"
+echo "  • Legacy FRED Delta (every 15 min): Individual FRED connector"
+echo "  • Legacy BEA Daily (6 AM): Individual BEA connector"  
+echo "  • Legacy BEA Delta (every 6 hours): Individual BEA connector"
 
 # Start cron service if not running
 if ! pgrep cron > /dev/null; then
