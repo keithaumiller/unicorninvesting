@@ -80,11 +80,12 @@ def run_backtest(args):
     
     try:
         # Run backtest
-        simulation_id = engine.run_historical_backtest(
-            start_date=start_date,
-            end_date=end_date,
+        simulation_id = engine.run_backtest(
+            start_date=args.start,
+            end_date=args.end,
             algorithm_name=template.get("algorithm", "MyportolioETHMomentum"),
-            parameters=parameters
+            parameters=template.get("parameters", {}),
+            template_name=args.template
         )
         
         print(f"✅ Backtest completed successfully!")

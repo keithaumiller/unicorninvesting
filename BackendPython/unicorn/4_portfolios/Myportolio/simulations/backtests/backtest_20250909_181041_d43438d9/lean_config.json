@@ -1,0 +1,45 @@
+{
+  "environment": "backtesting",
+  "algorithm-type-name": "MyportolioEconomicEnhanced",
+  "algorithm-language": "Python",
+  "start-date": "2024-01-01",
+  "end-date": "2024-02-29",
+  "data-folder": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "cache-location": "/workspaces/unicorninvesting/BackendPython/Lean/Data",
+  "live-mode": false,
+  "result-handler": "QuantConnect.Lean.Engine.Results.BacktestingResultHandler",
+  "messaging-handler": "QuantConnect.Messaging.Messaging",
+  "job-queue-handler": "QuantConnect.Queues.JobQueue",
+  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
+  "initial-cash": 100000,
+  "simulation-id": "backtest_20250909_181041_d43438d9",
+  "portfolio-name": "Myportolio",
+  "parameters": {
+    "strategy_type": "dual_asset_economic_enhanced",
+    "btc_model_variant": "deep",
+    "eth_model_variant": "deep",
+    "btc_kelly_fraction": 0.2,
+    "eth_kelly_fraction": 0.2,
+    "btc_max_volatility": 0.3,
+    "eth_max_volatility": 0.3,
+    "max_drawdown": 0.15,
+    "var_limit_1day": 0.06,
+    "rebalance_frequency": "daily",
+    "lookback_period": 30,
+    "confidence_threshold": 0.65,
+    "economic_feature_weight_btc": 0.484,
+    "economic_feature_weight_eth": 0.414,
+    "correlation_filtering": true,
+    "volatility_adjustment": true,
+    "best_models_info": {
+      "BTC": {
+        "model_id": "btc_deep_enhanced_20250909_175420",
+        "model_variant": "deep",
+        "performance": {
+          "r2_score": 0.92,
+          "mae": 1125.5461183921839,
+          "mape": 2.0,
+          "economic_importance": 0.4841424666915921
+        },
+        "features": {
+          "total_features": 

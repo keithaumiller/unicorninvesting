@@ -49,6 +49,15 @@ from typing import Dict, List, Optional, Any
 from pathlib import Path
 import logging
 
+# Import best model selector
+sys.path.append(str(Path(__file__).parent.parent / "utilities"))
+try:
+    from best_model_selector import BestModelSelector
+    BEST_MODEL_SELECTOR_AVAILABLE = True
+except ImportError:
+    print("⚠️  Best model selector not available")
+    BEST_MODEL_SELECTOR_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -65,7 +74,7 @@ class LEANSimulationEngine:
     
     def __init__(self, portfolio_path: str = None):
         """
-        Initialize LEAN simulation engine.
+        Initialize LEAN simulation engine with best model integration.
         
         Args:
             portfolio_path: Path to Myportolio directory
@@ -77,6 +86,14 @@ class LEANSimulationEngine:
         self.simulations_path = self.portfolio_path / "simulations"
         self.lean_path = Path("/workspaces/unicorninvesting/BackendPython/Lean")
         
+        # Initialize best model selector
+        if BEST_MODEL_SELECTOR_AVAILABLE:
+            self.best_model_selector = BestModelSelector()
+            logger.info("✅ Best model selector initialized")
+        else:
+            self.best_model_selector = None
+            logger.warning("⚠️  Best model selector not available")
+        
         # Ensure simulation directories exist
         self._initialize_directories()
         
@@ -85,6 +102,39 @@ class LEANSimulationEngine:
         
         logger.info(f"LEAN Simulation Engine initialized for Myportolio")
         logger.info(f"Simulation results stored in: {self.simulations_path}")
+
+    def get_best_model_config(self, template_name: str = None) -> Dict[str, Any]:
+        """
+        Get the best model configuration for simulation.
+        
+        Args:
+            template_name: Template name to check for best model usage
+            
+        Returns:
+            Best model configuration dictionary
+        """
+        if not self.best_model_selector:
+            logger.warning("Best model selector not available, using default configuration")
+            return {}
+        
+        try:
+            best_models = self.best_model_selector.get_best_models()
+            
+            if template_name and "best_models" in template_name:
+                logger.info("🎯 Using best economic-enhanced models for simulation")
+                # Generate configurations for all assets
+                configs = self.best_model_selector.generate_all_asset_configs()
+                return {
+                    'use_best_models': True,
+                    'model_configs': configs,
+                    'best_models': best_models
+                }
+            
+            return {'use_best_models': False}
+            
+        except Exception as e:
+            logger.error(f"Error getting best model configuration: {e}")
+            return {'use_best_models': False}
 
     def _initialize_directories(self):
         """Initialize required simulation directories."""
@@ -122,36 +172,60 @@ class LEANSimulationEngine:
         short_uuid = str(uuid.uuid4())[:8]
         return f"{simulation_type}_{timestamp}_{short_uuid}"
 
-    def run_historical_backtest(self, 
-                               start_date: str, 
-                               end_date: str,
-                               algorithm_name: str = "MyportolioAlgorithm",
-                               parameters: Optional[Dict[str, Any]] = None) -> str:
+    def run_backtest(self, 
+                    start_date: str, 
+                    end_date: str, 
+                    algorithm_name: str = "MyportolioETHMomentum",
+                    parameters: Optional[Dict[str, Any]] = None,
+                    template_name: str = None) -> str:
         """
-        Run historical backtest using LEAN framework.
+        Execute a LEAN backtest simulation with best model integration.
         
         Args:
-            start_date: Start date (YYYY-MM-DD format)
-            end_date: End date (YYYY-MM-DD format)
-            algorithm_name: Name of the algorithm to test
-            parameters: Optional algorithm parameters
+            start_date: Start date in YYYY-MM-DD format
+            end_date: End date in YYYY-MM-DD format  
+            algorithm_name: Name of the algorithm to run
+            parameters: Optional parameters to override
+            template_name: Template name for best model selection
             
         Returns:
-            Simulation ID for tracking results
+            Simulation ID for the completed backtest
         """
-        simulation_id = self.generate_simulation_id("backtest")
+        logger.info(f"Starting backtest: {start_date} to {end_date}")
         
-        logger.info(f"Starting historical backtest: {simulation_id}")
-        logger.info(f"Period: {start_date} to {end_date}")
+        # Generate simulation ID
+        simulation_id = f"backtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}"
         
         # Create simulation directory
         sim_dir = self.simulations_path / "backtests" / simulation_id
         sim_dir.mkdir(parents=True, exist_ok=True)
         
+        # Get best model configuration if applicable
+        best_model_config = self.get_best_model_config(template_name)
+        
+        # Merge best model parameters with provided parameters
+        if best_model_config.get('use_best_models', False):
+            logger.info("🚀 Integrating best economic-enhanced models into simulation")
+            if parameters is None:
+                parameters = {}
+            
+            # Add best model information to parameters
+            parameters['best_models_info'] = best_model_config['best_models']
+            parameters['model_configs'] = best_model_config['model_configs']
+            
+            # Update algorithm name for best models
+            if template_name and "best_models" in template_name:
+                algorithm_name = "MyportolioEconomicEnhanced"
+        
         # Create LEAN configuration for backtest
         lean_config = self._create_backtest_config(
             start_date, end_date, algorithm_name, parameters, simulation_id
         )
+        
+        # Add best model information to config
+        if best_model_config.get('use_best_models', False):
+            lean_config['best_models'] = best_model_config['best_models']
+            lean_config['economic_enhanced'] = True
         
         # Save configuration
         config_path = sim_dir / "lean_config.json"
@@ -178,7 +252,8 @@ class LEANSimulationEngine:
                 "simulation_id": simulation_id,
                 "error": str(e),
                 "timestamp": datetime.now().isoformat(),
-                "configuration": lean_config
+                "configuration": lean_config,
+                "best_models_used": best_model_config.get('use_best_models', False)
             }
             
             error_path = sim_dir / "error.json"

@@ -1,6 +1,46 @@
 {
+  "best_models_template": {
+    "name": "Best Economic-Enhanced Models Backtest",
+    "description": "Uses the best performing economic-enhanced Deep variant models for both BTC and ETH (HIGH confidence, >88% R²)",
+    "environment": "backtesting",
+    "algorithm": "MyportolioEconomicEnhanced",
+    "model_selection": "automatic_best",
+    "parameters": {
+      "strategy_type": "dual_asset_economic_enhanced",
+      "btc_model_variant": "deep",
+      "eth_model_variant": "deep", 
+      "btc_kelly_fraction": 0.200,
+      "eth_kelly_fraction": 0.200,
+      "btc_max_volatility": 0.30,
+      "eth_max_volatility": 0.30,
+      "max_drawdown": 0.15,
+      "var_limit_1day": 0.06,
+      "rebalance_frequency": "daily",
+      "lookback_period": 30,
+      "confidence_threshold": 0.65,
+      "economic_feature_weight_btc": 0.484,
+      "economic_feature_weight_eth": 0.414,
+      "correlation_filtering": true,
+      "volatility_adjustment": true
+    },
+    "assets": ["BTCUSD", "ETHUSD"],
+    "resolution": "Hour",
+    "initial_cash": 100000,
+    "benchmark": "SPY",
+    "commission": {
+      "model": "ConstantFeeModel", 
+      "fee": 0.001
+    },
+    "performance_expectations": {
+      "btc_expected_r2": 0.9200,
+      "eth_expected_r2": 0.8884,
+      "btc_expected_mae": 1125.55,
+      "eth_expected_mae": 70.03
+    }
+  },
+
   "backtest_template": {
-    "name": "ETH Momentum Backtest",
+    "name": "ETH Momentum Backtest (Legacy)",
     "description": "Historical backtesting template for ETH momentum strategies with Kelly criterion risk management",
     "environment": "backtesting",
     "algorithm": "MyportolioETHMomentum",
