@@ -7,7 +7,20 @@ Systematically explore what endpoints and data are available in the paper tradin
 import requests
 import json
 import time
+import sys
+from pathlib import Path
 from datetime import datetime
+
+# Import secure configuration
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+try:
+    from config.config_manager import get_ibkr_config
+    IBKR_CONFIG = get_ibkr_config()
+    ACCOUNT_ID = IBKR_CONFIG['account_id']
+except Exception as e:
+    print(f"⚠️ Could not load IBKR config from config/secrets.json: {e}")
+    print("Using fallback account ID for exploration...")
+    ACCOUNT_ID = "DUM785491"  # Fallback for exploration
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -114,9 +127,9 @@ class IBKRExplorer:
         endpoints = [
             ('GET', '/v1/api/portfolio/accounts', None, None, 'Portfolio accounts'),
             ('GET', '/v1/api/portfolio/subaccounts', None, None, 'Sub-accounts'),
-            ('GET', '/v1/api/portfolio/DUM785491/summary', None, None, 'Account summary'),
-            ('GET', '/v1/api/portfolio/DUM785491/positions/0', None, None, 'Account positions'),
-            ('GET', '/v1/api/portfolio/DUM785491/ledger', None, None, 'Account ledger'),
+            ('GET', f'/v1/api/portfolio/{ACCOUNT_ID}/summary', None, None, 'Account summary'),
+            ('GET', f'/v1/api/portfolio/{ACCOUNT_ID}/positions/0', None, None, 'Account positions'),
+            ('GET', f'/v1/api/portfolio/{ACCOUNT_ID}/ledger', None, None, 'Account ledger'),
             ('GET', '/v1/api/one/user', None, None, 'User information')
         ]
         
@@ -220,7 +233,7 @@ class IBKRExplorer:
         trading_tests = [
             ('GET', '/v1/api/iserver/orders', None, None, 'Live orders'),
             ('GET', '/v1/api/iserver/trades', None, None, 'Recent trades'),
-            ('GET', '/v1/api/portfolio/DUM785491/positions/0', None, None, 'Current positions'),
+            ('GET', f'/v1/api/portfolio/{ACCOUNT_ID}/positions/0', None, None, 'Current positions'),
             ('GET', '/v1/api/iserver/account', None, None, 'Trading account info'),
             ('GET', '/v1/api/iserver/accounts', None, None, 'Available trading accounts')
         ]

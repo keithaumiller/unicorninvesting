@@ -311,9 +311,9 @@ if [ -f ~/.bashrc ]; then
         echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
         echo "export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
         echo "export DRUPAL_URL='https://${CODESPACE_NAME:-codespace}-80.app.github.dev/'" >> ~/.bashrc
-        echo "export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'" >> ~/.bashrc
+        echo "export FRED_API_KEY='CONFIGURED_IN_CONFIG_SECRETS_JSON'" >> ~/.bashrc
         echo "# BEA API key for Bureau of Economic Analysis data collection" >> ~/.bashrc
-        echo "export BEA_API_KEY='8E9AE912-2B48-435A-8910-521609627585'" >> ~/.bashrc
+        echo "export BEA_API_KEY='CONFIGURED_IN_CONFIG_SECRETS_JSON'" >> ~/.bashrc
         echo "" >> ~/.bashrc
         echo "# Ensure PHP 8.3 is used by default (prioritize /usr/bin over codespace PHP)" >> ~/.bashrc
         echo "export PATH=\"/usr/bin:\$PATH\"" >> ~/.bashrc
@@ -337,8 +337,8 @@ alias unicorn-root='cd /workspaces/unicorninvesting'
 export UNICORN_ROOT='/workspaces/unicorninvesting'
 export DRUPAL_ROOT='/workspaces/unicorninvesting/WebFrontend'
 export DRUPAL_URL="https://${CODESPACE_NAME:-codespace}-80.app.github.dev/"
-export FRED_API_KEY='e4de78babaac7891e9896f8fa390e675'
-export BEA_API_KEY='8E9AE912-2B48-435A-8910-521609627585'
+export FRED_API_KEY='CONFIGURED_IN_CONFIG_SECRETS_JSON'
+export BEA_API_KEY='CONFIGURED_IN_CONFIG_SECRETS_JSON'
 
 echo ""
 echo "🦄 Unicorn Investing Environment Ready!"

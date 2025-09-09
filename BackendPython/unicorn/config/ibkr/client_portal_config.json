@@ -1,9 +1,9 @@
 {
-    "account_id": "DUM785491",
-    "username": "xyzyuc422",
+    "account_id": "CONFIGURED_IN_CONFIG_SECRETS_JSON",
+    "username": "CONFIGURED_IN_CONFIG_SECRETS_JSON",
     "trading_mode": "paper",
     "api_type": "client_portal",
     "base_url": "https://localhost:5000/v1/api",
     "setup_date": "2025-08-28T18:57:00Z",
-    "notes": "Paper trading configuration for safe testing"
+    "notes": "Paper trading configuration for safe testing - credentials moved to config/secrets.json"
 }

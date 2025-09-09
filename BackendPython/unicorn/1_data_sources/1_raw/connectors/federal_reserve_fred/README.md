@@ -40,7 +40,7 @@ cd BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/
 ### **2. API Key Setup**
 ```bash
 # Set environment variable (recommended)
-export FRED_API_KEY="e4de78babaac7891e9896f8fa390e675"
+export FRED_API_KEY="YOUR_FRED_API_KEY"
 
 # Or pass directly to connector
 python -c "from fred_connector import FredConnector; fred = FredConnector(api_key='your_key')"

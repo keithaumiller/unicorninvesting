@@ -129,7 +129,7 @@ All connectors follow a standardized interface pattern:
   - Market stress (`VIXCLS`, `NFCI`)
   - Currency strength (`DEXUSEU`, `TWEXBMTH`)
 - **API**: FRED API (fredapi library)
-- **Authentication**: API key configured (e4de78babaac7891e9896f8fa390e675)
+- **Authentication**: API key configured via config/secrets.json
 - **Rate Limits**: 120 requests per minute (handled automatically)
 - **Data Coverage**: 26,426+ observations (1919-2025)
 - **Success Rate**: 95.7% (22/23 series operational)

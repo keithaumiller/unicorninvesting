@@ -79,3 +79,10 @@ BackendPython/unicorn/1_data_sources/2_bronze/*/processed_data/*
 *.csv.gz
 *.parquet
 *.feather
+
+# Sensitive logs and temporary files
+logs/*_delta.log
+logs/api_*.log
+*.credentials
+*.secrets
+**/debug_*.log

@@ -1,8 +1,83 @@
 #!/usr/bin/env python3
 """
-Functional IBKR Paper Trading Integration
-Works with available endpoints and creates a hybrid approach for ETH trading
+Functional IBKR Integration for Unicorn Investing Platform
+
+This module provides a pragmatic approach to IBKR integration for crypto algorithmic trading,
+working within the limitations of the IBKR API for cryptocurrency exposure.
+
+Key Features:
+- Portfolio management and account balance tracking
+- ETH-correlated instrument discovery and trading
+- Market data collection (via external APIs for crypto)
+- Paper trading simulation environment
+- Real account position and PnL tracking
+
+Integration Strategy:
+Since IBKR's crypto offerings are limited, this implementation focuses on:
+1. Using IBKR for portfolio management and traditional instruments
+2. External APIs (Yahoo Finance, Alpha Vantage) for crypto market data
+3. Crypto-correlated ETFs and stocks for indirect crypto exposure
+4. Paper trading first, with path to live trading for proven strategies
+
+IBKR API Endpoints Used:
+- Portfolio accounts and balances
+- Account positions and PnL
+- Market data (where available)
+- Order placement (paper trading mode)
+
+Author: Unicorn Investing Platform
+Status: Production Integration Ready
 """
+
+import requests
+import json
+import pandas as pd
+import numpy as np
+import time
+import sys
+from pathlib import Path
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Tuple
+
+# Import secure configuration
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+try:
+    from config.config_manager import get_ibkr_config
+    IBKR_CONFIG = get_ibkr_config()
+    DEFAULT_ACCOUNT_ID = IBKR_CONFIG['account_id']
+except Exception as e:
+    print(f"⚠️ Could not load IBKR config: {e}")
+    DEFAULT_ACCOUNT_ID = "DUM785491"  # Fallback
+
+
+class FunctionalIBKRIntegration:
+    """
+    Functional IBKR integration for crypto-focused algorithmic trading.
+    
+    Provides practical crypto exposure through IBKR's available instruments
+    while maintaining the core portfolio management capabilities needed
+    for the Unicorn Investing platform.
+    
+    Core Philosophy:
+    - Focus on what works: portfolio management, account data, indirect crypto exposure
+    - Supplement with external APIs for direct crypto data and analysis
+    - Use paper trading for algorithm validation
+    - Gradual transition to live trading for proven strategies
+    
+    Hybrid Approach:
+    - Use IBKR for portfolio management and account data
+    - Use external sources (Yahoo Finance) for market data
+    - Simulate ETH trading using proxy instruments
+    """
+    
+    def __init__(self, account_id=None):
+        self.base_url = "http://localhost:5000"
+        self.session = requests.Session()
+        self.account_id = account_id or DEFAULT_ACCOUNT_ID
+        
+        # Portfolio state
+        self.portfolio_data = {}
+        self.last_update = None
 
 import requests
 import json

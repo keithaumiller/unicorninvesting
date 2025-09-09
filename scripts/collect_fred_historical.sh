@@ -23,7 +23,7 @@ echo ""
 cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred
 
 # Set API key
-export FRED_API_KEY="e4de78babaac7891e9896f8fa390e675"
+export FRED_API_KEY="YOUR_FRED_API_KEY"
 
 # Check if virtual environment is activated
 if [ -z "$VIRTUAL_ENV" ]; then
