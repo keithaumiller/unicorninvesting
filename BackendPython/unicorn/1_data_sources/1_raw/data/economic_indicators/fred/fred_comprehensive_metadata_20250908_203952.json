@@ -1,0 +1,459 @@
+{
+  "collection_info": {
+    "timestamp": "20250908_203952",
+    "start_date": "2000-01-01",
+    "end_date": "2025-09-08",
+    "throttle_delay": 2.0,
+    "total_series_requested": 23,
+    "successful_collections": 22,
+    "total_observations": 26426
+  },
+  "data_summary": {
+    "monetary_policy": {
+      "series_count": 4,
+      "observation_count": 26000,
+      "date_range": {
+        "start": "1954-07-01",
+        "end": "2025-09-05"
+      },
+      "series_list": [
+        "FEDFUNDS",
+        "DFF",
+        "M2SL",
+        "WALCL"
+      ]
+    },
+    "inflation": {
+      "series_count": 3,
+      "observation_count": 943,
+      "date_range": {
+        "start": "1947-01-01",
+        "end": "2025-07-01"
+      },
+      "series_list": [
+        "CPIAUCSL",
+        "CPILFESL",
+        "PCEPI"
+      ]
+    },
+    "interest_rates": {
+      "series_count": 4,
+      "observation_count": 16516,
+      "date_range": {
+        "start": "1934-01-01",
+        "end": "2025-09-05"
+      },
+      "series_list": [
+        "DGS10",
+        "DGS2",
+        "DGS5",
+        "TB3MS"
+      ]
+    },
+    "employment": {
+      "series_count": 3,
+      "observation_count": 1040,
+      "date_range": {
+        "start": "1939-01-01",
+        "end": "2025-08-01"
+      },
+      "series_list": [
+        "UNRATE",
+        "PAYEMS",
+        "CIVPART"
+      ]
+    },
+    "economic_growth": {
+      "series_count": 3,
+      "observation_count": 1279,
+      "date_range": {
+        "start": "1919-01-01",
+        "end": "2025-07-01"
+      },
+      "series_list": [
+        "GDP",
+        "GDPC1",
+        "INDPRO"
+      ]
+    },
+    "market_indicators": {
+      "series_count": 2,
+      "observation_count": 10064,
+      "date_range": {
+        "start": "1971-01-08",
+        "end": "2025-09-05"
+      },
+      "series_list": [
+        "VIXCLS",
+        "NFCI"
+      ]
+    },
+    "currency": {
+      "series_count": 3,
+      "observation_count": 11419,
+      "date_range": {
+        "start": "1973-01-01",
+        "end": "2025-09-05"
+      },
+      "series_list": [
+        "DEXUSEU",
+        "TWEXBMTH",
+        "DEXCHUS"
+      ]
+    }
+  },
+  "series_details": {
+    "FEDFUNDS": {
+      "category": "monetary_policy",
+      "observations": 854,
+      "date_range": {
+        "start": "1954-07-01",
+        "end": "2025-08-01"
+      },
+      "latest_value": 4.33,
+      "config": {
+        "name": "Federal Funds Rate",
+        "description": "Effective Federal Funds Rate",
+        "priority": 1,
+        "frequency": "Monthly",
+        "units": "Percent"
+      }
+    },
+    "DFF": {
+      "category": "monetary_policy",
+      "observations": 26000,
+      "date_range": {
+        "start": "1954-07-01",
+        "end": "2025-09-05"
+      },
+      "latest_value": 4.33,
+      "config": {
+        "name": "Daily Federal Funds Rate",
+        "description": "Effective Federal Funds Rate (Daily)",
+        "priority": 1,
+        "frequency": "Daily",
+        "units": "Percent"
+      }
+    },
+    "M2SL": {
+      "category": "monetary_policy",
+      "observations": 799,
+      "date_range": {
+        "start": "1959-01-01",
+        "end": "2025-07-01"
+      },
+      "latest_value": 22115.4,
+      "config": {
+        "name": "M2 Money Supply",
+        "description": "M2 Money Stock",
+        "priority": 1,
+        "frequency": "Monthly",
+        "units": "Billions of Dollars"
+      }
+    },
+    "WALCL": {
+      "category": "monetary_policy",
+      "observations": 1186,
+      "date_range": {
+        "start": "2002-12-18",
+        "end": "2025-09-03"
+      },
+      "latest_value": 6602071.0,
+      "config": {
+        "name": "WALCL",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    },
+    "CPIAUCSL": {
+      "category": "inflation",
+      "observations": 943,
+      "date_range": {
+        "start": "1947-01-01",
+        "end": "2025-07-01"
+      },
+      "latest_value": 322.132,
+      "config": {
+        "name": "Consumer Price Index",
+        "description": "Consumer Price Index for All Urban Consumers: All Items",
+        "priority": 1,
+        "frequency": "Monthly",
+        "units": "Index 1982-1984=100"
+      }
+    },
+    "CPILFESL": {
+      "category": "inflation",
+      "observations": 823,
+      "date_range": {
+        "start": "1957-01-01",
+        "end": "2025-07-01"
+      },
+      "latest_value": 328.656,
+      "config": {
+        "name": "Core CPI",
+        "description": "Consumer Price Index: All Items Less Food & Energy",
+        "priority": 1,
+        "frequency": "Monthly",
+        "units": "Index 1982-1984=100"
+      }
+    },
+    "PCEPI": {
+      "category": "inflation",
+      "observations": 799,
+      "date_range": {
+        "start": "1959-01-01",
+        "end": "2025-07-01"
+      },
+      "latest_value": 126.783,
+      "config": {
+        "name": "PCEPI",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    },
+    "DGS10": {
+      "category": "interest_rates",
+      "observations": 15905,
+      "date_range": {
+        "start": "1962-01-02",
+        "end": "2025-09-05"
+      },
+      "latest_value": 4.1,
+      "config": {
+        "name": "10-Year Treasury",
+        "description": "10-Year Treasury Constant Maturity Rate",
+        "priority": 1,
+        "frequency": "Daily",
+        "units": "Percent"
+      }
+    },
+    "DGS2": {
+      "category": "interest_rates",
+      "observations": 12313,
+      "date_range": {
+        "start": "1976-06-01",
+        "end": "2025-09-05"
+      },
+      "latest_value": 3.51,
+      "config": {
+        "name": "2-Year Treasury",
+        "description": "2-Year Treasury Constant Maturity Rate",
+        "priority": 1,
+        "frequency": "Daily",
+        "units": "Percent"
+      }
+    },
+    "DGS5": {
+      "category": "interest_rates",
+      "observations": 15905,
+      "date_range": {
+        "start": "1962-01-02",
+        "end": "2025-09-05"
+      },
+      "latest_value": 3.59,
+      "config": {
+        "name": "5-Year Treasury",
+        "description": "5-Year Treasury Constant Maturity Rate",
+        "priority": 1,
+        "frequency": "Daily",
+        "units": "Percent"
+      }
+    },
+    "TB3MS": {
+      "category": "interest_rates",
+      "observations": 1100,
+      "date_range": {
+        "start": "1934-01-01",
+        "end": "2025-08-01"
+      },
+      "latest_value": 4.12,
+      "config": {
+        "name": "TB3MS",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    },
+    "UNRATE": {
+      "category": "employment",
+      "observations": 932,
+      "date_range": {
+        "start": "1948-01-01",
+        "end": "2025-08-01"
+      },
+      "latest_value": 4.3,
+      "config": {
+        "name": "Unemployment Rate",
+        "description": "Unemployment Rate",
+        "priority": 2,
+        "frequency": "Monthly",
+        "units": "Percent"
+      }
+    },
+    "PAYEMS": {
+      "category": "employment",
+      "observations": 1040,
+      "date_range": {
+        "start": "1939-01-01",
+        "end": "2025-08-01"
+      },
+      "latest_value": 159540.0,
+      "config": {
+        "name": "Nonfarm Payrolls",
+        "description": "All Employees, Nonfarm Payrolls",
+        "priority": 2,
+        "frequency": "Monthly",
+        "units": "Thousands of Persons"
+      }
+    },
+    "CIVPART": {
+      "category": "employment",
+      "observations": 932,
+      "date_range": {
+        "start": "1948-01-01",
+        "end": "2025-08-01"
+      },
+      "latest_value": 62.3,
+      "config": {
+        "name": "CIVPART",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    },
+    "GDP": {
+      "category": "economic_growth",
+      "observations": 314,
+      "date_range": {
+        "start": "1947-01-01",
+        "end": "2025-04-01"
+      },
+      "latest_value": 30353.902,
+      "config": {
+        "name": "Gross Domestic Product",
+        "description": "Gross Domestic Product",
+        "priority": 2,
+        "frequency": "Quarterly",
+        "units": "Billions of Dollars"
+      }
+    },
+    "GDPC1": {
+      "category": "economic_growth",
+      "observations": 314,
+      "date_range": {
+        "start": "1947-01-01",
+        "end": "2025-04-01"
+      },
+      "latest_value": 23703.782,
+      "config": {
+        "name": "Real GDP",
+        "description": "Real Gross Domestic Product",
+        "priority": 2,
+        "frequency": "Quarterly",
+        "units": "Billions of Chained 2017 Dollars"
+      }
+    },
+    "INDPRO": {
+      "category": "economic_growth",
+      "observations": 1279,
+      "date_range": {
+        "start": "1919-01-01",
+        "end": "2025-07-01"
+      },
+      "latest_value": 103.9867,
+      "config": {
+        "name": "INDPRO",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    },
+    "VIXCLS": {
+      "category": "market_indicators",
+      "observations": 9010,
+      "date_range": {
+        "start": "1990-01-02",
+        "end": "2025-09-05"
+      },
+      "latest_value": 15.18,
+      "config": {
+        "name": "VIX",
+        "description": "CBOE Volatility Index: VIX",
+        "priority": 2,
+        "frequency": "Daily",
+        "units": "Index"
+      }
+    },
+    "NFCI": {
+      "category": "market_indicators",
+      "observations": 2852,
+      "date_range": {
+        "start": "1971-01-08",
+        "end": "2025-08-29"
+      },
+      "latest_value": -0.52578,
+      "config": {
+        "name": "Financial Conditions Index",
+        "description": "Chicago Fed National Financial Conditions Index",
+        "priority": 2,
+        "frequency": "Weekly",
+        "units": "Index"
+      }
+    },
+    "DEXUSEU": {
+      "category": "currency",
+      "observations": 6691,
+      "date_range": {
+        "start": "1999-01-04",
+        "end": "2025-09-05"
+      },
+      "latest_value": 1.1759,
+      "config": {
+        "name": "USD/EUR Exchange Rate",
+        "description": "U.S. / Euro Foreign Exchange Rate",
+        "priority": 2,
+        "frequency": "Daily",
+        "units": "U.S. Dollars to One Euro"
+      }
+    },
+    "TWEXBMTH": {
+      "category": "currency",
+      "observations": 564,
+      "date_range": {
+        "start": "1973-01-01",
+        "end": "2019-12-01"
+      },
+      "latest_value": 129.3615,
+      "config": {
+        "name": "Trade Weighted USD Index",
+        "description": "Trade Weighted U.S. Dollar Index: Broad, Goods and Services",
+        "priority": 2,
+        "frequency": "Monthly",
+        "units": "Index Jan 1997=100"
+      }
+    },
+    "DEXCHUS": {
+      "category": "currency",
+      "observations": 11152,
+      "date_range": {
+        "start": "1981-01-02",
+        "end": "2025-09-05"
+      },
+      "latest_value": 7.1323,
+      "config": {
+        "name": "DEXCHUS",
+        "description": "N/A",
+        "priority": 3,
+        "frequency": "Unknown",
+        "units": "Unknown"
+      }
+    }
+  }
+}

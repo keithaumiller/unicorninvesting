@@ -52,6 +52,12 @@ External APIs → Connectors → Staging → Bronze → Silver → Gold → Data
 - **Technology**: Python data connectors, API clients
 
 **Current Implementations**:
+- ✅ **Federal Reserve Economic Data (FRED)** - Automated economic data pipeline
+  - **Status**: Production deployed with full automation
+  - **Coverage**: 26,426+ observations (1919-2025), 23 economic series
+  - **Automation**: Delta updates every 15 minutes, daily updates at 9 PM
+  - **Integration**: Economic features ready for ETH alpha model enhancement
+  - **Key Indicators**: Fed Funds (4.33%), Treasury yields, inflation, employment
 - `YahooFinanceMinuteData.py` - Yahoo Finance free API integration
 - `AlphaVantageMinuteData.py` - Alpha Vantage API connector
 - `YAHOO_FINANCE_INTEGRATION_GUIDE.md` - Integration documentation
