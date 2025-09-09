@@ -55,3 +55,15 @@ WebFrontend/web/sites/*/services.local.yml
 # Temporary scripts (created during development)
 scripts/check_port_forwarding.sh
 scripts/test_port_80.sh
+
+# Large data files - exclude from version control
+# Raw data files (can be regenerated via connectors)
+BackendPython/unicorn/1_data_sources/1_raw/data/*
+!BackendPython/unicorn/1_data_sources/1_raw/data/README.md
+# Processed bronze layer data files (large ML datasets)
+BackendPython/unicorn/1_data_sources/2_bronze/*/processed_data/*
+!BackendPython/unicorn/1_data_sources/2_bronze/*/README.md
+# Any large CSV or binary data files
+*.csv.gz
+*.parquet
+*.feather

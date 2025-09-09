@@ -1,0 +1,1 @@
+Thank you for registering with the Bureau of Labor Statistics Public Data API. Your API key is: 4106dd3f1f5b43deb99f0ab3d7e54758.
