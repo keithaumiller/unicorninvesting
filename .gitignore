@@ -56,6 +56,18 @@ WebFrontend/web/sites/*/services.local.yml
 scripts/check_port_forwarding.sh
 scripts/test_port_80.sh
 
+# Sensitive configuration files
+config/secrets.json
+**/.env
+**/.env.local
+**/.env.production
+**/.env.development
+**/secrets.*
+!**/secrets.*.template
+config/*.key
+config/*.pem
+config/*_credentials.*
+
 # Large data files - exclude from version control
 # Raw data files (can be regenerated via connectors)
 BackendPython/unicorn/1_data_sources/1_raw/data/*

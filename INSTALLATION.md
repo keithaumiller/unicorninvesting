@@ -6,17 +6,18 @@ This guide provides complete step-by-step instructions for setting up the Unicor
 
 1. [System Requirements](#system-requirements)
 2. [Environment Setup](#environment-setup)
-3. [Database Configuration](#database-configuration)
-4. [Python Environment](#python-environment)
-5. [LEAN Framework Integration](#lean-framework-integration)
-6. [Data Sources Integration](#data-sources-integration)
-7. [Prophet Forecasting Setup](#prophet-forecasting-setup)
-8. [Web Server Configuration](#web-server-configuration)
-9. [Drupal Frontend Setup](#drupal-frontend-setup)
-10. [SSL Certificate Setup](#ssl-certificate-setup)
-11. [Verification and Testing](#verification-and-testing)
-12. [Production Deployment](#production-deployment)
-13. [Troubleshooting](#troubleshooting)
+3. [**🔒 Security Configuration**](#security-configuration)
+4. [Database Configuration](#database-configuration)
+5. [Python Environment](#python-environment)
+6. [LEAN Framework Integration](#lean-framework-integration)
+7. [Data Sources Integration](#data-sources-integration)
+8. [Prophet Forecasting Setup](#prophet-forecasting-setup)
+9. [Web Server Configuration](#web-server-configuration)
+10. [Drupal Frontend Setup](#drupal-frontend-setup)
+11. [SSL Certificate Setup](#ssl-certificate-setup)
+12. [Verification and Testing](#verification-and-testing)
+13. [Production Deployment](#production-deployment)
+14. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -35,6 +36,104 @@ This guide provides complete step-by-step instructions for setting up the Unicor
 - **Apache**: 2.4+
 - **PHP**: 8.3+
 - **Node.js**: 18+ (for some development tools)
+
+---
+
+## 🔒 Security Configuration
+
+**⚠️ CRITICAL: Complete this section BEFORE proceeding with the installation.**
+
+The Unicorn Investing Platform uses centralized configuration management for all sensitive data including API keys, database credentials, and secrets.
+
+### 1. Configure Sensitive Data
+
+```bash
+# Navigate to the config directory
+cd /path/to/unicorninvesting/config
+
+# Copy the template file
+cp secrets.json.template secrets.json
+
+# Edit the configuration file with your actual credentials
+nano secrets.json
+```
+
+### 2. Required Configuration Items
+
+**Edit `config/secrets.json` and replace ALL placeholder values:**
+
+#### **API Keys** (Required for economic data)
+```json
+"api_keys": {
+  "fred_api_key": "YOUR_ACTUAL_FRED_API_KEY",
+  "bea_api_key": "YOUR_ACTUAL_BEA_API_KEY",
+  "alpha_vantage_api_key": "YOUR_ACTUAL_ALPHA_VANTAGE_API_KEY"
+}
+```
+
+**🔗 Get your API keys:**
+- **FRED API**: https://fred.stlouisfed.org/docs/api/api_key.html (FREE)
+- **BEA API**: https://www.bea.gov/API/signup/index.cfm (FREE)
+- **Alpha Vantage**: https://www.alphavantage.co/support/#api-key (FREE tier available)
+
+#### **Database Credentials** (Customize these)
+```json
+"database": {
+  "mysql": {
+    "development": {
+      "username": "your_secure_username",
+      "password": "your_secure_password_123!"
+    },
+    "production": {
+      "username": "your_prod_username", 
+      "password": "your_super_secure_prod_password!"
+    }
+  }
+}
+```
+
+#### **IBKR Configuration** (If using Interactive Brokers)
+```json
+"ibkr": {
+  "account_id": "YOUR_IBKR_ACCOUNT_ID",
+  "username": "YOUR_IBKR_USERNAME"
+}
+```
+
+#### **Application Secrets** (Generate secure random strings)
+```json
+"application": {
+  "secret_key": "generate-random-32-char-string",
+  "jwt_secret": "generate-random-32-char-string", 
+  "encryption_key": "generate-random-32-char-string"
+}
+```
+
+**🛡️ Generate secure keys:**
+```bash
+# Generate secure random keys
+python3 -c "import secrets; print('Secret key:', secrets.token_urlsafe(32))"
+python3 -c "import secrets; print('JWT secret:', secrets.token_urlsafe(32))"
+python3 -c "import secrets; print('Encryption key:', secrets.token_urlsafe(32))"
+```
+
+### 3. Verify Configuration Security
+
+```bash
+# Test your configuration
+cd /path/to/unicorninvesting
+python3 config/usage_examples.py
+
+# You should see successful configuration access, NOT errors about template values
+```
+
+### 4. Security Best Practices
+
+- **Never commit `config/secrets.json` to version control** (already in .gitignore)
+- **Use different passwords for development, testing, and production environments**
+- **Regularly rotate API keys and passwords**
+- **Use strong passwords with special characters, numbers, and mixed case**
+- **Keep backup copies of your configuration in a secure location**
 
 ---
 
@@ -82,6 +181,8 @@ git submodule update --init --recursive
 
 ## Database Configuration
 
+**⚠️ IMPORTANT: Use the credentials you configured in `config/secrets.json` (Security Configuration section).**
+
 ### 1. MySQL Installation and Setup
 
 ```bash
@@ -100,52 +201,109 @@ sudo mysql -u root -p
 
 -- Create databases
 CREATE DATABASE unicorn_analytics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE unicorn_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE unicorn_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE unicorninvesting_drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE stlouisintegration_drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE angelicafeliciano_drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Create users with strong passwords
-CREATE USER 'unicorn_user'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD_HERE';
-CREATE USER 'drupal_main'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD_HERE';
-CREATE USER 'drupal_stlouis'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD_HERE';
-CREATE USER 'drupal_angelica'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD_HERE';
+-- Create users with the passwords from your config/secrets.json
+-- Replace 'your_secure_username' and 'your_secure_password_123!' with your actual credentials
+CREATE USER 'your_secure_username'@'localhost' IDENTIFIED BY 'your_secure_password_123!';
+CREATE USER 'your_prod_username'@'localhost' IDENTIFIED BY 'your_super_secure_prod_password!';
 
--- Grant privileges
-GRANT ALL PRIVILEGES ON unicorn_analytics.* TO 'unicorn_user'@'localhost';
-GRANT ALL PRIVILEGES ON unicorninvesting_drupal.* TO 'drupal_main'@'localhost';
-GRANT ALL PRIVILEGES ON stlouisintegration_drupal.* TO 'drupal_stlouis'@'localhost';
-GRANT ALL PRIVILEGES ON angelicafeliciano_drupal.* TO 'drupal_angelica'@'localhost';
+-- Grant privileges for development and production users
+GRANT ALL PRIVILEGES ON unicorn_dev.* TO 'your_secure_username'@'localhost';
+GRANT ALL PRIVILEGES ON unicorn_analytics.* TO 'your_prod_username'@'localhost';
+GRANT ALL PRIVILEGES ON unicorn_test.* TO 'root'@'localhost';
+
+-- Grant Drupal access (you can use the same user or create separate ones)
+GRANT ALL PRIVILEGES ON unicorninvesting_drupal.* TO 'your_secure_username'@'localhost';
+GRANT ALL PRIVILEGES ON stlouisintegration_drupal.* TO 'your_secure_username'@'localhost';
+GRANT ALL PRIVILEGES ON angelicafeliciano_drupal.* TO 'your_secure_username'@'localhost';
 
 FLUSH PRIVILEGES;
 EXIT;
 ```
 
-### 3. Database Configuration File
+### 3. Verify Database Configuration
 
-Create `/workspaces/unicorninvesting/database/config/database.env`:
+**Test your database configuration using the secure config manager:**
 
 ```bash
-# Database Configuration
-DB_HOST=localhost
-DB_PORT=3306
+# Navigate to project directory
+cd /path/to/unicorninvesting
 
-# Main Analytics Database
-ANALYTICS_DB_NAME=unicorn_analytics
-ANALYTICS_DB_USER=unicorn_user
-ANALYTICS_DB_PASSWORD=YOUR_STRONG_PASSWORD
+# Test database connection using secure config
+python3 -c "
+from config.config_manager import get_database_config, get_database_url
+try:
+    # Test development environment
+    dev_config = get_database_config('development')
+    dev_url = get_database_url('development')
+    print('✅ Development database configuration loaded successfully')
+    print(f'   Database: {dev_config[\"database\"]} on {dev_config[\"host\"]}:{dev_config[\"port\"]}')
+    
+    # Test production environment
+    prod_config = get_database_config('production')
+    prod_url = get_database_url('production')
+    print('✅ Production database configuration loaded successfully')
+    print(f'   Database: {prod_config[\"database\"]} on {prod_config[\"host\"]}:{prod_config[\"port\"]}')
+    
+except Exception as e:
+    print(f'❌ Database configuration error: {e}')
+    print('📝 Please check your config/secrets.json file')
+"
 
-# Drupal Databases
-DRUPAL_MAIN_DB_NAME=unicorninvesting_drupal
-DRUPAL_MAIN_DB_USER=drupal_main
-DRUPAL_MAIN_DB_PASSWORD=YOUR_STRONG_PASSWORD
+# Test actual MySQL connection
+python3 -c "
+import pymysql
+from config.config_manager import get_database_config
+try:
+    db_config = get_database_config('development')
+    connection = pymysql.connect(
+        host=db_config['host'],
+        port=db_config['port'],
+        user=db_config['username'],
+        password=db_config['password'],
+        database=db_config['database']
+    )
+    print('✅ MySQL connection successful!')
+    connection.close()
+except Exception as e:
+    print(f'❌ MySQL connection failed: {e}')
+"
+```
 
-DRUPAL_STLOUIS_DB_NAME=stlouisintegration_drupal
-DRUPAL_STLOUIS_DB_USER=drupal_stlouis
-DRUPAL_STLOUIS_DB_PASSWORD=YOUR_STRONG_PASSWORD
+### 4. Database Configuration Migration
 
-DRUPAL_ANGELICA_DB_NAME=angelicafeliciano_drupal
-DRUPAL_ANGELICA_DB_USER=drupal_angelica
-DRUPAL_ANGELICA_DB_PASSWORD=YOUR_STRONG_PASSWORD
+**If you have existing configurations that reference the old database.json:**
+
+The platform now uses centralized configuration management. Old references to `config/database.json` should be updated:
+
+**Before (Old Method):**
+```python
+# OLD - Don't use this anymore
+import json
+with open('config/database.json') as f:
+    config = json.load(f)
+db_config = config['development']
+```
+
+**After (New Secure Method):**
+```python
+# NEW - Use this instead
+from config.config_manager import get_database_config, get_database_url
+
+# Get configuration for specific environment
+db_config = get_database_config('development')  # or 'production'
+
+# Get SQLAlchemy URL directly
+database_url = get_database_url('development')
+
+# Create SQLAlchemy engine
+from sqlalchemy import create_engine
+engine = create_engine(database_url)
 ```
 
 ---
@@ -269,6 +427,8 @@ Create `/workspaces/unicorninvesting/BackendPython/Lean/Launcher/config.json`:
 
 ## Data Sources Integration
 
+**⚠️ IMPORTANT: Ensure your API keys are configured in `config/secrets.json` before proceeding.**
+
 ### 1. Interactive Brokers (IBKR) Setup
 
 The platform integrates with Interactive Brokers for live trading and market data through the Client Portal Gateway.
@@ -276,6 +436,7 @@ The platform integrates with Interactive Brokers for live trading and market dat
 #### Prerequisites
 - Active Interactive Brokers account
 - Java 8+ installed for running the gateway
+- IBKR credentials configured in `config/secrets.json`
 
 #### Download and Setup IBKR Gateway
 
@@ -312,9 +473,11 @@ proxyRemotehostForLocalhost: true
 
 #### Authentication Setup
 
+**The platform automatically uses IBKR credentials from your secure configuration:**
+
 1. **Start the Gateway**: Run the gateway with the configuration above
 2. **Access Web Interface**: Navigate to https://solid-acorn-gw6xx47pqxfv99p-5000.app.github.dev/
-3. **Login**: Use your IBKR credentials and complete 2FA if required
+3. **Login**: Use the IBKR credentials you configured in `config/secrets.json`
 4. **Verify Connection**: The gateway should show "authenticated: true" status
 
 #### Test IBKR Integration
@@ -323,15 +486,50 @@ proxyRemotehostForLocalhost: true
 # Activate Python environment
 source /workspaces/unicorninvesting/.venv/bin/activate
 
-# Test IBKR connection
+# Test IBKR connection using secure config
 cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers
-python IBKRClientPortalConnector.py
+python -c "
+from config.config_manager import get_ibkr_config
+ibkr_config = get_ibkr_config()
+print(f'✅ IBKR Configuration loaded: Account {ibkr_config[\"account_id\"]} ({ibkr_config[\"trading_mode\"]})')
+"
 
 # Test ETH data collection
 python eth_data_collector.py
 ```
 
-### 2. Yahoo Finance Setup
+### 2. Economic Data APIs Setup
+
+**✅ FRED and BEA APIs configured automatically from your `config/secrets.json`.**
+
+#### Verify Economic Data API Configuration
+
+```bash
+# Test your API keys
+cd /workspaces/unicorninvesting
+python3 -c "
+from config.config_manager import get_api_key
+try:
+    fred_key = get_api_key('fred')
+    bea_key = get_api_key('bea')
+    print('✅ FRED API Key configured successfully')
+    print('✅ BEA API Key configured successfully')
+    print('🎯 Economic data integration ready!')
+except Exception as e:
+    print(f'❌ API Key error: {e}')
+    print('📝 Please check your config/secrets.json file')
+"
+
+# Test economic data processing
+cd BackendPython/unicorn/1_data_sources/3_silver
+python economic_indicators_processor.py --test
+```
+
+#### API Key Resources (If you need to get keys)
+- **FRED API**: https://fred.stlouisfed.org/docs/api/api_key.html (FREE)
+- **BEA API**: https://www.bea.gov/API/signup/index.cfm (FREE)
+
+### 3. Yahoo Finance Setup
 
 Yahoo Finance integration requires no authentication and provides free market data.
 
@@ -345,31 +543,27 @@ cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/conne
 python eth_data_collector.py
 ```
 
-### 3. Alpha Vantage Setup
+### 4. Alpha Vantage Setup (Optional)
 
-Alpha Vantage requires an API key for access to financial data.
+Alpha Vantage API key is configured in `config/secrets.json`.
 
-#### Get API Key
-1. Visit https://www.alphavantage.co/support/#api-key
-2. Sign up for a free account
-3. Copy your API key
-
-#### Configure Alpha Vantage
+#### Test Alpha Vantage Configuration
 
 ```bash
-# Create configuration file
-cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage
-
-# Create config.json with your API key
-cat > config.json << EOF
-{
-    "api_key": "YOUR_ALPHA_VANTAGE_API_KEY_HERE",
-    "base_url": "https://www.alphavantage.co/query"
-}
-EOF
+# Test Alpha Vantage API key
+cd /workspaces/unicorninvesting
+python3 -c "
+from config.config_manager import get_api_key
+try:
+    alpha_key = get_api_key('alpha_vantage')
+    print('✅ Alpha Vantage API Key configured successfully')
+except Exception as e:
+    print(f'❌ Alpha Vantage API Key error: {e}')
+    print('💡 Configure alpha_vantage_api_key in config/secrets.json if needed')
+"
 ```
 
-### 4. Data Sources Validation
+### 5. Data Sources Validation
 
 Use the health check script to validate all data source integrations:
 
@@ -381,8 +575,24 @@ Use the health check script to validate all data source integrations:
 The health check will validate:
 - ✅ IBKR Gateway connectivity and authentication status
 - ✅ Yahoo Finance library availability and functionality  
-- ✅ Alpha Vantage API key configuration
+- ✅ Economic data APIs (FRED, BEA) configuration
+- ✅ Alpha Vantage API key configuration (if provided)
 - ✅ Data collection capabilities for each source
+
+### 6. Security Verification
+
+**Ensure no API keys are exposed in your codebase:**
+
+```bash
+# Scan for any remaining hardcoded API keys (should return no results)
+cd /workspaces/unicorninvesting
+grep -r "api_key.*=" --include="*.py" BackendPython/ || echo "✅ No hardcoded API keys found"
+grep -r "API_KEY.*=" --include="*.py" BackendPython/ || echo "✅ No hardcoded API keys found"
+grep -r "password.*=" --include="*.py" BackendPython/ || echo "✅ No hardcoded passwords found"
+
+# Verify secrets.json is in .gitignore
+grep "secrets.json" .gitignore && echo "✅ secrets.json properly ignored by git"
+```
 
 ---
 

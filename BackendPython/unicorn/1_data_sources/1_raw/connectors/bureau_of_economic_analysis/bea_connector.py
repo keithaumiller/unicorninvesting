@@ -22,6 +22,7 @@ import json
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import asdict
 import warnings
@@ -75,12 +76,23 @@ class BEAConnector:
             self.logger.setLevel(logging.INFO)
         
         # API key setup
-        self.api_key = api_key or os.getenv('BEA_API_KEY')
-        if not self.api_key:
-            raise ValueError(
-                "BEA API key required. Either pass api_key parameter or set BEA_API_KEY environment variable.\n"
-                "Get free API key at: https://apps.bea.gov/API/signup/"
-            )
+        if api_key is None:
+            try:
+                # Use secure configuration manager
+                sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent.parent))
+                from config.config_manager import get_api_key
+                self.api_key = get_api_key('bea')
+            except Exception as e:
+                # Fallback to environment variable
+                self.api_key = os.getenv('BEA_API_KEY')
+                if not self.api_key:
+                    raise ValueError(
+                        f"BEA API key required. Configure in config/secrets.json or set BEA_API_KEY environment variable.\n"
+                        f"Configuration error: {e}\n"
+                        "Get free API key at: https://apps.bea.gov/API/signup/"
+                    )
+        else:
+            self.api_key = api_key
         
         # Data directory setup
         if data_dir:

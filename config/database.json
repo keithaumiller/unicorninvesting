@@ -1,9 +1,11 @@
 {
+    "note": "This file is deprecated. Please use config/secrets.json for all sensitive configuration.",
+    "migration_instructions": "Use config.config_manager.get_database_config() to access database configuration securely.",
     "development": {
         "host": "localhost",
         "port": 3306,
         "database": "unicorn_dev",
-        "username": "unicorn",
-        "password": "unicorn123"
+        "username": "MOVED_TO_SECRETS_JSON",
+        "password": "MOVED_TO_SECRETS_JSON"
     }
 }

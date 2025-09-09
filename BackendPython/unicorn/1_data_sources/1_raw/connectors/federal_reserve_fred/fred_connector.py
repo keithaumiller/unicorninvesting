@@ -19,11 +19,13 @@ Key Economic Series for Crypto Alpha Models:
 
 import pandas as pd
 import numpy as np
-import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Union
-from dataclasses import dataclass
 import os
+import sys
+import logging
+from pathlib import Path
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Tuple, Any
+from dataclasses import dataclass
 import json
 import time
 
@@ -63,15 +65,25 @@ class FredConnector:
         Initialize FRED connector with fredapi library.
         
         Args:
-            api_key: FRED API key. If None, looks for FRED_API_KEY environment variable.
+            api_key: FRED API key. If None, uses secure configuration manager.
         """
-        self.api_key = api_key or os.getenv('FRED_API_KEY')
-        
-        if not self.api_key:
-            raise ValueError(
-                "FRED API key required. Either pass api_key parameter or set FRED_API_KEY environment variable.\n"
-                "Get free API key at: https://fred.stlouisfed.org/docs/api/api_key.html"
-            )
+        if api_key is None:
+            try:
+                # Use secure configuration manager
+                sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent.parent))
+                from config.config_manager import get_api_key
+                self.api_key = get_api_key('fred')
+            except Exception as e:
+                # Fallback to environment variable
+                self.api_key = os.getenv('FRED_API_KEY')
+                if not self.api_key:
+                    raise ValueError(
+                        f"FRED API key required. Configure in config/secrets.json or set FRED_API_KEY environment variable.\n"
+                        f"Configuration error: {e}\n"
+                        "Get free API key at: https://fred.stlouisfed.org/docs/api/api_key.html"
+                    )
+        else:
+            self.api_key = api_key
         
         # Initialize fredapi client
         self.fred = Fred(api_key=self.api_key)
