@@ -190,7 +190,44 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON unicorn_drupal.* TO 'unicorn'@'localhost'
 sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
 log_success "MySQL database configured"
 
-log_success "MySQL database configured"
+# Step 10: Set up FRED data collection cron jobs
+log_info "Setting up FRED economic data collection cron jobs..."
+
+# Create cron job for daily comprehensive FRED data collection (evening)
+DAILY_FRED_JOB="0 21 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --daily-update >> /workspaces/unicorninvesting/logs/fred_daily.log 2>&1"
+
+# Create cron job for 15-minute delta FRED data collection (critical indicators only)
+DELTA_FRED_JOB="*/15 * * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --delta-update >> /workspaces/unicorninvesting/logs/fred_delta.log 2>&1"
+
+# Create logs directory
+mkdir -p /workspaces/unicorninvesting/logs
+
+# Check if cron jobs already exist
+if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --daily-update"; then
+    # Add daily job
+    (crontab -l 2>/dev/null; echo "$DAILY_FRED_JOB") | crontab -
+    log_success "Daily FRED data collection cron job added (9 PM daily)"
+else
+    log_success "Daily FRED cron job already exists"
+fi
+
+if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --delta-update"; then
+    # Add delta job
+    (crontab -l 2>/dev/null; echo "$DELTA_FRED_JOB") | crontab -
+    log_success "Delta FRED data collection cron job added (every 15 minutes)"
+else
+    log_success "Delta FRED cron job already exists"
+fi
+
+# Start cron service if not running
+if ! pgrep cron > /dev/null; then
+    sudo service cron start
+    log_success "Cron service started"
+else
+    log_success "Cron service already running"
+fi
+
+log_success "FRED data collection automation configured"
 
 # Add to ~/.bashrc for persistent aliases
 if [ -f ~/.bashrc ]; then
