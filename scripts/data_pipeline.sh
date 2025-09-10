@@ -110,6 +110,31 @@ collect_bea_data() {
     fi
 }
 
+# Collect Yahoo Finance asset data (ETH, Forex, etc.)
+collect_yahoo_finance_data() {
+    local interval="$1"
+    local yahoo_dir="$PROJECT_ROOT/BackendPython/unicorn/1_data_sources/1_raw/connectors/yahoo_finance"
+    
+    log_message "INFO" "📊 Collecting Yahoo Finance asset data (${interval} interval)..."
+    
+    cd "$yahoo_dir" || {
+        log_message "ERROR" "Failed to change to Yahoo Finance directory"
+        return 1
+    }
+    
+    # Collect all assets for the specified interval using unified collector
+    python3 unified_asset_collector.py --all-assets --interval "$interval"
+    
+    local exit_code=$?
+    if [[ $exit_code -eq 0 ]]; then
+        log_message "SUCCESS" "Yahoo Finance data collection completed successfully ($interval)"
+        return 0
+    else
+        log_message "ERROR" "Yahoo Finance data collection failed (exit code: $exit_code, interval: $interval)"
+        return 1
+    fi
+}
+
 # Process bronze layer economic indicators
 process_bronze_layer() {
     local intervals="$1"
@@ -140,7 +165,7 @@ run_daily_pipeline() {
     echo "=============================================="
     
     local success_count=0
-    local total_steps=4
+    local total_steps=6
     
     # Step 1: Check virtual environment
     if check_venv; then
@@ -157,7 +182,17 @@ run_daily_pipeline() {
         ((success_count++))
     fi
     
-    # Step 4: Process bronze layer (daily intervals)
+    # Step 4: Collect Yahoo Finance daily data (ETH, Forex)
+    if collect_yahoo_finance_data "1d"; then
+        ((success_count++))
+    fi
+    
+    # Step 5: Collect Yahoo Finance hourly data (ETH, Forex)
+    if collect_yahoo_finance_data "1h"; then
+        ((success_count++))
+    fi
+    
+    # Step 6: Process bronze layer (daily intervals)
     if process_bronze_layer "1_day"; then
         ((success_count++))
     fi
@@ -185,7 +220,7 @@ run_delta_pipeline() {
     echo "==========================================="
     
     local success_count=0
-    local total_steps=4
+    local total_steps=5
     
     # Step 1: Check virtual environment
     if check_venv; then
@@ -202,7 +237,12 @@ run_delta_pipeline() {
         ((success_count++))
     fi
     
-    # Step 4: Process bronze layer (daily intervals, quick update)
+    # Step 4: Collect Yahoo Finance minute data (ETH, Forex - high frequency)
+    if collect_yahoo_finance_data "1m"; then
+        ((success_count++))
+    fi
+    
+    # Step 5: Process bronze layer (daily intervals, quick update)
     if process_bronze_layer "1_day"; then
         ((success_count++))
     fi
@@ -225,21 +265,40 @@ run_delta_pipeline() {
 
 # High-frequency processing (1-hour intervals)
 run_hourly_processing() {
-    log_message "INFO" "🕐 Starting hourly bronze layer processing..."
+    log_message "INFO" "🕐 Starting hourly processing pipeline..."
     echo "🕐 UNICORN HOURLY PROCESSING - $(date '+%Y-%m-%d %H:%M:%S')"
     echo "======================================="
     
-    # Check virtual environment
-    if ! check_venv; then
-        return 1
+    local success_count=0
+    local total_steps=2
+    
+    # Step 1: Check virtual environment
+    if check_venv; then
+        ((success_count++))
     fi
     
-    # Process hourly intervals
-    if process_bronze_layer "1_hour"; then
-        log_message "SUCCESS" "Hourly processing completed successfully"
+    # Step 2: Collect Yahoo Finance hourly data (ETH, Forex)
+    if collect_yahoo_finance_data "1h"; then
+        ((success_count++))
+    fi
+    
+    # Optional: Process hourly bronze layer (if implemented)
+    # if process_bronze_layer "1_hour"; then
+    #     ((success_count++))
+    # fi
+    
+    # Pipeline summary
+    echo ""
+    echo "📊 HOURLY PROCESSING SUMMARY"
+    echo "============================"
+    echo "Steps completed: $success_count/$total_steps"
+    echo "Success rate: $(( success_count * 100 / total_steps ))%"
+    
+    if [[ $success_count -eq $total_steps ]]; then
+        log_message "SUCCESS" "Hourly processing completed successfully ($success_count/$total_steps steps)"
         return 0
     else
-        log_message "ERROR" "Hourly processing failed"
+        log_message "WARNING" "Hourly processing completed with issues ($success_count/$total_steps steps)"
         return 1
     fi
 }
@@ -339,25 +398,31 @@ main() {
             echo "  $0 [COMMAND] [OPTIONS]"
             echo ""
             echo "COMMANDS:"
-            echo "  daily           Run full daily pipeline (FRED + BEA + bronze processing)"
-            echo "  delta           Run delta pipeline (quick updates + processing)"
-            echo "  hourly          Process bronze layer with hourly intervals"
+            echo "  daily           Run full daily pipeline (FRED + BEA + Yahoo Finance + bronze processing)"
+            echo "  delta           Run delta pipeline (quick updates + minute-level asset data)"
+            echo "  hourly          Process hourly asset data collection (ETH, Forex)"
             echo "  status          Show pipeline and system status"
             echo "  logs [N]        Show recent N log entries (default: 20)"
             echo "  help            Show this help message"
             echo ""
+            echo "DATA SOURCES:"
+            echo "  • FRED API: Economic indicators and macro data"
+            echo "  • BEA API: Bureau of Economic Analysis datasets"
+            echo "  • Yahoo Finance: ETH, Forex (EURUSD, USDJPY, GBPUSD, AUDUSD, etc.)"
+            echo "  • Intervals: 1-minute (delta), 1-hour (hourly), 1-day (daily)"
+            echo ""
             echo "EXAMPLES:"
             echo "  $0 daily        # Run complete daily data pipeline"
-            echo "  $0 delta        # Run quick delta updates"
-            echo "  $0 hourly       # Process hourly bronze layer data"
+            echo "  $0 delta        # Run quick delta updates (includes 1m asset data)"
+            echo "  $0 hourly       # Collect hourly ETH and Forex data"
             echo "  $0 status       # Check system status"
             echo "  $0 logs 50      # Show last 50 log entries"
             echo ""
             echo "AUTOMATION:"
             echo "  This script is designed to be run via cron jobs:"
-            echo "  • Daily pipeline: Comprehensive data collection + processing"
-            echo "  • Delta pipeline: Quick updates for critical indicators"
-            echo "  • Hourly processing: High-frequency bronze layer updates"
+            echo "  • Daily pipeline: Comprehensive data collection (1d, 1h intervals)"
+            echo "  • Delta pipeline: Quick updates + minute-level asset data (1m interval)"
+            echo "  • Hourly processing: High-frequency asset data collection (1h interval)"
             ;;
         *)
             error "Invalid command: ${1:-}"

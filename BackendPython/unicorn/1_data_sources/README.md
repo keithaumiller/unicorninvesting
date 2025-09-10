@@ -64,9 +64,16 @@ External APIs → Connectors → Staging → Bronze → Silver → Gold → Data
   - **Automation**: Delta updates every 6 hours, daily updates at 6 AM
   - **Integration**: 50+ alpha model features with economic regime detection
   - **Key Indicators**: Real GDP growth, personal consumption, business investment, trade balance
-- `YahooFinanceMinuteData.py` - Yahoo Finance free API integration
+- ✅ **Yahoo Finance Unified Asset Collector** - **UPDATED SEPTEMBER 2025**
+  - **Status**: Production deployed with multi-asset automation
+  - **Coverage**: 9 assets (ETH, BTC, 7 major forex pairs) across 3 intervals
+  - **Assets**: ETH-USD, BTC-USD, EURUSD, USDJPY, GBPUSD, AUDUSD, USDCAD, USDCHF, NZDUSD
+  - **Intervals**: 1-minute (delta), 1-hour (hourly/daily), 1-day (daily)
+  - **Automation**: Daily (1d+1h), Delta (1m every 30min), Hourly (1h every hour)
+  - **Storage**: Organized by asset category and interval with timestamped files
+  - **Integration**: Fully integrated with data pipeline and cron automation
+- `YahooFinanceMinuteData.py` - LEAN framework integration (legacy)
 - `AlphaVantageMinuteData.py` - Alpha Vantage API connector
-- `YAHOO_FINANCE_INTEGRATION_GUIDE.md` - Integration documentation
 
 **Standards**:
 - Error handling and retry logic

@@ -26,6 +26,7 @@ info() { echo -e "${BLUE}ℹ️  $1${NC}"; }
 
 echo "🚀 UNICORN DATA PROCESSING CRON SETUP"
 echo "======================================"
+echo "Enhanced with Yahoo Finance Asset Collection (ETH, Forex)"
 
 # Ensure scripts are executable
 chmod +x "$PROJECT_ROOT/scripts/data_pipeline.sh"
@@ -111,9 +112,9 @@ fi
 
 echo ""
 info "📅 Complete cron schedule configured:"
-echo "  🕙 Daily Pipeline (10:00 PM): Full FRED + BEA + Bronze Layer Processing"
-echo "  ⚡ Delta Pipeline (every 30 min): Quick updates + Bronze Processing"
-echo "  🕐 Hourly Processing (every hour): High-frequency bronze datasets"
+echo "  🕙 Daily Pipeline (10:00 PM): Full FRED + BEA + Yahoo Finance (1d, 1h) + Bronze Processing"
+echo "  ⚡ Delta Pipeline (every 30 min): Quick updates + Yahoo Finance (1m) + Bronze Processing"
+echo "  🕐 Hourly Processing (every hour): Yahoo Finance asset collection (1h intervals)"
 echo "  📊 Legacy FRED Daily (9:00 PM): Individual FRED connector backup"
 echo "  ⏱️  Legacy FRED Delta (every 15 min): Individual FRED connector backup"
 echo "  🌅 Legacy BEA Daily (6:00 AM): Individual BEA connector backup"
@@ -122,10 +123,17 @@ echo "  🔄 Legacy BEA Delta (every 6 hours): Individual BEA connector backup"
 echo ""
 info "🎯 Primary pipeline handles:"
 echo "  • Raw data collection (FRED + BEA APIs)"
+echo "  • Yahoo Finance assets (ETH, BTC, 7 major forex pairs)"
+echo "  • Multi-interval collection (1m, 1h, 1d)"
 echo "  • Bronze layer processing (standardized datasets)"
 echo "  • Feature engineering (lag, momentum, volatility, regime)"
-echo "  • Multi-timeframe processing (1-day, 1-hour intervals)"
 echo "  • XGBoost-ready dataset generation"
+
+echo ""
+info "💰 Yahoo Finance Assets (9 total):"
+echo "  • Crypto: ETH-USD, BTC-USD"
+echo "  • Forex: EURUSD, USDJPY, GBPUSD, AUDUSD, USDCAD, USDCHF, NZDUSD"
+echo "  • Intervals: 1-minute (delta), 1-hour (hourly/daily), 1-day (daily)"
 
 echo ""
 info "📊 Log files location: $PROJECT_ROOT/logs/"
