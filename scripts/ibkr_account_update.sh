@@ -13,7 +13,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 IBKR_DATA_DIR="$PROJECT_ROOT/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/accountinfo"
 LOG_FILE="$IBKR_DATA_DIR/cron_update.log"
-ACCOUNT_ID="U21748632"
+ACCOUNT_ID="YOU SHOULD BE LOOKING IN THE SECRETS FILE FOR YOUR ACCOUNT ID"
 
 # Logging function
 log() {

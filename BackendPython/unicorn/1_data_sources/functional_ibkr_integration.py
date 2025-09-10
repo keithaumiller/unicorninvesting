@@ -42,9 +42,11 @@ from typing import Dict, List, Optional, Tuple
 # Import secure configuration
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 try:
-    from config.config_manager import get_ibkr_config
-    IBKR_CONFIG = get_ibkr_config()
-    DEFAULT_ACCOUNT_ID = IBKR_CONFIG['account_id']
+    from scripts.secrets_manager import SecretsManager
+    secrets = SecretsManager()
+    ibkr_config = secrets.get_ibkr_config()
+    DEFAULT_ACCOUNT_ID = ibkr_config['account_id']
+    print(f"✅ Loaded IBKR account ID from secrets: {DEFAULT_ACCOUNT_ID}")
 except Exception as e:
     print(f"⚠️ Could not load IBKR config: {e}")
     DEFAULT_ACCOUNT_ID = "DUM785491"  # Fallback

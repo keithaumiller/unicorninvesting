@@ -8,6 +8,18 @@ applyTo: '**'
 
 Unicorn Investing is a financial analytics platform for algorithmic trading with LEAN framework integration.
 
+## 🚨 CRITICAL SECURITY RULE - DO NOT TOUCH SECRETS.JSON
+
+**❌ NEVER EDIT OR MODIFY `config/secrets.json`**
+- This file contains the user's actual API keys and credentials
+- It is gitignored and should remain exactly as the user configured it
+- Do NOT suggest changes, updates, or modifications to this file
+- Do NOT create placeholder versions or template versions of this file
+- Use `scripts/secrets_manager.py` to ACCESS credentials, never to modify them
+- If credentials are needed, instruct user to run `python3 scripts/setup_credentials.py`
+
+**This is a hard rule with no exceptions - protect user credentials at all costs.**
+
 ## ⚠️ IMPORTANT - First Time Setup After Codespace Restart
 
 **After codespace restart or pause:**

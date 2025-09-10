@@ -51,6 +51,44 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - Automated restore script
 - Compressed archive for distribution
 
+### `comprehensive_security_audit.sh`
+**Comprehensive security audit and credential scanning tool** - Use this to validate security posture!
+
+```bash
+# Run full security audit
+./scripts/comprehensive_security_audit.sh
+
+# Scan only (no setup guidance)
+./scripts/comprehensive_security_audit.sh --scan-only
+
+# Setup credentials interactively
+./scripts/comprehensive_security_audit.sh --setup-only
+
+# Verbose output for detailed analysis
+./scripts/comprehensive_security_audit.sh --verbose
+```
+
+**Features:**
+- ✅ **Dynamic pattern loading** from `config/secrets.json`
+- ✅ **Credential exposure scanning** across entire codebase
+- ✅ **Zero false positives** - uses actual credential values for scanning
+- ✅ **Specific migration guidance** based on your configuration
+- ✅ **Security configuration validation** 
+- ✅ **SecretsManager integration testing**
+- ✅ **Safe operation** - no file deletion capabilities
+- ✅ **Intelligent reporting** with actionable recommendations
+
+**Scans for:**
+- API keys (FRED, BEA, Alpha Vantage)
+- Database credentials (development, production, testing)
+- IBKR account configuration
+- Application secrets and tokens
+- Generic credential patterns
+
+**Replaces:** `security_audit.sh`, `security_cleanup.sh`, `migration_helper.py`
+- Automated restore script
+- Compressed archive for distribution
+
 **Restore Usage:**
 ```bash
 # Extract exported baseline

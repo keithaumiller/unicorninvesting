@@ -86,3 +86,11 @@ logs/api_*.log
 *.credentials
 *.secrets
 **/debug_*.log
+
+# Configuration files with sensitive data
+config/secrets.json
+config/secrets.yaml
+config/.env
+config/*.key
+**/.env
+**/secrets.json

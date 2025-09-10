@@ -79,9 +79,10 @@ class BEAConnector:
         if api_key is None:
             try:
                 # Use secure configuration manager
-                sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent.parent))
-                from config.config_manager import get_api_key
-                self.api_key = get_api_key('bea')
+                sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent.parent.parent))
+                from scripts.secrets_manager import SecretsManager
+                secrets = SecretsManager()
+                self.api_key = secrets.get_api_key('bea_api_key')
             except Exception as e:
                 # Fallback to environment variable
                 self.api_key = os.getenv('BEA_API_KEY')

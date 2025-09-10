@@ -255,14 +255,15 @@ start_ibkr_gateway() {
     if curl -s http://localhost:5000/v1/api/iserver/auth/status >/dev/null 2>&1; then
         echo -e "${GREEN}✅ IBKR Gateway is already running${NC}"
         
-        # Check authentication status and authenticate if needed
-        AUTH_STATUS=$(curl -s http://localhost:5000/v1/api/iserver/auth/status | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('authenticated', False))" 2>/dev/null)
-        if [ "$AUTH_STATUS" = "True" ]; then
-            echo -e "${GREEN}✅ IBKR Gateway is authenticated${NC}"
+        # Check authentication status with improved parsing
+        AUTH_RESPONSE=$(curl -s http://localhost:5000/v1/api/iserver/auth/status 2>/dev/null)
+        if echo "$AUTH_RESPONSE" | grep -q '"authenticated"[[:space:]]*:[[:space:]]*true' 2>/dev/null; then
+            echo -e "${GREEN}✅ IBKR Gateway is authenticated and ready${NC}"
         else
-            echo -e "${YELLOW}⚠️  IBKR Gateway is running but not authenticated${NC}"
-            echo ""
-            authenticate_ibkr_gateway
+            echo -e "${YELLOW}⚠️  IBKR Gateway is running but requires authentication${NC}"
+            echo -e "${BLUE}📱 Authentication URL: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
+            echo -e "${YELLOW}💡 To enable live trading, authenticate via the URL above${NC}"
+            echo -e "${YELLOW}   (Paper trading mode recommended for development)${NC}"
         fi
     else
         echo -e "${YELLOW}🔄 Starting IBKR Gateway...${NC}"
@@ -336,9 +337,9 @@ start_ibkr_gateway() {
                     echo -e "${GREEN}   Gateway ready for authentication${NC}"
                 fi
                 
-                # Automatically attempt authentication
+                # Show authentication information
                 echo ""
-                authenticate_ibkr_gateway
+                show_ibkr_authentication_info
                 
                 echo ""
                 echo -e "${BLUE}📱 Gateway accessible via: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
@@ -367,6 +368,25 @@ start_ibkr_gateway() {
     fi
 }
 
+# Function to show authentication information (non-blocking)
+show_ibkr_authentication_info() {
+    echo -e "${BLUE}🔐 IBKR Gateway Authentication Info${NC}"
+    echo ""
+    
+    # Check current authentication status
+    AUTH_RESPONSE=$(curl -s http://localhost:5000/v1/api/iserver/auth/status 2>/dev/null)
+    
+    if echo "$AUTH_RESPONSE" | grep -q '"authenticated"[[:space:]]*:[[:space:]]*true' 2>/dev/null; then
+        echo -e "${GREEN}✅ Gateway is authenticated and ready for trading${NC}"
+        return 0
+    fi
+    
+    echo -e "${YELLOW}📱 Authentication required for live trading${NC}"
+    echo -e "${BLUE}   URL: https://$(get_codespace_hostname)-5000.app.github.dev/${NC}"
+    echo -e "${YELLOW}   Recommended: Paper Trading mode for development${NC}"
+    return 0
+}
+
 # Function to authenticate to IBKR Gateway
 authenticate_ibkr_gateway() {
     echo -e "${BLUE}🔐 IBKR Gateway Authentication${NC}"
@@ -387,7 +407,7 @@ authenticate_ibkr_gateway() {
     AUTH_RESPONSE=$(curl -s http://localhost:5000/v1/api/iserver/auth/status 2>/dev/null)
     
     # Try to parse authentication status
-    if echo "$AUTH_RESPONSE" | grep -q "authenticated.*true" 2>/dev/null; then
+    if echo "$AUTH_RESPONSE" | grep -q '"authenticated"[[:space:]]*:[[:space:]]*true' 2>/dev/null; then
         echo -e "${GREEN}✅ Already authenticated to IBKR Gateway${NC}"
         return 0
     fi

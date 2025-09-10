@@ -14,9 +14,11 @@ from datetime import datetime
 # Import secure configuration
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 try:
-    from config.config_manager import get_ibkr_config
-    IBKR_CONFIG = get_ibkr_config()
-    ACCOUNT_ID = IBKR_CONFIG['account_id']
+    from scripts.secrets_manager import SecretsManager
+    secrets = SecretsManager()
+    ibkr_config = secrets.get_ibkr_config()
+    ACCOUNT_ID = ibkr_config['account_id']
+    print(f"✅ Loaded IBKR account ID from secrets: {ACCOUNT_ID}")
 except Exception as e:
     print(f"⚠️ Could not load IBKR config from config/secrets.json: {e}")
     print("Using fallback account ID for exploration...")

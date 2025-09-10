@@ -15,17 +15,29 @@ class UnicornArchitectureValidator:
     """Validates entire unicorn backend architecture compliance."""
     
     def __init__(self, base_path: str = "."):
-        self.base_path = Path(base_path)
+        self.base_path = Path(base_path).resolve()
+        self.unicorn_backend_path = self.base_path / "BackendPython" / "unicorn"
+        
         # Updated to support full LEAN 6-layer architecture
         self.required_numbered_dirs = {
             '1_data_sources', '2_alpha_models', '3_risk_management', 
             '4_portfolios', '5_execution_models', '6_algorithms'
         }
-        self.required_root_files = {
+        self.required_backend_files = {
             'ARCHITECTURE.md', 'README.md'
         }
-        self.allowed_dirs = {
+        self.allowed_backend_dirs = {
             'config', 'docs', 'legacy', 'scripts', 'tests', 'examples'
+        }
+        self.allowed_root_dirs = {
+            'BackendPython', 'WebFrontend', 'config', 'deployment', 
+            'docs', 'scripts', 'tests', '.git', '.github', '.vscode',
+            '.devcontainer', 'node_modules', '.venv', '__pycache__'
+        }
+        self.allowed_root_files = {
+            'README.md', 'LICENSE', 'INSTALLATION.md', 'CONTRIBUTING.md',
+            'SECURITY.md', 'TERMS_OF_SERVICE.md', 'DISCLAIMER.md',
+            '.gitignore', '.gitmodules', 'deploy.yml'
         }
         self.errors = []
         self.warnings = []
@@ -44,6 +56,9 @@ class UnicornArchitectureValidator:
         # Check for legacy/redundant directories
         self._validate_no_legacy_dirs()
         
+        # Check for misplaced test/debug files
+        self._validate_no_misplaced_files()
+        
         # Check documentation standards
         self._validate_documentation_standards()
         
@@ -52,30 +67,50 @@ class UnicornArchitectureValidator:
     
     def _validate_root_structure(self):
         """Validate root directory structure."""
-        existing_items = set(item.name for item in self.base_path.iterdir())
+        # Validate main project root structure - directories
+        existing_root_dirs = set(item.name for item in self.base_path.iterdir() if item.is_dir())
+        existing_root_files = set(item.name for item in self.base_path.iterdir() if item.is_file())
         
-        # Check for required numbered directories
-        missing_numbered = self.required_numbered_dirs - existing_items
+        # Check for unexpected root directories
+        unexpected_root_dirs = existing_root_dirs - self.allowed_root_dirs
+        if unexpected_root_dirs:
+            self.errors.append(f"Unexpected root directories found: {unexpected_root_dirs}")
+        
+        # Check for unexpected root files
+        unexpected_root_files = existing_root_files - self.allowed_root_files
+        if unexpected_root_files:
+            self.errors.append(f"Unexpected root files found: {unexpected_root_files}")
+        
+        # Check that BackendPython/unicorn exists
+        if not self.unicorn_backend_path.exists():
+            self.errors.append(f"Missing BackendPython/unicorn directory")
+            return
+            
+        # Validate unicorn backend structure
+        existing_backend_items = set(item.name for item in self.unicorn_backend_path.iterdir())
+        
+        # Check for required numbered directories in backend
+        missing_numbered = self.required_numbered_dirs - existing_backend_items
         if missing_numbered:
-            self.errors.append(f"Missing required numbered directories: {missing_numbered}")
+            self.errors.append(f"Missing required numbered directories in BackendPython/unicorn: {missing_numbered}")
         
-        # Check for required files
-        missing_files = self.required_root_files - existing_items
-        if missing_files:
-            self.errors.append(f"Missing required root files: {missing_files}")
+        # Check for required backend files
+        missing_backend_files = self.required_backend_files - existing_backend_items
+        if missing_backend_files:
+            self.errors.append(f"Missing required backend files in BackendPython/unicorn: {missing_backend_files}")
         
-        # Check for unexpected directories
-        all_items = set(item.name for item in self.base_path.iterdir() if item.is_dir())
-        expected_dirs = self.required_numbered_dirs | self.allowed_dirs
-        unexpected_dirs = all_items - expected_dirs
+        # Check for unexpected backend directories
+        backend_dirs = set(item.name for item in self.unicorn_backend_path.iterdir() if item.is_dir())
+        expected_backend_dirs = self.required_numbered_dirs | self.allowed_backend_dirs
+        unexpected_backend_dirs = backend_dirs - expected_backend_dirs
         
-        if unexpected_dirs:
-            self.warnings.append(f"Unexpected directories found: {unexpected_dirs}")
+        if unexpected_backend_dirs:
+            self.warnings.append(f"Unexpected backend directories found: {unexpected_backend_dirs}")
     
     def _validate_numbered_directories(self):
-        """Validate numbered directory structure."""
+        """Validate numbered directories follow clean architecture."""
         for dir_name in self.required_numbered_dirs:
-            dir_path = self.base_path / dir_name
+            dir_path = self.unicorn_backend_path / dir_name
             if dir_path.exists():
                 # Check if directory has content
                 contents = list(dir_path.iterdir())
@@ -157,25 +192,77 @@ class UnicornArchitectureValidator:
     
     def _validate_no_legacy_dirs(self):
         """Check for legacy/redundant directories that should be moved."""
-        legacy_dir_names = {
+        # Check at root level for legacy directories
+        root_legacy_dir_names = {
             'algorithms', 'alpha_models', 'backend', 'backtesting',
             'data', 'data_sources', 'eth_framework', 'framework', 'integrations',
-            '4_portfolio_construction',
             'portfolios'  # Root-level portfolios directory is not allowed
         }
         
-        existing_items = set(item.name for item in self.base_path.iterdir() if item.is_dir())
-        found_legacy = legacy_dir_names & existing_items
+        existing_root_items = set(item.name for item in self.base_path.iterdir() if item.is_dir())
+        found_root_legacy = root_legacy_dir_names & existing_root_items
         
-        if found_legacy:
-            self.errors.append(f"Legacy directories found (should be moved/deleted): {found_legacy}")
+        if found_root_legacy:
+            self.errors.append(f"Legacy directories found at root (should be moved/deleted): {found_root_legacy}")
         
-        # Check for directories not in allowed list
-        all_allowed = self.required_numbered_dirs | self.allowed_dirs
-        unexpected_dirs = existing_items - all_allowed
+        # Check within BackendPython/unicorn for legacy directories
+        backend_legacy_dir_names = {
+            '4_portfolio_construction',  # Should be 4_portfolios
+            'portfolio_construction'     # Should be 4_portfolios
+        }
         
-        if unexpected_dirs:
-            self.warnings.append(f"Unexpected directories found: {unexpected_dirs}")
+        if self.unicorn_backend_path.exists():
+            existing_backend_items = set(item.name for item in self.unicorn_backend_path.iterdir() if item.is_dir())
+            found_backend_legacy = backend_legacy_dir_names & existing_backend_items
+            
+            if found_backend_legacy:
+                self.errors.append(f"Legacy directories found in backend (should be moved/deleted): {found_backend_legacy}")
+    
+    def _validate_no_misplaced_files(self):
+        """Validate that test/debug files are not in the root directory."""
+        print("🧪 Checking for misplaced test and debug files...")
+        
+        # Define patterns for files that should not be in root
+        test_file_patterns = {
+            'test_', 'debug_', '*_test.py', '*_debug.py',
+            '*validation*.json', '*_results*.json', '*_simulation*.php'
+        }
+        
+        # Define specific file patterns that indicate test/debug files
+        disallowed_root_patterns = [
+            'test_*', 'debug_*', '*_test.*', '*_debug.*',
+            '*validation*results*.json', '*simulation*.php',
+            '*simulation*.py'
+        ]
+        
+        existing_root_files = [item.name for item in self.base_path.iterdir() if item.is_file()]
+        misplaced_files = []
+        
+        for file_name in existing_root_files:
+            # Check if file matches any disallowed pattern
+            for pattern in disallowed_root_patterns:
+                import fnmatch
+                if fnmatch.fnmatch(file_name, pattern):
+                    misplaced_files.append(file_name)
+                    break
+        
+        if misplaced_files:
+            self.errors.append(f"Test/debug files found in root (should be in tests/): {misplaced_files}")
+        
+        # Check if test files are properly organized
+        tests_dir = self.base_path / 'tests'
+        if tests_dir.exists():
+            # Check for proper test organization
+            test_subdirs = ['simulation_frontend', 'debug', 'validation_results']
+            missing_test_dirs = []
+            
+            for subdir in test_subdirs:
+                subdir_path = tests_dir / subdir
+                if not subdir_path.exists():
+                    missing_test_dirs.append(subdir)
+            
+            if missing_test_dirs:
+                self.warnings.append(f"Missing test organization directories: {missing_test_dirs}")
     
     def _validate_alpha_models_content(self, alpha_models_path: Path):
         """Validate alpha models directory structure."""
@@ -230,8 +317,8 @@ class UnicornArchitectureValidator:
         # Find all .md files in the directory tree
         md_files = []
         
-        # Check the current unicorn backend directory
-        for root, dirs, files in os.walk(self.base_path):
+        # Check the unicorn backend directory
+        for root, dirs, files in os.walk(self.unicorn_backend_path):
             # Skip legacy directory
             if 'legacy' in Path(root).parts:
                 continue
@@ -239,15 +326,13 @@ class UnicornArchitectureValidator:
             for file in files:
                 if file.endswith('.md'):
                     file_path = Path(root) / file
-                    relative_path = file_path.relative_to(self.base_path)
+                    relative_path = file_path.relative_to(self.unicorn_backend_path)
                     md_files.append((file, relative_path, 'backend'))
         
-        # Also check the repository root (parent of BackendPython)
-        repo_root = self.base_path.parent.parent
-        if repo_root.exists():
-            for file in repo_root.iterdir():
-                if file.is_file() and file.name.endswith('.md'):
-                    md_files.append((file.name, f"../../{file.name}", 'root'))
+        # Check the repository root for governance files
+        for file in self.base_path.iterdir():
+            if file.is_file() and file.name.endswith('.md'):
+                md_files.append((file.name, file.name, 'root'))
         
         # Check each .md file against our standards
         allowed_md_files = {'README.md', 'ARCHITECTURE.md'}
@@ -296,19 +381,21 @@ class UnicornArchitectureValidator:
         
         # Check for missing README.md files in key directories
         key_directories = [
-            self.base_path,  # Root should have README.md
-            self.base_path / '1_data_sources',
-            self.base_path / '2_alpha_models',
-            self.base_path / '3_risk_management', 
-            self.base_path / '4_portfolios',
-            self.base_path / '5_execution_models'
+            self.base_path,  # Project root should have README.md
+            self.unicorn_backend_path,  # Backend root should have README.md
+            self.unicorn_backend_path / '1_data_sources',
+            self.unicorn_backend_path / '2_alpha_models',
+            self.unicorn_backend_path / '3_risk_management', 
+            self.unicorn_backend_path / '4_portfolios',
+            self.unicorn_backend_path / '5_execution_models'
         ]
         
         for dir_path in key_directories:
             if dir_path.exists():
                 readme_path = dir_path / 'README.md'
                 if not readme_path.exists():
-                    self.warnings.append(f"Missing README.md in key directory: {dir_path.relative_to(self.base_path)}")
+                    relative_path = dir_path.relative_to(self.base_path) if dir_path != self.base_path else "root"
+                    self.warnings.append(f"Missing README.md in key directory: {relative_path}")
         
         total_violations = len(violations) + len(root_consolidation_needed)
         print(f"   Found {len(md_files)} .md files, {total_violations} violations")
@@ -363,16 +450,22 @@ def main():
     if len(sys.argv) > 1:
         base_path = sys.argv[1]
     else:
-        # Auto-detect if we're in the right directory
+        # Auto-detect based on current working directory
         current_path = Path.cwd()
-        if current_path.name == 'unicorn' and (current_path / 'ARCHITECTURE.md').exists():
+        
+        # Check if we're in the project root or can find it
+        if (current_path / 'BackendPython' / 'unicorn' / 'ARCHITECTURE.md').exists():
             base_path = str(current_path)
-        elif (current_path / 'BackendPython' / 'unicorn' / 'ARCHITECTURE.md').exists():
-            base_path = str(current_path / 'BackendPython' / 'unicorn')
+        elif current_path.name == 'unicorninvesting' and (current_path / 'BackendPython' / 'unicorn' / 'ARCHITECTURE.md').exists():
+            base_path = str(current_path)
+        elif (current_path.parent / 'BackendPython' / 'unicorn' / 'ARCHITECTURE.md').exists():
+            base_path = str(current_path.parent)
         else:
-            print("❌ Could not find unicorn directory with ARCHITECTURE.md")
-            print("Usage: python3 validate_unicorn_architecture.py [path_to_unicorn_dir]")
+            print("❌ Could not find project root with BackendPython/unicorn/ARCHITECTURE.md")
+            print("Usage: python3 validate_unicorn_architecture.py [path_to_project_root]")
             sys.exit(1)
+    
+    validator = UnicornArchitectureValidator(base_path)
     
     validator = UnicornArchitectureValidator(base_path)
     result = validator.validate_structure()
