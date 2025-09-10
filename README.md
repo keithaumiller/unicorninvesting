@@ -17,13 +17,53 @@
 > 
 > **By using this software, you acknowledge reading and accepting all terms and risks.**
 
-## 🚀 **PRODUCTION STATUS: ENHANCED PIPELINE ARCHITECTURE**
+## 📋 Table of Contents
 
-**Last Updated**: September 9, 2025  
+- [📊 Production Status](#-production-status-enhanced-pipeline-architecture)
+- [🚀 Quick Start](#-quick-start-after-codespace-restart)
+- [🏗️ Architecture Overview](#️-architecture-overview)
+- [📁 Project Structure](#-project-structure--documentation)
+- [🎯 System Status](#-comprehensive-system-status)
+- [🤝 Collaboration](#-interested-in-collaborating)
+- [📄 Legal & Contributing](#-legal-information--contributing)
+- [🔑 Key Features](#-key-features)
+
+## 📁 Project Structure & Documentation
+
+### **📚 Legal & Governance Documents**
+- 📄 [**DISCLAIMER.md**](./DISCLAIMER.md) - Financial risk disclosures and limitations
+- 📜 [**TERMS_OF_SERVICE.md**](./TERMS_OF_SERVICE.md) - Usage terms and liability protection
+- 📋 [**LICENSE**](./LICENSE) - MIT License with financial disclaimers
+- 🤝 [**CONTRIBUTING.md**](./CONTRIBUTING.md) - Contribution guidelines and commercial services
+- 🔒 [**SECURITY.md**](./SECURITY.md) - Security policy and vulnerability reporting
+
+### **🏗️ Core System Directories**
+- 🐍 [**BackendPython/**](./BackendPython/README.md) - Python trading engine and LEAN integration
+- 🌐 [**WebFrontend/**](./WebFrontend/README.md) - Drupal 11 web interface and dashboard
+- ⚙️ [**config/**](./config/README.md) - Secure configuration management system
+- 🚀 [**deployment/**](./deployment/README.md) - Production deployment scripts and configurations
+- 🧪 [**tests/**](./tests/README.md) - Comprehensive testing framework
+- 🛠️ [**scripts/**](./scripts/README.md) - Environment setup and utility scripts
+
+### **📖 Documentation**
+- 📚 [**docs/**](./docs/README.md) - Complete technical documentation
+  - 🔌 [**docs/api/**](./docs/api/README.md) - API specifications and references
+  - 🏗️ [**docs/deployment/**](./docs/deployment/README.md) - Deployment guides and procedures
+  - 🔗 [**docs/integration/**](./docs/integration/README.md) - Integration guides and tutorials
+
+---
+
+## 🚀 **Production Status: Enhanced Pipeline Architecture**
+
+**Last Updated**: September 10, 2025  
 **System Status**: ✅ **PRODUCTION READY** - Enhanced silver layer data processing with comprehensive economic integration  
 **New Features**: ✨ Economic silver layer processing + enhanced alpha model integration + multi-criteria model selection  
 **Frontend Status**: 🔄 Drupal 11 functional but validation pending, backend integration in development  
-**Legacy Code**: ✅ R scripts archived in legacy - no migration planned  
+**Legacy Code**: ✅ R scripts archived in legacy - no migration planned
+
+---
+
+## 🏗️ Architecture Overview
 
 An advanced algorithmic trading platform that combines machine learning forecasting with LEAN framework integration for institutional-grade algorithmic trading execution. ✨ **Enhanced with comprehensive economic data processing pipeline featuring 580+ economic indicators and multi-criteria model selection framework.**
 
@@ -562,57 +602,26 @@ The Unicorn Investing Platform is 96% architecturally compliant and 88% operatio
 
 ### **🤝 Open Source & Commercial Services**
 
-#### **Free Open Source Use:**
-- ✅ MIT Licensed - Free for personal and commercial use
-- ✅ Educational and research purposes welcomed
-- ✅ Community contributions appreciated
-- ✅ Fork, modify, and distribute freely
+This project is **MIT Licensed** and welcomes both open source contributions and commercial collaborations.
+
+#### **✅ Open Source Contributions:**
+- Fork, modify, and distribute freely under MIT License
+- Educational and research purposes welcomed
+- Community contributions appreciated
+- Read [**CONTRIBUTING.md**](./CONTRIBUTING.md) for detailed guidelines
 
 #### **💼 Professional Services Available:**
-Keith Aumiller offers commercial services for:
-- 🎯 **Custom Algorithm Development** - Specialized trading strategies
-- 📈 **Portfolio Optimization** - Custom portfolio construction
-- 🔌 **Integration Services** - Additional brokers and data sources
-- 🏗️ **Architecture Consulting** - Scalability and performance optimization
-- 🎓 **Training & Mentorship** - Personalized algorithmic trading education
+Keith Aumiller offers commercial services including custom algorithm development, portfolio optimization, integration services, architecture consulting, and training. 
 
 **Contact**: Open a GitHub issue with "Commercial Inquiry" label
 
-#### **📋 How to Contribute:**
-1. Read [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines
-2. Check [open issues](https://github.com/keithaumiller/unicorninvesting/issues)
-3. Fork, develop, test, and submit pull requests
-4. Help improve documentation and testing
+#### **⚖️ Legal Compliance:**
+- **Required Reading**: [DISCLAIMER.md](./DISCLAIMER.md), [TERMS_OF_SERVICE.md](./TERMS_OF_SERVICE.md), [LICENSE](./LICENSE)
+- **Your Responsibilities**: Educational use only, professional consultation required, full risk management
+- **Not Provided**: Investment advice, guaranteed returns, professional financial services
 
-### **⚖️ Legal Compliance & Risk Management**
-
-#### **Critical Legal Documents:**
-- 📄 [**DISCLAIMER.md**](./DISCLAIMER.md) - Financial risk disclosures and limitations
-- 📜 [**TERMS_OF_SERVICE.md**](./TERMS_OF_SERVICE.md) - Usage terms and conditions  
-- 📋 [**LICENSE**](./LICENSE) - MIT License with financial disclaimers
-- 🤝 [**CONTRIBUTING.md**](./CONTRIBUTING.md) - Contribution guidelines and commercial terms
-
-#### **Your Responsibilities:**
-- 🎓 **Education First** - Understand trading risks and regulations
-- ⚖️ **Legal Compliance** - Follow all applicable laws in your jurisdiction
-- 💼 **Professional Consultation** - Seek qualified financial advice
-- 🔒 **Risk Management** - Never risk more than you can afford to lose
-- 📊 **Paper Trading** - Test thoroughly before risking real capital
-
-#### **What This Software Is NOT:**
-- ❌ Investment advice or recommendations
-- ❌ Guaranteed profit system
-- ❌ Professional financial service
-- ❌ Suitable for all investors
-- ❌ Risk-free trading solution
-
-### **🚨 Final Risk Warning**
-
-**NEVER RISK MONEY YOU CANNOT AFFORD TO LOSE**
-
-Algorithmic trading involves substantial risk. This software is provided for educational purposes only. The author(s) are not responsible for any trading losses or investment decisions made using this software.
-
-**Always consult with qualified financial professionals before making investment decisions.**
+#### **🔒 Security:**
+Review our [**SECURITY.md**](./SECURITY.md) for vulnerability reporting and security best practices.
 
 ---
 
@@ -750,7 +759,7 @@ Algorithmic trading involves substantial risk. This software is provided for edu
 
 ---
 
-## Key Features
+## 🔑 Key Features
 
 ### Algorithmic Trading
 - **Daily Rebalancing**: Automated portfolio optimization based on ML predictions
@@ -772,13 +781,15 @@ Algorithmic trading involves substantial risk. This software is provided for edu
 - Drawdown analysis and risk management
 - Comparison against market benchmarks
 
-## License
+---
 
-[Add license information]
+## 🚨 **FINAL RISK WARNING**
 
-## Contributing
+**NEVER RISK MONEY YOU CANNOT AFFORD TO LOSE**
 
-[Add contribution guidelines]
+This software is provided for educational purposes only. Algorithmic trading involves substantial risk of loss and is not suitable for all investors. The author(s) are not registered investment advisors and are not responsible for any trading losses or investment decisions made using this software.
+
+**Always consult with qualified financial professionals before making investment decisions.**
 
 ---
 
