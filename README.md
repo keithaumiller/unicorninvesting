@@ -1,5 +1,22 @@
 # Unicorn Investing Platform
 
+> ## ⚠️ **IMPORTANT LEGAL NOTICE**
+> 
+> **🚨 HIGH RISK WARNING: TRADING FINANCIAL INSTRUMENTS INVOLVES SUBSTANTIAL RISK OF LOSS**
+> 
+> - 📚 **Educational Purpose Only** - This software is for learning and research
+> - 🚫 **Not Investment Advice** - No investment recommendations are provided
+> - ⚖️ **Your Risk** - You are solely responsible for any trading decisions
+> - 💼 **Professional Consultation Required** - Consult qualified financial professionals
+> - 🔒 **No Guarantees** - Past performance does not predict future results
+> 
+> **📄 Required Reading Before Use:**
+> - [**DISCLAIMER.md**](./DISCLAIMER.md) - Critical risk disclosures
+> - [**TERMS_OF_SERVICE.md**](./TERMS_OF_SERVICE.md) - Usage terms and conditions
+> - [**LICENSE**](./LICENSE) - MIT License with financial disclaimers
+> 
+> **By using this software, you acknowledge reading and accepting all terms and risks.**
+
 ## 🚀 **PRODUCTION STATUS: ENHANCED PIPELINE ARCHITECTURE**
 
 **Last Updated**: September 9, 2025  
@@ -538,6 +555,64 @@ Enhanced portfolio structure:
 **Platform Status**: **🟢 READY FOR DEVELOPMENT**
 
 The Unicorn Investing Platform is 96% architecturally compliant and 88% operationally healthy. All core development infrastructure is operational, with only minor organizational cleanup and IBKR authentication remaining for live trading capability.
+
+---
+
+## 📄 Legal Information & Contributing
+
+### **🤝 Open Source & Commercial Services**
+
+#### **Free Open Source Use:**
+- ✅ MIT Licensed - Free for personal and commercial use
+- ✅ Educational and research purposes welcomed
+- ✅ Community contributions appreciated
+- ✅ Fork, modify, and distribute freely
+
+#### **💼 Professional Services Available:**
+Keith Aumiller offers commercial services for:
+- 🎯 **Custom Algorithm Development** - Specialized trading strategies
+- 📈 **Portfolio Optimization** - Custom portfolio construction
+- 🔌 **Integration Services** - Additional brokers and data sources
+- 🏗️ **Architecture Consulting** - Scalability and performance optimization
+- 🎓 **Training & Mentorship** - Personalized algorithmic trading education
+
+**Contact**: Open a GitHub issue with "Commercial Inquiry" label
+
+#### **📋 How to Contribute:**
+1. Read [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines
+2. Check [open issues](https://github.com/keithaumiller/unicorninvesting/issues)
+3. Fork, develop, test, and submit pull requests
+4. Help improve documentation and testing
+
+### **⚖️ Legal Compliance & Risk Management**
+
+#### **Critical Legal Documents:**
+- 📄 [**DISCLAIMER.md**](./DISCLAIMER.md) - Financial risk disclosures and limitations
+- 📜 [**TERMS_OF_SERVICE.md**](./TERMS_OF_SERVICE.md) - Usage terms and conditions  
+- 📋 [**LICENSE**](./LICENSE) - MIT License with financial disclaimers
+- 🤝 [**CONTRIBUTING.md**](./CONTRIBUTING.md) - Contribution guidelines and commercial terms
+
+#### **Your Responsibilities:**
+- 🎓 **Education First** - Understand trading risks and regulations
+- ⚖️ **Legal Compliance** - Follow all applicable laws in your jurisdiction
+- 💼 **Professional Consultation** - Seek qualified financial advice
+- 🔒 **Risk Management** - Never risk more than you can afford to lose
+- 📊 **Paper Trading** - Test thoroughly before risking real capital
+
+#### **What This Software Is NOT:**
+- ❌ Investment advice or recommendations
+- ❌ Guaranteed profit system
+- ❌ Professional financial service
+- ❌ Suitable for all investors
+- ❌ Risk-free trading solution
+
+### **🚨 Final Risk Warning**
+
+**NEVER RISK MONEY YOU CANNOT AFFORD TO LOSE**
+
+Algorithmic trading involves substantial risk. This software is provided for educational purposes only. The author(s) are not responsible for any trading losses or investment decisions made using this software.
+
+**Always consult with qualified financial professionals before making investment decisions.**
 
 ---
 
