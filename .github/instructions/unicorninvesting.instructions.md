@@ -16,6 +16,31 @@ Unicorn Investing is a financial analytics platform for algorithmic trading with
 - Start services: `drupal-start` or `scripts/startup_drupal.sh`
 - Available aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`, `unicorn-env`
 
+## 📦 CRITICAL - Package Installation & Environment Check
+
+**⚠️ MANDATORY BEFORE ANY PYTHON WORK:**
+- **ALWAYS check when `unicorn_environment.sh` was last run before installing packages or debugging import errors**
+- **If last run was before the most recent codespace restart/pause, run it first:**
+  ```bash
+  ./scripts/unicorn_environment.sh
+  ```
+- **This script handles:**
+  - Python virtual environment setup
+  - All required package installations (yfinance, xgboost, scikit-learn, etc.)
+  - System dependencies and configuration
+  - Service startup (Apache, MySQL, IBKR Gateway)
+  - Complete health validation
+
+**Common Issues Resolved by Environment Script:**
+- `ModuleNotFoundError: No module named 'yfinance'`
+- `ModuleNotFoundError: No module named 'xgboost'`
+- `ModuleNotFoundError: No module named 'sklearn'`
+- Missing Python virtual environment
+- Inactive services (Apache, MySQL)
+- IBKR Gateway not running
+
+**Rule:** If you encounter ANY package/import error, verify environment setup first.
+
 ### 🌐 GitHub Codespace URL Translation for Debugging
 
 **Debugging tip:** Use `http://localhost/...` in terminal (not external GitHub Codespace URLs).
