@@ -102,6 +102,38 @@ portfolio_targets = portfolio_manager.construct_portfolio(strategy, risk)
 - 🚧 **LEAN Integration**: Ready for backtesting framework integration
 - 🚧 **Advanced Algorithms**: Ready for sophisticated algorithm development
 
+## 📊 Advanced Analytics Methodologies - Out of Scope
+
+The following advanced portfolio analytics methodologies are designed for **larger-scale institutional operations** and are **not currently in scope** for this system:
+
+### **Institutional-Grade Analytics (Not Implemented)**
+- **Performance Attribution Analysis**: Factor-based return attribution for institutional portfolio decomposition
+- **Risk-Adjusted Performance**: Advanced Sharpe, Sortino, and Information ratio calculations for institutional reporting
+- **Trade Execution Analysis**: Slippage analysis and market impact measurement for high-volume trading
+- **Alpha/Beta Decomposition**: Systematic vs. idiosyncratic performance analysis for institutional risk management
+- **Drawdown Analysis**: Advanced drawdown attribution and recovery analysis for institutional clients
+
+### **Scope Rationale**
+These methodologies are specifically designed for:
+- **Institutional Asset Management**: Multi-billion dollar portfolio management
+- **Regulatory Reporting**: Institutional compliance and client reporting requirements
+- **Professional Fund Management**: Hedge funds, pension funds, and institutional investment firms
+- **High-Frequency Trading**: Large-scale algorithmic trading operations requiring detailed execution analysis
+
+### **Current System Focus**
+The platform implements **core portfolio analytics** appropriate for:
+- **Individual Traders**: Personal portfolio management and optimization
+- **Small Institutional Players**: Family offices and smaller investment firms
+- **Basic Performance Tracking**: Essential metrics including returns, volatility, and Sharpe ratios
+- **Practical Risk Management**: Kelly criterion, basic VaR, and position sizing
+
+### **Available Analytics**
+Current implementation provides:
+- ✅ **Basic Performance Metrics**: Total return, win rate, profit factor
+- ✅ **Risk Metrics**: Portfolio volatility, maximum drawdown, VaR calculations
+- ✅ **Position Analysis**: Kelly criterion position sizing, allocation optimization
+- ✅ **Real-time Monitoring**: Live portfolio value and performance tracking
+
 ---
 
 **Architecture Status**: ✅ Complete  
