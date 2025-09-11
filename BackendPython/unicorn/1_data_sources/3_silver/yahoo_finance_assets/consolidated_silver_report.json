@@ -1,0 +1,25 @@
+{
+  "generation_timestamp": "2025-09-11T14:43:13.683817",
+  "silver_layer_summary": {
+    "processing_duration": 0.924237,
+    "tasks_completed": 3,
+    "tasks_failed": 1,
+    "success_rate": 75.0
+  },
+  "bronze_data_status": {
+    "total_files": 27,
+    "available_files": 0,
+    "availability_rate": 0.0
+  },
+  "transformation_summary": {
+    "total_processed": 27,
+    "successful": 0,
+    "failed": 27,
+    "success_rate": 0.0
+  },
+  "analysis_summary": {
+    "correlation_analysis": "failed",
+    "regime_detection": "completed",
+    "advanced_analytics": false
+  }
+}

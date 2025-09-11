@@ -158,6 +158,34 @@ process_bronze_layer() {
     fi
 }
 
+# Process Yahoo Finance assets in bronze layer
+process_yahoo_finance_bronze() {
+    local categories="$1"  # crypto, forex, or "all"
+    local yahoo_bronze_dir="$PROJECT_ROOT/BackendPython/unicorn/1_data_sources/2_bronze/yahoo_finance_assets"
+    
+    log_message "INFO" "⚡ Processing Yahoo Finance assets in bronze layer (${categories})..."
+    
+    cd "$yahoo_bronze_dir" || {
+        log_message "ERROR" "Failed to change to Yahoo Finance bronze directory"
+        return 1
+    }
+    
+    if [[ "$categories" == "all" ]]; then
+        python3 process_assets.py
+    else
+        python3 process_assets.py --category "$categories"
+    fi
+    
+    local exit_code=$?
+    if [[ $exit_code -eq 0 ]]; then
+        log_message "SUCCESS" "Yahoo Finance bronze layer processing completed successfully ($categories)"
+        return 0
+    else
+        log_message "ERROR" "Yahoo Finance bronze layer processing failed (exit code: $exit_code, categories: $categories)"
+        return 1
+    fi
+}
+
 # Comprehensive daily pipeline
 run_daily_pipeline() {
     log_message "INFO" "🚀 Starting comprehensive daily data pipeline..."
@@ -165,7 +193,7 @@ run_daily_pipeline() {
     echo "=============================================="
     
     local success_count=0
-    local total_steps=6
+    local total_steps=7
     
     # Step 1: Check virtual environment
     if check_venv; then
@@ -192,8 +220,13 @@ run_daily_pipeline() {
         ((success_count++))
     fi
     
-    # Step 6: Process bronze layer (daily intervals)
+    # Step 6: Process bronze layer (economic indicators)
     if process_bronze_layer "1_day"; then
+        ((success_count++))
+    fi
+    
+    # Step 7: Process Yahoo Finance bronze layer (crypto + forex assets)
+    if process_yahoo_finance_bronze "all"; then
         ((success_count++))
     fi
     
@@ -220,7 +253,7 @@ run_delta_pipeline() {
     echo "==========================================="
     
     local success_count=0
-    local total_steps=5
+    local total_steps=6
     
     # Step 1: Check virtual environment
     if check_venv; then
@@ -247,6 +280,11 @@ run_delta_pipeline() {
         ((success_count++))
     fi
     
+    # Step 6: Process Yahoo Finance bronze layer (crypto only, quick update)
+    if process_yahoo_finance_bronze "crypto"; then
+        ((success_count++))
+    fi
+    
     # Pipeline summary
     echo ""
     echo "📊 PIPELINE SUMMARY"
@@ -270,7 +308,7 @@ run_hourly_processing() {
     echo "======================================="
     
     local success_count=0
-    local total_steps=2
+    local total_steps=3
     
     # Step 1: Check virtual environment
     if check_venv; then
@@ -282,10 +320,10 @@ run_hourly_processing() {
         ((success_count++))
     fi
     
-    # Optional: Process hourly bronze layer (if implemented)
-    # if process_bronze_layer "1_hour"; then
-    #     ((success_count++))
-    # fi
+    # Step 3: Process Yahoo Finance bronze layer (all assets)
+    if process_yahoo_finance_bronze "all"; then
+        ((success_count++))
+    fi
     
     # Pipeline summary
     echo ""
@@ -399,8 +437,8 @@ main() {
             echo ""
             echo "COMMANDS:"
             echo "  daily           Run full daily pipeline (FRED + BEA + Yahoo Finance + bronze processing)"
-            echo "  delta           Run delta pipeline (quick updates + minute-level asset data)"
-            echo "  hourly          Process hourly asset data collection (ETH, Forex)"
+            echo "  delta           Run delta pipeline (quick updates + minute-level asset data + crypto bronze)"
+            echo "  hourly          Process hourly asset data collection (ETH, Forex + bronze processing)"
             echo "  status          Show pipeline and system status"
             echo "  logs [N]        Show recent N log entries (default: 20)"
             echo "  help            Show this help message"
@@ -420,9 +458,9 @@ main() {
             echo ""
             echo "AUTOMATION:"
             echo "  This script is designed to be run via cron jobs:"
-            echo "  • Daily pipeline: Comprehensive data collection (1d, 1h intervals)"
-            echo "  • Delta pipeline: Quick updates + minute-level asset data (1m interval)"
-            echo "  • Hourly processing: High-frequency asset data collection (1h interval)"
+            echo "  • Daily pipeline: Comprehensive data collection (1d, 1h intervals) + full bronze processing"
+            echo "  • Delta pipeline: Quick updates + minute-level asset data (1m interval) + crypto bronze"
+            echo "  • Hourly processing: High-frequency asset data collection (1h interval) + bronze processing"
             ;;
         *)
             error "Invalid command: ${1:-}"

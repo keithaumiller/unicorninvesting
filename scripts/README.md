@@ -75,9 +75,23 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - ✅ **Multi-source data collection**: FRED + BEA APIs + Yahoo Finance assets
 - ✅ **Yahoo Finance integration**: 9 assets (ETH, BTC, 7 forex pairs) across 3 intervals
 - ✅ **Interval management**: 1-minute (delta), 1-hour (hourly), 1-day (daily)
-- ✅ **Automated bronze layer processing**: Standardized datasets
+- ✅ **Automated bronze layer processing**: Standardized datasets with feature engineering
+- ✅ **End-to-end processing**: Raw data → Bronze layer → Feature engineering
 - ✅ **Comprehensive logging**: Pipeline status and error tracking
 - ✅ **Cron integration**: Automated scheduling via `setup_data_cron.sh`
+
+**Bronze Layer Processing:**
+- **Price Features**: price_change, price_change_abs, hl_range, oc_range
+- **Technical Indicators**: RSI, moving averages (10, 20, 50), volatility (14-day, annualized)
+- **Volume Analysis**: volume_change, volume_ma_20, volume_ratio
+- **Price Position**: high_20, low_20, price_position (relative to recent range)
+- **Temporal Features**: hour, day_of_week, day_of_month, month
+- **Processing Metadata**: timestamps and validation markers
+
+**Pipeline Integration:**
+- **Daily Pipeline**: 7 steps including full bronze processing (all assets)
+- **Delta Pipeline**: 6 steps including crypto bronze processing (quick updates)
+- **Hourly Pipeline**: 3 steps including bronze processing (real-time features)
 
 **Data Sources:**
 - **FRED API**: Economic indicators and macro data
@@ -85,9 +99,9 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - **Yahoo Finance**: ETH-USD, BTC-USD, EURUSD, USDJPY, GBPUSD, AUDUSD, USDCAD, USDCHF, NZDUSD
 
 **Pipeline Schedule:**
-- **Daily (10 PM)**: Comprehensive collection (1d + 1h intervals)
-- **Delta (every 30min)**: Quick updates + minute-level asset data (1m interval)
-- **Hourly (every hour)**: High-frequency asset data collection (1h interval)
+- **Daily (10 PM)**: Comprehensive collection (1d + 1h intervals) + full bronze processing
+- **Delta (every 30min)**: Quick updates + minute-level asset data (1m) + crypto bronze
+- **Hourly (every hour)**: High-frequency asset data (1h) + complete bronze processing
 
 ### `setup_data_cron.sh`
 **Setup comprehensive data pipeline cron jobs** - **UPDATED SEPTEMBER 2025**

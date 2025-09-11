@@ -41,7 +41,7 @@ log_info "Updating system packages..."
 sudo apt-get update -y
 
 # Step 2: Install system dependencies
-log_info "Installing system dependencies (MySQL, Apache, PHP 8.3)..."
+log_info "Installing system dependencies (MySQL, Apache, PHP 8.3, TA-Lib)..."
 sudo apt-get install -y \
     mysql-server \
     mysql-client \
@@ -53,7 +53,9 @@ sudo apt-get install -y \
     build-essential \
     python3-dev \
     python3-pip \
-    python3-venv
+    python3-venv \
+    libta-lib-dev \
+    ta-lib-bin
 
 # Step 3: Install PHP 8.3
 log_info "Installing PHP 8.3 and extensions..."
@@ -138,6 +140,10 @@ pip install sqlalchemy pymysql
 # Install financial packages
 log_info "Installing financial data packages..."
 pip install yfinance alpha-vantage quandl ccxt fredapi beaapi
+
+# Install technical analysis and silver layer processing packages
+log_info "Installing technical analysis and advanced analytics packages..."
+pip install TA-Lib matplotlib seaborn plotly || log_warning "Some technical analysis packages failed"
 
 # Install additional requirements
 log_info "Installing remaining Python packages (this may take a few minutes)..."
