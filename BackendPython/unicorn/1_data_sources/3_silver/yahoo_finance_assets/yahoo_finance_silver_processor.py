@@ -128,8 +128,20 @@ class SilverYahooFinanceProcessor:
                 
             df = pd.read_csv(file_path)
             
-            # Parse datetime
-            df['Datetime'] = pd.to_datetime(df['Datetime'])
+            # Handle different datetime column names (1h uses 'Datetime', 1d uses 'Date')
+            datetime_col = None
+            if 'Datetime' in df.columns:
+                datetime_col = 'Datetime'
+            elif 'Date' in df.columns:
+                datetime_col = 'Date'
+            else:
+                logger.error(f"No datetime column found in {asset} {interval} data")
+                return None
+            
+            # Parse datetime and standardize column name
+            df['Datetime'] = pd.to_datetime(df[datetime_col])
+            if datetime_col != 'Datetime':
+                df.drop(columns=[datetime_col], inplace=True)
             df.set_index('Datetime', inplace=True)
             
             logger.info(f"Loaded {asset} {interval} bronze data: {len(df)} records")

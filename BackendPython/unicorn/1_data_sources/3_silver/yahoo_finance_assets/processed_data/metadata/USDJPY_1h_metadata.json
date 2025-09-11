@@ -2,7 +2,7 @@
   "source_files": [
     "USDJPY_bronze_1h_latest.csv"
   ],
-  "processing_timestamp": "2025-09-11T14:42:57.659542",
+  "processing_timestamp": "2025-09-11T15:09:54.852701",
   "records_processed": 546,
   "features_generated": 66,
   "quality_metrics": {
