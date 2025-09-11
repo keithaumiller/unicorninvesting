@@ -1,3 +1,1 @@
-"""
-Alpha Models Subpackage
-"""
+"""Models for ETH"""

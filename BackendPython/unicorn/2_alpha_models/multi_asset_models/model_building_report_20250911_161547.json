@@ -1,0 +1,8 @@
+{
+  "total_models": 54,
+  "successful_models": 22,
+  "failed_models": 32,
+  "success_rate": 0.4074074074074074,
+  "timestamp": "2025-09-11T16:15:47.908106",
+  "by_model_type": {
+    
