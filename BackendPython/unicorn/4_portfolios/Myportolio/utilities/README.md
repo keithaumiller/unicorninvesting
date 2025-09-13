@@ -1,26 +1,35 @@
 # Myportolio Utilities
 
-This directory contains utility modules for the Myportolio portfolio construction framework, providing essential components for model selection, risk management, and trading strategy integration.
+This directory contains utility modules for the Myportolio portfolio construction framework, providing essential components for the **production ensemble trading system**.
 
 ## Overview
 
-The utilities directory serves as the framework layer of the Myportolio portfolio implementation, containing shared components that integrate trading algorithms, risk algorithms, and model selection systems.
+The utilities directory serves as the framework layer of the Myportolio portfolio implementation, containing shared components that integrate the **11 ensemble models**, **Kelly optimization**, and **silver layer data integration**.
+
+## 🚀 **Production Integration Status**
+
+The utilities framework is fully integrated into the live ensemble trading system:
+- **`simplified_ensemble_portfolio.py`** - Main trading engine using utilities for optimization
+- **`ensemble_model_wrapper.py`** - Model integration using utilities for performance tracking  
+- **`silver_layer_integration_mapper.py`** - Data pipeline using utilities for feature mapping
 
 ## Components
 
-### Model Selection
+### Model Selection & Performance
 
 #### `best_model_selector.py`
 - **Purpose**: Basic model selector for choosing optimal trading models based on performance metrics
+- **Production Integration**: Used by ensemble system for model confidence weighting
 - **Key Features**:
-  - R² score-based model ranking
-  - Performance metric analysis
-  - Model confidence assessment
-  - Asset-specific model selection
-- **Usage**: Used by portfolio construction to select best-performing models for each asset
+  - R² score-based model ranking (0.817-0.934 for current models)
+  - Performance metric analysis with SQLite tracking
+  - Model confidence assessment for Kelly optimization
+  - Asset-specific model selection for 11 ensemble models
+- **Usage**: Used by portfolio construction to weight ensemble predictions by model quality
 
-#### `enhanced_best_model_selector.py` ✨ **NEW**
+#### `enhanced_best_model_selector.py` ✨ **ENHANCED**
 - **Purpose**: Enhanced model selector with economic ensemble integration
+- **Production Status**: Framework ready for advanced model selection
 - **Key Features**:
   - Individual vs ensemble model comparison
   - Economic feature importance weighting
@@ -29,25 +38,27 @@ The utilities directory serves as the framework layer of the Myportolio portfoli
 - **Integration**: Supports both individual economic-enhanced models and economic ensemble models
 - **Scoring Algorithm**: Weighted scoring with 40% R², 30% economic importance, 20% MAE, 10% complexity bonus
 
-### Risk Management
+### Risk Management & Position Sizing
 
 #### `kelly_criterion.py`
 - **Purpose**: Kelly Criterion implementation for optimal position sizing
+- **Production Integration**: ✅ **LIVE IN TRADING SYSTEM** - Integrated into SimpleKellyOptimizer
 - **Key Features**:
-  - Optimal portfolio allocation calculation
-  - Risk-adjusted position sizing
-  - Drawdown protection
-  - Multi-asset portfolio optimization
-- **Integration**: Used by both risk algorithms and trading algorithms for position sizing
+  - Optimal portfolio allocation calculation (25% max position cap)
+  - Risk-adjusted position sizing with confidence weighting
+  - Drawdown protection with 2% VaR limits
+  - Multi-asset portfolio optimization across 9 assets
+- **Integration**: Core component of production trading system for all position sizing decisions
 
 ### Trading Strategy Integration
 
 #### `model_strategy_integration.py`
 - **Purpose**: Integration framework for combining models with trading strategies
+- **Production Integration**: ✅ **ACTIVE** - Core component of ensemble trading system
 - **Key Features**:
-  - Model-strategy binding
-  - Performance optimization
-  - Multi-timeframe coordination
+  - Model-strategy binding for 11 ensemble models
+  - Performance optimization with real-time execution
+  - Multi-timeframe coordination (1d crypto + 1h forex)
 - **Architecture**: Bridges between alpha models (Layer 2) and portfolio construction (Layer 4)
 
 #### `multi_timeframe_strategies.py`
