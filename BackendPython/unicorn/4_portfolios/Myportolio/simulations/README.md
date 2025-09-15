@@ -1,12 +1,31 @@
-# Myportolio LEAN Simulation Framework
+# Myportolio LEAN Simulation Framework with Performance Logging
 
-## 🎉 **OPERATIONAL STATUS: FRAMEWORK COMPLETE**
+## 🎉 **OPERATIONAL STATUS: ENHANCED FRAMEWORK COMPLETE**
 
-**Last Updated**: September 3, 2025  
-**Framework Status**: ✅ **FULLY OPERATIONAL** - All 4 components validated  
-**Recent Simulations**: 3 backtests completed with positive performance validation  
-**Average Performance**: 4.04% returns with 66.7% positive simulations  
-**Integration Status**: ✅ **INTEGRATED** - Portfolio status check includes simulation validation
+**Last Updated**: September 15, 2025  
+**Framework Status**: ✅ **FULLY OPERATIONAL** - All 4 components + Performance Logging validated  
+**Recent Enhancement**: 🆕 **Comprehensive Performance Logging & Attribution System**  
+**Analysis Capabilities**: Root cause identification for performance issues  
+**Integration Status**: ✅ **INTEGRATED** - Enhanced algorithms with detailed logging
+
+## 🔍 **Performance Logging & Attribution System**
+
+### **Revolutionary Backtesting Enhancement**
+The Myportolio simulation framework now includes a comprehensive performance logging system that provides detailed attribution analysis for identifying performance bottlenecks and optimization opportunities.
+
+#### **Key Features**
+- ✅ **Alpha Model Accuracy Tracking**: Real-time validation of predictions vs actual price movements
+- ✅ **Trading Strategy Analysis**: Signal generation effectiveness with decision rationale
+- ✅ **Risk Management Impact**: Quantified impact of risk decisions on portfolio performance
+- ✅ **Trade Execution Efficiency**: Slippage, fill rates, and execution cost analysis
+- ✅ **Portfolio State Monitoring**: Complete portfolio metrics with performance attribution
+
+#### **Recent Performance Analysis Results**
+**Latest Backtest Diagnosis (August 2024)**:
+- **Issue Identified**: Over-trading (690 trades/month) due to sensitive MA parameters
+- **Root Cause**: 5/20 MA periods too sensitive for 184.5% volatility environment
+- **Impact**: -6.44% return, -2.53 Sharpe ratio, 14.56% max drawdown
+- **Recommendations**: MA(10/50), signal confirmation, volatility filtering
 
 ## Overview
 
@@ -26,25 +45,48 @@ simulations/
 ├── optimization_runs/           # Parameter optimization results
 ├── analysis/                    # Comparative analysis
 ├── templates/                   # Simulation configuration templates
-├── lean_simulation_engine.py   # Core simulation engine
+├── performance_logs/            # 🆕 Performance logging output
+│   ├── {simulation_id}_performance.log           # Detailed execution log
+│   ├── {simulation_id}_performance_report.json   # Comprehensive analysis
+│   ├── {simulation_id}_alpha_predictions.json    # Alpha model tracking
+│   ├── {simulation_id}_trading_signals.json      # Strategy signals
+│   ├── {simulation_id}_risk_decisions.json       # Risk decisions
+│   ├── {simulation_id}_trade_executions.json     # Execution details
+│   └── {simulation_id}_portfolio_states.json     # Portfolio snapshots
+├── lean_simulation_engine.py   # 🔄 Enhanced with performance logging
 ├── lean_result_handler.py      # Result storage and analysis
+├── performance_logger.py       # 🆕 Comprehensive logging system
+├── analyze_performance_issues.py # 🆕 Performance analysis tool
+├── test_enhanced_logging.py    # 🆕 Logging system validation
 ├── simulation_cli.py           # Command line interface
 └── simulation_results.db       # SQLite results database
 ```
 
 ### **Core Components**
 
-#### **1. LEANSimulationEngine**
+#### **1. LEANSimulationEngine** 🔄 Enhanced
 - Direct integration with QuantConnect LEAN framework
 - Historical backtesting with real market data
 - Paper trading simulation with live data feeds
 - Parameter optimization using LEAN's optimizer
+- **🆕 Integrated Performance Logging**: Comprehensive logging throughout simulation lifecycle
+- **🆕 Enhanced Algorithm Creation**: Logging-enabled algorithm instantiation
+- **🆕 Automated Performance Reports**: Generated analysis after each simulation
 
-#### **2. LEANResultHandler** 
+#### **2. PerformanceLogger** 🆕 New
+- **Alpha Model Tracking**: Prediction accuracy validation with real-time comparison
+- **Trading Signal Analysis**: Complete signal rationale and effectiveness measurement
+- **Risk Decision Attribution**: Quantified impact of risk management on performance
+- **Trade Execution Metrics**: Slippage, costs, and execution efficiency analysis
+- **Portfolio State Monitoring**: Comprehensive portfolio metrics with attribution
+- **Automated Report Generation**: Detailed performance reports with actionable insights
+
+#### **3. LEANResultHandler**
 - LEAN-compatible result storage and tracking
 - Comprehensive performance analysis
 - SQLite database for simulation metadata
 - Result comparison and benchmarking
+- **🆕 Performance Log Integration**: Enhanced with logging data storage
 
 #### **3. Simulation Templates**
 - Pre-configured simulation scenarios

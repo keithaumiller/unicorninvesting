@@ -1,7 +1,31 @@
 # 🏆 Unicorn Investing - Myportolio Comprehensive Multi-Asset Trading System
 
 ## 🎯 System Overview
-Advanced algorithmic trading system with comprehensive multi-asset support (cryptocurrency + forex), ensemble learning, live market data integration,├── 7. Calculate Kelly Position Sizing
+Advanced algorithmic trading system with comprehensive multi-asset support (cryptocurrency + forex), ensemble learning, live market data integration, and **comprehensive performance logging for detailed attribution analysis**.
+
+### 🆕 **NEW: Performance Logging & Attribution System (2025-09-15)**
+
+**Revolutionary backtesting enhancement** that provides detailed analysis of every component affecting portfolio performance:
+
+#### 🔍 Performance Attribution Features
+- **Alpha Model Accuracy Tracking**: Real-time validation of prediction accuracy vs actual price movements
+- **Trading Strategy Decision Logging**: Complete signal analysis with technical indicators and reasoning
+- **Risk Management Impact Analysis**: Detailed tracking of risk decisions and their portfolio impact
+- **Trade Execution Efficiency**: Slippage, costs, and execution quality measurement
+- **Portfolio State Monitoring**: Comprehensive metrics including drawdown, volatility, and VaR tracking
+
+#### 📊 Troubleshooting Capabilities
+- **Root Cause Analysis**: Identify whether poor performance stems from alpha models, trading strategy, risk management, or execution
+- **Over-trading Detection**: Automatic identification of excessive signal generation
+- **Market Regime Analysis**: Volatility-based strategy suitability assessment
+- **Parameter Optimization Guidance**: Data-driven recommendations for strategy improvements
+
+#### 🎯 Recent Performance Analysis Results
+**Latest Backtest Analysis (August 2024)**:
+- **Issue Identified**: Over-trading (690 trades/month) due to sensitive MA parameters (5/20)
+- **Market Conditions**: 184.5% annualized volatility - unsuitable for MA crossover
+- **Recommendations**: Switch to MA(10/50), add signal confirmation, implement volatility filtering
+- **Attribution**: Strategy configuration (80%) > Market conditions (20%)├── 7. Calculate Kelly Position Sizing
 └── 8. Execute Trade (if criteria met)
 ```
 

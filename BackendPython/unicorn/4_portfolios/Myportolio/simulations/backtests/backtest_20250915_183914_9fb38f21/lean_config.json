@@ -1,0 +1,44 @@
+{
+  "algorithm-type-name": "MyportolioETHMomentum",
+  "algorithm-location": "backtests/backtest_20250915_183914_9fb38f21/",
+  "algorithm-language": "Python",
+  "data-folder": "/workspaces/unicorninvesting/data/",
+  "output-directory": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250915_183914_9fb38f21/",
+  "result-destination-folder": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250915_183914_9fb38f21/",
+  "close-automatically": true,
+  "debugging": false,
+  "debugging-method": "LocalCmdline",
+  "job-user-id": "1",
+  "api-access-token": "",
+  "job-organization-id": "",
+  "job-project-id": 0,
+  "environment": "backtesting",
+  "algorithm": "MyportolioETHMomentum",
+  "start-date": "2024-03-15",
+  "end-date": "2024-09-15",
+  "cash": 100000,
+  "parameters": {
+    "kelly_fraction": 0.167,
+    "rebalance_frequency": "daily",
+    "ma_short": 5,
+    "ma_long": 20,
+    "rsi_period": 14,
+    "volatility_window": 30
+  },
+  "best_model_config": {
+    "use_best_models": false
+  },
+  "performance_logging_enabled": true,
+  "simulation_id": "backtest_20250915_183914_9fb38f21",
+  "risk_management": {
+    "max_drawdown": 0.15,
+    "max_position_pct": 0.8,
+    "var_confidence": 0.05
+  },
+  "trading_strategy": {
+    "short_ma_period": 5,
+    "long_ma_period": 20,
+    "max_position_size": 0.1,
+    "volatility_window": 30
+  }
+}

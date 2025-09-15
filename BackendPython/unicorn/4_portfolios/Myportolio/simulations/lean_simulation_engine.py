@@ -1,40 +1,14 @@
 #!/usr/bin/env python3
 """
-LEAN-Integrated Simulation Engine for Myportolio
-================================================
+LEAN-Integrated Simulation Engine for Myportolio with Performance Logging
+========================================================================
 
-Direct int        try:
-            # Execute backtest
-            result = self._execute_lean_backtest(lean_config, sim_dir)
-            
-            # Process and store results
-            self._process_backtest_results(simulation_id, result, sim_dir)
-            
-            # Store in result handler database
-            from lean_result_handler import LEANResultHandler
-            handler = LEANResultHandler()
-            
-            # Load the processed results
-            result_path = sim_dir / "myportolio_results.json"
-            if result_path.exists():
-                with open(result_path, 'r') as f:
-                    processed_results = json.load(f)
-                
-                # Store in database
-                handler.store_simulation_result(
-                    simulation_id=simulation_id,
-                    simulation_type="backtest",
-                    results=processed_results,
-                    config=lean_config,
-                    results_path=str(result_path)
-                )
-            
-            logger.info(f"Backtest completed successfully: {simulation_id}")
-            return simulation_idwith LEAN framework for backtesting, paper trading, and optimization.
+Direct integration with LEAN framework for backtesting, paper trading, and optimization.
 Leverages LEAN's proven architecture for professional-grade simulation capabilities.
+Now includes comprehensive performance logging and attribution analysis.
 
 Author: Unicorn Investing Platform
-Date: September 3, 2025
+Date: September 15, 2025
 """
 
 import os
@@ -45,7 +19,7 @@ import pandas as pd
 import numpy as np
 import sys
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
 import logging
 
@@ -58,23 +32,43 @@ except ImportError:
     print("⚠️  Best model selector not available")
     BEST_MODEL_SELECTOR_AVAILABLE = False
 
+# Import performance logging
+try:
+    from performance_logger import PerformanceLogger
+    PERFORMANCE_LOGGING_AVAILABLE = True
+except ImportError:
+    print("⚠️  Performance logging not available")
+    PERFORMANCE_LOGGING_AVAILABLE = False
+
+# Import enhanced algorithms
+sys.path.append(str(Path(__file__).parent.parent / "trading_algorithms"))
+sys.path.append(str(Path(__file__).parent.parent / "risk_algorithms"))
+try:
+    from eth_momentum_strategy import ETHMomentumStrategy
+    from eth_basic_risk import ETHBasicRisk
+    ENHANCED_ALGORITHMS_AVAILABLE = True
+except ImportError:
+    print("⚠️  Enhanced algorithms not available")
+    ENHANCED_ALGORITHMS_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class LEANSimulationEngine:
     """
-    LEAN-integrated simulation engine for Myportolio trading strategies.
+    Enhanced LEAN-integrated simulation engine with comprehensive performance logging.
     
     This engine directly utilizes LEAN framework components for:
     - Historical backtesting with real market data
-    - Paper trading simulation with live data feeds
+    - Paper trading simulation with live data feeds  
     - Parameter optimization using LEAN's optimizer
+    - Detailed performance attribution and logging
     """
     
     def __init__(self, portfolio_path: str = None):
         """
-        Initialize LEAN simulation engine with best model integration.
+        Initialize LEAN simulation engine with performance logging integration.
         
         Args:
             portfolio_path: Path to Myportolio directory
@@ -86,6 +80,10 @@ class LEANSimulationEngine:
         self.simulations_path = self.portfolio_path / "simulations"
         self.lean_path = Path("/workspaces/unicorninvesting/BackendPython/Lean")
         
+        # Initialize performance logging
+        self.performance_logger = None
+        self.current_simulation_id = None
+        
         # Initialize best model selector
         if BEST_MODEL_SELECTOR_AVAILABLE:
             self.best_model_selector = BestModelSelector()
@@ -94,14 +92,247 @@ class LEANSimulationEngine:
             self.best_model_selector = None
             logger.warning("⚠️  Best model selector not available")
         
+        # Initialize enhanced algorithms
+        self.enhanced_algorithms_available = ENHANCED_ALGORITHMS_AVAILABLE
+        
         # Ensure simulation directories exist
         self._initialize_directories()
         
         # Load portfolio configuration
         self.portfolio_config = self._load_portfolio_config()
         
-        logger.info(f"LEAN Simulation Engine initialized for Myportolio")
+        logger.info(f"Enhanced LEAN Simulation Engine initialized for Myportolio")
+        logger.info(f"Performance logging: {'ENABLED' if PERFORMANCE_LOGGING_AVAILABLE else 'DISABLED'}")
+        logger.info(f"Enhanced algorithms: {'ENABLED' if self.enhanced_algorithms_available else 'DISABLED'}")
         logger.info(f"Simulation results stored in: {self.simulations_path}")
+
+    def _initialize_performance_logging(self, simulation_id: str):
+        """Initialize performance logging for the current simulation."""
+        if PERFORMANCE_LOGGING_AVAILABLE:
+            self.performance_logger = PerformanceLogger(
+                simulation_id=simulation_id,
+                log_directory=self.simulations_path / "performance_logs"
+            )
+            self.current_simulation_id = simulation_id
+            logger.info(f"Performance logging initialized for simulation: {simulation_id}")
+        else:
+            logger.warning("Performance logging not available")
+
+    def _create_enhanced_algorithms(self, config: Dict) -> Tuple[Optional['ETHMomentumStrategy'], Optional['ETHBasicRisk']]:
+        """Create enhanced algorithm instances with performance logging."""
+        
+        trading_strategy = None
+        risk_algorithm = None
+        
+        if self.enhanced_algorithms_available:
+            try:
+                # Create trading strategy with logging
+                trading_strategy = ETHMomentumStrategy(
+                    config=config.get('trading_strategy', {}),
+                    performance_logger=self.performance_logger
+                )
+                
+                # Create risk algorithm with logging
+                risk_algorithm = ETHBasicRisk(
+                    max_drawdown=config.get('max_drawdown', 0.15),
+                    max_position_pct=config.get('max_position_pct', 0.8),
+                    var_confidence=config.get('var_confidence', 0.05),
+                    performance_logger=self.performance_logger
+                )
+                
+                logger.info("Enhanced algorithms created with performance logging")
+                
+            except Exception as e:
+                logger.error(f"Failed to create enhanced algorithms: {e}")
+                
+        return trading_strategy, risk_algorithm
+
+    def run_backtest_with_logging(self, 
+                                 start_date: str = "2024-01-01", 
+                                 end_date: str = "2024-03-31",
+                                 parameters: Dict = None,
+                                 template_name: str = None) -> str:
+        """
+        Run enhanced backtest with comprehensive performance logging.
+        
+        Args:
+            start_date: Backtest start date (YYYY-MM-DD)
+            end_date: Backtest end date (YYYY-MM-DD)
+            parameters: Strategy parameters
+            template_name: Template configuration name
+            
+        Returns:
+            Simulation ID for tracking results
+        """
+        simulation_id = f"backtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        
+        # Initialize performance logging
+        self._initialize_performance_logging(simulation_id)
+        
+        if self.performance_logger:
+            self.performance_logger.logger.info(f"Starting enhanced backtest: {simulation_id}")
+            self.performance_logger.logger.info(f"Period: {start_date} to {end_date}")
+            self.performance_logger.logger.info(f"Template: {template_name}")
+            self.performance_logger.logger.info(f"Parameters: {json.dumps(parameters or {}, indent=2)}")
+        
+        try:
+            # Create simulation directory
+            sim_dir = self.simulations_path / "backtests" / simulation_id
+            sim_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Get best model configuration if needed
+            best_model_config = self.get_best_model_config(template_name)
+            
+            # Create enhanced algorithms
+            trading_strategy, risk_algorithm = self._create_enhanced_algorithms({
+                'trading_strategy': parameters or {},
+                'max_drawdown': 0.15,
+                'max_position_pct': 0.8,
+                'var_confidence': 0.05
+            })
+            
+            # Prepare configuration
+            lean_config = self._prepare_enhanced_lean_config(
+                simulation_id=simulation_id,
+                start_date=start_date,
+                end_date=end_date,
+                parameters=parameters or {},
+                best_model_config=best_model_config,
+                algorithm_type="MyportolioETHMomentum"
+            )
+            
+            # Save configuration
+            config_path = sim_dir / "lean_config.json"
+            with open(config_path, 'w') as f:
+                json.dump(lean_config, f, indent=2, default=str)
+            
+            # Generate LEAN algorithm file with enhanced logging
+            self._generate_enhanced_lean_algorithm(lean_config, sim_dir)
+            
+            # Log simulation start
+            if self.performance_logger:
+                self.performance_logger.log_portfolio_state(
+                    total_value=100000.0,  # Default starting value
+                    cash=100000.0,
+                    positions={},
+                    unrealized_pnl=0.0,
+                    realized_pnl=0.0,
+                    drawdown=0.0,
+                    volatility=0.0,
+                    var_95=0.0
+                )
+            
+            # Execute backtest
+            result = self._execute_lean_backtest(lean_config, sim_dir)
+            
+            # Process and store results with enhanced analysis
+            self._process_enhanced_backtest_results(simulation_id, result, sim_dir, trading_strategy, risk_algorithm)
+            
+            # Generate performance report
+            if self.performance_logger:
+                performance_report = self.performance_logger.generate_performance_report()
+                self.performance_logger.save_all_logs()
+                
+                # Log completion
+                self.performance_logger.logger.info(f"Enhanced backtest completed: {simulation_id}")
+                self.performance_logger.logger.info(f"Performance report: {performance_report.get('summary', {})}")
+            
+            # Store in result handler database
+            from lean_result_handler import LEANResultHandler
+            handler = LEANResultHandler()
+            
+            # Load the processed results
+            result_path = sim_dir / "myportolio_results.json"
+            if result_path.exists():
+                with open(result_path, 'r') as f:
+                    processed_results = json.load(f)
+                
+                # Add performance logging results to stored data
+                if self.performance_logger:
+                    processed_results['performance_analysis'] = performance_report
+                
+                # Store in database
+                handler.store_simulation_result(
+                    simulation_id=simulation_id,
+                    simulation_type="backtest",
+                    results=processed_results,
+                    config=lean_config,
+                    results_path=str(result_path)
+                )
+            
+            logger.info(f"Enhanced backtest completed successfully: {simulation_id}")
+            return simulation_id
+            
+        except Exception as e:
+            error_msg = f"Enhanced backtest failed: {str(e)}"
+            logger.error(error_msg)
+            
+            if self.performance_logger:
+                self.performance_logger.logger.error(error_msg)
+                # Try to save logs even on failure
+                try:
+                    self.performance_logger.save_all_logs()
+                except:
+                    pass
+            
+            raise e
+
+    def _prepare_enhanced_lean_config(self, 
+                                    simulation_id: str,
+                                    start_date: str,
+                                    end_date: str,
+                                    parameters: Dict,
+                                    best_model_config: Dict,
+                                    algorithm_type: str = "MyportolioETHMomentum") -> Dict:
+        """Prepare enhanced LEAN configuration with performance logging parameters."""
+        
+        config = {
+            "algorithm-type-name": algorithm_type,
+            "algorithm-location": f"backtests/{simulation_id}/",
+            "algorithm-language": "Python",
+            "data-folder": "/workspaces/unicorninvesting/data/",
+            "output-directory": f"/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/{simulation_id}/",
+            "result-destination-folder": f"/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/{simulation_id}/",
+            "close-automatically": True,
+            "debugging": False,
+            "debugging-method": "LocalCmdline",
+            "job-user-id": "1",
+            "api-access-token": "",
+            "job-organization-id": "",
+            "job-project-id": 0,
+            
+            # Environment settings
+            "environment": "backtesting",
+            "algorithm": algorithm_type,
+            
+            # Simulation parameters
+            "start-date": start_date,
+            "end-date": end_date,
+            "cash": parameters.get("initial_cash", 100000),
+            
+            # Enhanced parameters
+            "parameters": parameters,
+            "best_model_config": best_model_config,
+            "performance_logging_enabled": self.performance_logger is not None,
+            "simulation_id": simulation_id,
+            
+            # Risk management parameters
+            "risk_management": {
+                "max_drawdown": parameters.get("max_drawdown", 0.15),
+                "max_position_pct": parameters.get("max_position_pct", 0.8),
+                "var_confidence": parameters.get("var_confidence", 0.05)
+            },
+            
+            # Trading strategy parameters
+            "trading_strategy": {
+                "short_ma_period": parameters.get("short_ma_period", 5),
+                "long_ma_period": parameters.get("long_ma_period", 20),
+                "max_position_size": parameters.get("max_position_size", 0.1),
+                "volatility_window": parameters.get("volatility_window", 14)
+            }
+        }
+        
+        return config
 
     def get_best_model_config(self, template_name: str = None) -> Dict[str, Any]:
         """
@@ -811,18 +1042,28 @@ class {algorithm_name}(QCAlgorithm):
         return simulations
 
 if __name__ == "__main__":
-    # Example usage
+    # Example usage - 6 month simulation with enhanced logging
     engine = LEANSimulationEngine()
     
-    # Run a sample backtest
-    simulation_id = engine.run_historical_backtest(
-        start_date="2024-01-01",
-        end_date="2024-03-31",
-        algorithm_name="MyportolioETHMomentum",
+    # Set date range for 6 months (March to September 2024)
+    start_date = "2024-03-15"
+    end_date = "2024-09-15"
+    
+    # Run enhanced backtest with comprehensive logging
+    simulation_id = engine.run_backtest_with_logging(
+        start_date=start_date,
+        end_date=end_date,
         parameters={
             "kelly_fraction": 0.167,
-            "rebalance_frequency": "daily"
-        }
+            "rebalance_frequency": "daily",
+            "ma_short": 5,
+            "ma_long": 20,
+            "rsi_period": 14,
+            "volatility_window": 30
+        },
+        template_name="enhanced_momentum_6month"
     )
     
-    print(f"Backtest started with ID: {simulation_id}")
+    print(f"✅ 6-Month Enhanced Backtest started with ID: {simulation_id}")
+    print(f"📊 Period: {start_date} to {end_date}")
+    print(f"🔍 Performance logging enabled for detailed attribution analysis")

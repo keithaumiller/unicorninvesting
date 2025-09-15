@@ -1,0 +1,75 @@
+{
+  "simulation_id": "test_logging_20250915_000000",
+  "analysis_timestamp": "2025-09-15T17:31:55.934731",
+  "simulation_duration": 0.000673,
+  "summary": {
+    "total_return": 0.0,
+    "initial_value": 100000.0,
+    "final_value": 100000.0,
+    "max_drawdown": 0.0,
+    "num_trades": 0,
+    "num_signals": 1,
+    "num_risk_decisions": 1,
+    "num_alpha_predictions": 1
+  },
+  "alpha_model_analysis": {
+    "total_predictions": 1,
+    "predictions_by_model": {
+      "ETH_xgboost_1hour": 1
+    },
+    "accuracy_by_model": {},
+    "confidence_correlation": {}
+  },
+  "trading_strategy_analysis": {
+    "total_signals": 1,
+    "signals_by_type": {
+      "BUY": 1,
+      "SELL": 0,
+      "HOLD": 0
+    },
+    "average_confidence": 0.8,
+    "signal_frequency": {},
+    "position_changes": [
+      0.1
+    ],
+    "average_position_change": 0.1
+  },
+  "risk_management_analysis": {
+    "total_decisions": 1,
+    "approval_rate": 1.0,
+    "decisions_by_type": {
+      "POSITION_LIMIT": {
+        "total": 1,
+        "approved": 1
+      }
+    },
+    "position_impacts": [
+      0.0
+    ],
+    "average_position_impact": 0.0
+  },
+  "execution_analysis": {
+    "error": "No trade executions recorded"
+  },
+  "portfolio_performance": {
+    "total_return": 0.0,
+    "volatility": 0,
+    "max_drawdown": 0.0,
+    "average_drawdown": 0.0,
+    "sharpe_ratio": null,
+    "var_95": 0.05,
+    "return_distribution": {
+      "mean": 0,
+      "std": 0,
+      "skewness": 0,
+      "kurtosis": 0
+    }
+  },
+  "attribution_analysis": {
+    "alpha_contribution": "Analysis of alpha model contribution to returns",
+    "strategy_contribution": "Analysis of trading strategy contribution",
+    "risk_contribution": "Analysis of risk management impact",
+    "execution_contribution": "Analysis of execution cost impact",
+    "note": "Detailed attribution requires more sophisticated tracking"
+  }
+}
