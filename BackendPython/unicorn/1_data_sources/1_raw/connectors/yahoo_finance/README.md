@@ -25,9 +25,10 @@ The Yahoo Finance connector provides free access to historical and real-time mar
 - `eth_data_reader.py` - Analysis and reading of collected ETH data
 
 ### Testing & Examples
-- `test_eth_connector.py` - ETH connector testing
-- `enhanced_eth_test.py` - Enhanced ETH data validation
-- `comprehensive_eth_test.py` - Comprehensive ETH testing suite
+**Testing scripts have been moved to the centralized testing directory:**
+- Testing location: `/tests/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/`
+- Available tests: `test_eth_connector.py`, `enhanced_eth_test.py`, `comprehensive_eth_test.py`
+- Run tests: `cd /workspaces/unicorninvesting && python -m pytest tests/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/`
 
 ## Supported Assets (9 Total)
 

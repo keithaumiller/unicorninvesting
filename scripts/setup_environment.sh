@@ -4,10 +4,11 @@
 # This script sets up the complete environment including:
 # - System packages and services (MySQL, Apache, PHP 8.3)
 # - Python virtual environment and packages
+# - TA-Lib technical analysis library
 # - LEAN framework (TEMPORARILY DISABLED)
 # - Aliases and environment variables
 
-set -e  # Exit on any error
+set +e  # Don't exit on errors - handle them gracefully
 
 # Color codes for output
 RED='\033[0;31m'
@@ -33,6 +34,17 @@ log_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
+# Function to check if command succeeded
+check_success() {
+    if [ $1 -eq 0 ]; then
+        log_success "$2"
+        return 0
+    else
+        log_error "$2 (Exit code: $1)"
+        return 1
+    fi
+}
+
 echo "🦄 Unicorn Investing - Comprehensive Environment Setup"
 echo "======================================================"
 
@@ -41,7 +53,7 @@ log_info "Updating system packages..."
 sudo apt-get update -y
 
 # Step 2: Install system dependencies
-log_info "Installing system dependencies (MySQL, Apache, PHP 8.3, TA-Lib)..."
+log_info "Installing system dependencies (MySQL, Apache, PHP 8.3)..."
 sudo apt-get install -y \
     mysql-server \
     mysql-client \
@@ -53,9 +65,43 @@ sudo apt-get install -y \
     build-essential \
     python3-dev \
     python3-pip \
-    python3-venv \
-    libta-lib-dev \
-    ta-lib-bin
+    python3-venv
+check_success $? "Core system dependencies installed"
+
+# Step 2b: Install TA-Lib system dependencies
+log_info "Installing TA-Lib system dependencies..."
+# First try Ubuntu packages
+if sudo apt-get install -y libta-lib-dev ta-lib-bin; then
+    log_success "TA-Lib system packages installed"
+else
+    log_warning "TA-Lib system packages not available, will compile from source"
+    
+    # Install TA-Lib from source
+    log_info "Compiling TA-Lib from source..."
+    cd /tmp
+    
+    # Download and compile TA-Lib
+    if wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz; then
+        tar -xzf ta-lib-0.4.0-src.tar.gz
+        cd ta-lib/
+        ./configure --prefix=/usr/local
+        make
+        sudo make install
+        
+        # Update library cache
+        sudo ldconfig
+        
+        # Set environment variables for TA-Lib
+        export TA_INCLUDE_PATH=/usr/local/include
+        export TA_LIBRARY_PATH=/usr/local/lib
+        
+        log_success "TA-Lib compiled and installed from source"
+        cd /workspaces/unicorninvesting
+    else
+        log_error "Failed to download TA-Lib source - continuing without it"
+        cd /workspaces/unicorninvesting
+    fi
+fi
 
 # Step 3: Install PHP 8.3
 log_info "Installing PHP 8.3 and extensions..."
@@ -143,7 +189,32 @@ pip install yfinance alpha-vantage quandl ccxt fredapi beaapi
 
 # Install technical analysis and silver layer processing packages
 log_info "Installing technical analysis and advanced analytics packages..."
-pip install TA-Lib matplotlib seaborn plotly || log_warning "Some technical analysis packages failed"
+
+# Try to install TA-Lib Python package
+log_info "Installing TA-Lib Python package..."
+if pip install TA-Lib; then
+    log_success "TA-Lib Python package installed successfully"
+else
+    log_warning "TA-Lib Python package installation failed"
+    
+    # Try alternative installation methods
+    log_info "Attempting alternative TA-Lib installation..."
+    
+    # Set environment variables in case they're needed
+    export TA_INCLUDE_PATH=/usr/local/include
+    export TA_LIBRARY_PATH=/usr/local/lib
+    export TALIB_INCLUDE=/usr/local/include
+    export TALIB_LIB=/usr/local/lib
+    
+    if pip install --no-cache-dir TA-Lib; then
+        log_success "TA-Lib installed with alternative method"
+    else
+        log_error "TA-Lib installation failed completely - continuing without it"
+    fi
+fi
+
+# Install other technical analysis packages
+pip install matplotlib seaborn plotly || log_warning "Some visualization packages failed"
 
 # Install additional requirements
 log_info "Installing remaining Python packages (this may take a few minutes)..."
@@ -196,98 +267,38 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON unicorn_drupal.* TO 'unicorn'@'localhost'
 sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
 log_success "MySQL database configured"
 
-# Step 10: Set up Economic Data Collection cron jobs (FRED + BEA + Bronze Layer Processing)
-log_info "Setting up economic data collection cron jobs (FRED + BEA + Bronze Processing)..."
-
-# Create cron job for comprehensive daily pipeline (FRED + BEA + Bronze Layer)
-DAILY_PIPELINE_JOB="0 22 * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --daily >> /workspaces/unicorninvesting/logs/daily_pipeline.log 2>&1"
-
-# Create cron job for delta pipeline (quick updates with bronze processing)
-DELTA_PIPELINE_JOB="*/30 * * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --delta >> /workspaces/unicorninvesting/logs/delta_pipeline.log 2>&1"
-
-# Create cron job for hourly bronze layer processing (high-frequency data)
-HOURLY_PROCESSING_JOB="0 * * * * cd /workspaces/unicorninvesting && /workspaces/unicorninvesting/scripts/data_pipeline.sh --hourly >> /workspaces/unicorninvesting/logs/hourly_processing.log 2>&1"
-
-# Legacy individual connector jobs (kept for compatibility)
-DAILY_FRED_JOB="0 21 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --daily-update >> /workspaces/unicorninvesting/logs/fred_daily.log 2>&1"
-DELTA_FRED_JOB="*/15 * * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred && /workspaces/unicorninvesting/.venv/bin/python fred_connector.py --delta-update >> /workspaces/unicorninvesting/logs/fred_delta.log 2>&1"
-DAILY_BEA_JOB="0 6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --daily-update >> /workspaces/unicorninvesting/logs/bea_daily.log 2>&1"
-DELTA_BEA_JOB="0 */6 * * * cd /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/connectors/bureau_of_economic_analysis && /workspaces/unicorninvesting/.venv/bin/python bea_connector.py --delta-update >> /workspaces/unicorninvesting/logs/bea_delta.log 2>&1"
+# Step 10: Set up Automated Data Refresh System (Every 5 Minutes)
+log_info "Setting up automated data refresh system (5-minute intervals)..."
 
 # Create logs directory
-mkdir -p /workspaces/unicorninvesting/logs
+mkdir -p /workspaces/unicorninvesting/logs/data_refresh
 
-# Set up comprehensive data pipeline cron jobs (primary approach)
-log_info "Setting up comprehensive data pipeline cron jobs..."
-
-if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --daily"; then
-    (crontab -l 2>/dev/null; echo "$DAILY_PIPELINE_JOB") | crontab -
-    log_success "Daily data pipeline cron job added (10 PM daily - FRED + BEA + Bronze Processing)"
+# Install automated data refresh cron jobs using our cron management system
+if [ -f "/workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh" ]; then
+    log_info "Installing 5-minute data refresh automation..."
+    bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh install
+    
+    if [ $? -eq 0 ]; then
+        log_success "Automated data refresh system installed successfully"
+        log_info "📅 Data refresh schedule: Every 5 minutes"
+        log_info "📊 Includes: Silver layer refresh, portfolio cache validation, system cleanup"
+        log_info "📁 Logs: /workspaces/unicorninvesting/logs/data_refresh/"
+    else
+        log_warning "Failed to install automated data refresh - manual setup may be required"
+    fi
 else
-    log_success "Daily data pipeline cron job already exists"
+    log_warning "Cron management script not found - setting up basic data refresh manually..."
+    
+    # Fallback: Set up basic data refresh cron job manually
+    DATA_REFRESH_JOB="*/5 * * * * cd /workspaces/unicorninvesting && bash /workspaces/unicorninvesting/scripts/cron/jobs/automated_data_refresh.sh >> /workspaces/unicorninvesting/logs/data_refresh/automated_refresh.log 2>&1"
+    
+    if ! crontab -l 2>/dev/null | grep -q "automated_data_refresh.sh"; then
+        (crontab -l 2>/dev/null; echo "$DATA_REFRESH_JOB") | crontab -
+        log_success "Basic data refresh cron job added (every 5 minutes)"
+    else
+        log_success "Data refresh cron job already exists"
+    fi
 fi
-
-if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --delta"; then
-    (crontab -l 2>/dev/null; echo "$DELTA_PIPELINE_JOB") | crontab -
-    log_success "Delta data pipeline cron job added (every 30 minutes - quick updates + bronze processing)"
-else
-    log_success "Delta data pipeline cron job already exists"
-fi
-
-if ! crontab -l 2>/dev/null | grep -q "data_pipeline.sh --hourly"; then
-    (crontab -l 2>/dev/null; echo "$HOURLY_PROCESSING_JOB") | crontab -
-    log_success "Hourly bronze processing cron job added (every hour - high-frequency datasets)"
-else
-    log_success "Hourly bronze processing cron job already exists"
-fi
-
-# Legacy individual connector jobs (for compatibility and backup)
-log_info "Setting up individual connector cron jobs (backup/compatibility)..."
-# Legacy individual connector jobs (for compatibility and backup)
-log_info "Setting up individual connector cron jobs (backup/compatibility)..."
-
-if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --daily-update"; then
-    # Add daily job
-    (crontab -l 2>/dev/null; echo "$DAILY_FRED_JOB") | crontab -
-    log_success "Daily FRED data collection cron job added (9 PM daily)"
-else
-    log_success "Daily FRED cron job already exists"
-fi
-
-if ! crontab -l 2>/dev/null | grep -q "fred_connector.py --delta-update"; then
-    # Add delta job
-    (crontab -l 2>/dev/null; echo "$DELTA_FRED_JOB") | crontab -
-    log_success "Delta FRED data collection cron job added (every 15 minutes)"
-else
-    log_success "Delta FRED cron job already exists"
-fi
-
-# Set up BEA cron jobs
-if ! crontab -l 2>/dev/null | grep -q "bea_connector.py --daily-update"; then
-    # Add daily BEA job
-    (crontab -l 2>/dev/null; echo "$DAILY_BEA_JOB") | crontab -
-    log_success "Daily BEA data collection cron job added (6 AM daily)"
-else
-    log_success "Daily BEA cron job already exists"
-fi
-
-if ! crontab -l 2>/dev/null | grep -q "bea_connector.py --delta-update"; then
-    # Add delta BEA job
-    (crontab -l 2>/dev/null; echo "$DELTA_BEA_JOB") | crontab -
-    log_success "Delta BEA data collection cron job added (every 6 hours)"
-else
-    log_success "Delta BEA cron job already exists"
-fi
-
-# Display comprehensive cron schedule
-log_info "📅 Complete cron schedule:"
-echo "  • Daily Pipeline (10 PM): FRED + BEA + Bronze Layer Processing"
-echo "  • Delta Pipeline (every 30 min): Quick updates + Bronze Processing"  
-echo "  • Hourly Processing (hourly): High-frequency bronze datasets"
-echo "  • Legacy FRED Daily (9 PM): Individual FRED connector"
-echo "  • Legacy FRED Delta (every 15 min): Individual FRED connector"
-echo "  • Legacy BEA Daily (6 AM): Individual BEA connector"  
-echo "  • Legacy BEA Delta (every 6 hours): Individual BEA connector"
 
 # Start cron service if not running
 if ! pgrep cron > /dev/null; then
@@ -297,7 +308,7 @@ else
     log_success "Cron service already running"
 fi
 
-log_success "FRED data collection automation configured"
+log_success "Automated data refresh system configured"
 
 # Add to ~/.bashrc for persistent aliases
 if [ -f ~/.bashrc ]; then
@@ -312,6 +323,13 @@ if [ -f ~/.bashrc ]; then
         echo "alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'" >> ~/.bashrc
         echo "alias unicorn-root='cd /workspaces/unicorninvesting'" >> ~/.bashrc
         echo "alias unicorn-env='/workspaces/unicorninvesting/scripts/unicorn_environment.sh'" >> ~/.bashrc
+        echo "# Cron Management Aliases" >> ~/.bashrc
+        echo "alias cron-install='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh install'" >> ~/.bashrc
+        echo "alias cron-status='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh status'" >> ~/.bashrc
+        echo "alias cron-logs='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh logs'" >> ~/.bashrc
+        echo "alias cron-test='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh test'" >> ~/.bashrc
+        echo "alias cron-remove='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh remove'" >> ~/.bashrc
+        echo "alias cron-validate='bash /workspaces/unicorninvesting/scripts/cron/validate_data_refresh.sh'" >> ~/.bashrc
         echo "" >> ~/.bashrc
         echo "# Unicorn Investing Environment" >> ~/.bashrc
         echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
@@ -338,6 +356,23 @@ alias drupal-logs='sudo tail -20 /var/log/apache2/drupal_error.log'
 alias drupal-restart='sudo service apache2 restart && sudo service mysql restart'
 alias drupal-cd='cd /workspaces/unicorninvesting/WebFrontend'
 alias unicorn-root='cd /workspaces/unicorninvesting'
+# Cron management aliases for current session
+alias cron-install='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh install'
+alias cron-status='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh status'
+alias cron-logs='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh logs'
+alias cron-test='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh test'
+alias cron-remove='bash /workspaces/unicorninvesting/scripts/cron/manage_cron_jobs.sh remove'
+alias cron-validate='bash /workspaces/unicorninvesting/scripts/cron/validate_data_refresh.sh'
+# Data warehouse testing aliases for current session
+alias test-warehouse='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh'
+alias test-raw='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=raw'
+alias test-bronze='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=bronze'
+alias test-silver='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=silver'
+alias test-gold='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=gold'
+alias test-yahoo='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=yahoo'
+alias test-fred='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=fred'
+alias test-ibkr='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=ibkr'
+alias test-forex='/workspaces/unicorninvesting/tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=forex'
 
 # Set environment variables for current session
 export UNICORN_ROOT='/workspaces/unicorninvesting'
@@ -357,6 +392,25 @@ echo "  drupal-restart  - Restart Apache and MySQL services"
 echo "  drupal-cd       - Change to Drupal root directory"
 echo "  unicorn-root    - Change to project root directory"
 echo ""
+echo "Cron Management commands:"
+echo "  cron-install    - Install 5-minute data refresh automation"
+echo "  cron-status     - Check cron job status and recent activity"
+echo "  cron-logs       - View data refresh logs"
+echo "  cron-test       - Run manual data refresh test"
+echo "  cron-remove     - Remove all data refresh cron jobs"
+echo "  cron-validate   - Comprehensive data refresh system validation"
+echo ""
+echo "Data Warehouse Testing commands:"
+echo "  test-warehouse  - Test all data warehouse layers"
+echo "  test-raw        - Test raw data layer only"
+echo "  test-bronze     - Test bronze data layer only"  
+echo "  test-silver     - Test silver data layer only"
+echo "  test-gold       - Test gold data layer only"
+echo "  test-yahoo      - Test Yahoo Finance connector only"
+echo "  test-fred       - Test FRED connector only"
+echo "  test-ibkr       - Test IBKR connector only"
+echo "  test-forex      - Test Forex connector only"
+echo ""
 echo "Environment variables:"
 echo "  UNICORN_ROOT = $UNICORN_ROOT"
 echo "  DRUPAL_ROOT = $DRUPAL_ROOT"
@@ -367,9 +421,9 @@ echo "  ✅ FRED API Key: Configured for Federal Reserve data"
 echo "  ✅ BEA API Key: Configured and activated for Bureau of Economic Analysis data"
 echo ""
 echo "📊 Automated Data Collection:"
-echo "  • FRED: Every 15 minutes (delta) + Daily at 9 PM (comprehensive)"
-echo "  • BEA: Every 6 hours (delta) + Daily at 6 AM (comprehensive)"
-echo "  • Logs: /workspaces/unicorninvesting/logs/"
+echo "  • Data Refresh: Every 5 minutes (silver layer + portfolio cache)"
+echo "  • System Validation: Comprehensive bronze/silver layer processing"
+echo "  • Logs: /workspaces/unicorninvesting/logs/data_refresh/"
 
 # Ensure virtual environment is available for future sessions
 if [ -f "/workspaces/unicorninvesting/.venv/bin/activate" ]; then
@@ -381,5 +435,47 @@ else
     source .venv/bin/activate
 fi
 
+# Final validation of critical components
+log_info "Performing final system validation..."
+
+# Test virtual environment
+if source /workspaces/unicorninvesting/.venv/bin/activate; then
+    log_success "Virtual environment activation: PASSED"
+else
+    log_error "Virtual environment activation: FAILED"
+fi
+
+# Test critical Python packages
+source /workspaces/unicorninvesting/.venv/bin/activate
+python3 -c "import pandas, numpy, yfinance; print('Core packages working')" && log_success "Core Python packages: PASSED" || log_error "Core Python packages: FAILED"
+
+# Test TA-Lib specifically
+python3 -c "import talib; print('TA-Lib working')" && log_success "TA-Lib: PASSED" || log_warning "TA-Lib: NOT AVAILABLE"
+
+# Test services
+if sudo service mysql status >/dev/null 2>&1; then
+    log_success "MySQL service: RUNNING"
+else
+    log_error "MySQL service: NOT RUNNING"
+fi
+
+if sudo service apache2 status >/dev/null 2>&1; then
+    log_success "Apache service: RUNNING"
+else
+    log_error "Apache service: NOT RUNNING"
+fi
+
+# Test database connectivity
+if mysql -u unicorn -punicorn123 -e "SELECT 1;" >/dev/null 2>&1; then
+    log_success "Database connectivity: PASSED"
+else
+    log_warning "Database connectivity: CHECK REQUIRED"
+fi
+
+log_info "Environment setup validation completed"
+
 # Automatically source ~/.bashrc to activate new aliases for this session
-source ~/.bashrc
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
+    log_success "Aliases and environment variables loaded"
+fi

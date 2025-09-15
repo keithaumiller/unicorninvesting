@@ -2,7 +2,7 @@
   "source_files": [
     "AUDUSD_bronze_1d_latest.csv"
   ],
-  "processing_timestamp": "2025-09-11T15:09:55.051958",
+  "processing_timestamp": "2025-09-15T13:10:02.739255",
   "records_processed": 259,
   "features_generated": 51,
   "quality_metrics": {

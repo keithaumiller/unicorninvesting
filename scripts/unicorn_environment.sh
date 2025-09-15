@@ -1021,7 +1021,75 @@ run_health_checks() {
         check_status 1 "Architecture Documentation: Missing" "Expected: BackendPython/unicorn/ARCHITECTURE.md"
     fi
 
-    # 8. Summary
+    # 8. Automated Data Refresh System
+    echo -e "\n${BLUE}🕒 Automated Data Refresh System${NC}"
+    echo "================================="
+
+    # Check cron service status
+    if pgrep cron > /dev/null; then
+        check_status 0 "Cron Service: Running"
+    else
+        check_status 1 "Cron Service: Not running" "Run: sudo service cron start"
+    fi
+
+    # Check for data refresh cron jobs
+    if crontab -l 2>/dev/null | grep -q "automated_data_refresh"; then
+        check_status 0 "Data Refresh Job: Installed (5-minute intervals)"
+        
+        # Count total cron jobs for context
+        CRON_COUNT=$(crontab -l 2>/dev/null | grep -v '^#' | grep -v '^$' | wc -l)
+        echo -e "   ${BLUE}ℹ️  Total active cron jobs: $CRON_COUNT${NC}"
+    else
+        check_status 1 "Data Refresh Job: Not installed" "Run: cron-install"
+    fi
+
+    # Check data refresh script
+    REFRESH_SCRIPT="$UNICORN_ROOT/scripts/cron/jobs/automated_data_refresh.sh"
+    if [ -x "$REFRESH_SCRIPT" ]; then
+        check_status 0 "Data Refresh Script: Available and executable"
+    elif [ -f "$REFRESH_SCRIPT" ]; then
+        check_status 1 "Data Refresh Script: Found but not executable" "Run: chmod +x $REFRESH_SCRIPT"
+    else
+        check_status 1 "Data Refresh Script: Missing" "Expected: $REFRESH_SCRIPT"
+    fi
+
+    # Check cron management tools
+    CRON_MANAGER="$UNICORN_ROOT/scripts/cron/manage_cron_jobs.sh"
+    if [ -f "$CRON_MANAGER" ]; then
+        check_status 0 "Cron Management Tools: Available"
+    else
+        check_status 1 "Cron Management Tools: Missing" "Expected: $CRON_MANAGER"
+    fi
+
+    # Check recent data refresh activity
+    REFRESH_LOG_DIR="$UNICORN_ROOT/logs/data_refresh"
+    if [ -d "$REFRESH_LOG_DIR" ] && [ "$(ls -A $REFRESH_LOG_DIR 2>/dev/null)" ]; then
+        RECENT_LOGS=$(find "$REFRESH_LOG_DIR" -name "*.log" -mmin -10 | wc -l)
+        if [ $RECENT_LOGS -gt 0 ]; then
+            check_status 0 "Recent Activity: Data refresh executed within last 10 minutes"
+        else
+            # Check for any recent log activity
+            RECENT_ACTIVITY=$(find "$REFRESH_LOG_DIR" -name "*.log" -mmin -60 | wc -l)
+            if [ $RECENT_ACTIVITY -gt 0 ]; then
+                check_status 0 "Recent Activity: Data refresh executed within last hour"
+            else
+                check_status 1 "Recent Activity: No recent data refresh detected" "Wait for next scheduled run or use: cron-test"
+            fi
+        fi
+    else
+        check_status 1 "Log Directory: Missing or empty" "Expected: $REFRESH_LOG_DIR"
+    fi
+
+    # Check data validation system
+    VALIDATION_SCRIPT="$UNICORN_ROOT/scripts/cron/validate_data_refresh.sh"
+    if [ -f "$VALIDATION_SCRIPT" ]; then
+        check_status 0 "Data Validation System: Available"
+        echo -e "   ${BLUE}💡 Run 'cron-validate' for comprehensive system validation${NC}"
+    else
+        check_status 1 "Data Validation System: Missing" "Expected: $VALIDATION_SCRIPT"
+    fi
+
+    # 9. Summary
     echo -e "\n${BLUE}📊 Summary${NC}"
     echo "==========="
 

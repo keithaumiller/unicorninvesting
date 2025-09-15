@@ -35,6 +35,37 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - Homepage content validation
 - Comprehensive troubleshooting guidance
 
+### Data Warehouse Testing
+**Comprehensive data warehouse testing suite** - Located in `tests/unicorn/1_data_sources/test_data_warehouse.sh`
+
+```bash
+# Test all data warehouse layers
+./tests/unicorn/1_data_sources/test_data_warehouse.sh
+
+# Test specific layer only
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=raw
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=bronze
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=silver
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --layer=gold
+
+# Test specific connector only
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=yahoo
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=fred
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=ibkr
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --connector=forex
+
+# Quick tests (skip integration tests)
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --quick
+
+# Detailed output
+./tests/unicorn/1_data_sources/test_data_warehouse.sh --verbose
+```
+
+**Note**: Use the convenient aliases below instead of the full path for easier access.
+
+### `test_data_warehouse.sh`
+**Comprehensive data warehouse testing suite** - Use this to validate all layers of the data pipeline!
+
 ### `export_drupal_baseline.sh`
 **Creates exportable baselines of working Drupal installations** - Use this to backup working configurations!
 

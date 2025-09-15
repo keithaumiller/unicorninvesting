@@ -4,10 +4,11 @@
 Scripts for processing and validating data as it enters the raw layer from external connectors.
 
 ## Typical Scripts
-- **validate_raw_data.py** - Schema and format validation
 - **clean_api_responses.py** - Initial data cleaning from API responses  
 - **stage_for_bronze.py** - Prepare validated data for bronze layer
 - **data_quality_checks.py** - Basic quality control measures
+
+**Note**: Validation scripts have been moved to `/tests/unicorn/1_data_sources/` for centralized test management.
 
 ## Processing Pattern
 ```

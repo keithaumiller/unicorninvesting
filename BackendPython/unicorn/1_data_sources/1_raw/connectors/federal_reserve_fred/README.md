@@ -204,13 +204,18 @@ date,FEDFUNDS,CPIAUCSL,DGS10,M2SL,FEDFUNDS_roc_20,yield_curve_slope,inflation_yo
 
 ## 🧪 **Testing & Validation**
 
+**Testing scripts have been moved to the centralized testing directory:**
+- **Testing location**: `/tests/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/`
+- **Available tests**: `test_fred_connector.py`
+
 ### **Run Test Suite**
 ```bash
-# Comprehensive testing
-python test_fred_connector.py
+# Comprehensive testing from root directory
+cd /workspaces/unicorninvesting
+python -m pytest tests/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/test_fred_connector.py
 
-# Quick connection test
-python fred_connector.py
+# Quick connection test (data connector only)
+python BackendPython/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/fred_connector.py
 ```
 
 ### **Test Coverage**

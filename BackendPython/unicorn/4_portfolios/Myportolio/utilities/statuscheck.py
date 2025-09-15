@@ -503,10 +503,21 @@ class MyportolioStatusChecker:
         results['total_models'] = total_models
         results['critical_path_ready'] = all_requirements_met
         
+        # Get comprehensive model count from entire alpha_models directory
+        alpha_models_root = self.unicorn_root / "2_alpha_models"
+        comprehensive_counts = self._get_comprehensive_model_counts(alpha_models_root)
+        
         # Summary
         print(f"\n📈 PRODUCTION MODELS SUMMARY:")
-        print(f"   Total Models: {total_models}")
+        print(f"   ETH Production Models: {total_models}")
+        print(f"   Total Alpha Models (All Assets): {comprehensive_counts['total_comprehensive']}")
         print(f"   Critical Path Status: {'✅ READY' if all_requirements_met else '❌ NOT READY'}")
+        
+        if comprehensive_counts['breakdown']:
+            print(f"\n📊 COMPREHENSIVE MODEL BREAKDOWN:")
+            for category, count in comprehensive_counts['breakdown'].items():
+                if count > 0:
+                    print(f"   • {category}: {count} models")
         
         if not all_requirements_met:
             print(f"\n❌ CRITICAL PATH BLOCKERS:")
@@ -544,6 +555,60 @@ class MyportolioStatusChecker:
             print(f"⚠️  Production performance database not found")
         
         return results
+    
+    def _get_comprehensive_model_counts(self, alpha_models_root: Path) -> Dict[str, Any]:
+        """Get comprehensive count of all trained models across the entire alpha models directory."""
+        counts = {
+            'total_comprehensive': 0,
+            'breakdown': {}
+        }
+        
+        try:
+            # ETH Production Models
+            eth_prod_models = list((alpha_models_root / "CRYPTO" / "ETH" / "production_models").rglob("*.json"))
+            counts['breakdown']['ETH Production Models'] = len(eth_prod_models)
+            
+            # BTC Production Models
+            btc_prod_models = list((alpha_models_root / "CRYPTO" / "BTC" / "production_models").rglob("*.json"))
+            counts['breakdown']['BTC Production Models'] = len(btc_prod_models)
+            
+            # Fixed Multi-Asset Models (joblib files)
+            fixed_multi_models = list((alpha_models_root / "fixed_multi_asset_models").rglob("*.joblib"))
+            counts['breakdown']['Fixed Multi-Asset Models'] = len(fixed_multi_models)
+            
+            # Multi-Asset Models (actual model directories)
+            multi_asset_models = 0
+            multi_asset_dir = alpha_models_root / "multi_asset_models"
+            if multi_asset_dir.exists():
+                for item in multi_asset_dir.iterdir():
+                    if item.is_dir() and "_" in item.name and item.name != "__pycache__":
+                        # Count directories like "ETH_1d", "BTC_1h", etc.
+                        model_files = list(item.rglob("*.joblib")) + list(item.rglob("*.json"))
+                        multi_asset_models += len(model_files)
+            counts['breakdown']['Multi-Asset Models'] = multi_asset_models
+            
+            # FOREX Models
+            forex_models = 0
+            forex_dir = alpha_models_root / "FOREX"
+            if forex_dir.exists():
+                forex_models = len(list(forex_dir.rglob("*.joblib"))) + len(list(forex_dir.rglob("*.json")))
+            counts['breakdown']['FOREX Models'] = forex_models
+            
+            # ETH Model Storage (additional models)
+            eth_storage_models = 0
+            eth_model_storage = alpha_models_root / "CRYPTO" / "ETH" / "model_storage"
+            if eth_model_storage.exists():
+                eth_storage_models = len(list(eth_model_storage.rglob("*.joblib"))) + len(list(eth_model_storage.rglob("*.json")))
+            counts['breakdown']['ETH Model Storage'] = eth_storage_models
+            
+            # Calculate total
+            counts['total_comprehensive'] = sum(counts['breakdown'].values())
+            
+        except Exception as e:
+            logger.warning(f"Could not get comprehensive model counts: {e}")
+            counts['total_comprehensive'] = 0
+            
+        return counts
     
     def check_risk_management_systems(self) -> Dict[str, Any]:
         """Validate risk management components and calculations."""

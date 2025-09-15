@@ -5,12 +5,13 @@ Utility scripts for creating, maintaining, and managing the bronze data layer in
 
 ## Typical Scripts
 - **setup_bronze_tables.py** - Create and initialize bronze layer database tables/schemas
-- **validate_bronze_data.py** - Comprehensive data quality validation
 - **repair_corrupted_data.py** - Identify and repair data corruption issues
 - **update_reference_data.py** - Update exchange lists, currency pairs, stock symbols
 - **compact_bronze_storage.py** - Optimize storage and remove duplicates
 - **bronze_data_lineage.py** - Track data lineage from raw to bronze
 - **performance_tuning.py** - Optimize bronze layer query and storage performance
+
+**Note**: Validation scripts have been moved to `/tests/unicorn/1_data_sources/` for centralized test management.
 
 ## Reference Data Management
 - **update_forex_pairs.py** - Refresh forex pair definitions
@@ -31,12 +32,11 @@ python utilities/setup_bronze_tables.py --create-indexes
 python utilities/update_reference_data.py --all
 
 # Daily maintenance
-python utilities/validate_bronze_data.py --full-scan
 python utilities/compact_bronze_storage.py --optimize
 
-# Quality checks
-python utilities/data_validation_suite.py --report
-python utilities/duplicate_detection.py --fix
+# Quality checks and validation (centralized location)
+cd /workspaces/unicorninvesting
+python -m pytest tests/unicorn/1_data_sources/ --verbose
 ```
 
 Bronze layer utilities focus on:

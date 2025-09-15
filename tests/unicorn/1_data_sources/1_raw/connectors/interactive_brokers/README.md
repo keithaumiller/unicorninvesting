@@ -10,6 +10,14 @@ This directory contains comprehensive testing for Interactive Brokers (IBKR) dat
 
 ### **🧪 Active Test Files**
 
+#### **`test_connector_demo.py`** - ✅ **NEWLY MOVED**
+**Purpose**: IBKR connector demonstration and basic functionality testing  
+**Coverage**: 
+- Connector initialization and configuration validation
+- Environment setup and dependency checks
+- Basic API functionality demonstration
+- Configuration methods testing
+
 #### **`test_ibkr_integration.py`** - ✅ **ACTIVE**
 **Purpose**: Integration testing for IBKR Gateway connectivity and data collection  
 **Coverage**:

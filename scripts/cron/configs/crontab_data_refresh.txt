@@ -1,0 +1,24 @@
+# Unicorn Investing - Automated Data Refresh Cron Jobs
+# =====================================================
+# 
+# This file contains cron job definitions for automated data refresh
+# and portfolio monitoring systems.
+#
+# Installation: crontab /workspaces/unicorninvesting/scripts/cron/configs/crontab_data_refresh.txt
+#
+
+# Automated Data Refresh - Every 5 minutes
+# Refreshes silver layer data from Yahoo Finance APIs
+*/5 * * * * /workspaces/unicorninvesting/scripts/cron/jobs/automated_data_refresh.sh >/dev/null 2>&1
+
+# Portfolio Health Check - Every hour at minute 2
+# Validates portfolio data connector and silver layer access
+2 * * * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/core/silver_layer_data_connector.py >/dev/null 2>&1
+
+# Weekly data cleanup - Sundays at 2:00 AM
+# Removes old log files and temporary data
+0 2 * * 0 find /workspaces/unicorninvesting/logs/data_refresh -name "data_refresh_*.log" -mtime +7 -delete
+
+# Monthly silver layer optimization - First day of month at 3:00 AM
+# Optimizes silver layer data files and regenerates metadata
+0 3 1 * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/3_silver/yahoo_finance_assets/yahoo_finance_silver_processor.py --optimize >/dev/null 2>&1

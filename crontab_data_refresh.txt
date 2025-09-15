@@ -1,0 +1,6 @@
+# Automated Data Refresh - Every 5 minutes
+*/5 * * * * /workspaces/unicorninvesting/scripts/automated_data_refresh.sh >/dev/null 2>&1
+
+# Portfolio Health Check - Every hour at minute 2
+2 * * * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/core/silver_layer_data_connector.py >/dev/null 2>&1
+
