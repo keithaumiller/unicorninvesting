@@ -7,11 +7,24 @@ Test script to determine the finest granularity available from Yahoo Finance
 for forex data and document all supported intervals.
 """
 
+import pytest
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
 import sys
 import os
+
+
+@pytest.fixture
+def symbol():
+    """Fixture to provide default forex symbol for testing."""
+    return "EURUSD=X"
+
+
+@pytest.fixture(params=["EURUSD=X", "GBPUSD=X", "USDJPY=X"])
+def forex_symbols(request):
+    """Fixture to provide multiple forex symbols for testing."""
+    return request.param
 
 def test_interval(symbol, interval, period, description):
     """Test a specific interval for a forex symbol"""

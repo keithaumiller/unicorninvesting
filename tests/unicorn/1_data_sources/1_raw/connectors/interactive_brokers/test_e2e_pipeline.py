@@ -35,7 +35,7 @@ class TestE2EDataPipeline:
     def pipeline_components(self):
         """Set up complete pipeline components"""
         collector = OptimizedETHCollector()
-        indicator_engine = TechnicalIndicatorEngine(window_size=200)
+        indicator_engine = TechnicalIndicatorEngine(max_history=200)
         
         return {
             'collector': collector,
@@ -423,7 +423,7 @@ class TestE2EPerformanceBenchmarks:
         print("\n⚡ Technical Indicators Performance Benchmark")
         
         # Create large dataset for benchmarking
-        indicator_engine = TechnicalIndicatorEngine(window_size=1000)
+        indicator_engine = TechnicalIndicatorEngine(max_history=1000)
         
         # Generate test data
         base_time = pd.Timestamp.now(tz='UTC')
@@ -488,7 +488,7 @@ class TestE2EPerformanceBenchmarks:
         print("\n⚡ End-to-End Latency Benchmark")
         
         collector = OptimizedETHCollector()
-        indicator_engine = TechnicalIndicatorEngine(window_size=200)
+        indicator_engine = TechnicalIndicatorEngine(max_history=200)
         
         if not collector.authenticate():
             pytest.skip("IBKR Gateway required for E2E latency testing")
@@ -583,7 +583,7 @@ def run_complete_pipeline_analysis():
     
     # Initialize components
     collector = OptimizedETHCollector()
-    indicator_engine = TechnicalIndicatorEngine(window_size=200)
+    indicator_engine = TechnicalIndicatorEngine(max_history=200)
     
     print("🔐 Authenticating with IBKR...")
     if not collector.authenticate():

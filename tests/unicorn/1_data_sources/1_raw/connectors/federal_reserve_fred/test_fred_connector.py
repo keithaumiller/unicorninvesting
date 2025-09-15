@@ -9,6 +9,7 @@ for crypto alpha model integration.
 import os
 import sys
 import pandas as pd
+import pytest
 from datetime import datetime, timedelta
 
 # Add the FRED connector path to sys.path  
@@ -23,8 +24,29 @@ except ImportError as e:
     print(f"💡 Looking for fred_connector.py in: {fred_connector_path}")
     print("💡 Make sure fred_connector.py and config.py are in the source directory")
     # Don't exit during pytest collection, just raise ImportError
-    import pytest
     pytest.skip(f"Cannot import FRED connector from {fred_connector_path}", allow_module_level=True)
+
+
+@pytest.fixture(scope="session")
+def fred_connector():
+    """Fixture to provide FRED connector instance for tests."""
+    try:
+        fred = FredConnector()
+        return fred
+    except ValueError as e:
+        pytest.skip(f"FRED API key not configured: {e}")
+    except Exception as e:
+        pytest.skip(f"Could not initialize FRED connector: {e}")
+
+
+@pytest.fixture
+def sample_data():
+    """Fixture to provide sample data for testing."""
+    dates = pd.date_range('2023-01-01', '2023-12-31', freq='D')
+    return pd.DataFrame({
+        'date': dates,
+        'value': [100 + i * 0.1 for i in range(len(dates))]
+    }).set_index('date')
 
 
 def test_api_connection():
@@ -34,19 +56,13 @@ def test_api_connection():
     try:
         fred = FredConnector()
         print("   ✅ FRED Connector initialized successfully")
-        return fred
+        assert fred is not None
     except ValueError as e:
-        print(f"   ❌ Configuration Error: {e}")
-        print("   💡 Set FRED_API_KEY environment variable")
-        print("   🔗 Get free API key: https://fred.stlouisfed.org/docs/api/api_key.html")
-        return None
+        pytest.skip(f"Configuration Error: {e}. Set FRED_API_KEY environment variable")
     except ImportError as e:
-        print(f"   ❌ Library Error: {e}")
-        print("   💡 Install fredapi: pip install fredapi")
-        return None
+        pytest.skip(f"Library Error: {e}. Install fredapi: pip install fredapi")
     except Exception as e:
-        print(f"   ❌ Unexpected Error: {e}")
-        return None
+        pytest.fail(f"Unexpected Error: {e}")
 
 
 def test_single_series(fred_connector):

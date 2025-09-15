@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-09-15T14:37:01.677045",
+  "summary": {
+    "total_failures": 2,
+    "testing_script_problems": 2,
+    "pipeline_problems": 0,
+    "unknown": 0
+  },
+  "detailed_failures": {
+    "testing_script_problems": [
+      {
+        "test": "tests/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/test_e2e_pipeline.py::TestE2EPerformanceBenchmarks::test_end_to_end_latency_benchmark",
+        "error": "E       fixture 'connector' not found\nE   TypeError: TechnicalIndicatorEngine.__init__() got an unexpected keyword argument 'window_size'\nE   TypeError: TechnicalIndicatorEngine.__init__() got an unexpected keyword argument 'window_size'\nE   TypeError: TechnicalIndicatorEngine.__init__() got an unexpected keyword argument 'window_size'\nE   AssertionError: Overall score should be 60-90%, got 95.3%\nE   assert np.float64(0.9534431786135817) <= 0.9\nE   TypeError: TechnicalIndicatorEngine.__init__() got an unexpected keyword argument 'window_size'\nE   TypeError: TechnicalIndicatorEngine.__init__() got an unexpected keyword argument 'window_size'",
+        "pattern_matched": "fixture .* not found",
+        "category": "testing_script_problem"
+      },
+      {
+        "test": "tests/unicorn/1_data_sources/1_raw/connectors/forex/test_yahoo_intervals.py::test_interval",
+        "error": "E       fixture 'symbol' not found",
+        "pattern_matched": "fixture .* not found",
+        "category": "testing_script_problem"
+      }
+    ],
+    "pipeline_problems": [],
+    "unknown": []
+  }
+}

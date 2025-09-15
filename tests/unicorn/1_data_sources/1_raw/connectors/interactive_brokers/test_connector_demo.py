@@ -4,13 +4,19 @@ Test IBKR Client Portal Connector (Demo Mode)
 This script tests the connector functionality without requiring actual IBKR connection.
 """
 
+import pytest
 import sys
 import os
 import json
 from datetime import datetime
 
 # Add the IBKR connector path to sys.path
-ibkr_connector_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', '..', 'BackendPython', 'unicorn', '1_data_sources', '1_raw', 'connectors', 'interactive_brokers')
+ibkr_connector_path = os.path.join(
+    os.path.dirname(__file__), 
+    '..', '..', '..', '..', '..', '..',
+    'BackendPython', 'unicorn', '1_data_sources', 
+    '1_raw', 'connectors', 'interactive_brokers'
+)
 sys.path.append(ibkr_connector_path)
 
 try:
@@ -19,14 +25,24 @@ try:
 except ImportError as e:
     print(f"❌ Failed to import connector: {e}")
     print(f"💡 Looking for IBKRClientPortalConnector.py in: {ibkr_connector_path}")
-    # Don't exit during pytest collection, use pytest.skip instead
-    import pytest
     pytest.skip(f"Cannot import IBKR connector from {ibkr_connector_path}", allow_module_level=True)
+
+
+@pytest.fixture(scope="session")
+def connector():
+    """Fixture to provide IBKR connector instance for tests."""
+    try:
+        connector = IBKRClientPortalConnector()
+        print(f"✅ Connector initialized with base URL: {connector.base_url}")
+        return connector
+    except Exception as e:
+        pytest.skip(f"Could not initialize IBKR connector: {e}")
+
 
 def test_connector_initialization():
     """Test connector initialization."""
-    print("\n🔧 Testing Connector Initialization")
-    print("=" * 40)
+    print("� Testing IBKR Client Portal Connector Initialization")
+    print("=" * 60)
     
     try:
         # Test with default settings
@@ -34,10 +50,12 @@ def test_connector_initialization():
         print(f"✅ Connector initialized with base URL: {connector.base_url}")
         print(f"✅ Session created: {type(connector.session).__name__}")
         print(f"✅ Authentication state: {connector.authenticated}")
-        return connector
+        assert connector is not None
+        assert hasattr(connector, 'base_url')
+        assert hasattr(connector, 'session')
     except Exception as e:
-        print(f"❌ Initialization failed: {e}")
-        return None
+        pytest.fail(f"Initialization failed: {e}")
+
 
 def test_configuration_methods(connector):
     """Test configuration and utility methods."""
@@ -73,8 +91,12 @@ def test_configuration_methods(connector):
             else:
                 print(f"❌ Method missing: {method}")
                 
+        assert "timestamp" in health_template
+        assert "connection_status" in health_template
+        
     except Exception as e:
-        print(f"❌ Configuration test failed: {e}")
+        pytest.fail(f"Configuration test failed: {e}")
+
 
 def test_environment_setup():
     """Test environment and configuration setup."""
@@ -116,6 +138,7 @@ def test_environment_setup():
     else:
         print("⚠️  Config directory not found (run setup_client_portal.sh)")
 
+
 def test_dependencies():
     """Test required Python dependencies."""
     print("\n📦 Testing Dependencies")
@@ -134,10 +157,10 @@ def test_dependencies():
             __import__(module)
             print(f"✅ {module}: Available - {description}")
         except ImportError:
-            print(f"❌ {module}: Missing - {description}")
+            pytest.fail(f"Required module {module} not available - {description}")
 
-def main():
-    """Run all tests."""
+
+if __name__ == "__main__":
     print("🧪 IBKR Client Portal Connector Test Suite")
     print("=" * 50)
     print("Testing connector functionality without live connection...")
@@ -146,13 +169,9 @@ def main():
     test_dependencies()
     
     # Test 2: Connector initialization
-    connector = test_connector_initialization()
+    test_connector_initialization()
     
-    if connector:
-        # Test 3: Configuration methods
-        test_configuration_methods(connector)
-    
-    # Test 4: Environment setup
+    # Test 3: Environment setup
     test_environment_setup()
     
     print("\n" + "=" * 50)
@@ -169,6 +188,3 @@ def main():
     print("4. Test live connection with the connector")
     print("")
     print("📚 For full setup instructions, see README.md")
-
-if __name__ == "__main__":
-    main()
