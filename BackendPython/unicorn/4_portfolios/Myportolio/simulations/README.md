@@ -1,4 +1,4 @@
-# Myportolio LEAN Simulation Framework with Performance Logging
+# Myportolio Python Simulation Framework with Performance Logging
 
 ## 🎉 **OPERATIONAL STATUS: ENHANCED FRAMEWORK COMPLETE**
 
@@ -29,7 +29,7 @@ The Myportolio simulation framework now includes a comprehensive performance log
 
 ## Overview
 
-The Myportolio LEAN Simulation Framework provides professional-grade backtesting, paper trading, and optimization capabilities by directly integrating with the QuantConnect LEAN algorithmic trading engine patterns using Python-based implementation.
+The Myportolio Python Simulation Framework provides professional-grade backtesting, paper trading, and optimization capabilities using pure Python implementation with Myportolio's trading algorithms and performance logging system.
 
 ## 🏗️ **Architecture**
 
@@ -53,8 +53,8 @@ simulations/
 │   ├── {simulation_id}_risk_decisions.json       # Risk decisions
 │   ├── {simulation_id}_trade_executions.json     # Execution details
 │   └── {simulation_id}_portfolio_states.json     # Portfolio snapshots
-├── lean_simulation_engine.py   # 🔄 Enhanced with performance logging
-├── lean_result_handler.py      # Result storage and analysis
+├── python_simulation_engine.py   # 🔄 Enhanced with performance logging
+├── python_result_handler.py      # Result storage and analysis
 ├── performance_logger.py       # 🆕 Comprehensive logging system
 ├── analyze_performance_issues.py # 🆕 Performance analysis tool
 ├── test_enhanced_logging.py    # 🆕 Logging system validation
@@ -64,11 +64,11 @@ simulations/
 
 ### **Core Components**
 
-#### **1. LEANSimulationEngine** 🔄 Enhanced
-- Direct integration with QuantConnect LEAN framework
+#### **1. PythonSimulationEngine** 🔄 Enhanced
+- Pure Python backtesting implementation
 - Historical backtesting with real market data
 - Paper trading simulation with live data feeds
-- Parameter optimization using LEAN's optimizer
+- Parameter optimization capabilities
 - **🆕 Integrated Performance Logging**: Comprehensive logging throughout simulation lifecycle
 - **🆕 Enhanced Algorithm Creation**: Logging-enabled algorithm instantiation
 - **🆕 Automated Performance Reports**: Generated analysis after each simulation
@@ -81,8 +81,8 @@ simulations/
 - **Portfolio State Monitoring**: Comprehensive portfolio metrics with attribution
 - **Automated Report Generation**: Detailed performance reports with actionable insights
 
-#### **3. LEANResultHandler**
-- LEAN-compatible result storage and tracking
+#### **3. PythonResultHandler**
+- Professional result storage and tracking
 - Comprehensive performance analysis
 - SQLite database for simulation metadata
 - Result comparison and benchmarking
@@ -98,14 +98,17 @@ simulations/
 
 ### **Installation Requirements**
 ```bash
-# Ensure LEAN framework is available
-cd /workspaces/unicorninvesting/BackendPython/Lean
+# Python Environment Setup
+```bash
+# Navigate to portfolio directory
+cd /workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio
 
 # Install Python dependencies
 pip install pandas numpy sqlite3 pathlib
 
 # Make CLI executable
 chmod +x simulations/simulation_cli.py
+```
 ```
 
 ### **Running Your First Backtest**
@@ -182,7 +185,7 @@ python simulation_cli.py backtest --start 2024-01-01 --end 2024-12-31 --kelly 0.
 ```
 
 **Features:**
-- Direct LEAN framework integration
+- Pure Python backtesting implementation
 - Real historical market data
 - Myportolio algorithm integration
 - Comprehensive performance analysis
@@ -203,7 +206,7 @@ Recent simulation validation demonstrates operational effectiveness:
 - **Success Rate**: 66.7% positive returns
 - **Risk Management**: All drawdowns within 15% risk limits
 - **Trade Execution**: 3,582+ trades validated across simulations
-- **Framework Status**: ✅ Fully operational and validated
+- **Framework Status**: ✅ Python simulation fully operational and validated
 
 ### **Phase 2: Paper Trading** 🚧 COMING NEXT
 ```bash
@@ -231,7 +234,7 @@ python simulation_cli.py optimize --target return --iterations 50 --template cus
 ```
 
 **Features:**
-- LEAN optimizer integration
+- Python optimization engine
 - Multi-objective optimization
 - Constraint-based optimization
 - Parallel execution
@@ -279,7 +282,6 @@ python simulation_cli.py results --list --type backtest --limit 20
 
 ### **Environment Variables**
 ```bash
-export LEAN_PATH="/workspaces/unicorninvesting/BackendPython/Lean"
 export MYPORTOLIO_PATH="/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio"
 export SIMULATION_DB="simulation_results.db"
 ```
@@ -336,12 +338,12 @@ Create your own simulation templates by adding to `templates/simulation_template
 For issues, questions, or contributions:
 1. Check the simulation logs in individual simulation directories
 2. Review the SQLite database for historical results
-3. Examine LEAN output logs for detailed execution information
+3. Examine Python output logs for detailed execution information
 4. Use the CLI help: `python simulation_cli.py --help`
 
 ## 📚 **Additional Resources**
 
-- **LEAN Documentation**: [QuantConnect LEAN Framework](https://github.com/QuantConnect/Lean)
+- **Python Backtesting**: Python pandas and numpy for financial analysis
 - **Myportolio Architecture**: `../README.md`
 - **Risk Management**: `../risk_algorithms/README.md`
 - **Trading Strategies**: `../trading_algorithms/README.md`

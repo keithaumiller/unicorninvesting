@@ -25,14 +25,14 @@ from pathlib import Path
 
 # Import our simulation components
 try:
-    from lean_simulation_engine import LEANSimulationEngine
-    from lean_result_handler import LEANResultHandler
+    from python_simulation_engine import PythonSimulationEngine
+    from python_result_handler import PythonResultHandler
 except ImportError:
     # Add current directory to path for imports
     import os
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    from lean_simulation_engine import LEANSimulationEngine
-    from lean_result_handler import LEANResultHandler
+    from python_simulation_engine import PythonSimulationEngine
+    from python_result_handler import PythonResultHandler
 
 def load_template(template_name: str) -> dict:
     """Load simulation template from templates directory."""
@@ -53,7 +53,7 @@ def run_backtest(args):
     print("=" * 50)
     
     # Initialize simulation engine
-    engine = LEANSimulationEngine()
+    engine = PythonSimulationEngine()
     
     # Load template if specified
     template = {}
@@ -127,7 +127,7 @@ def list_results(args):
     print("📊 Simulation Results")
     print("=" * 50)
     
-    handler = LEANResultHandler()
+    handler = PythonResultHandler()
     simulations = handler.list_simulations(
         simulation_type=args.type,
         limit=args.limit
@@ -163,7 +163,7 @@ def compare_simulations(args):
         print("❌ Please provide at least 2 simulation IDs to compare")
         return False
     
-    handler = LEANResultHandler()
+    handler = PythonResultHandler()
     comparison = handler.compare_simulations(args.simulation_ids)
     
     if "error" in comparison:
@@ -196,7 +196,7 @@ def show_report(args):
     print(f"📋 Detailed Report: {args.simulation_id}")
     print("=" * 50)
     
-    handler = LEANResultHandler()
+    handler = PythonResultHandler()
     report = handler.generate_performance_report(args.simulation_id)
     
     if "error" in report:

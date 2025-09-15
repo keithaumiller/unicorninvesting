@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-LEAN-Compatible Result Handler for Myportolio Simulations
-========================================================
+Python Result Handler for Myportolio Simulations
+================================================
 
 Handles storage, retrieval, and analysis of simulation results using
-LEAN framework's proven result handling patterns.
+professional-grade result handling patterns.
 
 Author: Unicorn Investing Platform
-Date: September 3, 2025
+Date: September 15, 2025
 """
 
 import os
@@ -35,12 +35,12 @@ class SimulationSummary:
     trades_count: int
     status: str
 
-class LEANResultHandler:
+class PythonResultHandler:
     """
-    LEAN-compatible result handler for Myportolio simulations.
+    Python result handler for Myportolio simulations.
     
     Provides comprehensive result storage, analysis, and comparison
-    capabilities following LEAN framework patterns.
+    capabilities using professional result handling patterns.
     """
     
     def __init__(self, portfolio_path: str = None):
@@ -503,7 +503,7 @@ class LEANResultHandler:
 
 if __name__ == "__main__":
     # Example usage
-    handler = LEANResultHandler()
+    handler = PythonResultHandler()
     
     # List recent simulations
     simulations = handler.list_simulations(limit=10)

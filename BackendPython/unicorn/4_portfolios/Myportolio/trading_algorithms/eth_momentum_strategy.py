@@ -1,7 +1,7 @@
 """
-ETH Trading Algorithm - Enhanced with Performance Logging
-Simple momentum-based trading strategy for ETH using LEAN framework integration
-Now includes comprehensive logging for performance attribution analysis
+ETH Momentum Trading Strategy with Enhanced Performance Logging
+
+Simple momentum-based trading strategy for ETH using Python backtesting framework
 """
 
 import pandas as pd
@@ -12,15 +12,13 @@ import logging
 import sys
 from pathlib import Path
 
-# LEAN Framework integration (when available)
+# Python Framework integration (standalone)
 try:
-    from QuantConnect import *
-    from QuantConnect.Algorithm import *
-    from QuantConnect.Data import *
-    LEAN_AVAILABLE = True
+    # Optional future framework integration
+    FRAMEWORK_AVAILABLE = False
 except ImportError:
-    LEAN_AVAILABLE = False
-    logging.info("LEAN framework not available - running in standalone mode")
+    FRAMEWORK_AVAILABLE = False
+    logging.info("Running in standalone Python mode")
 
 # Performance logging integration
 try:
@@ -297,67 +295,8 @@ class ETHMomentumStrategy:
             'max_position_size': self.max_position_size
         }
 
-# LEAN Framework Algorithm Class
-if LEAN_AVAILABLE:
-    class ETHMomentumLeanAlgorithm(QCAlgorithm):
-        """
-        LEAN Framework implementation of ETH Momentum Strategy
-        """
-        
-        def Initialize(self):
-            """Initialize LEAN algorithm"""
-            self.SetStartDate(2023, 1, 1)
-            self.SetEndDate(2024, 12, 31)
-            self.SetCash(100000)
-            
-            # Add ETH data
-            self.eth = self.AddCrypto("ETHUSD", Resolution.Hour)
-            
-            # Initialize strategy
-            config = {
-                'short_ma_period': 5,
-                'long_ma_period': 20,
-                'max_position_size': 0.1,
-                'volatility_window': 14
-            }
-            self.strategy = ETHMomentumStrategy(config)
-            
-            # Set up indicators
-            self.short_ma = self.SMA(self.eth.Symbol, 5, Resolution.Hour)
-            self.long_ma = self.SMA(self.eth.Symbol, 20, Resolution.Hour)
-            
-            self.Debug("ETH Momentum Algorithm Initialized")
-        
-        def OnData(self, data):
-            """Process new market data"""
-            if not data.ContainsKey(self.eth.Symbol):
-                return
-            
-            if not self.short_ma.IsReady or not self.long_ma.IsReady:
-                return
-            
-            # Create market data DataFrame for strategy
-            market_data = pd.DataFrame({
-                'close': [data[self.eth.Symbol].Close],
-                'timestamp': [self.Time]
-            })
-            
-            # Generate signal
-            signal_data = self.strategy.generate_signal(market_data)
-            
-            # Execute trades based on signal
-            if signal_data['signal'] == 'BUY' and signal_data['confidence'] > 0.6:
-                target_quantity = signal_data['target_position'] * self.Portfolio.Cash / data[self.eth.Symbol].Close
-                self.SetHoldings(self.eth.Symbol, signal_data['target_position'])
-                self.Debug(f"BUY signal: {signal_data['reason']}, Confidence: {signal_data['confidence']:.2f}")
-                
-            elif signal_data['signal'] == 'SELL':
-                self.Liquidate(self.eth.Symbol)
-                self.Debug(f"SELL signal: {signal_data['reason']}")
-            
-            # Update strategy position
-            current_holdings = self.Portfolio[self.eth.Symbol].Quantity * data[self.eth.Symbol].Close / self.Portfolio.TotalPortfolioValue
-            self.strategy.update_position(current_holdings)
+# Removed LEAN Framework implementation section
+# This strategy now runs exclusively in standalone Python mode
 
 # Standalone testing function
 def test_eth_momentum_strategy():
