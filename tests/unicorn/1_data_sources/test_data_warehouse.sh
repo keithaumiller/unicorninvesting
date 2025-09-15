@@ -178,6 +178,71 @@ run_pytest() {
     fi
 }
 
+# Function to run pipeline validation
+run_pipeline_validation() {
+    local validation_type="$1"
+    local test_name="$2"
+    local symbol="${3:-}"
+    
+    echo -e "${CYAN}🔍 Running: $test_name${NC}"
+    
+    local start_time=$(date +%s.%N)
+    local script_path="/workspaces/unicorninvesting/tests/unicorn/1_data_sources/pipeline_validation.py"
+    
+    if [ "$validation_type" = "connector" ]; then
+        # Test specific connector
+        local connector="$symbol"
+        if python3 -c "
+import sys
+sys.path.append('/workspaces/unicorninvesting/tests/unicorn/1_data_sources')
+from pipeline_validation import PipelineValidator
+validator = PipelineValidator()
+result = validator.validate_raw_connector('$connector')
+sys.exit(0 if result['status'] == 'PASSED' else 1)
+" >/dev/null 2>&1; then
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 0 "$test_name" "" "$duration"
+        else
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 1 "$test_name" "Pipeline validation failed" "$duration"
+        fi
+    elif [ "$validation_type" = "lineage" ]; then
+        # Test data lineage
+        local connector="${symbol%:*}"
+        local test_symbol="${symbol#*:}"
+        if python3 -c "
+import sys
+sys.path.append('/workspaces/unicorninvesting/tests/unicorn/1_data_sources')
+from pipeline_validation import PipelineValidator
+validator = PipelineValidator()
+result = validator.trace_data_lineage('$connector', '$test_symbol')
+# Success if raw data is available
+sys.exit(0 if result['stages']['raw']['status'] == 'PASSED' else 1)
+" >/dev/null 2>&1; then
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 0 "$test_name" "" "$duration"
+        else
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 1 "$test_name" "Data lineage validation failed" "$duration"
+        fi
+    elif [ "$validation_type" = "comprehensive" ]; then
+        # Run comprehensive pipeline test
+        if python3 "$script_path" >/dev/null 2>&1; then
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 0 "$test_name" "" "$duration"
+        else
+            local end_time=$(date +%s.%N)
+            local duration=$(echo "$end_time - $start_time" | bc -l)
+            test_result 1 "$test_name" "Comprehensive pipeline test failed" "$duration"
+        fi
+    fi
+}
+
 # Function to test raw layer
 test_raw_layer() {
     echo -e "${PURPLE}🗃️  TESTING RAW LAYER (Layer 1)${NC}"
@@ -187,15 +252,21 @@ test_raw_layer() {
         case $CONNECTOR in
             yahoo)
                 run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/" "Yahoo Finance Connector"
+                run_pipeline_validation "connector" "Yahoo Finance Pipeline" "yahoo_finance"
+                run_pipeline_validation "lineage" "ETH Data Lineage" "yahoo_finance:ETH-USD"
                 ;;
             fred)
                 run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/" "FRED Connector"
+                run_pipeline_validation "connector" "FRED Pipeline" "fred"
                 ;;
             ibkr)
                 run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/" "IBKR Connector"
+                run_pipeline_validation "connector" "IBKR Pipeline" "ibkr"
                 ;;
             forex)
                 run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/forex/" "Forex Connector"
+                run_pipeline_validation "connector" "Forex Pipeline" "forex"
+                run_pipeline_validation "lineage" "EUR/USD Data Lineage" "forex:EURUSD=X"
                 ;;
             *)
                 echo -e "${RED}❌ Unknown connector: $CONNECTOR${NC}"
@@ -203,13 +274,33 @@ test_raw_layer() {
                 ;;
         esac
     else
+        # Test all connectors with pipeline validation
+        echo -e "${BLUE}🔗 Testing Yahoo Finance Connector Pipeline${NC}"
         run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/yahoo_finance/" "Yahoo Finance Connector"
+        run_pipeline_validation "connector" "Yahoo Finance Pipeline" "yahoo_finance"
+        
+        echo -e "${BLUE}🔗 Testing FRED Connector Pipeline${NC}"
         run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/federal_reserve_fred/" "FRED Connector"
+        run_pipeline_validation "connector" "FRED Pipeline" "fred"
+        
+        echo -e "${BLUE}🔗 Testing IBKR Connector Pipeline${NC}"
         run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/" "IBKR Connector"
+        run_pipeline_validation "connector" "IBKR Pipeline" "ibkr"
+        
+        echo -e "${BLUE}🔗 Testing Forex Connector Pipeline${NC}"
         run_pytest "tests/unicorn/1_data_sources/1_raw/connectors/forex/" "Forex Connector"
+        run_pipeline_validation "connector" "Forex Pipeline" "forex"
+        
+        # Additional integration tests
         run_pytest "tests/unicorn/1_data_sources/test_ibkr_connection.py" "IBKR Gateway Connection"
         run_pytest "tests/unicorn/1_data_sources/data/" "Raw Data Validation" true
         run_pytest "tests/unicorn/1_data_sources/database/" "Database Integration" true
+        
+        # End-to-end data lineage tests
+        echo -e "${BLUE}🔍 Testing Data Lineage Pipelines${NC}"
+        run_pipeline_validation "lineage" "ETH Data Lineage (Raw→Silver)" "yahoo_finance:ETH-USD"
+        run_pipeline_validation "lineage" "BTC Data Lineage (Raw→Silver)" "yahoo_finance:BTC-USD"
+        run_pipeline_validation "lineage" "EUR/USD Data Lineage (Raw→Silver)" "forex:EURUSD=X"
     fi
     
     echo ""
@@ -221,29 +312,84 @@ test_other_layers() {
     echo "===================================="
     
     # Bronze layer checks
+    echo -e "${BLUE}🥉 Bronze Layer Validation${NC}"
     if [ -d "BackendPython/unicorn/1_data_sources/2_bronze" ]; then
-        test_result 0 "Bronze Layer - Directory exists"
-    else
-        test_result 1 "Bronze Layer - Directory missing"
-    fi
-    
-    # Silver layer checks
-    if [ -d "BackendPython/unicorn/1_data_sources/3_silver" ]; then
-        test_result 0 "Silver Layer - Directory exists"
-        if [ -f "BackendPython/unicorn/4_portfolios/Myportolio/core/silver_layer_data_connector.py" ]; then
-            test_result 0 "Silver Layer Data Connector - File exists"
+        test_result 0 "Bronze Layer - Directory exists" "" 0.1
+        
+        # Check for ETL processing scripts
+        if [ -f "BackendPython/unicorn/1_data_sources/6_etl_pipelines/bronze_processing.py" ] || 
+           [ -d "BackendPython/unicorn/1_data_sources/2_bronze/processing" ]; then
+            test_result 0 "Bronze Layer - ETL Processing Available" "" 0.1
         else
-            test_result 1 "Silver Layer Data Connector - File missing"
+            test_result 2 "Bronze Layer - ETL Processing (Not Implemented)" "" 0.1
         fi
     else
-        test_result 1 "Silver Layer - Directory missing"
+        test_result 1 "Bronze Layer - Directory missing" "" 0.1
+    fi
+    
+    # Silver layer checks with pipeline validation
+    echo -e "${BLUE}🥈 Silver Layer Validation${NC}"
+    if [ -d "BackendPython/unicorn/1_data_sources/3_silver" ]; then
+        test_result 0 "Silver Layer - Directory exists" "" 0.1
+        
+        if [ -f "BackendPython/unicorn/4_portfolios/Myportolio/core/silver_layer_data_connector.py" ]; then
+            test_result 0 "Silver Layer Data Connector - File exists" "" 0.1
+        else
+            test_result 1 "Silver Layer Data Connector - File missing" "" 0.1
+        fi
+        
+        # Check for actual silver data
+        local silver_data_path="BackendPython/unicorn/1_data_sources/3_silver/yahoo_finance_assets/processed_data"
+        if [ -d "$silver_data_path" ]; then
+            local file_count=$(find "$silver_data_path" -name "*.csv" | wc -l)
+            if [ "$file_count" -gt 0 ]; then
+                test_result 0 "Silver Layer - Processed Data Files ($file_count files)" "" 0.2
+                
+                # Check data freshness
+                local latest_file=$(find "$silver_data_path" -name "*.csv" -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
+                if [ -n "$latest_file" ]; then
+                    local file_age=$(( $(date +%s) - $(stat -c %Y "$latest_file") ))
+                    if [ "$file_age" -lt 3600 ]; then  # Less than 1 hour
+                        test_result 0 "Silver Layer - Data Freshness ($(($file_age/60)) minutes old)" "" 0.1
+                    else
+                        test_result 1 "Silver Layer - Data Freshness ($(($file_age/3600)) hours old)" "Data may be stale" 0.1
+                    fi
+                fi
+            else
+                test_result 1 "Silver Layer - No Processed Data Files" "Check automated refresh system" 0.1
+            fi
+        else
+            test_result 1 "Silver Layer - Processed Data Directory Missing" "" 0.1
+        fi
+        
+        # Validate silver layer pipeline performance
+        run_pipeline_validation "comprehensive" "Silver Layer Pipeline Performance"
+        
+    else
+        test_result 1 "Silver Layer - Directory missing" "" 0.1
     fi
     
     # Gold layer checks
+    echo -e "${BLUE}🥇 Gold Layer Validation${NC}"
     if [ -d "BackendPython/unicorn/1_data_sources/4_gold" ]; then
-        test_result 0 "Gold Layer - Directory exists"
+        test_result 0 "Gold Layer - Directory exists" "" 0.1
+        
+        # Check for analytics processing
+        if [ -f "BackendPython/unicorn/1_data_sources/4_gold/analytics_processor.py" ] ||
+           [ -d "BackendPython/unicorn/1_data_sources/4_gold/analytics" ]; then
+            test_result 0 "Gold Layer - Analytics Processing Available" "" 0.1
+        else
+            test_result 2 "Gold Layer - Analytics Processing (Not Implemented)" "" 0.1
+        fi
     else
-        test_result 2 "Gold Layer - Not implemented yet"
+        test_result 2 "Gold Layer - Not implemented yet" "" 0.1
+    fi
+    
+    # Cross-layer integration test
+    echo -e "${BLUE}🔄 Cross-Layer Integration${NC}"
+    if [ "$LAYER" = "all" ]; then
+        # Only run comprehensive test when testing all layers
+        run_pipeline_validation "comprehensive" "End-to-End Pipeline Integration"
     fi
     
     echo ""

@@ -33,10 +33,9 @@ The Data Warehouse Testing Suite provides comprehensive validation of Unicorn In
 
 ## Testing Framework
 
-### Main Test Script
+### Main Test Scripts
 
-**File:** `test_data_warehouse.sh`
-
+#### **Primary Test Script:** `test_data_warehouse.sh`
 **Purpose:** Comprehensive validation of data warehouse infrastructure
 
 **Usage:**
@@ -63,6 +62,37 @@ The Data Warehouse Testing Suite provides comprehensive validation of Unicorn In
 ./test_data_warehouse.sh --verbose
 ```
 
+#### **Pipeline Validation Script:** `pipeline_validation.py`
+**Purpose:** End-to-end pipeline testing with data lineage tracing
+
+**Features:**
+- **Sequential Dependency Testing:** Validates that each layer depends on previous layer success
+- **Data Lineage Tracing:** Follows specific data samples from raw → bronze → silver
+- **Performance Monitoring:** Measures pipeline throughput and timing
+- **Cross-Connector Validation:** Ensures data consistency across all connectors
+
+**Usage:**
+```bash
+# Run comprehensive pipeline validation
+python3 pipeline_validation.py
+
+# Test specific connector pipeline
+python3 -c "
+from pipeline_validation import PipelineValidator
+validator = PipelineValidator()
+result = validator.trace_data_lineage('yahoo_finance', 'ETH-USD')
+print(result)
+"
+
+# Validate connector with performance metrics
+python3 -c "
+from pipeline_validation import PipelineValidator
+validator = PipelineValidator()
+result = validator.validate_raw_connector('yahoo_finance', 'ETH-USD')
+print(f'Status: {result[\"status\"]}, Samples: {len(result[\"data_samples\"])}')
+"
+```
+
 ### Test Categories
 
 #### 🗃️ Raw Layer Tests (Layer 1)
@@ -78,17 +108,26 @@ The Data Warehouse Testing Suite provides comprehensive validation of Unicorn In
 - **Directory Structure:** Validation of bronze layer organization
 - **Data Cleansing:** Quality control and validation processes
 - **Schema Compliance:** Data format standardization
+- **ETL Pipeline Validation:** Bronze layer processing workflows
 
 #### 🥈 Silver Layer Tests (Layer 3)
 - **Directory Structure:** Validation of silver layer organization
 - **Data Connector:** Silver layer integration with portfolio management
 - **Data Enrichment:** Feature engineering and data enhancement
 - **Performance Metrics:** ETH model performance tracking
+- **Data Freshness:** Automated refresh system validation
 
 #### 🥇 Gold Layer Tests (Layer 4)
 - **Directory Structure:** Analytics-ready data organization
 - **Portfolio Analytics:** Investment performance calculations
 - **Risk Metrics:** Advanced risk assessment capabilities
+
+#### 🔄 End-to-End Pipeline Tests
+- **Data Lineage Tracing:** Follow data samples through all layers
+- **Sequential Validation:** Ensure layer dependencies are satisfied
+- **Performance Benchmarking:** Pipeline throughput and timing analysis
+- **Cross-Connector Consistency:** Data validation across all sources
+- **Automated Refresh Integration:** 5-minute refresh cycle validation
 
 ## Test Results & Reporting
 
@@ -146,26 +185,102 @@ source .venv/bin/activate
 python -m pytest --version
 ```
 
-### 2. Layer-by-Layer Testing
-1. **Raw Layer Validation**
-   - Test each connector individually
-   - Validate API connectivity
-   - Check data ingestion pipelines
-   - Verify gateway connections
+### 2. Sequential Pipeline Testing
+The testing framework follows a strict dependency order:
 
-2. **Bronze Layer Validation**
-   - Directory structure checks
-   - Data cleansing validation
-   - Schema compliance verification
+#### **Stage 1: Raw Layer Validation**
+```bash
+# Test connectors in parallel (independent)
+./test_data_warehouse.sh --layer=raw --connector=yahoo
+./test_data_warehouse.sh --layer=raw --connector=fred
+./test_data_warehouse.sh --layer=raw --connector=ibkr
+./test_data_warehouse.sh --layer=raw --connector=forex
+```
 
-3. **Silver Layer Validation**
-   - Enhanced data structure validation
-   - Portfolio integration testing
-   - Performance tracking verification
+**Requirements for Success:**
+- At least one connector must successfully retrieve data
+- Data must conform to expected schema
+- API connectivity must be validated
 
-4. **Gold Layer Validation**
-   - Analytics readiness assessment
-   - Final data quality validation
+#### **Stage 2: Bronze Layer Validation** 
+```bash
+# Depends on Stage 1 success
+./test_data_warehouse.sh --layer=bronze
+```
+
+**Dependencies:**
+- Raw layer data available
+- ETL scripts operational
+- Data cleansing rules applied
+
+#### **Stage 3: Silver Layer Validation**
+```bash
+# Depends on Stage 2 success  
+./test_data_warehouse.sh --layer=silver
+```
+
+**Dependencies:**
+- Bronze layer processing complete
+- Data enrichment pipeline operational
+- Feature engineering applied
+
+#### **Stage 4: Gold Layer Validation**
+```bash
+# Depends on Stage 3 success
+./test_data_warehouse.sh --layer=gold
+```
+
+**Dependencies:**
+- Silver layer data available
+- Analytics processing complete
+- Portfolio integration ready
+
+### 3. Data Lineage Tracing
+
+#### **End-to-End Pipeline Test**
+```bash
+# Trace specific symbols through entire pipeline
+python3 pipeline_validation.py
+```
+
+**Process:**
+1. **Raw Data Retrieval:** Fetch live data from Yahoo Finance for ETH-USD
+2. **Bronze Processing:** Validate data cleansing and transformation
+3. **Silver Enrichment:** Confirm feature engineering and enhancement
+4. **Lineage Verification:** Ensure same data sample exists at each layer
+5. **Performance Validation:** Measure pipeline timing and throughput
+
+#### **Symbol-Specific Tracing**
+```python
+# Trace ETH data through pipeline
+validator = PipelineValidator()
+lineage = validator.trace_data_lineage('yahoo_finance', 'ETH-USD')
+
+# Validate each stage
+assert lineage['stages']['raw']['status'] == 'PASSED'
+assert lineage['stages']['bronze']['status'] == 'PASSED'  
+assert lineage['stages']['silver']['status'] == 'PASSED'
+```
+
+### 4. Performance Monitoring
+
+#### **Pipeline Metrics**
+- **Data Freshness:** Silver layer files updated within 10 minutes
+- **Processing Speed:** Raw → Silver completion under 5 minutes
+- **Throughput:** Multiple symbols processed concurrently
+- **Reliability:** 95%+ success rate across all connectors
+
+#### **Automated Refresh Integration**
+```bash
+# Validate 5-minute refresh cycle
+validator.validate_pipeline_performance()
+
+# Expected metrics:
+# - silver_data_age_minutes < 10
+# - crypto_assets > 0
+# - forex_assets > 0
+# - automated_refresh_active = true
+```
 
 ### 3. Results Aggregation
 - Collect test results from each layer
@@ -178,6 +293,7 @@ python -m pytest --version
 ```
 tests/unicorn/1_data_sources/
 ├── test_data_warehouse.sh              # 🆕 Comprehensive testing script
+├── pipeline_validation.py              # 🆕 End-to-end pipeline validation
 ├── datawarehousetestingresults/         # 📊 JSON test results (gitignored)
 ├── test_ibkr_connection.py              # IBKR Gateway integration tests
 ├── 1_raw/                               # Raw layer testing
