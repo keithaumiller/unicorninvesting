@@ -48,49 +48,61 @@ def load_template(template_name: str) -> dict:
     return templates.get(template_name, {})
 
 def run_backtest(args):
-    """Run historical backtest simulation."""
-    print("🚀 Starting Historical Backtest Simulation")
+    """Run historical backtest simulation - DEPRECATED - Use myportolio_simulator.py instead."""
+    print("� DEPRECATION WARNING")
     print("=" * 50)
+    print("This CLI method is deprecated. Please use the new master simulator:")
+    print()
+    print("📋 NEW COMMAND:")
+    kelly_param = f" --kelly {args.kelly}" if args.kelly else ""
+    volatility_param = f" --confidence {args.volatility}" if args.volatility else ""
+    strategy = args.template or "best_models"
     
-    # Initialize simulation engine
-    engine = PythonSimulationEngine()
+    print(f"   python myportolio_simulator.py backtest --start {args.start} --end {args.end} --strategy {strategy}{kelly_param}{volatility_param}")
+    print()
+    print("🎯 ADVANTAGES OF NEW SYSTEM:")
+    print("   ✅ MANDATORY enhanced logging (cannot be bypassed)")
+    print("   ✅ Standardized result format")
+    print("   ✅ Built-in analysis capabilities")
+    print("   ✅ Consolidated, clean architecture")
+    print()
     
-    # Load template if specified
-    template = {}
-    if args.template:
-        template = load_template(args.template)
-        if not template:
-            print(f"❌ Template '{args.template}' not found")
-            return False
-        print(f"📋 Using template: {template.get('name', args.template)}")
-    
-    # Prepare parameters
-    parameters = template.get("parameters", {})
-    if args.kelly:
-        parameters["kelly_fraction"] = args.kelly
-    if args.volatility:
-        parameters["max_volatility"] = args.volatility
-    
-    # Set default dates if not provided
-    start_date = args.start or "2024-01-01"
-    end_date = args.end or "2024-03-31"
-    
-    print(f"📅 Period: {start_date} to {end_date}")
-    print(f"⚙️  Parameters: {json.dumps(parameters, indent=2)}")
+    # Redirect to new system
+    print("� Auto-redirecting to new master simulator...")
     
     try:
-        # Run backtest
-        simulation_id = engine.run_backtest(
+        from myportolio_simulator import MyportolioSimulator
+        
+        simulator = MyportolioSimulator()
+        
+        # Prepare parameter overrides
+        parameter_overrides = {}
+        if args.kelly:
+            parameter_overrides["kelly_fraction"] = args.kelly
+        if args.volatility:
+            parameter_overrides["max_volatility"] = args.volatility
+        
+        # Map template to strategy
+        strategy_map = {
+            "best_models_template": "best_models",
+            "backtest_template": "momentum", 
+            "dual_crypto_template": "dual_crypto"
+        }
+        strategy = strategy_map.get(args.template, args.template or "best_models")
+        
+        # Run with new system
+        result = simulator.run_backtest(
             start_date=args.start,
             end_date=args.end,
-            algorithm_name=template.get("algorithm", "MyportolioETHMomentum"),
-            parameters=template.get("parameters", {}),
-            template_name=args.template
+            strategy=strategy,
+            parameters=parameter_overrides
         )
         
-        print(f"✅ Backtest completed successfully!")
-        print(f"📊 Simulation ID: {simulation_id}")
-        print(f"📁 Results stored in: simulations/backtests/{simulation_id}/")
+        print(f"✅ Backtest completed with ENHANCED LOGGING!")
+        print(f"📊 Simulation ID: {result.simulation_id}")
+        print(f"� Total Return: {result.total_return:.2%}")
+        print(f"🔄 Total Trades: {result.trades_count}")
+        print(f"📁 Performance Log: {result.performance_log_path}")
         
         return True
         

@@ -409,7 +409,9 @@ class PythonSimulationEngine:
                     parameters: Optional[Dict[str, Any]] = None,
                     template_name: str = None) -> str:
         """
-        Execute a LEAN backtest simulation with best model integration.
+        Execute a backtest simulation - AUTOMATICALLY REDIRECTS TO ENHANCED LOGGING.
+        
+        This method now ALWAYS uses enhanced logging and cannot be bypassed.
         
         Args:
             start_date: Start date in YYYY-MM-DD format
@@ -421,13 +423,17 @@ class PythonSimulationEngine:
         Returns:
             Simulation ID for the completed backtest
         """
-        logger.info(f"Starting backtest: {start_date} to {end_date}")
+        logger.warning("🚨 AUTOMATIC REDIRECT: Enhanced logging is now MANDATORY")
+        logger.info("🔄 Redirecting to run_backtest_with_logging() - logging cannot be bypassed")
         
-        # Generate simulation ID
-        simulation_id = f"backtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}"
-        
-        # Create simulation directory
-        sim_dir = self.simulations_path / "backtests" / simulation_id
+        # AUTOMATICALLY redirect to enhanced logging version
+        return self.run_backtest_with_logging(
+            start_date=start_date,
+            end_date=end_date,
+            algorithm_name=algorithm_name,
+            parameters=parameters,
+            template_name=template_name
+        )
         sim_dir.mkdir(parents=True, exist_ok=True)
         
         # Get best model configuration if applicable
