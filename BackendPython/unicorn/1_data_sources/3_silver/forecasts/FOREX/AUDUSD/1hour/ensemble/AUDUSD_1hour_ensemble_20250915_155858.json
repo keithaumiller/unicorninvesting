@@ -1,0 +1,55 @@
+{
+  "forecast_metadata": {
+    "asset_symbol": "AUDUSD",
+    "asset_type": "FOREX",
+    "interval": "1hour",
+    "model_type": "ensemble",
+    "timestamp": "20250915_155858",
+    "created_at": "2025-09-15T15:58:58.200357+00:00",
+    "silver_layer_version": "1.0",
+    "data_source": "silver_layer",
+    "model_framework": "economic_enhanced_xgboost_ensemble",
+    "prediction_horizon": "1_1h",
+    "confidence_level": 0.7218357205577545
+  },
+  "forecast_data": {
+    "prediction": 0.0038630095320114233,
+    "confidence": 0.7218357205577545,
+    "direction": "bullish",
+    "magnitude": 0.0038630095320114233,
+    "features_used": [
+      "interest_rate_differential",
+      "economic_indicators",
+      "central_bank_policy",
+      "risk_sentiment",
+      "technical_patterns",
+      "carry_trade_flows"
+    ],
+    "model_version": "v2.1_silver_layer",
+    "prediction_horizon": "next_1hour",
+    "risk_adjusted_return": 0.0027884582690609395,
+    "volatility_forecast": 0.008292898743372294
+  },
+  "metadata": {
+    "model_framework": "economic_enhanced_xgboost_ensemble",
+    "data_points_used": 168,
+    "feature_count": 6,
+    "prediction_horizon": "1_1h",
+    "confidence_level": 0.7218357205577545,
+    "model_performance": {
+      "r2_score": 0.7424826444200265,
+      "mae": 0.004064997978748994,
+      "rmse": 0.002626886498229169
+    }
+  },
+  "data_quality": {
+    "validation_status": "passed",
+    "data_points_used": 168,
+    "feature_count": 6,
+    "model_performance": {
+      "r2_score": 0.7424826444200265,
+      "mae": 0.004064997978748994,
+      "rmse": 0.002626886498229169
+    }
+  }
+}

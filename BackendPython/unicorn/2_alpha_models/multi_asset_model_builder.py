@@ -1,39 +1,7 @@
 #!/usr/bin/env python3
 """
 Comprehensive Multi-Asset Model Builder
-Creates Prophet, XGBoost, and Ensemble models for all    def prepare_prophet_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Prepare data for Prophet model"""
-        # Prophet requires 'ds' (date) and 'y' (target) columns
-        
-        # Handle datetime index - remove timezone if present
-        date_series = df.index
-        if hasattr(date_series, 'tz') and date_series.tz is not None:
-            date_series = date_series.tz_localize(None)
-        
-        prophet_df = pd.DataFrame({
-            'ds': date_series,
-            'y': df['close'] if 'close' in df.columns else df['Close']
-        })
-        
-        # Ensure ds column is timezone-naive
-        if hasattr(prophet_df['ds'].dtype, 'tz') and prophet_df['ds'].dtype.tz is not None:
-            prophet_df['ds'] = prophet_df['ds'].dt.tz_localize(None)
-        
-        # Add regressors from silver layer features
-        feature_cols = [col for col in df.columns if col in [
-            'volume', 'rsi', 'williams_r', 'cci', 'adx', 'volatility_14',
-            'ma_10', 'ma_20', 'ma_50', 'momentum_5', 'momentum_10'
-        ]]
-        
-        for col in feature_cols:
-            if col in df.columns and not df[col].isna().all():
-                # Clean data and handle infinities
-                series = df[col].copy()
-                series = series.replace([np.inf, -np.inf], np.nan)
-                series = series.fillna(series.mean())
-                prophet_df[col] = series
-                
-        return prophet_dfiple intervals
+Creates Prophet, XGBoost, and Ensemble models for all available assets and multiple intervals
 Integrates silver layer features for enhanced prediction capabilities
 
 Features:

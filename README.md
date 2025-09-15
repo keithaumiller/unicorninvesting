@@ -55,11 +55,12 @@
 
 ## 🚀 **Production Status: Enhanced Pipeline Architecture**
 
-**Last Updated**: September 12, 2025  
+**Last Updated**: September 15, 2025  
 **System Status**: ✅ **PRODUCTION READY** - **100% Ensemble Trading System** operational with multi-asset momentum strategy  
 **Achievement**: 🎉 **COMPLETE TRADING INTEGRATION** - 11 ensemble models with Kelly optimization and real-time execution  
 **New Features**: ✨ Multi-asset momentum strategy + Silver layer integration + Risk-adjusted position sizing  
-**Trading Performance**: � **LIVE SYSTEM** - 73.4% portfolio utilization, 4 active positions, real-time execution engine  
+**Trading Performance**: 📊 **LIVE SYSTEM** - 73.4% portfolio utilization, 4 active positions, real-time execution engine  
+**🔄 Data Automation**: Automated 5-minute data refresh + 1-minute alpha model updates for real-time trading  
 **Frontend Status**: 🔄 Drupal 11 functional but validation pending, backend integration in development  
 **Legacy Code**: ✅ R scripts archived in legacy - no migration planned
 
@@ -116,6 +117,9 @@ source /workspaces/unicorninvesting/scripts/unicorn_environment.sh
 # Start and validate all services (Apache, MySQL, Drupal)
 drupal-start
 
+# Verify automated data refresh is running
+crontab -l  # Should show 5-minute data refresh schedule
+
 # Test the ensemble trading system
 cd /workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio
 python simplified_ensemble_portfolio.py
@@ -124,7 +128,7 @@ python simplified_ensemble_portfolio.py
 python silver_layer_integration_mapper.py
 ```
 
-This will ensure Apache web server and MySQL database are running, and the Drupal site is accessible at:
+This will ensure Apache web server and MySQL database are running, automated data refresh is scheduled (every 5 minutes), and the Drupal site is accessible at:
 - **Homepage**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/
 - **LEAN Dashboard**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics
 
@@ -214,6 +218,31 @@ Unicorn Investing is a sophisticated investment analysis and algorithmic trading
 - Historical R project files preserved for reference only
 - **Decision**: Python ecosystem provides superior capabilities - no R migration needed
 
+## 🕒 **Automated Data Refresh Schedule**
+
+### **⚡ Real-Time Data Updates**
+The Unicorn Investing Platform maintains fresh data through automated cron jobs and independent alpha model schedulers:
+
+#### **🔄 Main Data Layer Updates (Cron Jobs)**
+- **Every 5 minutes**: Silver layer data refresh, portfolio cache validation, asset price updates
+- **Every hour (at :02)**: Portfolio health check, data accessibility validation
+- **Weekly (Sundays 2:00 AM)**: Data cleanup, log file maintenance
+- **Monthly (1st day 3:00 AM)**: Silver layer optimization, metadata regeneration
+
+#### **🔮 Alpha Model Generation (Independent Processes)**
+- **1-minute forecasts**: Generated every minute (ETH models with 10-minute retraining cycles)
+- **1-hour forecasts**: Generated every 60 minutes (ETH models with 10-hour retraining cycles)  
+- **1-day forecasts**: Generated every 1440 minutes/24 hours (ETH models with 10-day retraining cycles)
+
+#### **📊 Data Flow Integration**
+```
+Every 5 min: Raw Data → Silver Layer → Portfolio Cache
+Every 1 min: Alpha Models → Forecasts → Trading Signals
+Every 1 hr:  Health Checks → System Validation
+```
+
+This ensures **real-time trading capabilities** with 1-minute alpha model updates while maintaining efficient resource usage through the 5-minute silver layer refresh cycle.
+
 ## Core Technology Stack
 
 ### Current Architecture (September 2025)
@@ -222,13 +251,16 @@ Unicorn Investing is a sophisticated investment analysis and algorithmic trading
 - **Trading Engine**: QuantConnect LEAN framework integration ready for deployment
 - **Database**: MySQL 8.0 with financial-grade security and performance tracking databases
 - **Infrastructure**: Ubuntu 24.04 LAMP stack with SSL certificates
+- **🔄 Automation**: Cron-based data refresh (5-minute intervals) with real-time alpha model updates
 - **✨ Yahoo Finance Integration**: 9 assets (crypto + forex) with 3 intervals and bronze layer processing
 - **✨ Economic Processing**: Silver layer data processing with 580+ indicators and feature engineering
 - **✨ Model Selection**: Multi-criteria enhanced model selector with ensemble support
 
 ### Enhanced Algorithm Architecture
 - **Yahoo Finance Pipeline**: Raw data collection → Bronze layer processing → Feature engineering (27 data streams)
+- **🔄 Automated Data Pipeline**: 5-minute cron refresh for bronze/silver layers + portfolio cache validation
 - **Economic Data Pipeline**: Silver layer processing with comprehensive feature engineering
+- **⚡ Real-time Alpha Models**: ETH forecast generation (1-minute intervals) with configurable scheduling
 - **Enhanced Alpha Models**: Economic-enhanced XGBoost and ensemble models with multi-criteria selection  
 - **Portfolio Optimization**: Enhanced model selection with Kelly criterion integration
 - **LEAN Integration**: Algorithmic trading execution framework through QuantConnect
@@ -303,9 +335,11 @@ BackendPython/
 ```
 
 ### Infrastructure
-**Status**: ✅ Production-ready LAMP stack deployed
+**Status**: ✅ Production-ready LAMP stack deployed with automated data processing
 - **Web Server**: Apache 2.4.58 with SSL certificates
 - **Database**: MySQL 8.0 with isolated databases
+- **🔄 Automation Engine**: Cron-based system with 5-minute data refresh intervals
+- **⚡ Real-time Processing**: Alpha model generation (1-minute ETH forecast updates)
 - **SSL Security**: Let's Encrypt certificates with auto-renewal
 - **Multi-Domain**: Supporting 4 domains with dedicated configurations
 
@@ -370,6 +404,7 @@ jupyter==1.1.1, pytest==8.4.1, structlog==25.4.0
 - **Portfolio Construction**: Enhanced model selection and portfolio optimization ✅
 - **Pipeline Validation**: Comprehensive end-to-end validation framework ✅
 - **Data Pipeline Automation**: 7-step daily, 6-step delta, 3-step hourly pipelines (100% success) ✅
+- **🔄 Automated Data Refresh**: Every 5 minutes (silver layer), every minute (alpha models) ✅
 - **IBKR Gateway**: Running and responsive ✅
 - **Data Sources**: Yahoo Finance (production), Alpha Vantage, enhanced economic data ✅
 

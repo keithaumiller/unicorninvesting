@@ -99,6 +99,25 @@ except Exception as e:
     fi
 }
 
+# Function to generate alpha forecasts for all assets
+refresh_alpha_forecasts() {
+    log_message "🔄 Generating alpha forecasts for all assets..."
+    
+    cd "$UNICORN_ROOT/scripts/cron/jobs"
+    
+    # Run multi-asset alpha scheduler with 1hour and 1day timeframes (skip 1min to avoid overload)
+    $VENV_PYTHON multi_asset_alpha_scheduler.py --timeframes "1hour,1day" >> "$LOG_FILE" 2>&1
+    
+    if [ $? -eq 0 ]; then
+        log_message "✅ Alpha forecast generation completed successfully"
+        return 0
+    else
+        log_message "⚠️ Alpha forecast generation had some issues (check logs for details)"
+        # Don't fail the entire refresh cycle for alpha forecast issues
+        return 0
+    fi
+}
+
 # Main execution
 log_message "🚀 Starting automated data refresh cycle"
 
@@ -109,14 +128,20 @@ refresh_bronze_layer
 if refresh_silver_layer; then
     # Step 3: Validate portfolio cache
     if refresh_portfolio_cache; then
-        log_message "🎉 Complete data refresh cycle successful"
-        echo "✅ SUCCESS: Data refresh completed at $(date)" >> "$LOG_FILE"
+        # Step 4: Generate alpha forecasts for all assets
+        if refresh_alpha_forecasts; then
+            log_message "🎉 Complete data refresh cycle with alpha forecasts successful"
+            echo "✅ SUCCESS: Data refresh + alpha forecasts completed at $(date)" >> "$LOG_FILE"
+        else
+            log_message "🎉 Data refresh successful, alpha forecasts had issues"
+            echo "⚠️ PARTIAL: Data refresh OK, alpha forecasts issues at $(date)" >> "$LOG_FILE"
+        fi
     else
-        log_message "⚠️ Portfolio cache refresh failed, but silver layer updated"
+        log_message "⚠️ Portfolio cache refresh failed, skipping alpha forecasts"
         echo "⚠️ PARTIAL: Silver updated but portfolio cache failed at $(date)" >> "$LOG_FILE"
     fi
 else
-    log_message "❌ Critical: Silver layer refresh failed"
+    log_message "❌ Critical: Silver layer refresh failed, skipping all dependent operations"
     echo "❌ FAILED: Data refresh failed at $(date)" >> "$LOG_FILE"
     exit 1
 fi

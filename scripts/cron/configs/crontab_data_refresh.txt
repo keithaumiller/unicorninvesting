@@ -1,23 +1,35 @@
-# Unicorn Investing - Automated Data Refresh Cron Jobs
-# =====================================================
+# Unicorn Investing - Automated Data Refresh & Alpha Model Cron Jobs
+# ==================================================================
 # 
 # This file contains cron job definitions for automated data refresh
-# and portfolio monitoring systems.
+# and multi-asset alpha model forecasting systems.
 #
 # Installation: crontab /workspaces/unicorninvesting/scripts/cron/configs/crontab_data_refresh.txt
 #
 
-# Automated Data Refresh - Every 5 minutes
-# Refreshes silver layer data from Yahoo Finance APIs
+# Automated Data Refresh + Alpha Forecasts - Every 5 minutes
+# Refreshes silver layer data and generates alpha forecasts for all assets (1hour, 1day timeframes)
 */5 * * * * /workspaces/unicorninvesting/scripts/cron/jobs/automated_data_refresh.sh >/dev/null 2>&1
+
+# Fast Alpha Model Updates - Every 2 minutes (1min forecasts only for ETH)
+# High-frequency forecasts for real-time trading (ETH only to avoid overload)
+*/2 * * * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/scripts/cron/jobs/multi_asset_alpha_scheduler.py --assets ETH --timeframes 1min >/dev/null 2>&1
 
 # Portfolio Health Check - Every hour at minute 2
 # Validates portfolio data connector and silver layer access
 2 * * * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/core/silver_layer_data_connector.py >/dev/null 2>&1
 
+# Comprehensive Alpha Model Rebuild - Every 6 hours
+# Full model rebuilding for all assets and all timeframes to ensure model freshness
+0 */6 * * * /workspaces/unicorninvesting/.venv/bin/python /workspaces/unicorninvesting/scripts/cron/jobs/multi_asset_alpha_scheduler.py --timeframes 1min,1hour,1day >/dev/null 2>&1
+
 # Weekly data cleanup - Sundays at 2:00 AM
 # Removes old log files and temporary data
 0 2 * * 0 find /workspaces/unicorninvesting/logs/data_refresh -name "data_refresh_*.log" -mtime +7 -delete
+
+# Weekly alpha forecast log cleanup - Sundays at 2:30 AM
+# Removes old alpha forecast log files
+30 2 * * 0 find /workspaces/unicorninvesting/logs/alpha_forecasts -name "multi_asset_alpha_*.log" -mtime +7 -delete
 
 # Monthly silver layer optimization - First day of month at 3:00 AM
 # Optimizes silver layer data files and regenerates metadata
