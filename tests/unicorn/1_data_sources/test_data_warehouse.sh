@@ -20,22 +20,55 @@ PASSED_TESTS=0
 FAILED_TESTS=0
 SKIPPED_TESTS=0
 
+# Results storage
+RESULTS_DIR="/workspaces/unicorninvesting/tests/unicorn/1_data_sources/datawarehousetestingresults"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+RESULTS_FILE="$RESULTS_DIR/test_results_$TIMESTAMP.json"
+SUMMARY_FILE="$RESULTS_DIR/summary_$TIMESTAMP.json"
+TEST_RESULTS=()
+
+# Ensure results directory exists
+mkdir -p "$RESULTS_DIR"
+
 # Function to print test results
 test_result() {
+    local exit_code=$1
+    local test_name="$2"
+    local error_message="${3:-}"
+    local duration="${4:-0.0}"
+    
     TOTAL_TESTS=$((TOTAL_TESTS + 1))
-    if [ $1 -eq 0 ]; then
-        echo -e "${GREEN}✅ $2${NC}"
+    
+    # Determine status
+    local status=""
+    if [ $exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ $test_name${NC}"
         PASSED_TESTS=$((PASSED_TESTS + 1))
-    elif [ $1 -eq 2 ]; then
-        echo -e "${YELLOW}⏭️  $2 (SKIPPED)${NC}"
+        status="PASSED"
+    elif [ $exit_code -eq 2 ]; then
+        echo -e "${YELLOW}⏭️  $test_name (SKIPPED)${NC}"
         SKIPPED_TESTS=$((SKIPPED_TESTS + 1))
+        status="SKIPPED"
     else
-        echo -e "${RED}❌ $2${NC}"
+        echo -e "${RED}❌ $test_name${NC}"
         FAILED_TESTS=$((FAILED_TESTS + 1))
-        if [ -n "$3" ]; then
-            echo -e "   ${YELLOW}💡 $3${NC}"
+        status="FAILED"
+        if [ -n "$error_message" ]; then
+            echo -e "   ${YELLOW}💡 $error_message${NC}"
         fi
     fi
+    
+    # Store result for JSON output
+    local result_json=$(cat <<EOF
+{
+    "name": "$test_name",
+    "status": "$status",
+    "duration": $duration,
+    "error": "$error_message"
+}
+EOF
+)
+    TEST_RESULTS+=("$result_json")
 }
 
 # Function to display help
@@ -121,20 +154,27 @@ run_pytest() {
     
     if [ ! -d "$test_path" ] && [ ! -f "$test_path" ]; then
         if [ "$is_optional" = true ]; then
-            test_result 2 "$test_name - Path not found"
+            test_result 2 "$test_name" "Path not found" 0.0
             return
         else
-            test_result 1 "$test_name - Path not found"
+            test_result 1 "$test_name" "Path not found" 0.0
             return
         fi
     fi
     
     echo -e "${CYAN}🧪 Running: $test_name${NC}"
     
+    # Measure execution time
+    local start_time=$(date +%s.%N)
+    
     if python -m pytest "$test_path" -q >/dev/null 2>&1; then
-        test_result 0 "$test_name"
+        local end_time=$(date +%s.%N)
+        local duration=$(echo "$end_time - $start_time" | bc -l)
+        test_result 0 "$test_name" "" "$duration"
     else
-        test_result 1 "$test_name" "Run: python -m pytest $test_path -v for details"
+        local end_time=$(date +%s.%N)
+        local duration=$(echo "$end_time - $start_time" | bc -l)
+        test_result 1 "$test_name" "Run: python -m pytest $test_path -v for details" "$duration"
     fi
 }
 
@@ -213,6 +253,9 @@ test_other_layers() {
 echo -e "${BLUE}🚀 Starting Data Warehouse Testing Suite...${NC}"
 echo ""
 
+# Record start time for performance measurement
+START_TIME=$(date +%s)
+
 case $LAYER in
     raw)
         test_raw_layer
@@ -239,9 +282,86 @@ echo -e "Passed: ${GREEN}$PASSED_TESTS${NC}"
 echo -e "Failed: ${RED}$FAILED_TESTS${NC}"
 echo -e "Skipped: ${YELLOW}$SKIPPED_TESTS${NC}"
 
+# Generate JSON results
+generate_json_results() {
+    local success_rate=0
+    if [ $TOTAL_TESTS -gt 0 ]; then
+        success_rate=$(echo "scale=2; ($PASSED_TESTS * 100) / $TOTAL_TESTS" | bc -l)
+    fi
+    
+    # Create detailed results JSON
+    cat > "$RESULTS_FILE" <<EOF
+{
+  "metadata": {
+    "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+    "test_version": "1.0",
+    "environment": "development",
+    "python_version": "$(python --version 2>&1 | cut -d' ' -f2)",
+    "pytest_version": "$(python -m pytest --version 2>&1 | head -1 | cut -d' ' -f3)"
+  },
+  "configuration": {
+    "layer": "$LAYER",
+    "connector": "${CONNECTOR:-all}",
+    "mode": "full",
+    "quick_mode": $QUICK_MODE,
+    "verbose": $VERBOSE_MODE
+  },
+  "summary": {
+    "total_tests": $TOTAL_TESTS,
+    "passed": $PASSED_TESTS,
+    "failed": $FAILED_TESTS,
+    "skipped": $SKIPPED_TESTS,
+    "success_rate": $success_rate,
+    "execution_time": $(echo "$(date +%s) - $START_TIME" | bc -l)
+  },
+  "test_results": [
+$(IFS=','; echo "${TEST_RESULTS[*]}")
+  ]
+}
+EOF
+
+    # Create summary JSON
+    local overall_status="SUCCESS"
+    if [ $FAILED_TESTS -gt 0 ]; then
+        overall_status="FAILED"
+    elif [ $SKIPPED_TESTS -gt 0 ]; then
+        overall_status="PARTIAL_SUCCESS"
+    fi
+    
+    cat > "$SUMMARY_FILE" <<EOF
+{
+  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "test_run_id": "$TIMESTAMP",
+  "overall_status": "$overall_status",
+  "summary": {
+    "total_tests": $TOTAL_TESTS,
+    "passed": $PASSED_TESTS,
+    "failed": $FAILED_TESTS,
+    "skipped": $SKIPPED_TESTS,
+    "success_rate": $success_rate
+  },
+  "configuration": {
+    "layer": "$LAYER",
+    "connector": "${CONNECTOR:-all}"
+  }
+}
+EOF
+
+    # Create symlinks to latest results
+    cd "$RESULTS_DIR"
+    ln -sf "test_results_$TIMESTAMP.json" "latest_results.json"
+    ln -sf "summary_$TIMESTAMP.json" "latest_summary.json"
+    
+    echo -e "${BLUE}📄 Results saved to: $RESULTS_FILE${NC}"
+    echo -e "${BLUE}📄 Summary saved to: $SUMMARY_FILE${NC}"
+}
+
 if [ $TOTAL_TESTS -gt 0 ]; then
     SUCCESS_RATE=$(( (PASSED_TESTS * 100) / TOTAL_TESTS ))
     echo -e "Success Rate: ${BLUE}$SUCCESS_RATE%${NC}"
+    
+    # Generate JSON results
+    generate_json_results
     
     if [ $FAILED_TESTS -eq 0 ]; then
         echo -e "\n${GREEN}🎉 All tests passed! Data warehouse is healthy.${NC}"

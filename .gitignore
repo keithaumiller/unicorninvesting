@@ -52,6 +52,13 @@ WebFrontend/web/sites/*/services.local.yml
 **/status_report_*.json
 **/status_report_*.txt
 
+# Data warehouse testing results (JSON output files)
+tests/unicorn/1_data_sources/datawarehousetestingresults/*.json
+tests/unicorn/1_data_sources/datawarehousetestingresults/test_results_*
+tests/unicorn/1_data_sources/datawarehousetestingresults/summary_*
+tests/unicorn/1_data_sources/datawarehousetestingresults/latest_*
+!tests/unicorn/1_data_sources/datawarehousetestingresults/README.md
+
 # Temporary scripts (created during development)
 scripts/check_port_forwarding.sh
 scripts/test_port_80.sh

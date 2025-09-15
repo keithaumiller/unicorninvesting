@@ -65,7 +65,8 @@ sudo apt-get install -y \
     build-essential \
     python3-dev \
     python3-pip \
-    python3-venv
+    python3-venv \
+    bc
 check_success $? "Core system dependencies installed"
 
 # Step 2b: Install TA-Lib system dependencies

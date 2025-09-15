@@ -593,6 +593,30 @@ run_health_checks() {
         check_status 1 "Virtual Environment: Missing" "Run: cd $UNICORN_ROOT && python3 -m venv .venv && source .venv/bin/activate"
     fi
 
+    # System Tools
+    echo -e "\n${BLUE}🔧 System Tools${NC}"
+    echo "================"
+
+    # Essential tools for testing and calculations
+    if command -v bc >/dev/null 2>&1; then
+        check_status 0 "Basic Calculator (bc): Available"
+    else
+        check_status 1 "Basic Calculator (bc): Missing" "Required for data warehouse testing calculations"
+    fi
+
+    if command -v curl >/dev/null 2>&1; then
+        check_status 0 "HTTP Client (curl): Available"
+    else
+        check_status 1 "HTTP Client (curl): Missing"
+    fi
+
+    if command -v git >/dev/null 2>&1; then
+        GIT_VERSION=$(git --version | cut -d' ' -f3)
+        check_status 0 "Version Control (git): $GIT_VERSION"
+    else
+        check_status 1 "Version Control (git): Missing"
+    fi
+
     # 3. Web Server & Database
     echo -e "\n${BLUE}🌐 Web Server & Database${NC}"
     echo "========================"

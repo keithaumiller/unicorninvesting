@@ -1,8 +1,8 @@
 {
   "gateway_connected": true,
-  "account_summary_updated": true,
+  "account_summary_updated": false,
   "portfolio_updated": true,
   "market_data_updated": true,
-  "timestamp": "2025-09-08T17:20:51.412788",
-  "refresh_successful": true
+  "timestamp": "2025-09-15T13:44:01.563137",
+  "refresh_successful": false
 }

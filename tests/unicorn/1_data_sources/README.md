@@ -1,54 +1,184 @@
-# Data Sources Testing Suite
+# Data Warehouse Testing Suite
 
 ## Overview
-Centralized testing and validation for all data source components in the Unicorn Investing platform. This directory contains comprehensive test suites that were moved from the source directories to provide centralized test management.
 
-# Data Sources Testing Suite
+The Data Warehouse Testing Suite provides comprehensive validation of Unicorn Investing's multi-layer data architecture. This testing framework validates data flow from raw market data ingestion through bronze, silver, and gold layers of the data warehouse.
 
-## Overview
-Centralized testing and validation for all data source components in the Unicorn Investing platform. This directory contains comprehensive test suites that were moved from the source directories to provide centralized test management.
+## Architecture
 
-## 🏗️ Comprehensive Testing Script
+### Data Warehouse Layers
 
-### `test_data_warehouse.sh`
-**Main testing wrapper that validates all layers of the data warehouse**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    UNICORN DATA WAREHOUSE                  │
+├─────────────────────────────────────────────────────────────┤
+│ 🗃️  RAW LAYER (Layer 1)     │ Market data ingestion       │
+├─────────────────────────────────────────────────────────────┤
+│ 🥉 BRONZE LAYER (Layer 2)   │ Data cleansing & validation │
+├─────────────────────────────────────────────────────────────┤
+│ 🥈 SILVER LAYER (Layer 3)   │ Structured & enriched data │
+├─────────────────────────────────────────────────────────────┤
+│ 🥇 GOLD LAYER (Layer 4)     │ Analytics-ready datasets   │
+└─────────────────────────────────────────────────────────────┘
+```
 
+### Data Sources & Connectors
+
+| Connector | Type | Purpose | Status |
+|-----------|------|---------|--------|
+| **Yahoo Finance** | Market Data | Stock/ETF/Options pricing | ✅ Active |
+| **FRED** | Economic Data | Federal Reserve economic indicators | 🔧 Testing |
+| **Interactive Brokers** | Trading Platform | Real-time market data & execution | 🔧 Testing |
+| **Forex** | Currency Data | Foreign exchange rates | 🔧 Testing |
+
+## Testing Framework
+
+### Main Test Script
+
+**File:** `test_data_warehouse.sh`
+
+**Purpose:** Comprehensive validation of data warehouse infrastructure
+
+**Usage:**
 ```bash
-# Test all data warehouse layers
+# Run all tests
 ./test_data_warehouse.sh
 
-# Test specific layers
+# Test specific layer
 ./test_data_warehouse.sh --layer=raw
 ./test_data_warehouse.sh --layer=bronze
 ./test_data_warehouse.sh --layer=silver
 ./test_data_warehouse.sh --layer=gold
 
-# Test specific connectors
+# Test specific connector
 ./test_data_warehouse.sh --connector=yahoo
 ./test_data_warehouse.sh --connector=fred
 ./test_data_warehouse.sh --connector=ibkr
 ./test_data_warehouse.sh --connector=forex
 
-# Additional options
-./test_data_warehouse.sh --quick      # Skip integration tests
-./test_data_warehouse.sh --verbose    # Detailed output
-./test_data_warehouse.sh --help       # Show all options
+# Quick mode (skip integration tests)
+./test_data_warehouse.sh --quick
+
+# Verbose output
+./test_data_warehouse.sh --verbose
 ```
 
-**Features:**
-- **Raw Layer (Layer 1)**: Tests all data connectors
-- **Bronze Layer (Layer 2)**: Validates cleaned data
-- **Silver Layer (Layer 3)**: Tests enriched data
-- **Gold Layer (Layer 4)**: Validates aggregated data
-- **ETL Pipelines**: Tests automated refresh
-- **End-to-End Flow**: Complete pipeline validation
-- Detailed reporting with success rates
+### Test Categories
+
+#### 🗃️ Raw Layer Tests (Layer 1)
+- **Yahoo Finance Connector:** Market data ingestion validation
+- **FRED Connector:** Economic data API connectivity
+- **IBKR Connector:** Interactive Brokers gateway integration
+- **Forex Connector:** Currency data pipeline validation
+- **IBKR Gateway Connection:** Real-time trading platform connectivity
+- **Raw Data Validation:** Data quality and format checks
+- **Database Integration:** Raw data storage validation
+
+#### 🥉 Bronze Layer Tests (Layer 2)
+- **Directory Structure:** Validation of bronze layer organization
+- **Data Cleansing:** Quality control and validation processes
+- **Schema Compliance:** Data format standardization
+
+#### 🥈 Silver Layer Tests (Layer 3)
+- **Directory Structure:** Validation of silver layer organization
+- **Data Connector:** Silver layer integration with portfolio management
+- **Data Enrichment:** Feature engineering and data enhancement
+- **Performance Metrics:** ETH model performance tracking
+
+#### 🥇 Gold Layer Tests (Layer 4)
+- **Directory Structure:** Analytics-ready data organization
+- **Portfolio Analytics:** Investment performance calculations
+- **Risk Metrics:** Advanced risk assessment capabilities
+
+## Test Results & Reporting
+
+### Output Locations
+
+**Console Output:** Real-time test progress with color-coded results
+**JSON Results:** `datawarehousetestingresults/` directory (gitignored)
+
+### Result Files
+- `test_results_YYYYMMDD_HHMMSS.json` - Detailed test execution results
+- `summary_YYYYMMDD_HHMMSS.json` - Executive summary with success rates
+- `latest_results.json` - Symlink to most recent test results
+
+### JSON Schema
+
+```json
+{
+  "test_run": {
+    "timestamp": "2025-09-15T13:16:26Z",
+    "layer": "all",
+    "connector": "all",
+    "mode": "full"
+  },
+  "summary": {
+    "total_tests": 11,
+    "passed": 5,
+    "failed": 6,
+    "skipped": 0,
+    "success_rate": 45
+  },
+  "layers": {
+    "raw": {
+      "connectors": {
+        "yahoo_finance": {"status": "PASSED", "duration": 2.3},
+        "fred": {"status": "FAILED", "error": "Connection timeout"},
+        "ibkr": {"status": "FAILED", "error": "Gateway not running"},
+        "forex": {"status": "FAILED", "error": "API key missing"}
+      }
+    },
+    "bronze": {"status": "PASSED"},
+    "silver": {"status": "PASSED"},
+    "gold": {"status": "PASSED"}
+  }
+}
+```
+
+## Process Flow
+
+### 1. Environment Validation
+```bash
+# Activate Python virtual environment
+source .venv/bin/activate
+
+# Verify test dependencies
+python -m pytest --version
+```
+
+### 2. Layer-by-Layer Testing
+1. **Raw Layer Validation**
+   - Test each connector individually
+   - Validate API connectivity
+   - Check data ingestion pipelines
+   - Verify gateway connections
+
+2. **Bronze Layer Validation**
+   - Directory structure checks
+   - Data cleansing validation
+   - Schema compliance verification
+
+3. **Silver Layer Validation**
+   - Enhanced data structure validation
+   - Portfolio integration testing
+   - Performance tracking verification
+
+4. **Gold Layer Validation**
+   - Analytics readiness assessment
+   - Final data quality validation
+
+### 3. Results Aggregation
+- Collect test results from each layer
+- Generate comprehensive summary
+- Export results to JSON format
+- Create symbolic links for latest results
 
 ## Directory Structure
 
 ```
 tests/unicorn/1_data_sources/
 ├── test_data_warehouse.sh              # 🆕 Comprehensive testing script
+├── datawarehousetestingresults/         # 📊 JSON test results (gitignored)
 ├── test_ibkr_connection.py              # IBKR Gateway integration tests
 ├── 1_raw/                               # Raw layer testing
 │   └── connectors/                      # Connector-specific tests
@@ -71,25 +201,36 @@ tests/unicorn/1_data_sources/
 └── database/                            # Database testing
 ```
 
-## Test Categories
+## Dependencies
 
-### 🔌 **Connector Tests**
-- **Yahoo Finance**: ETH/BTC/Forex data collection and validation
-- **FRED**: Federal Reserve economic data API testing
-- **Interactive Brokers**: Gateway connection and trading data
-- **Forex**: Currency pair data validation
+### Required Python Packages
+- `pytest` - Test framework
+- `yfinance` - Yahoo Finance connector
+- `pandas` - Data manipulation
+- `sqlalchemy` - Database integration
+- `requests` - HTTP API connectivity
 
-### 📊 **Data Quality Tests**
-- Schema validation and data integrity
-- API response validation
-- Historical data consistency
-- Real-time data accuracy
+### External Services
+- **Yahoo Finance API** - Market data source
+- **FRED API** - Economic data (requires API key)
+- **Interactive Brokers Gateway** - Trading platform
+- **MySQL Database** - Data storage backend
 
-### 🏗️ **Integration Tests**
-- End-to-end data pipeline testing
-- Cross-connector data consistency
-- Database integration validation
-- Performance and reliability testing
+## Configuration
+
+### Environment Variables
+```bash
+export FRED_API_KEY="your_fred_api_key"
+export IBKR_HOST="localhost"
+export IBKR_PORT="7497"
+export MYSQL_HOST="localhost"
+export MYSQL_USER="unicorn"
+export MYSQL_PASSWORD="your_password"
+```
+
+### Configuration Files
+- `config/database.json` - Database connection settings
+- `config/secrets.json` - API keys and credentials (gitignored)
 
 ## Running Tests
 
@@ -123,65 +264,65 @@ python -m pytest tests/unicorn/1_data_sources/1_raw/connectors/federal_reserve_f
 python -m pytest tests/unicorn/1_data_sources/test_ibkr_connection.py
 ```
 
-## Test Configuration
+## Troubleshooting
 
-### Prerequisites
-- Active Python virtual environment: `source /workspaces/unicorninvesting/.venv/bin/activate`
-- API credentials configured in `config/secrets.json`
-- Required packages: `pytest`, `pandas`, `yfinance`, `requests`
+### Common Issues
 
-### Environment Setup
+#### FRED Connector Failures
 ```bash
-# Ensure environment is ready
-cd /workspaces/unicorninvesting
-source .venv/bin/activate
+# Check API key configuration
+echo $FRED_API_KEY
 
-# Install testing dependencies
-pip install pytest pytest-cov pytest-mock
-
-# Verify API credentials
-python -c "import json; print('Secrets:', list(json.load(open('config/secrets.json')).keys()))"
+# Test FRED API connectivity
+curl "https://api.stlouisfed.org/fred/series?series_id=GDP&api_key=$FRED_API_KEY&file_type=json"
 ```
 
-## Test Data Management
+#### IBKR Gateway Issues
+```bash
+# Check gateway status
+./scripts/ibkr_status.sh
 
-### **Test Fixtures**
-- Located in `tests/unicorn/1_data_sources/data/`
-- Sample data for offline testing
-- Mock API responses for unit tests
+# Restart IBKR gateway
+sudo systemctl restart ibkr-gateway
+```
 
-### **Integration Test Data**
-- Real API connections for integration tests
-- ETH 1-minute data samples
-- FRED economic indicator samples
+#### Database Connection Problems
+```bash
+# Test MySQL connectivity
+mysql -h localhost -u unicorn -p
+
+# Check database configuration
+cat config/database.json
+```
 
 ## Continuous Integration
 
-### **Automated Testing**
-- All tests run on code changes
-- Nightly comprehensive test runs
-- Performance regression detection
+### Automated Testing
+- Tests run automatically on code changes
+- Results stored in JSON format for CI/CD integration
+- Success rate monitoring and alerting
 
-### **Test Reporting**
-- Coverage reports generated automatically
-- Test results logged for trend analysis
-- Failed test notifications and alerts
+### Performance Benchmarks
+- Track test execution times
+- Monitor data ingestion performance
+- Validate system scalability
 
-## Contributing to Tests
+## Development Guidelines
 
-### **Adding New Tests**
-1. Place tests in appropriate connector directory
-2. Follow naming convention: `test_*.py` or `*_test.py`
-3. Include docstrings and comments
-4. Update this README with new test descriptions
+### Adding New Tests
+1. Create test files in appropriate layer directory
+2. Follow pytest naming conventions (`test_*.py`)
+3. Include comprehensive docstrings
+4. Add connector-specific validation logic
 
-### **Test Best Practices**
-- Use meaningful test names that describe the scenario
-- Include both positive and negative test cases
-- Mock external APIs for unit tests
-- Use real APIs sparingly for integration tests
-- Clean up test data after test completion
+### Test Standards
+- **Unit Tests:** Individual component validation
+- **Integration Tests:** Cross-component functionality
+- **Performance Tests:** Speed and scalability validation
+- **Security Tests:** API key and credential protection
 
----
-
-**Note**: These tests were moved from the source directories (`BackendPython/unicorn/1_data_sources/`) to provide centralized test management and separation of concerns between production code and testing code.
+## Related Documentation
+- `ARCHITECTURE.md` - Overall system architecture
+- `scripts/README.md` - Environment setup scripts
+- `docs/LEAN_ARCHITECTURE_GUIDE.md` - LEAN framework integration
+- `BackendPython/unicorn/README.md` - Backend architecture overview

@@ -2,7 +2,7 @@
   "source_files": [
     "BTC_bronze_1h_latest.csv"
   ],
-  "processing_timestamp": "2025-09-15T13:10:02.263749",
+  "processing_timestamp": "2025-09-15T13:55:03.094258",
   "records_processed": 745,
   "features_generated": 54,
   "quality_metrics": {
