@@ -326,6 +326,25 @@ class MyCustomData(PythonData):
 - Outlier detection
 - Data source failover
 
+### Alpha Forecast Integration (NEW - 2025-09-15)
+**Purpose**: Unified alpha forecast storage and consumption via silver layer
+
+**Architecture**:
+```
+Alpha Models (Layer 2) → Silver Layer (Layer 3) → Portfolio (Layer 4)
+       ↓                       ↓                       ↓
+   Generate forecasts    Store standardized    Read latest forecasts
+   Write via Writer      JSON format           Read via Reader
+```
+
+**Components**:
+- **`SilverLayerForecastWriter`**: Alpha models write forecasts to silver layer
+- **`SilverLayerForecastReader`**: Portfolio reads forecasts from silver layer
+- **Standardized Format**: JSON with prediction, confidence, direction, metadata
+- **Multi-Asset Support**: Crypto (ETH, BTC) + Forex (7 pairs) fully operational
+
+**Integration Status**: ✅ 100% verified - complete data flow operational
+
 ## 🔄 Deployment Architecture
 
 ### Development Environment

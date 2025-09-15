@@ -1,0 +1,40 @@
+{
+  "forecast_metadata": {
+    "asset_symbol": "ETH",
+    "asset_type": "CRYPTO",
+    "interval": "1hour",
+    "model_type": "ensemble",
+    "timestamp": "20250915_155531",
+    "created_at": "2025-09-15T15:55:31.111082+00:00",
+    "silver_layer_version": "1.0",
+    "data_source": "silver_layer",
+    "model_framework": "prophet_xgboost_ensemble",
+    "prediction_horizon": "1_hour",
+    "confidence_level": 0.78
+  },
+  "forecast_data": {
+    "prediction": 2500.75,
+    "confidence": 0.78,
+    "direction": "bullish",
+    "magnitude": 0.045,
+    "features_used": [
+      "price",
+      "volume",
+      "momentum"
+    ],
+    "model_version": "v2.1"
+  },
+  "metadata": {
+    "model_framework": "prophet_xgboost_ensemble",
+    "data_points_used": 168,
+    "feature_count": 15,
+    "prediction_horizon": "1_hour",
+    "confidence_level": 0.78
+  },
+  "data_quality": {
+    "validation_status": "passed",
+    "data_points_used": 168,
+    "feature_count": 15,
+    "model_performance": {}
+  }
+}

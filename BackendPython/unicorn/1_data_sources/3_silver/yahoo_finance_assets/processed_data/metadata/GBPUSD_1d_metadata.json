@@ -2,7 +2,7 @@
   "source_files": [
     "GBPUSD_bronze_1d_latest.csv"
   ],
-  "processing_timestamp": "2025-09-15T13:55:03.433516",
+  "processing_timestamp": "2025-09-15T16:05:02.476447",
   "records_processed": 259,
   "features_generated": 51,
   "quality_metrics": {

@@ -1,0 +1,55 @@
+{
+  "forecast_metadata": {
+    "asset_symbol": "BTC",
+    "asset_type": "CRYPTO",
+    "interval": "1hour",
+    "model_type": "ensemble",
+    "timestamp": "20250915_155858",
+    "created_at": "2025-09-15T15:58:58.199138+00:00",
+    "silver_layer_version": "1.0",
+    "data_source": "silver_layer",
+    "model_framework": "prophet_xgboost_ensemble",
+    "prediction_horizon": "1_1h",
+    "confidence_level": 0.741584248515936
+  },
+  "forecast_data": {
+    "prediction": -2054.2906039580644,
+    "confidence": 0.741584248515936,
+    "direction": "bearish",
+    "magnitude": 0.20542906039580644,
+    "features_used": [
+      "price_momentum",
+      "volume_profile",
+      "technical_indicators",
+      "market_sentiment",
+      "on_chain_metrics",
+      "volatility_surface"
+    ],
+    "model_version": "v2.1_silver_layer",
+    "prediction_horizon": "next_1hour",
+    "risk_adjusted_return": -1523.4295537695893,
+    "volatility_forecast": 0.01683034444663518
+  },
+  "metadata": {
+    "model_framework": "prophet_xgboost_ensemble",
+    "data_points_used": 148,
+    "feature_count": 6,
+    "prediction_horizon": "1_1h",
+    "confidence_level": 0.741584248515936,
+    "model_performance": {
+      "r2_score": 0.8201761702479862,
+      "mae": 102.41613042983413,
+      "rmse": 111.4574625725293
+    }
+  },
+  "data_quality": {
+    "validation_status": "passed",
+    "data_points_used": 148,
+    "feature_count": 6,
+    "model_performance": {
+      "r2_score": 0.8201761702479862,
+      "mae": 102.41613042983413,
+      "rmse": 111.4574625725293
+    }
+  }
+}

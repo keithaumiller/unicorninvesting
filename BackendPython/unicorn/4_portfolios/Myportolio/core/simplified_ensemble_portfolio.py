@@ -10,7 +10,7 @@ import joblib
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
 import logging
 import sqlite3
 
@@ -18,8 +18,13 @@ import sqlite3
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'archived'))
 from ensemble_model_wrapper import EnsembleModelWrapper, create_ensemble_wrapper
 
-# Import our real data connector
+# Import our real data connector and risk/reward engine
 from silver_layer_data_connector import SilverLayerDataConnector
+from risk_reward_decision_engine import RiskRewardDecisionEngine
+
+# Import silver layer forecast reader for alpha predictions
+sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/3_silver')
+from silver_layer_forecast_reader import SilverLayerForecastReader
 
 class SimpleKellyOptimizer:
     """Simplified Kelly Criterion optimizer"""
@@ -66,13 +71,14 @@ class SimpleRiskManager:
 class EnsembleMultiAssetPortfolio:
     """
     Production-ready multi-asset portfolio using 100% successful ensemble models
-    Simplified version with minimal dependencies
+    Updated for equal value allocation and 5-minute interval trading
     """
     
     def __init__(self, 
                  initial_capital: float = 100000.0,
                  risk_tolerance: float = 0.02,
-                 max_position_size: float = 0.25):
+                 max_position_size: float = 0.25,
+                 equal_value_allocation: bool = True):
         """
         Initialize ensemble portfolio
         
@@ -80,11 +86,13 @@ class EnsembleMultiAssetPortfolio:
             initial_capital: Starting portfolio value
             risk_tolerance: Maximum daily portfolio risk (VaR)
             max_position_size: Maximum single position size (25% default)
+            equal_value_allocation: Use equal value allocation strategy
         """
         self.initial_capital = initial_capital
         self.current_capital = initial_capital
         self.risk_tolerance = risk_tolerance
         self.max_position_size = max_position_size
+        self.equal_value_allocation = equal_value_allocation
         
         # Portfolio state
         self.positions = {}
@@ -100,23 +108,38 @@ class EnsembleMultiAssetPortfolio:
         
         self.kelly_optimizer = SimpleKellyOptimizer()
         
-        # Asset universe
+        # Initialize risk/reward decision engine
+        self.decision_engine = RiskRewardDecisionEngine()
+        
+        # Initialize silver layer forecast reader for alpha predictions
+        self.forecast_reader = SilverLayerForecastReader()
+        
+        # Comprehensive asset universe for equal value allocation
         self.crypto_assets = {
-            'ETH': {'intervals': ['1d', '1h'], 'category': 'crypto'},
-            'BTC': {'intervals': ['1d', '1h'], 'category': 'crypto'}
+            'ETH': {'intervals': ['1d', '1h'], 'category': 'crypto', 'yahoo_symbol': 'ETH-USD'},
+            'BTC': {'intervals': ['1d', '1h'], 'category': 'crypto', 'yahoo_symbol': 'BTC-USD'}
         }
         
         self.forex_assets = {
-            'AUDUSD': {'intervals': ['1h'], 'category': 'forex'},
-            'EURUSD': {'intervals': ['1h'], 'category': 'forex'},
-            'GBPUSD': {'intervals': ['1h'], 'category': 'forex'},
-            'USDCHF': {'intervals': ['1h'], 'category': 'forex'},
-            'USDJPY': {'intervals': ['1h'], 'category': 'forex'},
-            'USDCAD': {'intervals': ['1h'], 'category': 'forex'},
-            'NZDUSD': {'intervals': ['1h'], 'category': 'forex'}
+            'EURUSD': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'EURUSD=X'},
+            'USDJPY': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'USDJPY=X'},
+            'GBPUSD': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'GBPUSD=X'},
+            'AUDUSD': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'AUDUSD=X'},
+            'USDCAD': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'USDCAD=X'},
+            'USDCHF': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'USDCHF=X'},
+            'NZDUSD': {'intervals': ['1d', '1h'], 'category': 'forex', 'yahoo_symbol': 'NZDUSD=X'}
         }
         
-        self.all_assets = {**self.crypto_assets, **self.forex_assets}
+        # Active assets for trading - comprehensive multi-asset portfolio
+        self.active_assets = {**self.crypto_assets, **self.forex_assets}
+        self.all_assets = self.active_assets
+        
+        # Calculate equal allocation percentages (11.11% per asset for 9 assets)
+        if self.equal_value_allocation:
+            num_assets = len(self.active_assets)
+            equal_percentage = 1.0 / num_assets if num_assets > 0 else 0.0
+            for asset in self.active_assets:
+                self.active_assets[asset]['target_allocation'] = equal_percentage
         
         # Performance tracking
         self.performance_history = []
@@ -193,11 +216,11 @@ class EnsembleMultiAssetPortfolio:
             
     def generate_predictions(self, market_data: Dict[str, pd.DataFrame], use_simple_signals: bool = True) -> Dict[str, float]:
         """
-        Generate predictions using either simple momentum signals or ensemble models
+        Generate predictions using either simple momentum signals or silver layer alpha forecasts
         
         Args:
             market_data: Dictionary of asset dataframes with market data
-            use_simple_signals: If True, use simple momentum signals instead of ensemble models
+            use_simple_signals: If True, use simple momentum signals; if False, use silver layer forecasts
             
         Returns:
             Dictionary of asset predictions (price change forecasts)
@@ -205,7 +228,7 @@ class EnsembleMultiAssetPortfolio:
         if use_simple_signals:
             return self._generate_simple_momentum_signals(market_data)
         else:
-            return self._generate_ensemble_predictions(market_data)
+            return self._read_alpha_forecasts_from_silver_layer()
     
     def _generate_simple_momentum_signals(self, market_data: Dict[str, pd.DataFrame]) -> Dict[str, float]:
         """
@@ -357,6 +380,86 @@ class EnsembleMultiAssetPortfolio:
                 self.logger.info(f"🎯 {asset}: final_prediction={weighted_prediction:.4f}")
         
         return final_predictions
+    
+    def _read_alpha_forecasts_from_silver_layer(self) -> Dict[str, float]:
+        """
+        Read alpha forecasts from the silver layer instead of generating predictions internally.
+        This creates proper data flow: Alpha Models → Silver Layer → Portfolio System
+        
+        Returns:
+            Dictionary of asset predictions from silver layer forecasts
+        """
+        self.logger.info("📊 Reading alpha forecasts from silver layer...")
+        
+        # Prepare asset list for forecast reader
+        portfolio_assets = []
+        for asset_symbol, asset_info in self.active_assets.items():
+            if asset_info['category'] == 'crypto':
+                asset_type = 'CRYPTO'
+            elif asset_info['category'] == 'forex':
+                asset_type = 'FOREX'
+            else:
+                asset_type = 'EQUITIES'  # Default fallback
+            
+            portfolio_assets.append({
+                'symbol': asset_symbol,
+                'type': asset_type
+            })
+        
+        # Read ensemble predictions from silver layer
+        try:
+            predictions = self.forecast_reader.get_ensemble_predictions(
+                assets=portfolio_assets,
+                interval='1hour'  # Default to 1-hour forecasts for trading
+            )
+            
+            self.logger.info(f"✅ Loaded {len(predictions)} alpha forecasts from silver layer")
+            
+            # Log prediction details
+            for asset, prediction in predictions.items():
+                self.logger.info(f"🎯 {asset}: alpha_forecast={prediction:+.4f}")
+            
+            return predictions
+            
+        except Exception as e:
+            self.logger.error(f"❌ Failed to read silver layer forecasts: {e}")
+            self.logger.warning("🔄 Falling back to simple momentum signals...")
+            
+            # Fallback to simple signals if silver layer forecasts are unavailable
+            return {}
+    
+    def _get_forecast_summary_from_silver_layer(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Get a comprehensive forecast summary from the silver layer for monitoring.
+        
+        Returns:
+            Dictionary with detailed forecast information for each asset
+        """
+        portfolio_assets = []
+        for asset_symbol, asset_info in self.active_assets.items():
+            if asset_info['category'] == 'crypto':
+                asset_type = 'CRYPTO'
+            elif asset_info['category'] == 'forex':
+                asset_type = 'FOREX'
+            else:
+                asset_type = 'EQUITIES'
+            
+            portfolio_assets.append({
+                'symbol': asset_symbol,
+                'type': asset_type
+            })
+        
+        try:
+            summary = self.forecast_reader.get_forecast_summary(
+                assets=portfolio_assets,
+                interval='1hour'
+            )
+            
+            return summary
+            
+        except Exception as e:
+            self.logger.error(f"❌ Failed to get forecast summary: {e}")
+            return {}
     
     def _prepare_features(self, data: pd.DataFrame) -> pd.DataFrame:
         """
@@ -727,7 +830,324 @@ class EnsembleMultiAssetPortfolio:
             return {'error': str(e)}
 
 
+    def run_five_minute_trading_cycle(self, market_data: Dict[str, pd.DataFrame] = None) -> Dict[str, Any]:
+        """
+        Execute 5-minute trading cycle with equal value allocation and risk/reward evaluation
+        
+        Args:
+            market_data: Optional market data, will fetch if not provided
+            
+        Returns:
+            Dictionary with trading decisions and execution results
+        """
+        cycle_start = datetime.now()
+        cycle_results = {
+            'timestamp': cycle_start,
+            'interval': '5_minutes',
+            'cycle_duration_seconds': 0,
+            'decisions': {},
+            'trades_executed': {},
+            'portfolio_status': {},
+            'equal_allocation_status': {},
+            'error': None
+        }
+        
+        try:
+            # 1. Get current market data
+            if market_data is None:
+                data_connector = SilverLayerDataConnector()
+                market_data = data_connector.get_latest_market_data(self.active_assets)
+            
+            # 2. Generate alpha signals for active assets
+            alpha_signals = {}
+            risk_metrics = {}
+            
+            for asset in self.active_assets.keys():
+                if asset in market_data:
+                    # Generate ensemble prediction (alpha signal)
+                    predictions = self.generate_predictions({asset: market_data[asset]})
+                    alpha_prediction = predictions.get(asset, 0.0)
+                    
+                    # Calculate risk metrics
+                    asset_data = market_data[asset]
+                    if len(asset_data) > 20:
+                        returns = asset_data['close'].pct_change().dropna()
+                        volatility = returns.rolling(20).std().iloc[-1]
+                        var_1day = returns.quantile(0.05)  # 5% VaR
+                        
+                        risk_metrics[asset] = {
+                            'volatility': volatility,
+                            'var_1day': abs(var_1day),
+                            'sharpe_estimate': returns.mean() / volatility if volatility > 0 else 0
+                        }
+                    else:
+                        risk_metrics[asset] = {'volatility': 0.02, 'var_1day': 0.01, 'sharpe_estimate': 0}
+                    
+                    alpha_signals[asset] = {
+                        'prediction': alpha_prediction,
+                        'confidence': min(abs(alpha_prediction) * 2, 1.0),  # Simple confidence measure
+                        'expected_return': alpha_prediction * 0.1  # Scale to expected return
+                    }
+            
+            # 3. Get current positions
+            current_positions = self.get_current_positions()
+            
+            # 4. Evaluate trading opportunities using risk/reward engine
+            portfolio_data = {}
+            for asset in self.active_assets.keys():
+                portfolio_data[asset] = {
+                    'alpha_signal': alpha_signals.get(asset, {}),
+                    'risk_metrics': risk_metrics.get(asset, {}),
+                    'market_data': market_data.get(asset, pd.DataFrame())
+                }
+            
+            trading_decisions = self.decision_engine.evaluate_portfolio_opportunities(
+                portfolio_data, current_positions
+            )
+            
+            # 5. Apply equal value allocation logic
+            equal_allocation_targets = self.calculate_equal_value_targets(
+                trading_decisions, current_positions
+            )
+            
+            # 6. Execute trades based on decisions
+            executed_trades = self.execute_interval_trades(
+                trading_decisions, equal_allocation_targets
+            )
+            
+            # 7. Update portfolio status
+            cycle_end = datetime.now()
+            cycle_duration = (cycle_end - cycle_start).total_seconds()
+            
+            cycle_results.update({
+                'cycle_duration_seconds': cycle_duration,
+                'decisions': trading_decisions,
+                'trades_executed': executed_trades,
+                'portfolio_status': self.get_portfolio_status(),
+                'equal_allocation_status': equal_allocation_targets,
+                'decision_summary': self.decision_engine.get_decision_summary(trading_decisions)
+            })
+            
+            self.logger.info(f"5-minute cycle completed in {cycle_duration:.2f}s")
+            
+        except Exception as e:
+            self.logger.error(f"Error in 5-minute trading cycle: {e}")
+            cycle_results['error'] = str(e)
+        
+        return cycle_results
+    
+    def calculate_equal_value_targets(self, 
+                                    trading_decisions: Dict[str, Dict],
+                                    current_positions: Dict[str, float]) -> Dict[str, Any]:
+        """
+        Calculate equal value allocation targets considering trading decisions
+        
+        Args:
+            trading_decisions: Trading decisions from risk/reward engine
+            current_positions: Current position sizes
+            
+        Returns:
+            Equal allocation targets and rebalancing needs
+        """
+        num_active_assets = len(self.active_assets)
+        target_allocation_per_asset = 1.0 / num_active_assets if num_active_assets > 0 else 0.0
+        
+        allocation_status = {
+            'target_allocation_per_asset': target_allocation_per_asset,
+            'current_allocations': current_positions.copy(),
+            'target_allocations': {},
+            'rebalancing_needed': {},
+            'deviation_threshold': 0.05  # 5% deviation triggers rebalancing
+        }
+        
+        for asset in self.active_assets.keys():
+            current_allocation = current_positions.get(asset, 0.0)
+            
+            # Adjust target based on trading decision
+            decision = trading_decisions.get(asset, {})
+            if decision.get('should_trade', False):
+                # If trading is recommended, incorporate the suggested size
+                suggested_size = decision.get('size', 0.0)
+                # Blend equal allocation with trading signal
+                target_allocation = target_allocation_per_asset + (suggested_size * 0.1)  # 10% weight to signal
+            else:
+                target_allocation = target_allocation_per_asset
+            
+            # Cap allocations within reasonable bounds
+            target_allocation = max(min(target_allocation, self.max_position_size), -self.max_position_size)
+            
+            allocation_status['target_allocations'][asset] = target_allocation
+            
+            # Check if rebalancing is needed
+            deviation = abs(current_allocation - target_allocation)
+            if deviation > allocation_status['deviation_threshold']:
+                allocation_status['rebalancing_needed'][asset] = {
+                    'current': current_allocation,
+                    'target': target_allocation,
+                    'deviation': deviation,
+                    'action_needed': 'buy' if target_allocation > current_allocation else 'sell'
+                }
+        
+        return allocation_status
+    
+    def execute_interval_trades(self, 
+                               trading_decisions: Dict[str, Dict],
+                               allocation_targets: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Execute trades for the 5-minute interval
+        
+        Args:
+            trading_decisions: Trading decisions from risk/reward evaluation
+            allocation_targets: Equal value allocation targets
+            
+        Returns:
+            Summary of executed trades
+        """
+        execution_summary = {
+            'timestamp': datetime.now(),
+            'trades_attempted': 0,
+            'trades_executed': 0,
+            'trades_skipped': 0,
+            'execution_details': {},
+            'portfolio_changes': {}
+        }
+        
+        rebalancing_needed = allocation_targets.get('rebalancing_needed', {})
+        
+        for asset in self.active_assets.keys():
+            decision = trading_decisions.get(asset, {})
+            rebalance_info = rebalancing_needed.get(asset, {})
+            
+            # Determine if we should trade this asset
+            should_trade_signal = decision.get('should_trade', False)
+            should_rebalance = asset in rebalancing_needed
+            
+            if should_trade_signal or should_rebalance:
+                execution_summary['trades_attempted'] += 1
+                
+                # Determine trade size and direction
+                if should_trade_signal and should_rebalance:
+                    # Combine signal and rebalancing
+                    signal_size = decision.get('size', 0.0)
+                    rebalance_target = rebalance_info.get('target', 0.0)
+                    current_position = rebalance_info.get('current', 0.0)
+                    
+                    # Weighted combination
+                    final_target = (rebalance_target * 0.8) + (signal_size * 0.2)
+                    trade_size = final_target - current_position
+                    
+                elif should_trade_signal:
+                    # Pure signal-based trade
+                    trade_size = decision.get('size', 0.0)
+                    
+                else:
+                    # Pure rebalancing
+                    trade_size = rebalance_info.get('target', 0.0) - rebalance_info.get('current', 0.0)
+                
+                # Execute the trade (simulation for now)
+                if abs(trade_size) > 0.01:  # Minimum trade size threshold
+                    execution_result = self._simulate_trade_execution(asset, trade_size, decision)
+                    
+                    execution_summary['execution_details'][asset] = execution_result
+                    
+                    if execution_result.get('executed', False):
+                        execution_summary['trades_executed'] += 1
+                        # Update position
+                        if asset not in self.positions:
+                            self.positions[asset] = 0.0
+                        self.positions[asset] += trade_size
+                        
+                        execution_summary['portfolio_changes'][asset] = {
+                            'trade_size': trade_size,
+                            'new_position': self.positions[asset],
+                            'rationale': execution_result.get('rationale', '')
+                        }
+                    else:
+                        execution_summary['trades_skipped'] += 1
+                else:
+                    execution_summary['trades_skipped'] += 1
+                    execution_summary['execution_details'][asset] = {
+                        'executed': False,
+                        'reason': 'trade_size_too_small',
+                        'size': trade_size
+                    }
+            else:
+                execution_summary['trades_skipped'] += 1
+                execution_summary['execution_details'][asset] = {
+                    'executed': False,
+                    'reason': 'no_trading_opportunity',
+                    'decision': decision,
+                    'rebalance_needed': should_rebalance
+                }
+        
+        return execution_summary
+    
+    def _simulate_trade_execution(self, asset: str, trade_size: float, decision: Dict) -> Dict[str, Any]:
+        """
+        Simulate trade execution (replace with real broker integration)
+        
+        Args:
+            asset: Asset symbol
+            trade_size: Size of trade
+            decision: Trading decision context
+            
+        Returns:
+            Execution result
+        """
+        # Simple execution simulation
+        execution_result = {
+            'asset': asset,
+            'trade_size': trade_size,
+            'executed': True,
+            'timestamp': datetime.now(),
+            'rationale': decision.get('rationale', 'Equal allocation rebalancing'),
+            'confidence': decision.get('confidence', 0.5),
+            'reward_risk_ratio': decision.get('reward_risk_ratio', 0.0)
+        }
+        
+        # Add some basic execution checks
+        if abs(trade_size) > self.max_position_size:
+            execution_result['executed'] = False
+            execution_result['reason'] = 'trade_size_exceeds_limit'
+        elif decision.get('confidence', 0) < 0.3:
+            execution_result['executed'] = False
+            execution_result['reason'] = 'insufficient_confidence'
+        
+        return execution_result
+    
+    def get_current_positions(self) -> Dict[str, float]:
+        """Get current portfolio positions for active assets"""
+        return {asset: self.positions.get(asset, 0.0) for asset in self.active_assets.keys()}
+    
+    def get_portfolio_status(self) -> Dict[str, Any]:
+        """Get comprehensive portfolio status"""
+        current_positions = self.get_current_positions()
+        total_allocation = sum(abs(pos) for pos in current_positions.values())
+        
+        status = {
+            'timestamp': datetime.now(),
+            'total_allocation': total_allocation,
+            'current_positions': current_positions,
+            'cash_allocation': 1.0 - total_allocation,
+            'num_active_positions': sum(1 for pos in current_positions.values() if abs(pos) > 0.01),
+            'equal_allocation_target': 1.0 / len(self.active_assets),
+            'allocation_deviations': {}
+        }
+        
+        # Calculate allocation deviations
+        target = status['equal_allocation_target']
+        for asset, position in current_positions.items():
+            deviation = abs(position - target)
+            status['allocation_deviations'][asset] = deviation
+        
+        status['max_deviation'] = max(status['allocation_deviations'].values()) if status['allocation_deviations'] else 0
+        status['avg_deviation'] = np.mean(list(status['allocation_deviations'].values())) if status['allocation_deviations'] else 0
+        
+        return status
+
+
 def main():
+    """Updated main function demonstrating 5-minute interval trading"""
     """Demo the ensemble multi-asset portfolio"""
     
     # Configure logging

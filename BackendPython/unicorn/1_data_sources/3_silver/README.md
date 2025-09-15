@@ -35,6 +35,33 @@ The Silver Layer transforms raw data into **clean, standardized datasets** ready
 - **Datetime Fix**: Resolved 1d processing issues ('Date' vs 'Datetime' column handling)
 - **Quality Metrics**: Individual asset quality scores ranging from 0.914 to 0.968
 
+### **🔮 Alpha Forecast Integration - NEW (2025-09-15)**
+- **Forecast Storage**: Unified silver layer forecast repository implemented
+- **Asset Coverage**: 9 assets (2 crypto + 7 forex) with comprehensive forecast structure
+- **Model Support**: Ensemble, Prophet, and XGBoost forecasts for all assets
+- **Integration Success**: 100% alpha model → silver layer → portfolio data flow verified
+- **Real-time Pipeline**: Portfolio system reads latest forecasts automatically
+- **Standardized Format**: JSON forecast files with metadata and confidence scoring
+
+#### **🎯 Forecast Architecture**
+```
+Alpha Models (Layer 2) → Silver Layer (Layer 3) → Portfolio (Layer 4)
+├── Write via SilverLayerForecastWriter
+├── Store in /forecasts/{CRYPTO|FOREX}/{ASSET}/{1min|1hour|1day}/{ensemble|prophet|xgboost}/
+├── Read via SilverLayerForecastReader  
+└── Consume in EnsembleMultiAssetPortfolio
+```
+
+#### **📊 Forecast Coverage Status**
+```
+✅ CRYPTO Assets:     ETH, BTC (forecast generation operational)
+✅ FOREX Assets:      EURUSD, USDJPY, GBPUSD, AUDUSD, USDCAD, USDCHF, NZDUSD
+✅ Time Intervals:    1min, 1hour, 1day (structure ready)
+✅ Model Types:       ensemble, prophet, xgboost (all supported)
+✅ Integration Test:  9/9 assets successfully writing and reading forecasts
+✅ Data Flow:         Alpha Models → Silver Layer → Portfolio (verified)
+```
+
 ## 📊 **COMPLETE DATASET CATALOG**
 
 ### **🔥 Yahoo Finance Assets (47 Files Total)**

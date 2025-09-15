@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "asset": "ETH",
+    "timeframe": "1hour",
+    "model_type": "ensemble",
+    "model_version": "1.0.0",
+    "forecast_timestamp": "2025-09-02T20:16:13.895404",
+    "forecast_horizon": 24,
+    "confidence_score": 0.1,
+    "is_production": true,
+    "iteration_count": 0,
+    "data_quality_score": 1.0
+  },
+  "predictions": {
+    "2025-09-02T21:16:13.894698": {
+      "predicted_price": 75218918264350.56,
+      "confidence_lower": 74466729081707.06,
+      "confidence_upper": 75971107446994.06,
+      "step_ahead": 1
+    },
+    "2025-09-02T22:16:13.894698": {
+      "predicted_price": 75517490858499.19,
+      "confidence_lower": 74762315949914.19,
+      "confidence_upper": 76272665767084.19,
+      "step_ahead": 2
+    },
+    "2025-09-02T23:16:13.894698": {
+      "predicted_price": 74984187701197.64,
+      "confidence_lower": 74234345824185.66,
+      "confidence_upper": 75734029578209.62,
+      "step_ahead": 3
+    },
+    "2025-09-03T00:16:13.894698": {
+      "predicted_price": 75072659353837.05,
+      "confidence_lower": 74321932760298.67,
+      "confidence_upper": 75823385947375.42,
+      "step_ahead": 4
+    },
+    "2025-09-03T01:16:13.894698": {
+      "predicted_price": 74910702497296.31,
+      "confidence_lower": 74161595472323.34,
+      "confidence_upper": 75659809522269.28,
+      "step_ahead": 5
+    },
+    "2025-09-03T02:16:13.894698": {
+      "predicted_price": 74878404115081.5,
+      "confidence_lower": 74129620073930.69,
+      "confidence_upper": 75627188156232.31,
+      "step_ahead": 6
+    },
+    "2025-09-03T03:16:13.894698": {
+      "predicted_price": 74645531187982.48,
+      "confidence_lower": 73899075876102.66,
+      "confidence_upper": 75391986499862.31,
+      "step_ahead": 7
+    },
+    "2025-09-03T04:16:13.894698": {
+      "predicted_price": 75267304594520.33,
+      "confidence_lower": 74514631548575.12,
+      "confidence_upper": 76019977640465.53,
+      "step_ahead": 8
+    },
+    "2025-09-03T05:16:13.894698": {
+      "predicted_price": 75457492389980.17,
+      "confidence_lower": 74702917466080.38,
+      "confidence_upper": 76212067313879.97,
+      "step_ahead": 9
+    },
+    "2025-09-03T06:16:13.894698": {
+      "predicted_price": 75237968124532.1,
+      "confidence_lower": 74485588443286.77,
+      "confidence_upper": 75990347805777.42,
+      "step_ahead": 10
+    },
+    "2025-09-03T07:16:13.894698": {
+      "predicted_price": 74860168388302.98,
+      "confidence_lower": 74111566704419.95,
+      "confidence_upper": 75608770072186.02,
+      "step_ahead": 11
+    },
+    "2025-09-03T08:16:13.894698": {
+      "predicted_price": 74686525897916.69,
+      "confidence_lower": 73939660638937.52,
+      "confidence_upper": 75433391156895.86,
+      "step_ahead": 12
+    },
+    "2025-09-03T09:16:13.894698": {
+      "predicted_price": 74949453286040.66,
+      "confidence_lower": 74199958753180.25,
+      "confidence_upper": 75698947818901.06,
+      "step_ahead": 13
+    },
+    "2025-09-03T10:16:13.894698": {
+      "predicted_price": 74936833909750.89,
+      "confidence_lower": 74187465570653.38,
+      "confidence_upper": 75686202248848.4,
+      "step_ahead": 14
+    },
+    "2025-09-03T11:16:13.894698": {
+      "predicted_price": 74731951074479.66,
+      "confidence_lower": 73984631563734.86,
+      "confidence_upper": 75479270585224.45,
+      "step_ahead": 15
+    },
+    "2025-09-03T12:16:13.894698": {
+      "predicted_price": 75062289192721.45,
+      "confidence_lower": 74311666300794.23,
+      "confidence_upper": 75812912084648.67,
+      "step_ahead": 16
+    },
+    "2025-09-03T13:16:13.894698": {
+      "predicted_price": 74748331020869.6,
+      "confidence_lower": 74000847710660.89,
+      "confidence_upper": 75495814331078.3,
+      "step_ahead": 17
+    },
+    "2025-09-03T14:16:13.894698": {
+      "predicted_price": 74386365169867.64,
+      "confidence_lower": 73642501518168.97,
+      "confidence_upper": 75130228821566.31,
+      "step_ahead": 18
+    },
+    "2025-09-03T15:16:13.894698": {
+      "predicted_price": 74240244272624.48,
+      "confidence_lower": 73497841829898.23,
+      "confidence_upper": 74982646715350.73,
+      "step_ahead": 19
+    },
+    "2025-09-03T16:16:13.894698": {
+      "predicted_price": 74028289097283.44,
+      "confidence_lower": 73288006206310.61,
+      "confidence_upper": 74768571988256.27,
+      "step_ahead": 20
+    },
+    "2025-09-03T17:16:13.894698": {
+      "predicted_price": 74599212859651.08,
+      "confidence_lower": 73853220731054.56,
+      "confidence_upper": 75345204988247.6,
+      "step_ahead": 21
+    },
+    "2025-09-03T18:16:13.894698": {
+      "predicted_price": 74294819741678.22,
+      "confidence_lower": 73551871544261.44,
+      "confidence_upper": 75037767939095.0,
+      "step_ahead": 22
+    },
+    "2025-09-03T19:16:13.894698": {
+      "predicted_price": 74047012889058.84,
+      "confidence_lower": 73306542760168.25,
+      "confidence_upper": 74787483017949.44,
+      "step_ahead": 23
+    },
+    "2025-09-03T20:16:13.894698": {
+      "predicted_price": 74202082557042.53,
+      "confidence_lower": 73460061731472.11,
+      "confidence_upper": 74944103382612.95,
+      "step_ahead": 24
+    }
+  },
+  "model_performance": {
+    "mape": 1034844.6161724301,
+    "mae": 1019831677698.3392,
+    "r2_score": -40.881350881919495
+  }
+}

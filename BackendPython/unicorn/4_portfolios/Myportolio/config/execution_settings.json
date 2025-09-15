@@ -6,11 +6,29 @@
   "max_order_size": 50000,
   "slippage_tolerance": 0.002,
   "order_size_limit": 50000,
+  "trading_schedule": {
+    "strategy": "interval_based",
+    "trading_interval": "5_minutes",
+    "interval_seconds": 300,
+    "start_offset": 0,
+    "coordination": "simultaneous",
+    "decision_window": "30_seconds",
+    "execution_window": "120_seconds"
+  },
+  "risk_reward_evaluation": {
+    "enabled": true,
+    "minimum_reward_risk_ratio": 1.5,
+    "alpha_model_weight": 0.6,
+    "risk_model_weight": 0.4,
+    "confidence_threshold": 0.65,
+    "trade_required": false,
+    "skip_threshold": 0.3
+  },
   "trading_session": {
     "start_time": "00:00",
     "end_time": "23:59",
     "timezone": "UTC",
-    "note": "24/7 cryptocurrency trading"
+    "note": "24/7 cryptocurrency trading with 5-minute intervals"
   },
   "broker_settings": {
     "primary_broker": "ibkr",
@@ -20,9 +38,10 @@
   },
   "order_execution": {
     "time_in_force": "GTC",
-    "max_order_lifetime": "24h",
+    "max_order_lifetime": "5m",
     "partial_fills": true,
-    "minimum_fill_size": 15
+    "minimum_fill_size": 15,
+    "interval_coordination": true
   },
   "price_improvement": {
     "enabled": true,
@@ -45,7 +64,8 @@
   "monitoring": {
     "real_time_pnl": true,
     "execution_alerts": true,
-    "fill_notifications": true
+    "fill_notifications": true,
+    "interval_reporting": true
   },
-  "last_updated": "2025-08-30"
+  "last_updated": "2025-09-15"
 }

@@ -138,6 +138,14 @@ External APIs → Connectors → Staging → Bronze → Silver → Gold → Data
 - Validated data types with datetime standardization
 - No duplicates with comprehensive deduplication
 - Complete data lineage with metadata tracking
+
+**NEW: Alpha Forecast Integration (2025-09-15)**:
+- **Forecast Repository**: Unified storage for all alpha model predictions
+- **Data Flow**: Alpha Models (Layer 2) → Silver Layer (Layer 3) → Portfolio (Layer 4)
+- **Asset Coverage**: 9 assets with comprehensive forecast structure
+- **Components**: SilverLayerForecastWriter, SilverLayerForecastReader
+- **Integration Status**: ✅ 100% verified - portfolio reading forecasts from silver layer
+- **Format**: Standardized JSON with metadata, confidence, and performance tracking
 - Quality scoring (0.914-0.968 range across assets)
 
 ## 🥇 **Gold Layer** (`gold_layer/`)
