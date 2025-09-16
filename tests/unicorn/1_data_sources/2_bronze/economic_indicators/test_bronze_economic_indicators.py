@@ -26,11 +26,20 @@ import json
 project_root = Path(__file__).parents[4]
 sys.path.append(str(project_root))
 
-from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.processors.base_processor import BaseEconomicProcessor
-from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.processors.economic_growth_processor import EconomicGrowthProcessor
-from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.processors.consumer_business_processor import ConsumerBusinessProcessor
-from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.processors.international_trade_processor import InternationalTradeProcessor
-from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.processors.monetary_policy_processor import MonetaryPolicyProcessor
+# Import bronze layer processors using direct path approach
+bronze_path = project_root / "BackendPython" / "unicorn" / "1_data_sources" / "2_bronze" / "economic_indicators" / "processors"
+sys.path.append(str(bronze_path))
+
+try:
+    from base_processor import BaseEconomicProcessor
+    from economic_growth_processor import EconomicGrowthProcessor  
+    from consumer_business_processor import ConsumerBusinessProcessor
+    from international_trade_processor import InternationalTradeProcessor
+    from monetary_policy_processor import MonetaryPolicyProcessor
+except ImportError as e:
+    print(f"⚠️ Import error for bronze layer processors: {e}")
+    print("Running in limited mode without processor imports")
+    BaseEconomicProcessor = None
 
 class TestBronzeLayerEconomicIndicators:
     """Test suite for bronze layer economic indicators processing."""
@@ -234,7 +243,12 @@ def test_bronze_layer_integration():
     """Integration test for bronze layer economic indicators."""
     # Test that bronze layer can be imported and initialized
     try:
-        from BackendPython.unicorn.1_data_sources.2_bronze.economic_indicators.process_indicators import main
+        # Import using direct path approach
+        project_root = Path(__file__).parents[4]
+        bronze_path = project_root / "BackendPython" / "unicorn" / "1_data_sources" / "2_bronze" / "economic_indicators"
+        sys.path.append(str(bronze_path))
+        
+        from process_indicators import main
         print("✅ Bronze layer integration test passed")
         return True
     except ImportError as e:

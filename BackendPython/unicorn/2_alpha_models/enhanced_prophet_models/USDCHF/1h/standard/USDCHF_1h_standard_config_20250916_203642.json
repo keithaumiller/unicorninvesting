@@ -1,0 +1,27 @@
+{
+  "name": "standard",
+  "description": "Standard Prophet with balanced features and parameters",
+  "prophet_params": {
+    "yearly_seasonality": true,
+    "weekly_seasonality": true,
+    "daily_seasonality": true,
+    "changepoint_prior_scale": 0.05,
+    "seasonality_prior_scale": 10.0,
+    "holidays_prior_scale": 10.0,
+    "seasonality_mode": "multiplicative",
+    "changepoint_range": 0.8,
+    "n_changepoints": 25,
+    "interval_width": 0.8
+  },
+  "max_features": 7,
+  "feature_selection": [
+    "rsi",
+    "macd",
+    "atr",
+    "ma_20",
+    "ma_50",
+    "volume",
+    "volatility_14"
+  ],
+  "validation_split": 0.2
+}

@@ -27,13 +27,16 @@ from pathlib import Path
 project_root = Path(__file__).parents[4]
 sys.path.append(str(project_root))
 
+# Import silver layer processor using direct path approach
+silver_path = project_root / "BackendPython" / "unicorn" / "1_data_sources" / "3_silver" / "economic_indicators"
+sys.path.append(str(silver_path))
+
 try:
-    from BackendPython.unicorn.1_data_sources.3_silver.economic_indicators.silver_processor import SilverLayerEconomicProcessor
-except ImportError:
-    # Alternative import path
-    import sys
-    sys.path.append(str(project_root / "BackendPython" / "unicorn" / "1_data_sources" / "3_silver" / "economic_indicators"))
     from silver_processor import SilverLayerEconomicProcessor
+except ImportError as e:
+    print(f"⚠️ Import error for silver layer processor: {e}")
+    print("Running in limited mode without processor imports")
+    SilverLayerEconomicProcessor = None
 
 class TestSilverLayerEconomicIndicators:
     """Test suite for silver layer economic indicators processing."""
@@ -303,15 +306,12 @@ class TestSilverLayerEconomicIndicators:
 def test_silver_layer_integration():
     """Integration test for silver layer economic indicators."""
     try:
-        # Try main import path first
-        try:
-            from BackendPython.unicorn.1_data_sources.3_silver.economic_indicators.silver_processor import SilverLayerEconomicProcessor
-        except ImportError:
-            # Alternative import path
-            project_root = Path(__file__).parents[4]
-            sys.path.append(str(project_root / "BackendPython" / "unicorn" / "1_data_sources" / "3_silver" / "economic_indicators"))
-            from silver_processor import SilverLayerEconomicProcessor
+        # Import using the same approach as the main test class
+        project_root = Path(__file__).parents[4]
+        silver_path = project_root / "BackendPython" / "unicorn" / "1_data_sources" / "3_silver" / "economic_indicators"
+        sys.path.append(str(silver_path))
         
+        from silver_processor import SilverLayerEconomicProcessor
         processor = SilverLayerEconomicProcessor()
         
         # Test that processor can access bronze data
