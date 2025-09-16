@@ -63,6 +63,36 @@
       "fee": 0.001
     }
   },
+
+  "btc_momentum_template": {
+    "name": "BTC Momentum Backtest",
+    "description": "Bitcoin momentum strategy with 5/20 MA crossover and Kelly criterion risk management",
+    "environment": "backtesting",
+    "algorithm": "MyportolioBTCMomentum",
+    "parameters": {
+      "strategy_type": "btc_momentum",
+      "asset_symbol": "BTC",
+      "short_ma_period": 5,
+      "long_ma_period": 20,
+      "volatility_window": 14,
+      "max_position_size": 0.10,
+      "kelly_fraction": 0.25,
+      "confidence_threshold": 0.0,
+      "max_volatility": 0.30,
+      "max_drawdown": 0.20,
+      "var_limit_1day": 0.08,
+      "rebalance_frequency": "daily",
+      "lookback_period": 30
+    },
+    "assets": ["BTCUSD"],
+    "resolution": "Hour",
+    "initial_cash": 100000,
+    "benchmark": "BTCUSD",
+    "commission": {
+      "model": "ConstantFeeModel",
+      "fee": 0.001
+    }
+  },
   
   "dual_crypto_template": {
     "name": "Dual Crypto Strategy Backtest",

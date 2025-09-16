@@ -44,6 +44,7 @@ sys.path.append(str(Path(__file__).parent.parent / "trading_algorithms"))
 sys.path.append(str(Path(__file__).parent.parent / "risk_algorithms"))
 try:
     from eth_momentum_strategy import ETHMomentumStrategy
+    from btc_momentum_strategy import BTCMomentumStrategy
     from eth_basic_risk import ETHBasicRisk
     ENHANCED_ALGORITHMS_AVAILABLE = True
 except ImportError:
@@ -714,8 +715,13 @@ class {algorithm_name}(QCAlgorithm):
             'volume': np.random.uniform(1000000, 5000000, len(dates))
         })
         
+        # Determine asset symbol from parameters or configuration
+        asset_symbol = parameters.get('asset_symbol', 'ETH').upper()
+        if 'BTC' in str(parameters.get('strategy_type', '')).upper():
+            asset_symbol = 'BTC'
+        
         # Apply trading strategy
-        strategy_result = self._apply_trading_strategy(market_data, parameters, initial_cash)
+        strategy_result = self._apply_trading_strategy(market_data, parameters, initial_cash, asset_symbol)
         
         # Calculate performance metrics
         performance = self._calculate_performance_metrics(strategy_result, initial_cash)
@@ -760,81 +766,103 @@ class {algorithm_name}(QCAlgorithm):
         logger.info(f"Results processed and saved: {result_file}")
         return lean_compatible_result
 
-    def _apply_trading_strategy(self, market_data: pd.DataFrame, parameters: Dict[str, Any], initial_cash: float) -> Dict[str, Any]:
+    def _apply_trading_strategy(self, market_data: pd.DataFrame, parameters: Dict[str, Any], initial_cash: float, asset_symbol: str = "ETH") -> Dict[str, Any]:
         """
-        Apply Myportolio trading strategy to market data using actual ETH momentum strategy.
+        Apply Myportolio trading strategy to market data using appropriate momentum strategy.
+        
+        Args:
+            market_data: Historical price data
+            parameters: Strategy parameters
+            initial_cash: Starting cash amount
+            asset_symbol: Asset to trade (ETH, BTC, etc.)
         
         Returns:
             Strategy execution results
         """
-        logger.info("Applying ETH momentum strategy with Kelly criterion")
+        asset_symbol = asset_symbol.upper()
+        logger.info(f"Applying {asset_symbol} momentum strategy with Kelly criterion")
         
-        # Import the actual ETH momentum strategy
+        # Import the appropriate momentum strategy
         try:
             import sys
             from pathlib import Path
             sys.path.append(str(Path(__file__).parent.parent / "trading_algorithms"))
-            from eth_momentum_strategy import ETHMomentumStrategy
+            
+            if asset_symbol == "BTC":
+                from btc_momentum_strategy import BTCMomentumStrategy
+                strategy_class = BTCMomentumStrategy
+                strategy_name = "BTC momentum"
+            else:  # Default to ETH
+                from eth_momentum_strategy import ETHMomentumStrategy
+                strategy_class = ETHMomentumStrategy
+                strategy_name = "ETH momentum"
+                asset_symbol = "ETH"  # Ensure consistency
+                
         except ImportError as e:
-            logger.error(f"Failed to import ETH momentum strategy: {e}")
+            logger.error(f"Failed to import {asset_symbol} momentum strategy: {e}")
             # Fallback to simplified strategy
             return self._apply_fallback_strategy(market_data, parameters, initial_cash)
         
-        # Prepare market data in the format expected by ETH momentum strategy
-        # Convert 'price' column to 'close' column for compatibility
+        # Prepare market data in the format expected by momentum strategy
+        # Convert 'price' column to 'Close' column for compatibility
         strategy_data = market_data.copy()
-        strategy_data['close'] = strategy_data['price']
-        strategy_data['open'] = strategy_data['price']  # Simplified
-        strategy_data['high'] = strategy_data['price'] * 1.001  # Simplified
-        strategy_data['low'] = strategy_data['price'] * 0.999   # Simplified
+        strategy_data['Close'] = strategy_data['price']
+        strategy_data['Open'] = strategy_data['price']  # Simplified
+        strategy_data['High'] = strategy_data['price'] * 1.001  # Simplified
+        strategy_data['Low'] = strategy_data['price'] * 0.999   # Simplified
         
         # Strategy configuration
         strategy_config = {
+            'symbol': f"{asset_symbol}USD",
             'short_ma_period': parameters.get('short_ma_period', 5),
             'long_ma_period': parameters.get('long_ma_period', 20),
             'max_position_size': parameters.get('max_position_size', 0.1),
-            'volatility_window': parameters.get('volatility_window', 14)
+            'volatility_window': parameters.get('volatility_window', 14),
+            'kelly_fraction': parameters.get('kelly_fraction', 0.25),
+            'confidence_threshold': parameters.get('confidence_threshold', 0.0)
         }
         
-        # Initialize the ETH momentum strategy with performance logger
-        eth_strategy = ETHMomentumStrategy(strategy_config, self.performance_logger)
+        # Initialize the momentum strategy with performance logger
+        trading_strategy = strategy_class(strategy_config, self.performance_logger)
         
         # Initialize tracking variables
         portfolio_values = [initial_cash]
-        positions = [0.0]  # ETH position size
+        positions = [0.0]  # Asset position size
         trades = []
         cash = initial_cash
-        eth_position = 0.0
+        asset_position = 0.0
         
         # Run the strategy simulation
-        logger.info(f"Running ETH momentum strategy over {len(strategy_data)} data points")
+        logger.info(f"Running {strategy_name} strategy over {len(strategy_data)} data points")
         
         for i in range(20, len(strategy_data)):  # Start after enough data for moving averages
             # Get historical data up to current point
             historical_data = strategy_data.iloc[:i+1]
             
             # Generate signal using the actual strategy
-            signal_result = eth_strategy.generate_signal(historical_data)
+            signal_result = trading_strategy.generate_signal(historical_data)
             
             current_price = strategy_data.iloc[i]['price']
-            signal = signal_result['signal']
-            target_position = signal_result['target_position']
-            confidence = signal_result['confidence']
+            
+            # Extract signal information from the strategy result
+            signal_type = signal_result.get('signal_type', 'HOLD')
+            confidence = signal_result.get('confidence', 0.0)
+            position_change = signal_result.get('position_change', 0.0)
+            reasoning = signal_result.get('reasoning', 'No reason provided')
             
             # Execute trades based on signals
-            if signal in ['BUY', 'SELL']:
-                portfolio_value = cash + eth_position * current_price
+            if signal_type in ['BUY', 'SELL'] and abs(position_change) > 0.001:
+                portfolio_value = cash + asset_position * current_price
                 
-                if signal == 'BUY' and target_position > eth_position:
-                    # Buy more ETH
-                    position_increase = target_position - eth_position
+                if signal_type == 'BUY' and position_change > 0:
+                    # Buy more of the asset
                     max_affordable = cash / current_price
-                    actual_increase = min(position_increase, max_affordable * 0.95)  # Leave some cash buffer
+                    actual_increase = min(position_change, max_affordable * 0.95)  # Leave some cash buffer
                     
                     if actual_increase > 0.001:  # Minimum trade size
                         trade_value = actual_increase * current_price
                         cash -= trade_value
-                        eth_position += actual_increase
+                        asset_position += actual_increase
                         
                         trades.append({
                             'timestamp': strategy_data.iloc[i]['timestamp'],
@@ -843,20 +871,22 @@ class {algorithm_name}(QCAlgorithm):
                             'price': current_price,
                             'value': trade_value,
                             'confidence': confidence,
-                            'reason': signal_result['reason']
+                            'reason': reasoning
                         })
                         
-                        logger.info(f"BUY: {actual_increase:.4f} ETH at ${current_price:.2f} (confidence: {confidence:.3f})")
+                        logger.info(f"BUY: {actual_increase:.4f} {asset_symbol} at ${current_price:.2f} (confidence: {confidence:.3f})")
+                        
+                        # Execute the trade in the strategy to update its internal state
+                        trading_strategy.execute_trade(signal_result)
                 
-                elif signal == 'SELL' and target_position < eth_position:
-                    # Sell ETH
-                    position_decrease = eth_position - target_position
-                    actual_decrease = min(position_decrease, eth_position)
+                elif signal_type == 'SELL' and position_change < 0:
+                    # Sell the asset
+                    actual_decrease = min(abs(position_change), asset_position)
                     
                     if actual_decrease > 0.001:  # Minimum trade size
                         trade_value = actual_decrease * current_price
                         cash += trade_value
-                        eth_position -= actual_decrease
+                        asset_position -= actual_decrease
                         
                         trades.append({
                             'timestamp': strategy_data.iloc[i]['timestamp'],
@@ -865,18 +895,18 @@ class {algorithm_name}(QCAlgorithm):
                             'price': current_price,
                             'value': trade_value,
                             'confidence': confidence,
-                            'reason': signal_result['reason']
+                            'reason': reasoning
                         })
                         
-                        logger.info(f"SELL: {actual_decrease:.4f} ETH at ${current_price:.2f} (confidence: {confidence:.3f})")
-            
-            # Update strategy position
-            eth_strategy.update_position(eth_position)
+                        logger.info(f"SELL: {actual_decrease:.4f} {asset_symbol} at ${current_price:.2f} (confidence: {confidence:.3f})")
+                        
+                        # Execute the trade in the strategy to update its internal state
+                        trading_strategy.execute_trade(signal_result)
             
             # Track portfolio value
-            portfolio_value = cash + eth_position * current_price
+            portfolio_value = cash + asset_position * current_price
             portfolio_values.append(portfolio_value)
-            positions.append(eth_position)
+            positions.append(asset_position)
         
         logger.info(f"Strategy completed: {len(trades)} trades executed")
         
@@ -885,7 +915,7 @@ class {algorithm_name}(QCAlgorithm):
             'positions': positions,
             'trades': trades,
             'market_data': strategy_data,
-            'strategy_stats': eth_strategy.get_strategy_stats()
+            'strategy_stats': trading_strategy.get_performance_summary() if hasattr(trading_strategy, 'get_performance_summary') else {}
         }
     
     def _apply_fallback_strategy(self, market_data: pd.DataFrame, parameters: Dict[str, Any], initial_cash: float) -> Dict[str, Any]:

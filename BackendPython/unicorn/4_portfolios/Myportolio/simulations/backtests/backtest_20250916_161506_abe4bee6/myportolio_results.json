@@ -1,0 +1,72 @@
+{
+  "simulation_id": "backtest_20250916_161506_abe4bee6",
+  "simulation_type": "backtest",
+  "timestamp": "2025-09-16T16:15:06.943427",
+  "portfolio": "Myportolio",
+  "strategy": "unknown",
+  "lean_results": {
+    "algorithm-type-name": "MyportolioETHMomentum",
+    "algorithm-location": "backtests/backtest_20250916_161506_abe4bee6/",
+    "algorithm-language": "Python",
+    "data-folder": "/workspaces/unicorninvesting/data/",
+    "output-directory": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250916_161506_abe4bee6/",
+    "result-destination-folder": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250916_161506_abe4bee6/",
+    "close-automatically": true,
+    "debugging": false,
+    "debugging-method": "LocalCmdline",
+    "job-user-id": "1",
+    "api-access-token": "",
+    "job-organization-id": "",
+    "job-project-id": 0,
+    "environment": "backtesting",
+    "algorithm": "MyportolioETHMomentum",
+    "start-date": "2024-03-01",
+    "end-date": "2024-06-01",
+    "cash": 100000,
+    "parameters": {
+      "strategy_type": "btc_momentum",
+      "asset_symbol": "BTC",
+      "short_ma_period": 5,
+      "long_ma_period": 20,
+      "volatility_window": 14,
+      "max_position_size": 0.1,
+      "kelly_fraction": 0.25,
+      "confidence_threshold": 0.0,
+      "max_volatility": 0.3,
+      "max_drawdown": 0.2,
+      "var_limit_1day": 0.08,
+      "rebalance_frequency": "daily",
+      "lookback_period": 30
+    },
+    "best_model_config": {
+      "use_best_models": false
+    },
+    "performance_logging_enabled": true,
+    "simulation_id": "backtest_20250916_161506_abe4bee6",
+    "risk_management": {
+      "max_drawdown": 0.2,
+      "max_position_pct": 0.8,
+      "var_confidence": 0.05
+    },
+    "trading_strategy": {
+      "short_ma_period": 5,
+      "long_ma_period": 20,
+      "max_position_size": 0.1,
+      "volatility_window": 14
+    }
+  },
+  "performance": {
+    "total_return": 0.0,
+    "sharpe_ratio": 0.0,
+    "max_drawdown": 0.0,
+    "trades_count": 0,
+    "win_rate": 0.0,
+    "profit_factor": 0.0
+  },
+  "configuration": {},
+  "execution": {
+    "duration": "00:00:00",
+    "status": "completed",
+    "lean_output": ""
+  }
+}

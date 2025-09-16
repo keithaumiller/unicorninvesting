@@ -1,0 +1,51 @@
+{
+  "simulation_id": "backtest_20250916_161749_203351ee",
+  "analysis_timestamp": "2025-09-16T16:17:49.649790",
+  "simulation_duration": 0.013433,
+  "summary": {
+    "total_return": 0.0,
+    "initial_value": 100000.0,
+    "final_value": 100000.0,
+    "max_drawdown": 0.0,
+    "num_trades": 0,
+    "num_signals": 0,
+    "num_risk_decisions": 0,
+    "num_alpha_predictions": 0
+  },
+  "alpha_model_analysis": {
+    "total_predictions": 0,
+    "predictions_by_model": {},
+    "accuracy_by_model": {},
+    "confidence_correlation": {}
+  },
+  "trading_strategy_analysis": {
+    "error": "No trading signals recorded"
+  },
+  "risk_management_analysis": {
+    "error": "No risk decisions recorded"
+  },
+  "execution_analysis": {
+    "error": "No trade executions recorded"
+  },
+  "portfolio_performance": {
+    "total_return": 0.0,
+    "volatility": 0,
+    "max_drawdown": 0.0,
+    "average_drawdown": 0.0,
+    "sharpe_ratio": null,
+    "var_95": 0.0,
+    "return_distribution": {
+      "mean": 0,
+      "std": 0,
+      "skewness": 0,
+      "kurtosis": 0
+    }
+  },
+  "attribution_analysis": {
+    "alpha_contribution": "Analysis of alpha model contribution to returns",
+    "strategy_contribution": "Analysis of trading strategy contribution",
+    "risk_contribution": "Analysis of risk management impact",
+    "execution_contribution": "Analysis of execution cost impact",
+    "note": "Detailed attribution requires more sophisticated tracking"
+  }
+}

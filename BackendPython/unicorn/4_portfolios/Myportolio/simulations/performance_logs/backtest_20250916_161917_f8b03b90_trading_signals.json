@@ -1,0 +1,617 @@
+[
+  {
+    "timestamp": "2025-09-16T16:19:17.506976",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1900.268328580199,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1900.4286235666193,
+      "ma_long": 2036.991573320359,
+      "volatility": 0.019531097992064685
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.507819",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1891.8776443498857,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1894.3846400176449,
+      "ma_long": 2031.8519841401958,
+      "volatility": 0.018392726445948335
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.508600",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1894.6219341305641,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1886.4350163460592,
+      "ma_long": 2025.5477115761412,
+      "volatility": 0.018616688986120834
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.509368",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1840.8242130397223,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1874.712979369763,
+      "ma_long": 2013.4658517415714,
+      "volatility": 0.01841470527936715
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.510110",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1820.9660374516964,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1869.7116315104136,
+      "ma_long": 2000.8682861873713,
+      "volatility": 0.018404944693963282
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.510839",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1825.1878594283987,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1854.6955376800531,
+      "ma_long": 1988.9567937052575,
+      "volatility": 0.018768578198947977
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.511586",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1783.3547881385166,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1832.9909664377797,
+      "ma_long": 1971.6847548801948,
+      "volatility": 0.018462442228240238
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.512315",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1796.9331808155484,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1813.4532157747767,
+      "ma_long": 1953.447280063589,
+      "volatility": 0.01762993530299435
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.513018",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1775.5267223016965,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1800.3937176271713,
+      "ma_long": 1935.1435285553453,
+      "volatility": 0.016135792974356748
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.513742",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1765.3460740241997,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1789.269724941672,
+      "ma_long": 1915.158089084302,
+      "volatility": 0.016113470961496637
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.514479",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1744.2782005193308,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1773.0877931598584,
+      "ma_long": 1895.1117553933284,
+      "volatility": 0.01575795709827294
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.515209",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1809.070397510112,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1778.2309150341775,
+      "ma_long": 1879.2933912650053,
+      "volatility": 0.01944918962486974
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.515921",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1808.762955955424,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1780.5968700621524,
+      "ma_long": 1862.9347521414045,
+      "volatility": 0.01908081773233756
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.516630",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1770.680865322927,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1779.6276986663986,
+      "ma_long": 1848.7479724596778,
+      "volatility": 0.018454889242428243
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.517347",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1799.987224144056,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1786.55592869037,
+      "ma_long": 1839.5599382221776,
+      "volatility": 0.016989158583998312
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.518036",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1756.2171634139656,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1788.943721269297,
+      "ma_long": 1829.2889189189568,
+      "volatility": 0.017861005839383083
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.518760",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1763.728981737501,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1779.8754381147749,
+      "ma_long": 1821.370489901094,
+      "volatility": 0.017957118319539007
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.519496",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1694.778814793037,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1757.0786098822973,
+      "ma_long": 1809.3909280163218,
+      "volatility": 0.0192150935468113
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.520216",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1649.9286611189818,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1732.9281690415082,
+      "ma_long": 1796.9156411762106,
+      "volatility": 0.01997511468975512
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.520915",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1656.5897938915693,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1704.248682991011,
+      "ma_long": 1787.4464920333667,
+      "volatility": 0.02004087538700304
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.521630",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1681.2221768619668,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1689.2496856806113,
+      "ma_long": 1776.4941844474547,
+      "volatility": 0.020233950532478406
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.522350",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1687.1524621745991,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1673.9343817680306,
+      "ma_long": 1766.2579253386907,
+      "volatility": 0.02008221996693767
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.523049",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1683.4188517332648,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1671.6623891560764,
+      "ma_long": 1755.697771218826,
+      "volatility": 0.01996655276639571
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.523755",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1673.4495208688068,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1676.3665611060417,
+      "ma_long": 1747.32903661028,
+      "volatility": 0.019968154351066466
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.524472",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1624.1322274934064,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1669.875047826409,
+      "ma_long": 1737.4873461123655,
+      "volatility": 0.021050138725050842
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.525184",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1600.912197163589,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1653.8130518867333,
+      "ma_long": 1726.273562999125,
+      "volatility": 0.01730738255270456
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.525901",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1586.323443844986,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1633.6472482208105,
+      "ma_long": 1716.4219957844484,
+      "volatility": 0.017138398687881355
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.526608",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1620.020831598584,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1620.9676441938745,
+      "ma_long": 1707.5763783236005,
+      "volatility": 0.018555814824424754
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.527323",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1631.3162094261274,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1612.5409819053384,
+      "ma_long": 1700.365852679822,
+      "volatility": 0.017815421688853528
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.528033",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1573.9578213808225,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1602.5061006828216,
+      "ma_long": 1690.7964400476528,
+      "volatility": 0.0188393471766998
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.528737",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1584.3171071312222,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1599.1870826763484,
+      "ma_long": 1682.7983853782475,
+      "volatility": 0.01896104948283624
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.529449",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1572.273689951602,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1596.3771318976717,
+      "ma_long": 1670.958550000322,
+      "volatility": 0.01664694482578311
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.530144",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1551.1447842959876,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1582.6019224371526,
+      "ma_long": 1658.0776414173502,
+      "volatility": 0.01570538884308284
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.530859",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1570.275868476678,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1570.3938542472624,
+      "ma_long": 1648.0573915750379,
+      "volatility": 0.01619250670197423
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.531565",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1602.8119694752531,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1576.1646838661486,
+      "ma_long": 1638.1986288415974,
+      "volatility": 0.016773474673097588
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.532276",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1632.8255891092763,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1585.8663802617593,
+      "ma_long": 1632.029050126363,
+      "volatility": 0.017713040725900703
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.532955",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1605.5829547332505,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1592.528233218089,
+      "ma_long": 1624.1217487761505,
+      "volatility": 0.018131869646346017
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.533654",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 1.0,
+    "current_price": 1595.8141906275382,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1601.462114484399,
+      "ma_long": 1619.1735175678757,
+      "volatility": 0.01813377883808485
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.534370",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 0.5125634303075414,
+    "current_price": 1606.5464697399964,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1608.7162347370627,
+      "ma_long": 1617.0044079989261,
+      "volatility": 0.01662270525685856
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.535074",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 0.019382304234932358,
+    "current_price": 1638.05229598798,
+    "target_position": -0.0,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1615.7643000396083,
+      "ma_long": 1616.0775331037469,
+      "volatility": 0.016948164433486956
+    }
+  },
+  {
+    "timestamp": "2025-09-16T16:19:17.535771",
+    "asset": "BTCUSD",
+    "signal_type": "HOLD",
+    "confidence": 0.034741867003375566,
+    "current_price": 1622.5178520079635,
+    "target_position": 0.025610340046297496,
+    "current_position": 0.0,
+    "signal_reason": "No reason provided",
+    "technical_indicators": {
+      "ma_short": 1613.7027526193456,
+      "ma_long": 1613.1423168610465,
+      "volatility": 0.01696676056803871
+    }
+  }
+]

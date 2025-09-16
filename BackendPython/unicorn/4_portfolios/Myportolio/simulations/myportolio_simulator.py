@@ -106,6 +106,8 @@ class MyportolioSimulator:
             "best_models": "best_models_template",
             "momentum": "backtest_template", 
             "dual_crypto": "dual_crypto_template",
+            "btc_momentum": "btc_momentum_template",
+            "btc_momentum_validation": "btc_momentum_template",
             "paper": "paper_trading_template",
             "optimization": "optimization_template"
         }
@@ -162,6 +164,7 @@ class MyportolioSimulator:
                     start_date: str,
                     end_date: str,
                     strategy: str = "best_models",
+                    asset: str = "ETH",
                     parameters: Optional[Dict[str, Any]] = None,
                     metadata: Optional[Dict[str, Any]] = None) -> SimulationResult:
         """
@@ -171,13 +174,14 @@ class MyportolioSimulator:
             start_date: Start date in YYYY-MM-DD format
             end_date: End date in YYYY-MM-DD format
             strategy: Strategy name (must exist in templates)
+            asset: Asset to trade (ETH, BTC, etc.)
             parameters: Optional parameter overrides
             metadata: Optional metadata for tracking
             
         Returns:
             SimulationResult with all details and log paths
         """
-        logger.info(f"🚀 Starting backtest simulation: {strategy}")
+        logger.info(f"🚀 Starting backtest simulation: {strategy} for {asset}")
         
         # Validate strategy
         if strategy not in self.strategies:
@@ -191,6 +195,9 @@ class MyportolioSimulator:
         if parameters:
             final_parameters.update(parameters)
         
+        # Add asset symbol to parameters
+        final_parameters["asset_symbol"] = asset.upper()
+        
         request = SimulationRequest(
             start_date=start_date,
             end_date=end_date,
@@ -199,6 +206,7 @@ class MyportolioSimulator:
         )
         
         logger.info(f"📋 Strategy: {template_config.get('name', template_name)}")
+        logger.info(f"🪙 Asset: {asset.upper()}")
         logger.info(f"📅 Period: {start_date} to {end_date}")
         logger.info(f"⚙️  Parameters: {json.dumps(final_parameters, indent=2)}")
         
@@ -365,6 +373,7 @@ Examples:
     backtest_parser.add_argument("--start", required=True, help="Start date (YYYY-MM-DD)")
     backtest_parser.add_argument("--end", required=True, help="End date (YYYY-MM-DD)")
     backtest_parser.add_argument("--strategy", default="best_models", help="Strategy name")
+    backtest_parser.add_argument("--asset", default="ETH", help="Asset to trade (ETH, BTC)")
     backtest_parser.add_argument("--kelly", type=float, help="Kelly fraction override")
     backtest_parser.add_argument("--confidence", type=float, help="Confidence threshold override")
     
@@ -403,6 +412,7 @@ Examples:
                 start_date=args.start,
                 end_date=args.end,
                 strategy=args.strategy,
+                asset=getattr(args, 'asset', 'ETH'),
                 parameters=parameter_overrides
             )
             
