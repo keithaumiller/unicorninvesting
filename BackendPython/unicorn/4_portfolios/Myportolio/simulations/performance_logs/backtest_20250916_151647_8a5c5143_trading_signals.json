@@ -1,0 +1,3548 @@
+[
+  {
+    "timestamp": "2025-09-16T15:16:47.473354",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6704148978443635,
+    "current_price": 1900.268328580199,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1900.43) < 20MA (2036.99)",
+    "technical_indicators": {
+      "short_ma": 1900.4286235666193,
+      "long_ma": 2036.991573320359,
+      "ma_spread": 0.06704148978443634,
+      "volatility": 0.019531097992064685,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -8.434675442814399e-05
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.474415",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6765618027078975,
+    "current_price": 1891.8776443498857,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1894.38) < 20MA (2031.85)",
+    "technical_indicators": {
+      "short_ma": 1894.3846400176449,
+      "long_ma": 2031.8519841401958,
+      "ma_spread": 0.06765618027078975,
+      "volatility": 0.018392726445948335,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.001323382598655276
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.475412",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6867905131784533,
+    "current_price": 1894.6219341305641,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1886.44) < 20MA (2025.55)",
+    "technical_indicators": {
+      "short_ma": 1886.4350163460592,
+      "long_ma": 2025.5477115761412,
+      "ma_spread": 0.06867905131784532,
+      "volatility": 0.018616688986120834,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.004339888580080942
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.476386",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6891245374327682,
+    "current_price": 1840.8242130397223,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1874.71) < 20MA (2013.47)",
+    "technical_indicators": {
+      "short_ma": 1874.712979369763,
+      "long_ma": 2013.4658517415714,
+      "ma_spread": 0.06891245374327683,
+      "volatility": 0.01841470527936715,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.018076775860075056
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.477348",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6554986931542357,
+    "current_price": 1820.9660374516964,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1869.71) < 20MA (2000.87)",
+    "technical_indicators": {
+      "short_ma": 1869.7116315104136,
+      "long_ma": 2000.8682861873713,
+      "ma_spread": 0.06554986931542357,
+      "volatility": 0.018404944693963282,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.02607118297667055
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.478286",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.675033547486404,
+    "current_price": 1825.1878594283987,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1854.70) < 20MA (1988.96)",
+    "technical_indicators": {
+      "short_ma": 1854.6955376800531,
+      "long_ma": 1988.9567937052575,
+      "ma_spread": 0.0675033547486404,
+      "volatility": 0.018768578198947977,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.015909715450420525
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.479229",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.7034278076103628,
+    "current_price": 1783.3547881385166,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1832.99) < 20MA (1971.68)",
+    "technical_indicators": {
+      "short_ma": 1832.9909664377797,
+      "long_ma": 1971.6847548801948,
+      "ma_spread": 0.07034278076103628,
+      "volatility": 0.018462442228240238,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.02707933601861967
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.480175",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.7166513563870287,
+    "current_price": 1796.9331808155484,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1813.45) < 20MA (1953.45)",
+    "technical_indicators": {
+      "short_ma": 1813.4532157747767,
+      "long_ma": 1953.447280063589,
+      "ma_spread": 0.07166513563870287,
+      "volatility": 0.01762993530299435,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.009109711138685306
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.481091",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6963298015872216,
+    "current_price": 1775.5267223016965,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1800.39) < 20MA (1935.14)",
+    "technical_indicators": {
+      "short_ma": 1800.3937176271713,
+      "long_ma": 1935.1435285553453,
+      "ma_spread": 0.06963298015872216,
+      "volatility": 0.016135792974356748,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.013811976281636995
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.482029",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6573262273237259,
+    "current_price": 1765.3460740241997,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1789.27) < 20MA (1915.16)",
+    "technical_indicators": {
+      "short_ma": 1789.269724941672,
+      "long_ma": 1915.158089084302,
+      "ma_spread": 0.0657326227323726,
+      "volatility": 0.016113470961496637,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.013370622988801872
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.482963",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.6438879495428176,
+    "current_price": 1744.2782005193308,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1773.09) < 20MA (1895.11)",
+    "technical_indicators": {
+      "short_ma": 1773.0877931598584,
+      "long_ma": 1895.1117553933284,
+      "ma_spread": 0.06438879495428176,
+      "volatility": 0.01575795709827294,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01624826066236995
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.483905",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.5377684862862193,
+    "current_price": 1809.070397510112,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1778.23) < 20MA (1879.29)",
+    "technical_indicators": {
+      "short_ma": 1778.2309150341775,
+      "long_ma": 1879.2933912650053,
+      "ma_spread": 0.053776848628621934,
+      "volatility": 0.01944918962486974,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.017342788394465458
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.484845",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.44197941975480554,
+    "current_price": 1808.762955955424,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1780.60) < 20MA (1862.93)",
+    "technical_indicators": {
+      "short_ma": 1780.5968700621524,
+      "long_ma": 1862.9347521414045,
+      "ma_spread": 0.044197941975480555,
+      "volatility": 0.01908081773233756,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.015818339550539795
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.485773",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.3738761303484636,
+    "current_price": 1770.680865322927,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1779.63) < 20MA (1848.75)",
+    "technical_indicators": {
+      "short_ma": 1779.6276986663986,
+      "long_ma": 1848.7479724596778,
+      "ma_spread": 0.03738761303484636,
+      "volatility": 0.018454889242428243,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.005027362380443989
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.486701",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.28813418052054796,
+    "current_price": 1799.987224144056,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1786.56) < 20MA (1839.56)",
+    "technical_indicators": {
+      "short_ma": 1786.55592869037,
+      "long_ma": 1839.5599382221776,
+      "ma_spread": 0.028813418052054795,
+      "volatility": 0.016989158583998312,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.007517982078250274
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.487636",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.22055126028698868,
+    "current_price": 1756.2171634139656,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1788.94) < 20MA (1829.29)",
+    "technical_indicators": {
+      "short_ma": 1788.943721269297,
+      "long_ma": 1829.2889189189568,
+      "ma_spread": 0.022055126028698867,
+      "volatility": 0.017861005839383083,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01829378837703799
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.488565",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.22782323539552085,
+    "current_price": 1763.728981737501,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1779.88) < 20MA (1821.37)",
+    "technical_indicators": {
+      "short_ma": 1779.8754381147749,
+      "long_ma": 1821.370489901094,
+      "ma_spread": 0.022782323539552084,
+      "volatility": 0.017957118319539007,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.009071677731772088
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.489486",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2891156207540829,
+    "current_price": 1694.778814793037,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1757.08) < 20MA (1809.39)",
+    "technical_indicators": {
+      "short_ma": 1757.0786098822973,
+      "long_ma": 1809.3909280163218,
+      "ma_spread": 0.028911562075408292,
+      "volatility": 0.0192150935468113,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.03545646434875982
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.490394",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.3560961386747011,
+    "current_price": 1649.9286611189818,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1732.93) < 20MA (1796.92)",
+    "technical_indicators": {
+      "short_ma": 1732.9281690415082,
+      "long_ma": 1796.9156411762106,
+      "ma_spread": 0.03560961386747011,
+      "volatility": 0.01997511468975512,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.047895527007581595
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.491313",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.4654562215605756,
+    "current_price": 1656.5897938915693,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1704.25) < 20MA (1787.45)",
+    "technical_indicators": {
+      "short_ma": 1704.248682991011,
+      "long_ma": 1787.4464920333667,
+      "ma_spread": 0.04654562215605756,
+      "volatility": 0.02004087538700304,
+      "volatility_adjustment": 0.9979603991236057,
+      "price_momentum": -0.02796475043524682
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.492227",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.4911048937319162,
+    "current_price": 1681.2221768619668,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1689.25) < 20MA (1776.49)",
+    "technical_indicators": {
+      "short_ma": 1689.2496856806113,
+      "long_ma": 1776.4941844474547,
+      "ma_spread": 0.04911048937319162,
+      "volatility": 0.020233950532478406,
+      "volatility_adjustment": 0.9884377234142744,
+      "price_momentum": -0.004752115028756165
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.493148",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.5227070307580165,
+    "current_price": 1687.1524621745991,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1673.93) < 20MA (1766.26)",
+    "technical_indicators": {
+      "short_ma": 1673.9343817680306,
+      "long_ma": 1766.2579253386907,
+      "ma_spread": 0.05227070307580165,
+      "volatility": 0.02008221996693767,
+      "volatility_adjustment": 0.9959058327678397,
+      "price_momentum": 0.00789641490761861
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.494060",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.4786437816368083,
+    "current_price": 1683.4188517332648,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1671.66) < 20MA (1755.70)",
+    "technical_indicators": {
+      "short_ma": 1671.6623891560764,
+      "long_ma": 1755.697771218826,
+      "ma_spread": 0.04786437816368083,
+      "volatility": 0.01996655276639571,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.007032797204418406
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.494981",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.40611970623404414,
+    "current_price": 1673.4495208688068,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1676.37) < 20MA (1747.33)",
+    "technical_indicators": {
+      "short_ma": 1676.3665611060417,
+      "long_ma": 1747.32903661028,
+      "ma_spread": 0.040611970623404416,
+      "volatility": 0.019968154351066466,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0017400968886603918
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.495936",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.38913836372529154,
+    "current_price": 1624.1322274934064,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1669.88) < 20MA (1737.49)",
+    "technical_indicators": {
+      "short_ma": 1669.875047826409,
+      "long_ma": 1737.4873461123655,
+      "ma_spread": 0.038913836372529154,
+      "volatility": 0.021050138725050842,
+      "volatility_adjustment": 0.9501125033536659,
+      "price_momentum": -0.027392959965803265
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.496859",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.41975103289251053,
+    "current_price": 1600.912197163589,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1653.81) < 20MA (1726.27)",
+    "technical_indicators": {
+      "short_ma": 1653.8130518867333,
+      "long_ma": 1726.273562999125,
+      "ma_spread": 0.04197510328925105,
+      "volatility": 0.01730738255270456,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.031987203549272314
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.497797",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.4822517292771451,
+    "current_price": 1586.323443844986,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1633.65) < 20MA (1716.42)",
+    "technical_indicators": {
+      "short_ma": 1633.6472482208105,
+      "long_ma": 1716.4219957844484,
+      "ma_spread": 0.04822517292771451,
+      "volatility": 0.017138398687881355,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.028968190303851893
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.498716",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.5072026951716991,
+    "current_price": 1620.020831598584,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1620.97) < 20MA (1707.58)",
+    "technical_indicators": {
+      "short_ma": 1620.9676441938745,
+      "long_ma": 1707.5763783236005,
+      "ma_spread": 0.050720269517169916,
+      "volatility": 0.018555814824424754,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0005841033278375374
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.499640",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.5165057310229395,
+    "current_price": 1631.3162094261274,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1612.54) < 20MA (1700.37)",
+    "technical_indicators": {
+      "short_ma": 1612.5409819053384,
+      "long_ma": 1700.365852679822,
+      "ma_spread": 0.051650573102293956,
+      "volatility": 0.017815421688853528,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.011643256035951843
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.500591",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.5221819568199638,
+    "current_price": 1573.9578213808225,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1602.51) < 20MA (1690.80)",
+    "technical_indicators": {
+      "short_ma": 1602.5061006828216,
+      "long_ma": 1690.7964400476528,
+      "ma_spread": 0.05221819568199638,
+      "volatility": 0.0188393471766998,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01781477105755469
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.501512",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.4968587052875356,
+    "current_price": 1584.3171071312222,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1599.19) < 20MA (1682.80)",
+    "technical_indicators": {
+      "short_ma": 1599.1870826763484,
+      "long_ma": 1682.7983853782475,
+      "ma_spread": 0.04968587052875356,
+      "volatility": 0.01896104948283624,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.009298459014714044
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.502582",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.44633912733883174,
+    "current_price": 1572.273689951602,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1596.38) < 20MA (1670.96)",
+    "technical_indicators": {
+      "short_ma": 1596.3771318976717,
+      "long_ma": 1670.958550000322,
+      "ma_spread": 0.044633912733883174,
+      "volatility": 0.01664694482578311,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01509883940608514
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.503543",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.45520014922630403,
+    "current_price": 1551.1447842959876,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1582.60) < 20MA (1658.08)",
+    "technical_indicators": {
+      "short_ma": 1582.6019224371526,
+      "long_ma": 1658.0776414173502,
+      "ma_spread": 0.0455200149226304,
+      "volatility": 0.01570538884308284,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0198768481796876
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.504483",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.471242917417778,
+    "current_price": 1570.275868476678,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1570.39) < 20MA (1648.06)",
+    "technical_indicators": {
+      "short_ma": 1570.3938542472624,
+      "long_ma": 1648.0573915750379,
+      "ma_spread": 0.047124291741777805,
+      "volatility": 0.01619250670197423,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -7.513132470904349e-05
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.505429",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.3786716939161047,
+    "current_price": 1602.8119694752531,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1576.16) < 20MA (1638.20)",
+    "technical_indicators": {
+      "short_ma": 1576.1646838661486,
+      "long_ma": 1638.1986288415974,
+      "ma_spread": 0.03786716939161047,
+      "volatility": 0.016773474673097588,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.016906409515369925
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.506366",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2828544618187369,
+    "current_price": 1632.8255891092763,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1585.87) < 20MA (1632.03)",
+    "technical_indicators": {
+      "short_ma": 1585.8663802617593,
+      "long_ma": 1632.029050126363,
+      "ma_spread": 0.028285446181873692,
+      "volatility": 0.017713040725900703,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.029611075328910053
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.507294",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.19452676858658272,
+    "current_price": 1605.5829547332505,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1592.53) < 20MA (1624.12)",
+    "technical_indicators": {
+      "short_ma": 1592.528233218089,
+      "long_ma": 1624.1217487761505,
+      "ma_spread": 0.01945267685865827,
+      "volatility": 0.018131869646346017,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.008197481993007516
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.508225",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.10938545431548638,
+    "current_price": 1595.8141906275382,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1601.46) < 20MA (1619.17)",
+    "technical_indicators": {
+      "short_ma": 1601.462114484399,
+      "long_ma": 1619.1735175678757,
+      "ma_spread": 0.010938545431548638,
+      "volatility": 0.01813377883808485,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0035267296090105704
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.509134",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.051256343030754145,
+    "current_price": 1606.5464697399964,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1608.72) < 20MA (1617.00)",
+    "technical_indicators": {
+      "short_ma": 1608.7162347370627,
+      "long_ma": 1617.0044079989261,
+      "ma_spread": 0.005125634303075414,
+      "volatility": 0.01662270525685856,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.001348755579271499
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.510081",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.0019382304234932357,
+    "current_price": 1638.05229598798,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1615.76) < 20MA (1616.08)",
+    "technical_indicators": {
+      "short_ma": 1615.7643000396083,
+      "long_ma": 1616.0775331037469,
+      "ma_spread": 0.00019382304234932357,
+      "volatility": 0.016948164433486956,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.013794088622842704
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.511006",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.0034741867003375564,
+    "current_price": 1622.5178520079635,
+    "target_position": 0.00034741867003375564,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1613.70) > 20MA (1613.14)",
+    "technical_indicators": {
+      "short_ma": 1613.7027526193456,
+      "long_ma": 1613.1423168610465,
+      "ma_spread": 0.00034741867003375564,
+      "volatility": 0.01696676056803871,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.005462653747295931
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.511953",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.039138358140529066,
+    "current_price": 1616.6554037127128,
+    "target_position": 0.003913835814052907,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1615.92) > 20MA (1609.62)",
+    "technical_indicators": {
+      "short_ma": 1615.917242415238,
+      "long_ma": 1609.6174639379526,
+      "ma_spread": 0.003913835814052907,
+      "volatility": 0.016045262548237165,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.00045680637479406094
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.512987",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.05275638734573637,
+    "current_price": 1581.0458209722199,
+    "target_position": 0.005275638734573637,
+    "current_position": 0.003913835814052907,
+    "signal_reason": "Bullish momentum: 5MA (1612.96) > 20MA (1604.50)",
+    "technical_indicators": {
+      "short_ma": 1612.9635684841746,
+      "long_ma": 1604.4988123999003,
+      "ma_spread": 0.005275638734573637,
+      "volatility": 0.01691996090889476,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.019788263129805417
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.514010",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.014610522303185783,
+    "current_price": 1543.3787758738765,
+    "target_position": 0.0014610522303185785,
+    "current_position": 0.005275638734573637,
+    "signal_reason": "Bullish momentum: 5MA (1600.33) > 20MA (1598.00)",
+    "technical_indicators": {
+      "short_ma": 1600.3300297109504,
+      "long_ma": 1597.9952751501537,
+      "ma_spread": 0.0014610522303185782,
+      "volatility": 0.015420866371731177,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.03558719312875758
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.514954",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.055020777216968283,
+    "current_price": 1568.6138159341172,
+    "target_position": 0.0,
+    "current_position": 0.005275638734573637,
+    "signal_reason": "Bearish momentum: 5MA (1586.44) < 20MA (1595.22)",
+    "technical_indicators": {
+      "short_ma": 1586.4423337001779,
+      "long_ma": 1595.219354572189,
+      "ma_spread": 0.005502077721696828,
+      "volatility": 0.016014050313806438,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.011238049683456097
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.515999",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.07229956935656941,
+    "current_price": 1611.319014246492,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1584.20) < 20MA (1595.74)",
+    "technical_indicators": {
+      "short_ma": 1584.2025661478835,
+      "long_ma": 1595.7396954263343,
+      "ma_spread": 0.007229956935656941,
+      "volatility": 0.017479359665758712,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.01711678081960466
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.516941",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.08878623584441653,
+    "current_price": 1609.1595205855049,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1582.70) < 20MA (1596.88)",
+    "technical_indicators": {
+      "short_ma": 1582.703389522442,
+      "long_ma": 1596.8814992633602,
+      "ma_spread": 0.008878623584441653,
+      "volatility": 0.016954125961108006,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.016715785938289818
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.517869",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.019672774784593318,
+    "current_price": 1641.6173268748375,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1594.82) < 20MA (1597.96)",
+    "technical_indicators": {
+      "short_ma": 1594.8176907029654,
+      "long_ma": 1597.961324027173,
+      "ma_spread": 0.001967277478459332,
+      "volatility": 0.01741760565718762,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02934481881201334
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.518812",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.11128066491711824,
+    "current_price": 1653.6548479023315,
+    "target_position": 0.011128066491711825,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1616.87) > 20MA (1599.08)",
+    "technical_indicators": {
+      "short_ma": 1616.8729051086564,
+      "long_ma": 1599.0782559509832,
+      "ma_spread": 0.011128066491711825,
+      "volatility": 0.01674324976209041,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02274881512174476
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.519837",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.17254877629016205,
+    "current_price": 1632.4841051935152,
+    "target_position": 0.017254877629016206,
+    "current_position": 0.011128066491711825,
+    "signal_reason": "Bullish momentum: 5MA (1629.65) > 20MA (1602.00)",
+    "technical_indicators": {
+      "short_ma": 1629.6469629605363,
+      "long_ma": 1602.004570141618,
+      "ma_spread": 0.017254877629016206,
+      "volatility": 0.016491574900379457,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0017409551255351818
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.520872",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.19477414821239136,
+    "current_price": 1644.44680523762,
+    "target_position": 0.019477414821239138,
+    "current_position": 0.017254877629016206,
+    "signal_reason": "Bullish momentum: 5MA (1636.27) > 20MA (1605.01)",
+    "technical_indicators": {
+      "short_ma": 1636.2725211587617,
+      "long_ma": 1605.0110550469378,
+      "ma_spread": 0.019477414821239138,
+      "volatility": 0.01584648518815005,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.004995673992660876
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.521893",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.2626844431167646,
+    "current_price": 1695.195636279416,
+    "target_position": 0.02626844431167646,
+    "current_position": 0.019477414821239138,
+    "signal_reason": "Bullish momentum: 5MA (1653.48) > 20MA (1611.16)",
+    "technical_indicators": {
+      "short_ma": 1653.479744297544,
+      "long_ma": 1611.1571523633286,
+      "ma_spread": 0.02626844431167646,
+      "volatility": 0.01742537780077832,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.025229152111321707
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.522900",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.2822636887154722,
+    "current_price": 1694.1505129397567,
+    "target_position": 0.02822636887154722,
+    "current_position": 0.02626844431167646,
+    "signal_reason": "Bullish momentum: 5MA (1663.99) > 20MA (1618.31)",
+    "technical_indicators": {
+      "short_ma": 1663.986381510528,
+      "long_ma": 1618.3074387955169,
+      "ma_spread": 0.02822636887154722,
+      "volatility": 0.017462566068619997,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.018127631190014037
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.523942",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.34146591738860116,
+    "current_price": 1747.334765032355,
+    "target_position": 0.034146591738860116,
+    "current_position": 0.02822636887154722,
+    "signal_reason": "Bullish momentum: 5MA (1682.72) > 20MA (1627.16)",
+    "technical_indicators": {
+      "short_ma": 1682.7223649365326,
+      "long_ma": 1627.1603836233007,
+      "ma_spread": 0.034146591738860116,
+      "volatility": 0.01852728532405043,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.03839754046310517
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.524983",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.35341050012905106,
+    "current_price": 1655.958064590872,
+    "target_position": 0.029653993781339802,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1687.42) > 20MA (1629.82)",
+    "technical_indicators": {
+      "short_ma": 1687.417156816004,
+      "long_ma": 1629.8176883790816,
+      "ma_spread": 0.035341050012905106,
+      "volatility": 0.02383560897294311,
+      "volatility_adjustment": 0.8390807225736466,
+      "price_momentum": -0.0186433402659556
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.525918",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.38504787268250323,
+    "current_price": 1683.3443820058828,
+    "target_position": 0.03196013016254113,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1695.20) > 20MA (1632.34)",
+    "technical_indicators": {
+      "short_ma": 1695.1966721696565,
+      "long_ma": 1632.3436280239118,
+      "ma_spread": 0.03850478726825032,
+      "volatility": 0.024095513424022198,
+      "volatility_adjustment": 0.8300300411968335,
+      "price_momentum": -0.006991690320276578
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.526838",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3486924242624664,
+    "current_price": 1686.4433203098595,
+    "target_position": 0.030327218222417303,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1693.45) > 20MA (1636.39)",
+    "technical_indicators": {
+      "short_ma": 1693.4462089757453,
+      "long_ma": 1636.3866463027423,
+      "ma_spread": 0.03486924242624664,
+      "volatility": 0.022995345086066585,
+      "volatility_adjustment": 0.8697412422011647,
+      "price_momentum": -0.004135288519215186
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.527768",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3017466184683545,
+    "current_price": 1676.5267856635562,
+    "target_position": 0.027761115238249798,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1689.92) > 20MA (1640.42)",
+    "technical_indicators": {
+      "short_ma": 1689.921463520505,
+      "long_ma": 1640.422276054543,
+      "ma_spread": 0.03017466184683545,
+      "volatility": 0.021738796577783173,
+      "volatility_adjustment": 0.9200141290452019,
+      "price_momentum": -0.007926213227119172
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.528692",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.19661557107060423,
+    "current_price": 1679.7712263368235,
+    "target_position": 0.01823964097142767,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1676.41) > 20MA (1644.08)",
+    "technical_indicators": {
+      "short_ma": 1676.408755781399,
+      "long_ma": 1644.0835138843845,
+      "ma_spread": 0.019661557107060423,
+      "volatility": 0.02155914925941819,
+      "volatility_adjustment": 0.927680390322588,
+      "price_momentum": 0.0020057581683634584
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.529643",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.1522433912306698,
+    "current_price": 1613.1659819972954,
+    "target_position": 0.012903436403266182,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1667.85) > 20MA (1642.84)",
+    "technical_indicators": {
+      "short_ma": 1667.8503392626837,
+      "long_ma": 1642.8391981848501,
+      "ma_spread": 0.015224339123066978,
+      "volatility": 0.023597340502586304,
+      "volatility_adjustment": 0.847553138363536,
+      "price_momentum": -0.03278732868175871
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.530562",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.06336169360790772,
+    "current_price": 1606.239954262283,
+    "target_position": 0.00536355914128017,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bullish momentum: 5MA (1652.43) > 20MA (1642.03)",
+    "technical_indicators": {
+      "short_ma": 1652.4294537139635,
+      "long_ma": 1642.0253032975663,
+      "ma_spread": 0.006336169360790772,
+      "volatility": 0.023626734389950103,
+      "volatility_adjustment": 0.8464987022712384,
+      "price_momentum": -0.027952478907868672
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.531523",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.020527736852269336,
+    "current_price": 1617.8727478683393,
+    "target_position": 0.0,
+    "current_position": 0.034146591738860116,
+    "signal_reason": "Bearish momentum: 5MA (1638.72) < 20MA (1642.09)",
+    "technical_indicators": {
+      "short_ma": 1638.7153392256594,
+      "long_ma": 1642.0861705053478,
+      "ma_spread": 0.0020527736852269337,
+      "volatility": 0.023028385988754962,
+      "volatility_adjustment": 0.8684933459846574,
+      "price_momentum": -0.012718860230580886
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.532571",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.059195929255144775,
+    "current_price": 1665.8554251276103,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1636.58) < 20MA (1646.33)",
+    "technical_indicators": {
+      "short_ma": 1636.5810671184702,
+      "long_ma": 1646.3266507131175,
+      "ma_spread": 0.005919592925514477,
+      "volatility": 0.024368177598012894,
+      "volatility_adjustment": 0.820742540945323,
+      "price_momentum": 0.01788750865894073
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.533527",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.12846776880185962,
+    "current_price": 1648.7547455742585,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1630.38) < 20MA (1651.60)",
+    "technical_indicators": {
+      "short_ma": 1630.3777709659573,
+      "long_ma": 1651.5954491981363,
+      "ma_spread": 0.012846776880185963,
+      "volatility": 0.024268438876600944,
+      "volatility_adjustment": 0.8241156384922447,
+      "price_momentum": 0.011271605228899473
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.534453",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13347978544893807,
+    "current_price": 1622.2594677580844,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1632.20) < 20MA (1654.28)",
+    "technical_indicators": {
+      "short_ma": 1632.196468118115,
+      "long_ma": 1654.2777317893347,
+      "ma_spread": 0.013347978544893807,
+      "volatility": 0.024601420106147662,
+      "volatility_adjustment": 0.8129611995448258,
+      "price_momentum": -0.006088115342810285
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.535395",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13205405505679235,
+    "current_price": 1606.1420914154737,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1632.18) < 20MA (1654.02)",
+    "technical_indicators": {
+      "short_ma": 1632.1768955487532,
+      "long_ma": 1654.018885647784,
+      "ma_spread": 0.013205405505679236,
+      "volatility": 0.022937140718230217,
+      "volatility_adjustment": 0.8719482626753122,
+      "price_momentum": -0.015950969655483593
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.536315",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.11841848474086121,
+    "current_price": 1635.7080230608587,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1635.74) < 20MA (1655.35)",
+    "technical_indicators": {
+      "short_ma": 1635.7439505872571,
+      "long_ma": 1655.3463107715513,
+      "ma_spread": 0.011841848474086121,
+      "volatility": 0.023679040968404425,
+      "volatility_adjustment": 0.8446288017612932,
+      "price_momentum": -2.1964028285359483e-05
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.537239",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.14314244751712574,
+    "current_price": 1646.626410416375,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1631.90) < 20MA (1655.60)",
+    "technical_indicators": {
+      "short_ma": 1631.89814764501,
+      "long_ma": 1655.5967649486283,
+      "ma_spread": 0.014314244751712574,
+      "volatility": 0.0218274250382228,
+      "volatility_adjustment": 0.9162784874980567,
+      "price_momentum": 0.009025234076415423
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.538166",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.1593654083569212,
+    "current_price": 1629.3447302032093,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1628.02) < 20MA (1654.38)",
+    "technical_indicators": {
+      "short_ma": 1628.0161445708002,
+      "long_ma": 1654.3812590636721,
+      "ma_spread": 0.01593654083569212,
+      "volatility": 0.01705019277639916,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0008160764479148153
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.539090",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13448253817701372,
+    "current_price": 1646.233456422793,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1632.81) < 20MA (1655.07)",
+    "technical_indicators": {
+      "short_ma": 1632.8109423037417,
+      "long_ma": 1655.0687266251364,
+      "ma_spread": 0.013448253817701372,
+      "volatility": 0.01663597997841522,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.00822049495829158
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.540002",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.08351655559773805,
+    "current_price": 1649.594325960521,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1641.50) < 20MA (1655.33)",
+    "technical_indicators": {
+      "short_ma": 1641.5013892127513,
+      "long_ma": 1655.326102661281,
+      "ma_spread": 0.008351655559773805,
+      "volatility": 0.016639129739914563,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.004930204019901074
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.540941",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.023866222164797925,
+    "current_price": 1681.7167109981797,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1650.70) < 20MA (1654.65)",
+    "technical_indicators": {
+      "short_ma": 1650.7031268002156,
+      "long_ma": 1654.6521563972194,
+      "ma_spread": 0.0023866222164797926,
+      "volatility": 0.01747809929402529,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.018788105319750503
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.541851",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.001052619668175542,
+    "current_price": 1658.271794269649,
+    "target_position": 0.00010526196681755422,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1653.03) > 20MA (1652.86)",
+    "technical_indicators": {
+      "short_ma": 1653.0322035708705,
+      "long_ma": 1652.858220463714,
+      "ma_spread": 0.00010526196681755422,
+      "volatility": 0.01787872569485663,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.003169684587789545
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.542806",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.05344693326967662,
+    "current_price": 1647.5705635340175,
+    "target_position": 0.005344693326967662,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1656.68) > 20MA (1647.87)",
+    "technical_indicators": {
+      "short_ma": 1656.6773702370324,
+      "long_ma": 1647.8700103887973,
+      "ma_spread": 0.005344693326967662,
+      "volatility": 0.014134764114528325,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.005497030904521805
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.543849",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.04603311385117715,
+    "current_price": 1634.8148035739262,
+    "target_position": 0.004603311385117715,
+    "current_position": 0.005344693326967662,
+    "signal_reason": "Bullish momentum: 5MA (1654.39) > 20MA (1646.81)",
+    "technical_indicators": {
+      "short_ma": 1654.3936396672586,
+      "long_ma": 1646.8128473379497,
+      "ma_spread": 0.004603311385117715,
+      "volatility": 0.014274745943436359,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.011834448358535976
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.544790",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.0006202106562909563,
+    "current_price": 1587.1267670051213,
+    "target_position": 0.0,
+    "current_position": 0.005344693326967662,
+    "signal_reason": "Bearish momentum: 5MA (1641.90) < 20MA (1642.00)",
+    "technical_indicators": {
+      "short_ma": 1641.9001278761789,
+      "long_ma": 1642.0019665879117,
+      "ma_spread": 6.202106562909563e-05,
+      "volatility": 0.01629386483730097,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.03335973969495187
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.545837",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.07706957782327313,
+    "current_price": 1596.6850880414652,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1624.89) < 20MA (1637.51)",
+    "technical_indicators": {
+      "short_ma": 1624.8938032848357,
+      "long_ma": 1637.5140549744917,
+      "ma_spread": 0.0077069577823273136,
+      "volatility": 0.0138930583521169,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01736034391068797
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.547902",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.12039002052637068,
+    "current_price": 1605.181217755154,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1614.28) < 20MA (1633.95)",
+    "technical_indicators": {
+      "short_ma": 1614.2756879819367,
+      "long_ma": 1633.9467765790719,
+      "ma_spread": 0.012039002052637068,
+      "volatility": 0.013884942430282956,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.005633777609667212
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.548851",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.14949242167566368,
+    "current_price": 1605.5058963681352,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1605.86) < 20MA (1630.23)",
+    "technical_indicators": {
+      "short_ma": 1605.8627545487602,
+      "long_ma": 1630.2335100806374,
+      "ma_spread": 0.014949242167566367,
+      "volatility": 0.013267823212516534,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.00022222209190303488
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.549791",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.189970463230814,
+    "current_price": 1598.133826440854,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1598.53) < 20MA (1629.48)",
+    "technical_indicators": {
+      "short_ma": 1598.526559122146,
+      "long_ma": 1629.4819023028153,
+      "ma_spread": 0.018997046323081402,
+      "volatility": 0.013055617310703769,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.00024568417650050467
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.550724",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.21582259630012893,
+    "current_price": 1553.0546026269888,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1591.71) < 20MA (1626.82)",
+    "technical_indicators": {
+      "short_ma": 1591.7121262465193,
+      "long_ma": 1626.8226347210507,
+      "ma_spread": 0.021582259630012892,
+      "volatility": 0.013844062056136105,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.024286755740619004
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.551651",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2620698074361865,
+    "current_price": 1540.1442049953664,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1580.40) < 20MA (1622.94)",
+    "technical_indicators": {
+      "short_ma": 1580.4039496372995,
+      "long_ma": 1622.936207577402,
+      "ma_spread": 0.02620698074361865,
+      "volatility": 0.013564459495547312,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.025474338159666488
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.552583",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.31442068633348336,
+    "current_price": 1529.741623883936,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1565.32) < 20MA (1616.13)",
+    "technical_indicators": {
+      "short_ma": 1565.316030863056,
+      "long_ma": 1616.1305175152183,
+      "ma_spread": 0.031442068633348336,
+      "volatility": 0.013477613688779198,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.022726661119994884
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.553513",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.3957560194704949,
+    "current_price": 1505.3490593938393,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1545.28) < 20MA (1608.96)",
+    "technical_indicators": {
+      "short_ma": 1545.2846634681969,
+      "long_ma": 1608.9602332061972,
+      "ma_spread": 0.03957560194704949,
+      "volatility": 0.013087519259951235,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.025843525803671108
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.554448",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.48096440727998296,
+    "current_price": 1500.6437684127768,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1525.79) < 20MA (1602.88)",
+    "technical_indicators": {
+      "short_ma": 1525.7866518625815,
+      "long_ma": 1602.879448238932,
+      "ma_spread": 0.0480964407279983,
+      "volatility": 0.012906089840023874,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.016478636393306934
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.555385",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.503426375491746,
+    "current_price": 1512.9205607976298,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1517.76) < 20MA (1598.22)",
+    "technical_indicators": {
+      "short_ma": 1517.75984349671,
+      "long_ma": 1598.2183717080397,
+      "ma_spread": 0.0503426375491746,
+      "volatility": 0.011413944921296977,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0031884376963954297
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.556310",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.44628783744618145,
+    "current_price": 1570.14484148227,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1523.76) < 20MA (1594.94)",
+    "technical_indicators": {
+      "short_ma": 1523.7599707940903,
+      "long_ma": 1594.9402126291102,
+      "ma_spread": 0.04462878374461814,
+      "volatility": 0.01643495577048692,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.030441061307055373
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.557241",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.367159106424919,
+    "current_price": 1575.784105011522,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1532.97) < 20MA (1591.40)",
+    "technical_indicators": {
+      "short_ma": 1532.9684670196077,
+      "long_ma": 1591.3980973588675,
+      "ma_spread": 0.0367159106424919,
+      "volatility": 0.016527710339340505,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02792988826127396
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.558175",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2543739365611249,
+    "current_price": 1584.0585596608316,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1548.71) < 20MA (1589.13)",
+    "technical_indicators": {
+      "short_ma": 1548.7103670730062,
+      "long_ma": 1589.133788831749,
+      "ma_spread": 0.02543739365611249,
+      "volatility": 0.016608603337260996,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02282427582287827
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.559069",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13217440635856637,
+    "current_price": 1581.8584317147738,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1564.95) < 20MA (1585.92)",
+    "technical_indicators": {
+      "short_ma": 1564.9532997334056,
+      "long_ma": 1585.9150375963477,
+      "ma_spread": 0.013217440635856637,
+      "volatility": 0.01467551408817043,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.01080232361198763
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.559985",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.0814770928019263,
+    "current_price": 1521.3121290488973,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1566.63) < 20MA (1579.50)",
+    "technical_indicators": {
+      "short_ma": 1566.6316133836588,
+      "long_ma": 1579.5009277507666,
+      "ma_spread": 0.00814770928019263,
+      "volatility": 0.01770736156633797,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.028927977673627425
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.560911",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.09363221692633565,
+    "current_price": 1520.6575426556224,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1556.73) < 20MA (1571.45)",
+    "technical_indicators": {
+      "short_ma": 1556.7341536183292,
+      "long_ma": 1571.4479693336389,
+      "ma_spread": 0.009363221692633565,
+      "volatility": 0.01755799598573934,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.02317454838313504
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.561842",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.1186248812243395,
+    "current_price": 1522.641398870739,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1546.11) < 20MA (1564.67)",
+    "technical_indicators": {
+      "short_ma": 1546.105612390173,
+      "long_ma": 1564.6664495636933,
+      "ma_spread": 0.011862488122433951,
+      "volatility": 0.017579363399474628,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.015176332930555758
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.562777",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.08528519920096857,
+    "current_price": 1597.8063513288644,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1548.86) < 20MA (1562.18)",
+    "technical_indicators": {
+      "short_ma": 1548.8551707237793,
+      "long_ma": 1562.1782389534355,
+      "ma_spread": 0.008528519920096856,
+      "volatility": 0.022561854610151547,
+      "volatility_adjustment": 0.8864519493446759,
+      "price_momentum": 0.03160475009565311
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.563705",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.05885252486457936,
+    "current_price": 1591.8190205384967,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1550.85) < 20MA (1560.03)",
+    "technical_indicators": {
+      "short_ma": 1550.8472884885239,
+      "long_ma": 1560.0284498016642,
+      "ma_spread": 0.005885252486457936,
+      "volatility": 0.021090250920005434,
+      "volatility_adjustment": 0.9483054552484598,
+      "price_momentum": 0.02641893392991923
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.564634",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.039400954150419464,
+    "current_price": 1601.57837834294,
+    "target_position": 0.0037702216502269108,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1566.90) > 20MA (1560.75)",
+    "technical_indicators": {
+      "short_ma": 1566.9005383473323,
+      "long_ma": 1560.7510303685551,
+      "ma_spread": 0.003940095415041946,
+      "volatility": 0.02090113410072223,
+      "volatility_adjustment": 0.9568858753606536,
+      "price_momentum": 0.022131487702584884
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.565653",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.14059566290907177,
+    "current_price": 1600.6266637840954,
+    "target_position": 0.013555127612903544,
+    "current_position": 0.0037702216502269108,
+    "signal_reason": "Bullish momentum: 5MA (1582.89) > 20MA (1560.95)",
+    "technical_indicators": {
+      "short_ma": 1582.8943625730271,
+      "long_ma": 1560.9481091556866,
+      "ma_spread": 0.014059566290907176,
+      "volatility": 0.020744277283709884,
+      "volatility_adjustment": 0.964121320134187,
+      "price_momentum": 0.011202453954188174
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.566688",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.20645367709078874,
+    "current_price": 1563.37438188262,
+    "target_position": 0.019335858037843504,
+    "current_position": 0.013555127612903544,
+    "signal_reason": "Bullish momentum: 5MA (1591.04) > 20MA (1558.86)",
+    "technical_indicators": {
+      "short_ma": 1591.0409591754033,
+      "long_ma": 1558.8577673620598,
+      "ma_spread": 0.020645367709078873,
+      "volatility": 0.021354488296999742,
+      "volatility_adjustment": 0.9365712594859955,
+      "price_momentum": -0.017388978664083066
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.567709",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.21036793891993047,
+    "current_price": 1599.2639175456836,
+    "target_position": 0.019196566707110875,
+    "current_position": 0.019335858037843504,
+    "signal_reason": "Bullish momentum: 5MA (1591.33) > 20MA (1558.55)",
+    "technical_indicators": {
+      "short_ma": 1591.332472418767,
+      "long_ma": 1558.5456684209373,
+      "ma_spread": 0.021036793891993047,
+      "volatility": 0.021917246154439178,
+      "volatility_adjustment": 0.912523400935986,
+      "price_momentum": 0.004984153383648993
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.568619",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.24266301777977176,
+    "current_price": 1623.4746312891716,
+    "target_position": 0.02198171043283347,
+    "current_position": 0.019335858037843504,
+    "signal_reason": "Bullish momentum: 5MA (1597.66) > 20MA (1559.81)",
+    "technical_indicators": {
+      "short_ma": 1597.663594568902,
+      "long_ma": 1559.812708663353,
+      "ma_spread": 0.024266301777977176,
+      "volatility": 0.02207862927875829,
+      "volatility_adjustment": 0.9058533366127884,
+      "price_momentum": 0.016155489057904093
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.569647",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.27218099901629733,
+    "current_price": 1649.321384723574,
+    "target_position": 0.026817022942209716,
+    "current_position": 0.02198171043283347,
+    "signal_reason": "Bullish momentum: 5MA (1607.21) > 20MA (1564.63)",
+    "technical_indicators": {
+      "short_ma": 1607.2121958450289,
+      "long_ma": 1564.6260477681824,
+      "ma_spread": 0.027218099901629735,
+      "volatility": 0.020299121166644285,
+      "volatility_adjustment": 0.9852643292195425,
+      "price_momentum": 0.02620014269889559
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.570651",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.27025078507598976,
+    "current_price": 1619.4888733382002,
+    "target_position": 0.02559284836058848,
+    "current_position": 0.026817022942209716,
+    "signal_reason": "Bullish momentum: 5MA (1610.98) > 20MA (1568.59)",
+    "technical_indicators": {
+      "short_ma": 1610.98463775585,
+      "long_ma": 1568.5932811853243,
+      "ma_spread": 0.027025078507598974,
+      "volatility": 0.021119242474953316,
+      "volatility_adjustment": 0.947003663778154,
+      "price_momentum": 0.005278905448904192
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.571569",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3552622542514199,
+    "current_price": 1665.0870177883967,
+    "target_position": 0.0319556914120021,
+    "current_position": 0.026817022942209716,
+    "signal_reason": "Bullish momentum: 5MA (1631.33) > 20MA (1575.36)",
+    "technical_indicators": {
+      "short_ma": 1631.3271649370054,
+      "long_ma": 1575.3605508805472,
+      "ma_spread": 0.035526225425141986,
+      "volatility": 0.022234677990286795,
+      "volatility_adjustment": 0.8994958239888604,
+      "price_momentum": 0.02069471628806907
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.572605",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.34260570186958716,
+    "current_price": 1618.5694463796096,
+    "target_position": 0.028803880965794008,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1635.19) > 20MA (1581.02)",
+    "technical_indicators": {
+      "short_ma": 1635.1882707037905,
+      "long_ma": 1581.0215702298356,
+      "ma_spread": 0.034260570186958716,
+      "volatility": 0.023788856944413007,
+      "volatility_adjustment": 0.8407297604392527,
+      "price_momentum": -0.01016324824604331
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.573535",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.31591428319631887,
+    "current_price": 1637.7286825525728,
+    "target_position": 0.03027528416743111,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1638.04) > 20MA (1587.88)",
+    "technical_indicators": {
+      "short_ma": 1638.0390809564708,
+      "long_ma": 1587.8758159368256,
+      "ma_spread": 0.03159142831963189,
+      "volatility": 0.020869451229539,
+      "volatility_adjustment": 0.9583385676999325,
+      "price_momentum": -0.0001894938939532853
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.574479",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3279127125105604,
+    "current_price": 1709.6398955457812,
+    "target_position": 0.028336985866166883,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1650.10) > 20MA (1597.71)",
+    "technical_indicators": {
+      "short_ma": 1650.1027831209121,
+      "long_ma": 1597.711782674233,
+      "ma_spread": 0.03279127125105604,
+      "volatility": 0.023143796172201494,
+      "volatility_adjustment": 0.8641624671765139,
+      "price_momentum": 0.036080850862068026
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.575464",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.36426485589044755,
+    "current_price": 1675.9416511467211,
+    "target_position": 0.029969610942837115,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1661.39) > 20MA (1603.00)",
+    "technical_indicators": {
+      "short_ma": 1661.393338682616,
+      "long_ma": 1603.0016231574557,
+      "ma_spread": 0.03642648558904475,
+      "volatility": 0.024308947926299906,
+      "volatility_adjustment": 0.8227423112113361,
+      "price_momentum": 0.008756693629
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.576416",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.32812943800073036,
+    "current_price": 1657.1276062720137,
+    "target_position": 0.030610882772404036,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1659.80) > 20MA (1607.07)",
+    "technical_indicators": {
+      "short_ma": 1659.8014563793397,
+      "long_ma": 1607.0687982204802,
+      "ma_spread": 0.03281294380007303,
+      "volatility": 0.021438743889904528,
+      "volatility_adjustment": 0.9328904763593902,
+      "price_momentum": -0.0016109457532099691
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.577339",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.35577164200733435,
+    "current_price": 1660.5960195944292,
+    "target_position": 0.03331537245358787,
+    "current_position": 0.0319556914120021,
+    "signal_reason": "Bullish momentum: 5MA (1668.21) > 20MA (1610.90)",
+    "technical_indicators": {
+      "short_ma": 1668.2067710223037,
+      "long_ma": 1610.89567121716,
+      "ma_spread": 0.03557716420073344,
+      "volatility": 0.021357806670357058,
+      "volatility_adjustment": 0.9364257439298959,
+      "price_momentum": -0.004562235065866838
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.578365",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3436445065758338,
+    "current_price": 1644.0406858526273,
+    "target_position": 0.03178683800781858,
+    "current_position": 0.03331537245358787,
+    "signal_reason": "Bullish momentum: 5MA (1669.47) > 20MA (1614.00)",
+    "technical_indicators": {
+      "short_ma": 1669.4691716823145,
+      "long_ma": 1614.0047839240528,
+      "ma_spread": 0.03436445065758338,
+      "volatility": 0.021621811297575927,
+      "volatility_adjustment": 0.9249918854967645,
+      "price_momentum": -0.015231479718827656
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.579289",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.1767106571198046,
+    "current_price": 1593.2180145064815,
+    "target_position": 0.015129642319763494,
+    "current_position": 0.03331537245358787,
+    "signal_reason": "Bullish momentum: 5MA (1646.18) > 20MA (1617.60)",
+    "technical_indicators": {
+      "short_ma": 1646.1847954744546,
+      "long_ma": 1617.600078196932,
+      "ma_spread": 0.01767106571198046,
+      "volatility": 0.023359528716547603,
+      "volatility_adjustment": 0.856181656859894,
+      "price_momentum": -0.03217547696563883
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.580201",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.05405123700182122,
+    "current_price": 1595.5620516397146,
+    "target_position": 0.004829157764699809,
+    "current_position": 0.03331537245358787,
+    "signal_reason": "Bullish momentum: 5MA (1630.11) > 20MA (1621.35)",
+    "technical_indicators": {
+      "short_ma": 1630.1088755730532,
+      "long_ma": 1621.3453036461365,
+      "ma_spread": 0.005405123700182122,
+      "volatility": 0.022385368064354868,
+      "volatility_adjustment": 0.8934407485506934,
+      "price_momentum": -0.02119295493142681
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.581111",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.0755037263461257,
+    "current_price": 1561.8221779861324,
+    "target_position": 0.0,
+    "current_position": 0.03331537245358787,
+    "signal_reason": "Bearish momentum: 5MA (1611.05) < 20MA (1623.30)",
+    "technical_indicators": {
+      "short_ma": 1611.047789915877,
+      "long_ma": 1623.3043426019062,
+      "ma_spread": 0.0075503726346125705,
+      "volatility": 0.022265038831071282,
+      "volatility_adjustment": 0.8982692620364813,
+      "price_momentum": -0.030555028992848787
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.582131",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.17241262764763465,
+    "current_price": 1576.7717034337788,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1594.28) < 20MA (1622.25)",
+    "technical_indicators": {
+      "short_ma": 1594.282926683747,
+      "long_ma": 1622.252610207152,
+      "ma_spread": 0.017241262764763465,
+      "volatility": 0.021993825140688292,
+      "volatility_adjustment": 0.9093461402037001,
+      "price_momentum": -0.010983761386941016
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.583040",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.27774695501773067,
+    "current_price": 1547.9349382842997,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1575.06) < 20MA (1620.06)",
+    "technical_indicators": {
+      "short_ma": 1575.0617771700813,
+      "long_ma": 1620.0584060944423,
+      "ma_spread": 0.027774695501773066,
+      "volatility": 0.021765647304461393,
+      "volatility_adjustment": 0.9188791732327906,
+      "price_momentum": -0.017222714231895364
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.583962",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2725689528638989,
+    "current_price": 1596.0736841296389,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1575.63) < 20MA (1619.78)",
+    "technical_indicators": {
+      "short_ma": 1575.6329110947129,
+      "long_ma": 1619.783171383777,
+      "ma_spread": 0.027256895286389887,
+      "volatility": 0.023286024987319996,
+      "volatility_adjustment": 0.8588842454171829,
+      "price_momentum": 0.01297305539316529
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.584881",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.29380424339261774,
+    "current_price": 1571.2306921399365,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1570.77) < 20MA (1618.31)",
+    "technical_indicators": {
+      "short_ma": 1570.7666391947573,
+      "long_ma": 1618.3133728015694,
+      "ma_spread": 0.029380424339261774,
+      "volatility": 0.022001825867758316,
+      "volatility_adjustment": 0.9090154662712875,
+      "price_momentum": 0.00029543086388517104
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.585798",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2938582450884394,
+    "current_price": 1561.267156428761,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1570.66) < 20MA (1618.21)",
+    "technical_indicators": {
+      "short_ma": 1570.6556348832833,
+      "long_ma": 1618.208011528876,
+      "ma_spread": 0.029385824508843937,
+      "volatility": 0.0209182528264531,
+      "volatility_adjustment": 0.9561027952921631,
+      "price_momentum": -0.005977426398256935
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.586715",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.277695733872995,
+    "current_price": 1586.8256373977756,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1572.67) < 20MA (1617.59)",
+    "technical_indicators": {
+      "short_ma": 1572.6664216760823,
+      "long_ma": 1617.5860975214805,
+      "ma_spread": 0.0277695733872995,
+      "volatility": 0.021188426084325265,
+      "volatility_adjustment": 0.9439115449351646,
+      "price_momentum": 0.00900331788517672
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.587638",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2549545827377969,
+    "current_price": 1547.9209788920057,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1572.66) < 20MA (1613.81)",
+    "technical_indicators": {
+      "short_ma": 1572.6636297976233,
+      "long_ma": 1613.8084149016222,
+      "ma_spread": 0.025495458273779692,
+      "volatility": 0.017309329994468912,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01573295804443675
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.588590",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.27733432527411195,
+    "current_price": 1555.1175710825178,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1564.47) < 20MA (1609.10)",
+    "technical_indicators": {
+      "short_ma": 1564.4724071881992,
+      "long_ma": 1609.0982242195698,
+      "ma_spread": 0.027733432527411197,
+      "volatility": 0.017149781281385747,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.005979546882833642
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.589523",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.23949116058334455,
+    "current_price": 1595.9282961415822,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1569.41) < 20MA (1607.92)",
+    "technical_indicators": {
+      "short_ma": 1569.4119279885285,
+      "long_ma": 1607.9201953597387,
+      "ma_spread": 0.023949116058334455,
+      "volatility": 0.018963706782220695,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0168957350713137
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.590450",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.22342431408084815,
+    "current_price": 1544.7793293790073,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1566.11) < 20MA (1601.90)",
+    "technical_indicators": {
+      "short_ma": 1566.1143625785776,
+      "long_ma": 1601.9048109392693,
+      "ma_spread": 0.022342431408084815,
+      "volatility": 0.020461446746265977,
+      "volatility_adjustment": 0.9774479902624585,
+      "price_momentum": -0.013622908843286874
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.591415",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.24792725830863702,
+    "current_price": 1550.638178675229,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1558.88) < 20MA (1598.51)",
+    "technical_indicators": {
+      "short_ma": 1558.8768708340683,
+      "long_ma": 1598.5082475540503,
+      "ma_spread": 0.024792725830863702,
+      "volatility": 0.020532527220611944,
+      "volatility_adjustment": 0.9740642145562405,
+      "price_momentum": -0.005285017895243493
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.592329",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2100962381549329,
+    "current_price": 1558.8529261479446,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1561.06) < 20MA (1594.56)",
+    "technical_indicators": {
+      "short_ma": 1561.063260285256,
+      "long_ma": 1594.564459733819,
+      "ma_spread": 0.02100962381549329,
+      "volatility": 0.019109240186354338,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0014159158014567241
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.593243",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13559032993892406,
+    "current_price": 1583.3837488685485,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1566.72) < 20MA (1588.25)",
+    "technical_indicators": {
+      "short_ma": 1566.7164958424623,
+      "long_ma": 1588.2516523999575,
+      "ma_spread": 0.013559032993892406,
+      "volatility": 0.01964613466172129,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.010638333782988507
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.594166",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.15975565999428534,
+    "current_price": 1544.3707341683203,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1556.40) < 20MA (1581.67)",
+    "technical_indicators": {
+      "short_ma": 1556.4049834478099,
+      "long_ma": 1581.673106551037,
+      "ma_spread": 0.015975565999428534,
+      "volatility": 0.019950134249791043,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0077320809220430275
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.595079",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.16395550060056166,
+    "current_price": 1503.7396802620096,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1548.20) < 20MA (1574.00)",
+    "technical_indicators": {
+      "short_ma": 1548.1970536244103,
+      "long_ma": 1574.003710250537,
+      "ma_spread": 0.016395550060056167,
+      "volatility": 0.020826017998332558,
+      "volatility_adjustment": 0.9603372090430973,
+      "price_momentum": -0.028715578070842906
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.596004",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.15933079113947438,
+    "current_price": 1519.58733908996,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1541.99) < 20MA (1566.95)",
+    "technical_indicators": {
+      "short_ma": 1541.9868857073566,
+      "long_ma": 1566.9532762253136,
+      "ma_spread": 0.015933079113947438,
+      "volatility": 0.020641611159725456,
+      "volatility_adjustment": 0.9689166143688762,
+      "price_momentum": -0.014526418366470839
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.596953",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.16154454227091083,
+    "current_price": 1528.7651808108476,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1535.97) < 20MA (1561.19)",
+    "technical_indicators": {
+      "short_ma": 1535.9693366399374,
+      "long_ma": 1561.1895009732245,
+      "ma_spread": 0.016154454227091084,
+      "volatility": 0.01862029583493736,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.004690299250927454
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.597927",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.20373676516219338,
+    "current_price": 1536.5769522819453,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1526.61) < 20MA (1558.36)",
+    "technical_indicators": {
+      "short_ma": 1526.6079773226165,
+      "long_ma": 1558.357447861998,
+      "ma_spread": 0.02037367651621934,
+      "volatility": 0.01835750930883537,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.006530147298727362
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.598868",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.1847033848644659,
+    "current_price": 1547.3774966546214,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1527.21) < 20MA (1555.95)",
+    "technical_indicators": {
+      "short_ma": 1527.2093298198768,
+      "long_ma": 1555.9482201127432,
+      "ma_spread": 0.01847033848644659,
+      "volatility": 0.018430228770582577,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.013205895512125476
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.599792",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.14427303118243173,
+    "current_price": 1526.487135377499,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1531.76) < 20MA (1554.18)",
+    "technical_indicators": {
+      "short_ma": 1531.7588208429747,
+      "long_ma": 1554.1814679823117,
+      "ma_spread": 0.014427303118243175,
+      "volatility": 0.018054762723118,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.00344158975534703
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.600747",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.11238166803492514,
+    "current_price": 1533.7304297082394,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1534.59) < 20MA (1552.03)",
+    "technical_indicators": {
+      "short_ma": 1534.5874389666305,
+      "long_ma": 1552.0294042960345,
+      "ma_spread": 0.011238166803492513,
+      "volatility": 0.01698605152940647,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0005584623180340254
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.601669",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.09258551807671009,
+    "current_price": 1542.8736861593711,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1537.41) < 20MA (1551.78)",
+    "technical_indicators": {
+      "short_ma": 1537.4091400363352,
+      "long_ma": 1551.7763416897883,
+      "ma_spread": 0.009258551807671008,
+      "volatility": 0.017020372004283062,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0035543863898888084
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.602595",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.0887014187052826,
+    "current_price": 1520.9848934171168,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1534.29) < 20MA (1548.02)",
+    "technical_indicators": {
+      "short_ma": 1534.2907282633696,
+      "long_ma": 1548.021902154162,
+      "ma_spread": 0.00887014187052826,
+      "volatility": 0.015509691524913388,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.008672303495774414
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.603545",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.051416794768351856,
+    "current_price": 1577.8932888259362,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1540.39) < 20MA (1548.36)",
+    "technical_indicators": {
+      "short_ma": 1540.3938866976325,
+      "long_ma": 1548.355031988462,
+      "ma_spread": 0.005141679476835186,
+      "volatility": 0.016677994848422847,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02434403463434709
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.604519",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.024229428021686896,
+    "current_price": 1593.0042338734488,
+    "target_position": 0.00242294280216869,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1553.70) > 20MA (1549.94)",
+    "technical_indicators": {
+      "short_ma": 1553.6973063968223,
+      "long_ma": 1549.9418858606964,
+      "ma_spread": 0.0024229428021686895,
+      "volatility": 0.01680643271094421,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02529896094612094
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.605578",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.06220701685646323,
+    "current_price": 1555.2085039993947,
+    "target_position": 0.006220701685646323,
+    "current_position": 0.00242294280216869,
+    "signal_reason": "Bullish momentum: 5MA (1557.99) > 20MA (1548.36)",
+    "technical_indicators": {
+      "short_ma": 1557.9929212550535,
+      "long_ma": 1548.3610291907773,
+      "ma_spread": 0.006220701685646323,
+      "volatility": 0.018115216055459106,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0017871822250744573
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.606613",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.09563478004658851,
+    "current_price": 1575.7855799593708,
+    "target_position": 0.009563478004658852,
+    "current_position": 0.006220701685646323,
+    "signal_reason": "Bullish momentum: 5MA (1564.58) > 20MA (1549.75)",
+    "technical_indicators": {
+      "short_ma": 1564.5753000150532,
+      "long_ma": 1549.7542592441455,
+      "ma_spread": 0.009563478004658852,
+      "volatility": 0.017959346424177805,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.007165062585488657
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.607636",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.13015085279867522,
+    "current_price": 1545.2253720974682,
+    "target_position": 0.013015085279867522,
+    "current_position": 0.009563478004658852,
+    "signal_reason": "Bullish momentum: 5MA (1569.42) > 20MA (1549.26)",
+    "technical_indicators": {
+      "short_ma": 1569.4233957511237,
+      "long_ma": 1549.259649294893,
+      "ma_spread": 0.013015085279867522,
+      "volatility": 0.017457853676962256,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.015418416546590596
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.608659",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.12815127637275614,
+    "current_price": 1569.7043566284801,
+    "target_position": 0.012815127637275615,
+    "current_position": 0.013015085279867522,
+    "signal_reason": "Bullish momentum: 5MA (1567.79) > 20MA (1547.95)",
+    "technical_indicators": {
+      "short_ma": 1567.7856093116325,
+      "long_ma": 1547.9484523192382,
+      "ma_spread": 0.012815127637275615,
+      "volatility": 0.016121509265284713,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0012238582274588516
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.609582",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.12514615061921608,
+    "current_price": 1606.2343776229113,
+    "target_position": 0.012514615061921608,
+    "current_position": 0.013015085279867522,
+    "signal_reason": "Bullish momentum: 5MA (1570.43) > 20MA (1551.02)",
+    "technical_indicators": {
+      "short_ma": 1570.4316380615248,
+      "long_ma": 1551.021204731433,
+      "ma_spread": 0.012514615061921608,
+      "volatility": 0.016907889882394184,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02279802488287852
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.610512",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.14753882347228237,
+    "current_price": 1580.0308380037977,
+    "target_position": 0.014753882347228237,
+    "current_position": 0.013015085279867522,
+    "signal_reason": "Bullish momentum: 5MA (1575.40) > 20MA (1552.49)",
+    "technical_indicators": {
+      "short_ma": 1575.3961048624058,
+      "long_ma": 1552.4908376978617,
+      "ma_spread": 0.014753882347228235,
+      "volatility": 0.017745439428806676,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0029419478232091123
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.611561",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.175461192837658,
+    "current_price": 1610.6321209436533,
+    "target_position": 0.017546119283765798,
+    "current_position": 0.014753882347228237,
+    "signal_reason": "Bullish momentum: 5MA (1582.37) > 20MA (1555.08)",
+    "technical_indicators": {
+      "short_ma": 1582.3654130592622,
+      "long_ma": 1555.079797437647,
+      "ma_spread": 0.017546119283765798,
+      "volatility": 0.018306714002712075,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.017863577939144726
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.612582",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.26345657256093935,
+    "current_price": 1624.089948552484,
+    "target_position": 0.026345657256093936,
+    "current_position": 0.017546119283765798,
+    "signal_reason": "Bullish momentum: 5MA (1598.14) > 20MA (1557.12)",
+    "technical_indicators": {
+      "short_ma": 1598.1383283502655,
+      "long_ma": 1557.1151074218437,
+      "ma_spread": 0.026345657256093932,
+      "volatility": 0.018329678301253274,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.016238657031026893
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.625483",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3324537025945401,
+    "current_price": 1650.954350406389,
+    "target_position": 0.03324537025945401,
+    "current_position": 0.026345657256093936,
+    "signal_reason": "Bullish momentum: 5MA (1614.39) > 20MA (1562.44)",
+    "technical_indicators": {
+      "short_ma": 1614.388327105847,
+      "long_ma": 1562.444288233747,
+      "ma_spread": 0.03324537025945401,
+      "volatility": 0.017925554532339488,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.022650079095960063
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.626676",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.400183276049803,
+    "current_price": 1713.7498183720866,
+    "target_position": 0.04001832760498031,
+    "current_position": 0.03324537025945401,
+    "signal_reason": "Bullish momentum: 5MA (1635.89) > 20MA (1572.94)",
+    "technical_indicators": {
+      "short_ma": 1635.8914152556822,
+      "long_ma": 1572.944795139251,
+      "ma_spread": 0.0400183276049803,
+      "volatility": 0.01988146603386597,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.047593869856108695
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.627764",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.49768903248163676,
+    "current_price": 1705.510516569312,
+    "target_position": 0.049328863625604444,
+    "current_position": 0.04001832760498031,
+    "signal_reason": "Bullish momentum: 5MA (1660.99) > 20MA (1582.24)",
+    "technical_indicators": {
+      "short_ma": 1660.9873509687848,
+      "long_ma": 1582.2409540132187,
+      "ma_spread": 0.04976890324816367,
+      "volatility": 0.020178410605968564,
+      "volatility_adjustment": 0.9911583419798291,
+      "price_momentum": 0.0268052406146011
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.628839",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.5349969213988219,
+    "current_price": 1679.9709685203627,
+    "target_position": 0.05285449842184975,
+    "current_position": 0.049328863625604444,
+    "signal_reason": "Bullish momentum: 5MA (1674.86) > 20MA (1589.80)",
+    "technical_indicators": {
+      "short_ma": 1674.8551204841267,
+      "long_ma": 1589.8012433986946,
+      "ma_spread": 0.05349969213988219,
+      "volatility": 0.020244139567036634,
+      "volatility_adjustment": 0.9879402349391937,
+      "price_momentum": 0.003054501833422707
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.629897",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.5302619914265292,
+    "current_price": 1650.2517972601981,
+    "target_position": 0.05302619914265292,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1680.09) > 20MA (1595.48)",
+    "technical_indicators": {
+      "short_ma": 1680.0874902256699,
+      "long_ma": 1595.4849856476071,
+      "ma_spread": 0.05302619914265291,
+      "volatility": 0.01927560663019426,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.01775841623668306
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.630857",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.47085972195841996,
+    "current_price": 1623.4909746601727,
+    "target_position": 0.047085972195842,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1674.59) > 20MA (1599.29)",
+    "technical_indicators": {
+      "short_ma": 1674.5948150764264,
+      "long_ma": 1599.2906595478848,
+      "ma_spread": 0.047085972195842,
+      "volatility": 0.019861469328993634,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.03051713761213415
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.631806",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3245028257036142,
+    "current_price": 1621.1498451703453,
+    "target_position": 0.03245028257036142,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1656.07) > 20MA (1604.02)",
+    "technical_indicators": {
+      "short_ma": 1656.0748204360782,
+      "long_ma": 1604.023795037527,
+      "ma_spread": 0.03245028257036142,
+      "volatility": 0.01852935532168917,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.02108900807786962
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.632742",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.20194097551301288,
+    "current_price": 1632.3731295779335,
+    "target_position": 0.02019409755130129,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1641.45) > 20MA (1608.96)",
+    "technical_indicators": {
+      "short_ma": 1641.4473430378025,
+      "long_ma": 1608.9559300310116,
+      "ma_spread": 0.020194097551301287,
+      "volatility": 0.018340544157286254,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.005528178225367553
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.633676",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.12315794491938446,
+    "current_price": 1641.5696194114464,
+    "target_position": 0.012315794491938446,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1633.77) > 20MA (1613.89)",
+    "technical_indicators": {
+      "short_ma": 1633.767073216019,
+      "long_ma": 1613.8907266936153,
+      "ma_spread": 0.012315794491938446,
+      "volatility": 0.01720844549382208,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.004775800861299251
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.634616",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.09997578696128955,
+    "current_price": 1668.8913541994593,
+    "target_position": 0.009997578696128955,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1637.49) > 20MA (1621.29)",
+    "technical_indicators": {
+      "short_ma": 1637.4949846038714,
+      "long_ma": 1621.2860497327324,
+      "ma_spread": 0.009997578696128955,
+      "volatility": 0.017250508881685184,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.019173414203270456
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.635585",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.12811164735658198,
+    "current_price": 1669.4922182337448,
+    "target_position": 0.0128111647356582,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1646.70) > 20MA (1625.87)",
+    "technical_indicators": {
+      "short_ma": 1646.695233318586,
+      "long_ma": 1625.8659962031227,
+      "ma_spread": 0.012811164735658197,
+      "volatility": 0.016400919657111896,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.013844082653482914
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.636530",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.20818465447509624,
+    "current_price": 1718.1924440706023,
+    "target_position": 0.020818465447509624,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1666.10) > 20MA (1632.13)",
+    "technical_indicators": {
+      "short_ma": 1666.1037530986373,
+      "long_ma": 1632.1254067129805,
+      "ma_spread": 0.020818465447509624,
+      "volatility": 0.016804940739315682,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.031263773864676825
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.637461",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.25401797801367887,
+    "current_price": 1709.2696358921871,
+    "target_position": 0.02540179780136789,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1681.48) > 20MA (1639.83)",
+    "technical_indicators": {
+      "short_ma": 1681.483054361488,
+      "long_ma": 1639.82846330762,
+      "ma_spread": 0.02540179780136789,
+      "volatility": 0.016598087199480156,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.016525044042891457
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.638402",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3784885245421574,
+    "current_price": 1802.430614074612,
+    "target_position": 0.035455407374723795,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1713.66) > 20MA (1651.16)",
+    "technical_indicators": {
+      "short_ma": 1713.6552532941212,
+      "long_ma": 1651.1607150133823,
+      "ma_spread": 0.037848852454215744,
+      "volatility": 0.021350115684299394,
+      "volatility_adjustment": 0.9367630740618305,
+      "price_momentum": 0.05180467927247334
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.639325",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.4789476097246506,
+    "current_price": 1825.1652967727896,
+    "target_position": 0.045076880794332114,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1744.91) > 20MA (1665.16)",
+    "technical_indicators": {
+      "short_ma": 1744.9100418087874,
+      "long_ma": 1665.1577112471482,
+      "ma_spread": 0.04789476097246506,
+      "volatility": 0.021250255176701253,
+      "volatility_adjustment": 0.9411651687800893,
+      "price_momentum": 0.04599392119997714
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.640257",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.5574402511509811,
+    "current_price": 1794.0587287857156,
+    "target_position": 0.05515138713234382,
+    "current_position": 0.05285449842184975,
+    "signal_reason": "Bullish momentum: 5MA (1769.82) > 20MA (1676.38)",
+    "technical_indicators": {
+      "short_ma": 1769.8233439191813,
+      "long_ma": 1676.3754298550102,
+      "ma_spread": 0.05574402511509811,
+      "volatility": 0.020214913173926947,
+      "volatility_adjustment": 0.9893685828834456,
+      "price_momentum": 0.013693674540909972
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.641294",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.5552328852811219,
+    "current_price": 1755.8132539838407,
+    "target_position": 0.052399087018397204,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1777.35) > 20MA (1683.85)",
+    "technical_indicators": {
+      "short_ma": 1777.3475059018292,
+      "long_ma": 1683.8543736730564,
+      "ma_spread": 0.0555232885281122,
+      "volatility": 0.02119246410099401,
+      "volatility_adjustment": 0.9437316918263375,
+      "price_momentum": -0.01211594910195235
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.642208",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.5703011547915172,
+    "current_price": 1772.9314645365507,
+    "target_position": 0.05518870564565672,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1790.08) > 20MA (1693.50)",
+    "technical_indicators": {
+      "short_ma": 1790.0798716307017,
+      "long_ma": 1693.4994049996944,
+      "ma_spread": 0.057030115479151725,
+      "volatility": 0.020667314013601955,
+      "volatility_adjustment": 0.9677116236215906,
+      "price_momentum": -0.009579688239569673
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.643116",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.47849997905886776,
+    "current_price": 1765.1850736178608,
+    "target_position": 0.04784999790588678,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1782.63) > 20MA (1701.23)",
+    "technical_indicators": {
+      "short_ma": 1782.6307635393514,
+      "long_ma": 1701.227052633405,
+      "ma_spread": 0.047849997905886774,
+      "volatility": 0.01988112944099959,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.00978648538907334
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.644049",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.387004644494911,
+    "current_price": 1790.5684524197654,
+    "target_position": 0.0387004644494911,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1775.71) > 20MA (1709.55)",
+    "technical_indicators": {
+      "short_ma": 1775.7113946687466,
+      "long_ma": 1709.550977826769,
+      "ma_spread": 0.0387004644494911,
+      "volatility": 0.019032952989396938,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.008366820078772097
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.644990",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.35548523731058856,
+    "current_price": 1807.6947964861965,
+    "target_position": 0.03554852373105886,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1778.44) > 20MA (1717.39)",
+    "technical_indicators": {
+      "short_ma": 1778.4386082088429,
+      "long_ma": 1717.3880001307589,
+      "ma_spread": 0.03554852373105886,
+      "volatility": 0.018875792958310773,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.016450490976924526
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.645920",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3853848184864908,
+    "current_price": 1805.2425170369736,
+    "target_position": 0.03853848184864908,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1788.32) > 20MA (1721.96)",
+    "technical_indicators": {
+      "short_ma": 1788.3244608194696,
+      "long_ma": 1721.9626350640035,
+      "ma_spread": 0.03853848184864908,
+      "volatility": 0.019040201425932903,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.009460283403914138
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.646856",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3667406137429998,
+    "current_price": 1774.8496808283392,
+    "target_position": 0.036463468525076724,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1788.71) > 20MA (1725.43)",
+    "technical_indicators": {
+      "short_ma": 1788.708104077827,
+      "long_ma": 1725.4295932769546,
+      "ma_spread": 0.03667406137429998,
+      "volatility": 0.02011550895059719,
+      "volatility_adjustment": 0.9942577167258918,
+      "price_momentum": -0.007747727657684389
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.647795",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.30349308188699814,
+    "current_price": 1721.2546435316738,
+    "target_position": 0.027617718329764004,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1779.92) > 20MA (1727.49)",
+    "technical_indicators": {
+      "short_ma": 1779.9220180605898,
+      "long_ma": 1727.4937770275205,
+      "ma_spread": 0.030349308188699815,
+      "volatility": 0.021978143035800275,
+      "volatility_adjustment": 0.9099949876302984,
+      "price_momentum": -0.03296064318190761
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.648731",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.1891912467571823,
+    "current_price": 1706.0554503029932,
+    "target_position": 0.017058810579760487,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1763.02) > 20MA (1730.28)",
+    "technical_indicators": {
+      "short_ma": 1763.0194176372352,
+      "long_ma": 1730.2839596796603,
+      "ma_spread": 0.01891912467571823,
+      "volatility": 0.02218105956128609,
+      "volatility_adjustment": 0.9016701814780381,
+      "price_momentum": -0.03231045941092581
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.649661",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.07309338358501173,
+    "current_price": 1735.4473324617932,
+    "target_position": 0.006877184810321496,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bullish momentum: 5MA (1748.57) > 20MA (1735.88)",
+    "technical_indicators": {
+      "short_ma": 1748.569924832355,
+      "long_ma": 1735.8817775697412,
+      "ma_spread": 0.0073093383585011735,
+      "volatility": 0.021256774567206885,
+      "volatility_adjustment": 0.940876516179189,
+      "price_momentum": -0.007504756992672057
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.650587",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.033554332039460774,
+    "current_price": 1743.0518455379897,
+    "target_position": 0.0,
+    "current_position": 0.05515138713234382,
+    "signal_reason": "Bearish momentum: 5MA (1736.13) < 20MA (1741.98)",
+    "technical_indicators": {
+      "short_ma": 1736.1317905325577,
+      "long_ma": 1741.9768775881232,
+      "ma_spread": 0.0033554332039460776,
+      "volatility": 0.02119887497293675,
+      "volatility_adjustment": 0.9434462925760316,
+      "price_momentum": 0.0039859042056418215
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.651614",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.13880672509750264,
+    "current_price": 1699.7984051767,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1721.12) < 20MA (1745.35)",
+    "technical_indicators": {
+      "short_ma": 1721.1215354022302,
+      "long_ma": 1745.3481413680615,
+      "ma_spread": 0.013880672509750263,
+      "volatility": 0.0159144138660674,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.012389090361679123
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.652559",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.1745472569423295,
+    "current_price": 1705.8558382485949,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1718.04) < 20MA (1748.56)",
+    "technical_indicators": {
+      "short_ma": 1718.0417743456142,
+      "long_ma": 1748.562452309919,
+      "ma_spread": 0.01745472569423295,
+      "volatility": 0.015359164547189476,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.007092921882915659
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.653511",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.17367230389586905,
+    "current_price": 1719.1723418682013,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1720.67) < 20MA (1751.08)",
+    "technical_indicators": {
+      "short_ma": 1720.6651526586556,
+      "long_ma": 1751.076501693356,
+      "ma_spread": 0.017367230389586905,
+      "volatility": 0.015259408341079276,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.0008675777434951071
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.654434",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.23220276135059945,
+    "current_price": 1688.9541939329577,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1711.37) < 20MA (1752.05)",
+    "technical_indicators": {
+      "short_ma": 1711.3665249528888,
+      "long_ma": 1752.0496004783167,
+      "ma_spread": 0.023220276135059944,
+      "volatility": 0.014942158300399707,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.013096160695645342
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.655364",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2812136553796503,
+    "current_price": 1694.3157826003405,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1701.62) < 20MA (1750.86)",
+    "technical_indicators": {
+      "short_ma": 1701.6193123653588,
+      "long_ma": 1750.8557674048036,
+      "ma_spread": 0.028121365537965032,
+      "volatility": 0.014621852975948042,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.004292105591388706
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.656286",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.28147396468261804,
+    "current_price": 1696.4576931855604,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1700.95) < 20MA (1750.22)",
+    "technical_indicators": {
+      "short_ma": 1700.9511699671311,
+      "long_ma": 1750.2151702694723,
+      "ma_spread": 0.028147396468261802,
+      "volatility": 0.014662714405501024,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.002641743549673725
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.657215",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.2962533175768946,
+    "current_price": 1657.847323858132,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1691.35) < 20MA (1742.99)",
+    "technical_indicators": {
+      "short_ma": 1691.3494670890384,
+      "long_ma": 1742.9860057586484,
+      "ma_spread": 0.02962533175768946,
+      "volatility": 0.014688267625316992,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.019807936729105746
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.658126",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.3096509800974035,
+    "current_price": 1669.8762449477913,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1681.49) < 20MA (1735.22)",
+    "technical_indicators": {
+      "short_ma": 1681.4902477049563,
+      "long_ma": 1735.2215531673987,
+      "ma_spread": 0.03096509800974035,
+      "volatility": 0.014519485518838006,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.006906970036262061
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.659043",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.28037341103350655,
+    "current_price": 1688.7720477546181,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1681.45) < 20MA (1729.96)",
+    "technical_indicators": {
+      "short_ma": 1681.4538184692888,
+      "long_ma": 1729.9572191158436,
+      "ma_spread": 0.028037341103350655,
+      "volatility": 0.015180938027110959,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.004352322499104666
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.659962",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.23574792148020124,
+    "current_price": 1725.5214582745996,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1687.69) < 20MA (1728.44)",
+    "technical_indicators": {
+      "short_ma": 1687.6949536041404,
+      "long_ma": 1728.4426293303816,
+      "ma_spread": 0.023574792148020125,
+      "volatility": 0.016262777969790528,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.02241311712740446
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.660893",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.15674216846755437,
+    "current_price": 1762.0611714916276,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1700.82) < 20MA (1727.90)",
+    "technical_indicators": {
+      "short_ma": 1700.8156492653536,
+      "long_ma": 1727.8991146781354,
+      "ma_spread": 0.015674216846755438,
+      "volatility": 0.015140932009442026,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.036009500649131665
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.661839",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.07732276069609373,
+    "current_price": 1713.6866236001647,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1711.98) < 20MA (1725.32)",
+    "technical_indicators": {
+      "short_ma": 1711.9835092137605,
+      "long_ma": 1725.3241921772508,
+      "ma_spread": 0.0077322760696093736,
+      "volatility": 0.01686491317209095,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0009948193877091782
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.662767",
+    "asset": "ETHUSD",
+    "signal_type": "SELL",
+    "confidence": 0.03215468665558819,
+    "current_price": 1681.715227738928,
+    "target_position": 0.0,
+    "current_position": 0.0,
+    "signal_reason": "Bearish momentum: 5MA (1714.35) < 20MA (1719.88)",
+    "technical_indicators": {
+      "short_ma": 1714.3513057719877,
+      "long_ma": 1719.8815309432089,
+      "ma_spread": 0.003215468665558819,
+      "volatility": 0.016845959798589046,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.019036983798582208
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.663693",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.01155492862532619,
+    "current_price": 1699.2062522954498,
+    "target_position": 0.001155492862532619,
+    "current_position": 0.0,
+    "signal_reason": "Bullish momentum: 5MA (1716.44) > 20MA (1714.46)",
+    "technical_indicators": {
+      "short_ma": 1716.438146680154,
+      "long_ma": 1714.4571037336714,
+      "ma_spread": 0.0011554928625326188,
+      "volatility": 0.017099319600383467,
+      "volatility_adjustment": 1.0,
+      "price_momentum": -0.010039333149308827
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.664768",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.02727653546088836,
+    "current_price": 1716.8367389233108,
+    "target_position": 0.002727653546088836,
+    "current_position": 0.001155492862532619,
+    "signal_reason": "Bullish momentum: 5MA (1714.70) > 20MA (1710.04)",
+    "technical_indicators": {
+      "short_ma": 1714.7012028098966,
+      "long_ma": 1710.0368148279886,
+      "ma_spread": 0.002727653546088836,
+      "volatility": 0.015987525005919313,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0012454275473270382
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.665803",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.007017793501865394,
+    "current_price": 1734.6934784001564,
+    "target_position": 0.0007017793501865395,
+    "current_position": 0.002727653546088836,
+    "signal_reason": "Bullish momentum: 5MA (1709.23) > 20MA (1708.03)",
+    "technical_indicators": {
+      "short_ma": 1709.227664191602,
+      "long_ma": 1708.0290047065791,
+      "ma_spread": 0.0007017793501865394,
+      "volatility": 0.016180656038937525,
+      "volatility_adjustment": 1.0,
+      "price_momentum": 0.0148990182771227
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.666727",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.1445968050231131,
+    "current_price": 1868.5331115653098,
+    "target_position": 0.011134977422647508,
+    "current_position": 0.002727653546088836,
+    "signal_reason": "Bullish momentum: 5MA (1740.20) > 20MA (1715.39)",
+    "technical_indicators": {
+      "short_ma": 1740.196961784631,
+      "long_ma": 1715.3929281082612,
+      "ma_spread": 0.014459680502311308,
+      "volatility": 0.025971638654429002,
+      "volatility_adjustment": 0.7700707785948406,
+      "price_momentum": 0.07374805990298117
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.667743",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.3320896163448611,
+    "current_price": 1890.0545213226385,
+    "target_position": 0.026498757932495776,
+    "current_position": 0.011134977422647508,
+    "signal_reason": "Bullish momentum: 5MA (1781.86) > 20MA (1724.59)",
+    "technical_indicators": {
+      "short_ma": 1781.864820501373,
+      "long_ma": 1724.5928816592434,
+      "ma_spread": 0.03320896163448611,
+      "volatility": 0.025064542058223435,
+      "volatility_adjustment": 0.7979399724735123,
+      "price_momentum": 0.06071712038785493
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.668767",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.542978199455098,
+    "current_price": 1933.1691462244105,
+    "target_position": 0.04292173512259464,
+    "current_position": 0.026498757932495776,
+    "signal_reason": "Bullish momentum: 5MA (1828.66) > 20MA (1734.48)",
+    "technical_indicators": {
+      "short_ma": 1828.657399287165,
+      "long_ma": 1734.4789723473743,
+      "ma_spread": 0.0542978199455098,
+      "volatility": 0.025300850392195175,
+      "volatility_adjustment": 0.7904872638656294,
+      "price_momentum": 0.057152174583377846
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.669803",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.7646799065870896,
+    "current_price": 1970.247398631608,
+    "target_position": 0.06046941492552794,
+    "current_position": 0.04292173512259464,
+    "signal_reason": "Bullish momentum: 5MA (1879.34) > 20MA (1745.84)",
+    "technical_indicators": {
+      "short_ma": 1879.3395312288244,
+      "long_ma": 1745.8387500020551,
+      "ma_spread": 0.07646799065870896,
+      "volatility": 0.025291460402877827,
+      "volatility_adjustment": 0.790780748972656,
+      "price_momentum": 0.04837224242462601
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.670824",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 0.9710529785762294,
+    "current_price": 1996.1124617390037,
+    "target_position": 0.08318522784639507,
+    "current_position": 0.06046941492552794,
+    "signal_reason": "Bullish momentum: 5MA (1931.62) > 20MA (1760.65)",
+    "technical_indicators": {
+      "short_ma": 1931.6233278965942,
+      "long_ma": 1760.6544528301704,
+      "ma_spread": 0.09710529785762294,
+      "volatility": 0.023346764893625555,
+      "volatility_adjustment": 0.8566497367462105,
+      "price_momentum": 0.033385977954943025
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.671857",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 1.0,
+    "current_price": 1983.725815624585,
+    "target_position": 0.08368653313846577,
+    "current_position": 0.08318522784639507,
+    "signal_reason": "Bullish momentum: 5MA (1954.66) > 20MA (1774.55)",
+    "technical_indicators": {
+      "short_ma": 1954.661868708449,
+      "long_ma": 1774.5479516989697,
+      "ma_spread": 0.10149847843617667,
+      "volatility": 0.023898707772860503,
+      "volatility_adjustment": 0.8368653313846577,
+      "price_momentum": 0.014869040718198612
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.672789",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 1.0,
+    "current_price": 2014.0359249252867,
+    "target_position": 0.08366332078220651,
+    "current_position": 0.08318522784639507,
+    "signal_reason": "Bullish momentum: 5MA (1979.46) > 20MA (1789.29)",
+    "technical_indicators": {
+      "short_ma": 1979.458149428979,
+      "long_ma": 1789.291130851824,
+      "ma_spread": 0.10628064673110103,
+      "volatility": 0.023905338460164967,
+      "volatility_adjustment": 0.8366332078220651,
+      "price_momentum": 0.017468303387107476
+    }
+  },
+  {
+    "timestamp": "2025-09-16T15:16:47.673708",
+    "asset": "ETHUSD",
+    "signal_type": "BUY",
+    "confidence": 1.0,
+    "current_price": 1983.107373602444,
+    "target_position": 0.08036190141032107,
+    "current_position": 0.08318522784639507,
+    "signal_reason": "Bullish momentum: 5MA (1989.45) > 20MA (1804.00)",
+    "technical_indicators": {
+      "short_ma": 1989.4457949045857,
+      "long_ma": 1803.998789835298,
+      "ma_spread": 0.10279774360947246,
+      "volatility": 0.024887415117123342,
+      "volatility_adjustment": 0.8036190141032107,
+      "price_momentum": -0.0031860236244564133
+    }
+  }
+]

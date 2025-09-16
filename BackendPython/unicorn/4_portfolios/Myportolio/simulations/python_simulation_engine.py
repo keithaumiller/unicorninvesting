@@ -723,42 +723,187 @@ class {algorithm_name}(QCAlgorithm):
         # Generate trades
         trades = self._generate_trade_records(strategy_result)
         
-        simulation_result = {
+        # Create simulation result in LEAN-compatible format for processing
+        lean_compatible_result = {
             "market_data": market_data.to_dict('records'),
             "portfolio_values": strategy_result['portfolio_values'],
             "positions": strategy_result['positions'],
             "performance": performance,
             "trades": trades,
-            "parameters": parameters
+            "parameters": parameters,
+            
+            # LEAN-compatible fields for _extract_performance_metrics
+            "Statistics": {
+                "Total Return": performance.get("total_return", 0.0) * 100,  # Convert to percentage
+                "Sharpe Ratio": performance.get("sharpe_ratio", 0.0),
+                "Maximum Drawdown": performance.get("max_drawdown", 0.0) * 100,  # Convert to percentage
+                "Total Trades": len(trades),
+                "Winning Percentage": 0.0,  # Would need to calculate from trades
+                "Profit-Loss Ratio": 1.0   # Would need to calculate from trades
+            },
+            
+            # Summary for compatibility
+            "AlgorithmConfiguration": {
+                "id": "MyportolioETHMomentum",
+                "language": "Python",
+                "parameters": parameters
+            }
         }
         
-        # Save detailed results
+        # Save detailed results for processing
         result_file = sim_dir / "simulation_data.json"
         with open(result_file, 'w') as f:
             # Convert numpy types to native Python types for JSON serialization
-            json_compatible_result = self._convert_numpy_types(simulation_result)
+            json_compatible_result = self._convert_numpy_types(lean_compatible_result)
             json.dump(json_compatible_result, f, indent=2, default=str)
         
-        return simulation_result
+        logger.info(f"Results processed and saved: {result_file}")
+        return lean_compatible_result
 
     def _apply_trading_strategy(self, market_data: pd.DataFrame, parameters: Dict[str, Any], initial_cash: float) -> Dict[str, Any]:
         """
-        Apply Myportolio trading strategy to market data.
+        Apply Myportolio trading strategy to market data using actual ETH momentum strategy.
         
         Returns:
             Strategy execution results
         """
         logger.info("Applying ETH momentum strategy with Kelly criterion")
         
+        # Import the actual ETH momentum strategy
+        try:
+            import sys
+            from pathlib import Path
+            sys.path.append(str(Path(__file__).parent.parent / "trading_algorithms"))
+            from eth_momentum_strategy import ETHMomentumStrategy
+        except ImportError as e:
+            logger.error(f"Failed to import ETH momentum strategy: {e}")
+            # Fallback to simplified strategy
+            return self._apply_fallback_strategy(market_data, parameters, initial_cash)
+        
+        # Prepare market data in the format expected by ETH momentum strategy
+        # Convert 'price' column to 'close' column for compatibility
+        strategy_data = market_data.copy()
+        strategy_data['close'] = strategy_data['price']
+        strategy_data['open'] = strategy_data['price']  # Simplified
+        strategy_data['high'] = strategy_data['price'] * 1.001  # Simplified
+        strategy_data['low'] = strategy_data['price'] * 0.999   # Simplified
+        
+        # Strategy configuration
+        strategy_config = {
+            'short_ma_period': parameters.get('short_ma_period', 5),
+            'long_ma_period': parameters.get('long_ma_period', 20),
+            'max_position_size': parameters.get('max_position_size', 0.1),
+            'volatility_window': parameters.get('volatility_window', 14)
+        }
+        
+        # Initialize the ETH momentum strategy with performance logger
+        eth_strategy = ETHMomentumStrategy(strategy_config, self.performance_logger)
+        
+        # Initialize tracking variables
+        portfolio_values = [initial_cash]
+        positions = [0.0]  # ETH position size
+        trades = []
+        cash = initial_cash
+        eth_position = 0.0
+        
+        # Run the strategy simulation
+        logger.info(f"Running ETH momentum strategy over {len(strategy_data)} data points")
+        
+        for i in range(20, len(strategy_data)):  # Start after enough data for moving averages
+            # Get historical data up to current point
+            historical_data = strategy_data.iloc[:i+1]
+            
+            # Generate signal using the actual strategy
+            signal_result = eth_strategy.generate_signal(historical_data)
+            
+            current_price = strategy_data.iloc[i]['price']
+            signal = signal_result['signal']
+            target_position = signal_result['target_position']
+            confidence = signal_result['confidence']
+            
+            # Execute trades based on signals
+            if signal in ['BUY', 'SELL']:
+                portfolio_value = cash + eth_position * current_price
+                
+                if signal == 'BUY' and target_position > eth_position:
+                    # Buy more ETH
+                    position_increase = target_position - eth_position
+                    max_affordable = cash / current_price
+                    actual_increase = min(position_increase, max_affordable * 0.95)  # Leave some cash buffer
+                    
+                    if actual_increase > 0.001:  # Minimum trade size
+                        trade_value = actual_increase * current_price
+                        cash -= trade_value
+                        eth_position += actual_increase
+                        
+                        trades.append({
+                            'timestamp': strategy_data.iloc[i]['timestamp'],
+                            'type': 'BUY',
+                            'quantity': actual_increase,
+                            'price': current_price,
+                            'value': trade_value,
+                            'confidence': confidence,
+                            'reason': signal_result['reason']
+                        })
+                        
+                        logger.info(f"BUY: {actual_increase:.4f} ETH at ${current_price:.2f} (confidence: {confidence:.3f})")
+                
+                elif signal == 'SELL' and target_position < eth_position:
+                    # Sell ETH
+                    position_decrease = eth_position - target_position
+                    actual_decrease = min(position_decrease, eth_position)
+                    
+                    if actual_decrease > 0.001:  # Minimum trade size
+                        trade_value = actual_decrease * current_price
+                        cash += trade_value
+                        eth_position -= actual_decrease
+                        
+                        trades.append({
+                            'timestamp': strategy_data.iloc[i]['timestamp'],
+                            'type': 'SELL',
+                            'quantity': actual_decrease,
+                            'price': current_price,
+                            'value': trade_value,
+                            'confidence': confidence,
+                            'reason': signal_result['reason']
+                        })
+                        
+                        logger.info(f"SELL: {actual_decrease:.4f} ETH at ${current_price:.2f} (confidence: {confidence:.3f})")
+            
+            # Update strategy position
+            eth_strategy.update_position(eth_position)
+            
+            # Track portfolio value
+            portfolio_value = cash + eth_position * current_price
+            portfolio_values.append(portfolio_value)
+            positions.append(eth_position)
+        
+        logger.info(f"Strategy completed: {len(trades)} trades executed")
+        
+        return {
+            'portfolio_values': portfolio_values,
+            'positions': positions,
+            'trades': trades,
+            'market_data': strategy_data,
+            'strategy_stats': eth_strategy.get_strategy_stats()
+        }
+    
+    def _apply_fallback_strategy(self, market_data: pd.DataFrame, parameters: Dict[str, Any], initial_cash: float) -> Dict[str, Any]:
+        """
+        Fallback strategy if ETH momentum strategy fails to load.
+        """
+        logger.warning("Using fallback trading strategy")
+        
         # Strategy parameters
         kelly_fraction = parameters.get('kelly_fraction', 0.167)
-        momentum_threshold = parameters.get('momentum_threshold', 0.02)
+        momentum_threshold = parameters.get('momentum_threshold', 0.01)  # Lowered threshold
         lookback_period = parameters.get('lookback_period', 30)
         max_volatility = parameters.get('max_volatility', 0.25)
         
         # Initialize tracking variables
         portfolio_values = [initial_cash]
-        positions = [0.0]  # ETH position size
+        positions = [0.0]
+        trades = []
         cash = initial_cash
         eth_position = 0.0
         
@@ -779,35 +924,35 @@ class {algorithm_name}(QCAlgorithm):
                 positions.append(eth_position)
                 continue
             
-            # Generate trading signal (momentum strategy)
+            # Generate trading signal (simplified momentum)
             price_change = (current_price - market_data.iloc[i-1]['price']) / market_data.iloc[i-1]['price']
             momentum_signal = 1 if price_change > momentum_threshold else (-1 if price_change < -momentum_threshold else 0)
             
-            # Risk management: reduce position if volatility too high
+            # Risk management
             vol_multiplier = min(1.0, max_volatility / current_vol) if current_vol > 0 else 0
             
-            # Kelly criterion position sizing
+            # Execute trades based on momentum signal
             if momentum_signal != 0:
-                # Simplified Kelly calculation
-                win_rate = 0.55  # Estimated win rate
-                avg_win = 0.03   # Estimated average win
-                avg_loss = 0.02  # Estimated average loss
-                
-                kelly_optimal = (win_rate * avg_win - (1 - win_rate) * avg_loss) / avg_win
-                kelly_optimal = max(0, min(kelly_optimal, kelly_fraction))  # Cap at max Kelly fraction
-                
-                # Calculate target position
                 portfolio_value = cash + eth_position * current_price
-                target_position_value = portfolio_value * kelly_optimal * vol_multiplier * momentum_signal
-                target_eth_position = target_position_value / current_price
+                target_position_value = portfolio_value * kelly_fraction * vol_multiplier * momentum_signal
+                target_eth_position = max(0, target_position_value / current_price)
                 
-                # Execute trade (simplified - no slippage/commissions for now)
                 position_change = target_eth_position - eth_position
                 trade_value = position_change * current_price
                 
                 if abs(trade_value) > 10:  # Minimum trade size
                     cash -= trade_value
                     eth_position = target_eth_position
+                    
+                    trades.append({
+                        'timestamp': market_data.iloc[i]['timestamp'],
+                        'type': 'BUY' if position_change > 0 else 'SELL',
+                        'quantity': abs(position_change),
+                        'price': current_price,
+                        'value': abs(trade_value),
+                        'confidence': abs(momentum_signal),
+                        'reason': f'Momentum signal: {momentum_signal}'
+                    })
             
             # Update portfolio tracking
             portfolio_value = cash + eth_position * current_price
@@ -817,6 +962,7 @@ class {algorithm_name}(QCAlgorithm):
         return {
             'portfolio_values': portfolio_values,
             'positions': positions,
+            'trades': trades,
             'market_data': market_data
         }
 
@@ -860,7 +1006,26 @@ class {algorithm_name}(QCAlgorithm):
         }
 
     def _generate_trade_records(self, strategy_result: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Generate trade records from position changes."""
+        """Generate trade records from strategy results."""
+        # If trades are already provided by strategy, use them
+        if 'trades' in strategy_result and strategy_result['trades']:
+            trades = []
+            for i, trade in enumerate(strategy_result['trades']):
+                formatted_trade = {
+                    "id": f"trade_{i + 1}",
+                    "timestamp": trade['timestamp'].isoformat() if hasattr(trade['timestamp'], 'isoformat') else str(trade['timestamp']),
+                    "symbol": "ETHUSD",
+                    "quantity": trade['quantity'],
+                    "price": trade['price'],
+                    "side": trade['type'],
+                    "value": trade['value'],
+                    "confidence": trade.get('confidence', 0.0),
+                    "reason": trade.get('reason', '')
+                }
+                trades.append(formatted_trade)
+            return trades
+        
+        # Fallback: generate from position changes
         positions = strategy_result['positions']
         market_data = strategy_result['market_data']
         
@@ -873,9 +1038,12 @@ class {algorithm_name}(QCAlgorithm):
                     "id": f"trade_{len(trades) + 1}",
                     "timestamp": market_data.iloc[i]['timestamp'].isoformat() if i < len(market_data) else "",
                     "symbol": "ETHUSD",
-                    "quantity": position - current_position,
+                    "quantity": abs(position - current_position),
                     "price": market_data.iloc[i]['price'] if i < len(market_data) else 0,
-                    "side": "BUY" if position > current_position else "SELL"
+                    "side": "BUY" if position > current_position else "SELL",
+                    "value": abs(position - current_position) * (market_data.iloc[i]['price'] if i < len(market_data) else 0),
+                    "confidence": 0.0,
+                    "reason": "Position change"
                 }
                 trades.append(trade)
                 current_position = position
@@ -971,21 +1139,25 @@ class {algorithm_name}(QCAlgorithm):
             "profit_factor": 0.0
         }
         
-        # Extract from LEAN data structure
-        if "TotalPerformance" in lean_data:
-            performance = lean_data["TotalPerformance"]
-            metrics.update({
-                "total_return": performance.get("TotalReturn", 0.0),
-                "sharpe_ratio": performance.get("SharpeRatio", 0.0),
-                "max_drawdown": performance.get("Drawdown", 0.0)
-            })
-        
+        # Extract from Statistics section (our Python simulation format)
         if "Statistics" in lean_data:
             stats = lean_data["Statistics"]
             metrics.update({
+                "total_return": stats.get("Total Return", 0.0),
+                "sharpe_ratio": stats.get("Sharpe Ratio", 0.0),
+                "max_drawdown": stats.get("Maximum Drawdown", 0.0),
                 "trades_count": stats.get("Total Trades", 0),
-                "win_rate": stats.get("Win Rate", 0.0),
+                "win_rate": stats.get("Winning Percentage", 0.0),
                 "profit_factor": stats.get("Profit-Loss Ratio", 0.0)
+            })
+        
+        # Also check for LEAN format if present
+        if "TotalPerformance" in lean_data:
+            performance = lean_data["TotalPerformance"]
+            metrics.update({
+                "total_return": performance.get("TotalReturn", metrics["total_return"]),
+                "sharpe_ratio": performance.get("SharpeRatio", metrics["sharpe_ratio"]),
+                "max_drawdown": performance.get("Drawdown", metrics["max_drawdown"])
             })
         
         return metrics
