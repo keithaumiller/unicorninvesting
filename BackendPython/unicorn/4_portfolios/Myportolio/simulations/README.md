@@ -1,17 +1,23 @@
-# Myportolio Python Simulation Framework with Performance Logging
+# Myportolio Unified Backtesting & Simulation Framework
 
-## 🎉 **OPERATIONAL STATUS: UNIFIED ARCHITECTURE COMPLETE**
+## 🎉 **OPERATIONAL STATUS: UNIFIED BACKTESTING SYSTEM COMPLETE**
 
-**Last Updated**: January 19, 2025  
-**Framework Status**: ✅ **FULLY OPERATIONAL** - Unified entry point with mandatory enhanced logging  
-**Recent Enhancement**: 🆕 **Master Simulator with Consolidated Architecture**  
+**Last Updated**: September 16, 2025  
+**Framework Status**: ✅ **FULLY OPERATIONAL** - Unified backtesting system with mandatory enhanced logging  
+**Recent Achievement**: 🆕 **Complete Consolidation** - Eliminated `/backtesting/` vs `/simulations/` confusion  
 **Analysis Capabilities**: Root cause identification with mandatory performance logging  
-**Integration Status**: ✅ **STREAMLINED** - Single entry point, no logging bypass possible
+**Integration Status**: ✅ **STREAMLINED** - Single entry point for ALL backtesting needs
 
-## 🏛️ **NEW UNIFIED ARCHITECTURE**
+## 🏛️ **UNIFIED BACKTESTING ARCHITECTURE**
 
-### **Single Entry Point Philosophy**
-The Myportolio simulation framework has been completely restructured with a **single authoritative entry point** that ensures enhanced logging cannot be bypassed under any circumstances.
+### **🎯 No More Confusion: Single Backtesting System**
+The Myportolio framework now provides **one unified system for ALL backtesting needs** - whether you call it "backtesting" or "simulations," it's the same professional-grade system with mandatory enhanced logging.
+
+### **✅ Consolidation Achievement (September 16, 2025):**
+- **ELIMINATED**: Confusing `/backtesting/` vs `/simulations/` separation
+- **UNIFIED**: All backtesting tools into single comprehensive system
+- **ARCHIVED**: Legacy Python-only backtesting tools preserved for reference
+- **CLARIFIED**: Everything uses real market data and is backtesting
 
 #### **🎯 Entry Points (UPDATED)**
 1. **PRIMARY**: `myportolio_simulator.py` - **MAIN ENTRY POINT** for all simulations
@@ -59,7 +65,13 @@ The Myportolio simulation framework includes a comprehensive performance logging
 
 ## Overview
 
-The Myportolio Python Simulation Framework provides professional-grade backtesting, paper trading, and optimization capabilities using pure Python implementation with Myportolio's trading algorithms and **mandatory performance logging system**.
+The **Myportolio Unified Backtesting Framework** provides professional-grade backtesting, optimization, and analysis capabilities using real market data. This is the **ONLY backtesting system you need** - all previous separate "backtesting" tools have been consolidated into this unified framework with **mandatory performance logging**.
+
+### **🎯 Why Unified?**
+- **All Uses Real Data**: Everything we do utilizes historical market data (hence "backtesting")  
+- **No Confusion**: Single system whether you call it "backtesting," "simulations," or "testing"
+- **Professional Grade**: LEAN integration + Python flexibility + enhanced logging
+- **Complete Coverage**: Strategy testing, parameter optimization, performance analysis
 
 ## 🏗️ **Streamlined Architecture**
 
@@ -92,16 +104,13 @@ simulations/
 ├── archived/                    # 🗄️ Legacy analysis and diagnostic scripts
 │   ├── analysis_scripts/        # Historical analysis tools
 │   ├── diagnostic_tools/        # Debug and troubleshooting scripts
+│   ├── backtesting_tools/       # 🆕 Legacy Python-only backtesting scripts
 │   └── legacy_engines/          # Deprecated simulation engines
 ├── myportolio_simulator.py      # 🎯 MASTER SIMULATOR - Primary entry point
 ├── python_simulation_engine.py  # 🔄 Core engine (redirects to enhanced logging)
 ├── python_result_handler.py     # Result storage and analysis
 ├── performance_logger.py        # 🆕 Comprehensive logging system
 ├── simulation_cli.py            # Command line interface (redirects to master)
-├── analyze_performance_issues.py # 🆕 Performance analysis tool
-├── test_enhanced_logging.py    # 🆕 Logging system validation
-├── simulation_cli.py           # Command line interface (redirects to master)
-├── myportolio_simulator.py     # 🆕 MASTER SIMULATOR - Primary entry point
 └── simulation_results.db       # SQLite results database
 ```
 
