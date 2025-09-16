@@ -45,82 +45,213 @@ check_success() {
     fi
 }
 
+# Function to validate existing virtual environment
+validate_venv() {
+    log_info "Validating existing virtual environment..."
+    
+    # Check if .venv directory exists
+    if [ ! -d "/workspaces/unicorninvesting/.venv" ]; then
+        log_warning "Virtual environment directory not found"
+        return 1
+    fi
+    
+    # Check if activate script exists
+    if [ ! -f "/workspaces/unicorninvesting/.venv/bin/activate" ]; then
+        log_warning "Virtual environment activate script not found"
+        return 1
+    fi
+    
+    # Try to activate the virtual environment
+    cd /workspaces/unicorninvesting
+    if ! source .venv/bin/activate; then
+        log_warning "Failed to activate virtual environment"
+        return 1
+    fi
+    
+    # Check if core Python packages are available
+    local missing_packages=()
+    
+    # Test core packages
+    if ! python3 -c "import pandas" 2>/dev/null; then
+        missing_packages+=("pandas")
+    fi
+    
+    if ! python3 -c "import numpy" 2>/dev/null; then
+        missing_packages+=("numpy")
+    fi
+    
+    if ! python3 -c "import yfinance" 2>/dev/null; then
+        missing_packages+=("yfinance")
+    fi
+    
+    if ! python3 -c "import sklearn" 2>/dev/null; then
+        missing_packages+=("scikit-learn")
+    fi
+    
+    if ! python3 -c "import fastapi" 2>/dev/null; then
+        missing_packages+=("fastapi")
+    fi
+    
+    # Check TA-Lib (optional but important)
+    local talib_available=false
+    if python3 -c "import talib" 2>/dev/null; then
+        talib_available=true
+    fi
+    
+    # Report validation results
+    if [ ${#missing_packages[@]} -eq 0 ]; then
+        log_success "Core packages validation: PASSED"
+        if [ "$talib_available" = true ]; then
+            log_success "TA-Lib validation: PASSED"
+            log_success "Virtual environment is fully functional!"
+            return 0
+        else
+            log_warning "TA-Lib not available but core packages work"
+            log_info "Virtual environment is functional (TA-Lib needs installation)"
+            return 2  # Special code: functional but missing TA-Lib
+        fi
+    else
+        log_warning "Missing packages: ${missing_packages[*]}"
+        return 1
+    fi
+}
+
 echo "🦄 Unicorn Investing - Comprehensive Environment Setup"
 echo "======================================================"
 
-# Step 1: Update system packages
-log_info "Updating system packages..."
-sudo apt-get update -y
+# Step 0: Check existing virtual environment first
+log_info "Checking existing virtual environment..."
+venv_status=$(validate_venv)
+venv_result=$?
 
-# Step 2: Install system dependencies
-log_info "Installing system dependencies (MySQL, Apache, PHP 8.3)..."
-sudo apt-get install -y \
-    mysql-server \
-    mysql-client \
-    apache2 \
-    software-properties-common \
-    curl \
-    wget \
-    git \
-    build-essential \
-    python3-dev \
-    python3-pip \
-    python3-venv \
-    bc
-check_success $? "Core system dependencies installed"
-
-# Step 2b: Install TA-Lib system dependencies
-log_info "Installing TA-Lib system dependencies..."
-# First try Ubuntu packages
-if sudo apt-get install -y libta-lib-dev ta-lib-bin; then
-    log_success "TA-Lib system packages installed"
+if [ $venv_result -eq 0 ]; then
+    log_success "Existing virtual environment is fully functional!"
+    log_info "Skipping Python package installation..."
+    
+    # Still need to ensure services are running
+    log_info "Ensuring services are running..."
+    sudo service mysql start 2>/dev/null || true
+    sudo service apache2 start 2>/dev/null || true
+    
+    # Skip to aliases and final setup
+    log_info "Proceeding to final configuration..."
+    SKIP_PYTHON_SETUP=true
+elif [ $venv_result -eq 2 ]; then
+    log_info "Virtual environment functional but TA-Lib missing"
+    log_info "Will install TA-Lib only..."
+    SKIP_CORE_PYTHON=true
+    INSTALL_TALIB_ONLY=true
 else
-    log_warning "TA-Lib system packages not available, will compile from source"
-    
-    # Install TA-Lib from source
-    log_info "Compiling TA-Lib from source..."
-    cd /tmp
-    
-    # Download and compile TA-Lib
-    if wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz; then
-        tar -xzf ta-lib-0.4.0-src.tar.gz
-        cd ta-lib/
-        ./configure --prefix=/usr/local
-        make
-        sudo make install
-        
-        # Update library cache
-        sudo ldconfig
-        
-        # Set environment variables for TA-Lib
-        export TA_INCLUDE_PATH=/usr/local/include
-        export TA_LIBRARY_PATH=/usr/local/lib
-        
-        log_success "TA-Lib compiled and installed from source"
-        cd /workspaces/unicorninvesting
+    log_info "Virtual environment needs full setup..."
+    SKIP_PYTHON_SETUP=false
+fi
+
+# Step 1: Update system packages (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ]; then
+    log_info "Skipping system package updates - environment already functional"
+else
+    log_info "Updating system packages..."
+    sudo apt-get update -y
+fi
+
+# Step 2: Install system dependencies (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ]; then
+    log_info "Skipping system dependencies - already installed"
+    # Still ensure core services are available
+    if ! command -v mysql &> /dev/null; then
+        log_info "Installing MySQL (missing)..."
+        sudo apt-get install -y mysql-server mysql-client
+    fi
+    if ! command -v apache2 &> /dev/null; then
+        log_info "Installing Apache (missing)..."
+        sudo apt-get install -y apache2
+    fi
+else
+    log_info "Installing system dependencies (MySQL, Apache, PHP 8.3)..."
+    sudo apt-get install -y \
+        mysql-server \
+        mysql-client \
+        apache2 \
+        software-properties-common \
+        curl \
+        wget \
+        git \
+        build-essential \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        bc
+    check_success $? "Core system dependencies installed"
+fi
+
+# Step 2b: Install TA-Lib system dependencies (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ] && [ "$INSTALL_TALIB_ONLY" != true ]; then
+    log_info "Skipping TA-Lib system setup - already functional"
+elif [ "$INSTALL_TALIB_ONLY" = true ] || [ "$SKIP_PYTHON_SETUP" != true ]; then
+    log_info "Installing TA-Lib system dependencies..."
+    # First try Ubuntu packages
+    if sudo apt-get install -y libta-lib-dev ta-lib-bin; then
+        log_success "TA-Lib system packages installed"
     else
-        log_error "Failed to download TA-Lib source - continuing without it"
-        cd /workspaces/unicorninvesting
+        log_warning "TA-Lib system packages not available, will compile from source"
+        
+        # Install TA-Lib from source
+        log_info "Compiling TA-Lib from source..."
+        cd /tmp
+        
+        # Download and compile TA-Lib
+        if wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz; then
+            tar -xzf ta-lib-0.4.0-src.tar.gz
+            cd ta-lib/
+            ./configure --prefix=/usr/local
+            make
+            sudo make install
+            
+            # Update library cache
+            sudo ldconfig
+            
+            # Set environment variables for TA-Lib
+            export TA_INCLUDE_PATH=/usr/local/include
+            export TA_LIBRARY_PATH=/usr/local/lib
+            
+            log_success "TA-Lib compiled and installed from source"
+            cd /workspaces/unicorninvesting
+        else
+            log_error "Failed to download TA-Lib source - continuing without it"
+            cd /workspaces/unicorninvesting
+        fi
     fi
 fi
 
-# Step 3: Install PHP 8.3
-log_info "Installing PHP 8.3 and extensions..."
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get update -y
-sudo apt-get install -y \
-    php8.3 \
-    php8.3-cli \
-    php8.3-common \
-    php8.3-mysql \
-    php8.3-zip \
-    php8.3-gd \
-    php8.3-mbstring \
-    php8.3-curl \
-    php8.3-xml \
-    php8.3-bcmath \
-    php8.3-intl \
-    libapache2-mod-php8.3
+# Step 3: Install PHP 8.3 (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ]; then
+    log_info "Checking PHP 8.3 installation..."
+    if ! php --version | grep -q "PHP 8.3"; then
+        log_info "Installing PHP 8.3..."
+        sudo add-apt-repository ppa:ondrej/php -y
+        sudo apt-get update -y
+        sudo apt-get install -y php8.3 php8.3-cli php8.3-mysql libapache2-mod-php8.3
+    else
+        log_success "PHP 8.3 already installed"
+    fi
+else
+    log_info "Installing PHP 8.3 and extensions..."
+    sudo add-apt-repository ppa:ondrej/php -y
+    sudo apt-get update -y
+    sudo apt-get install -y \
+        php8.3 \
+        php8.3-cli \
+        php8.3-common \
+        php8.3-mysql \
+        php8.3-zip \
+        php8.3-gd \
+        php8.3-mbstring \
+        php8.3-curl \
+        php8.3-xml \
+        php8.3-bcmath \
+        php8.3-intl \
+        libapache2-mod-php8.3
+fi
 
 # Step 4: Configure Apache for PHP 8.3
 log_info "Configuring Apache for PHP 8.3..."
@@ -139,105 +270,140 @@ sudo service mysql start
 sudo service apache2 start
 log_success "Services started successfully"
 
-# Step 6: Set up Python virtual environment
-log_info "Setting up Python virtual environment..."
-cd /workspaces/unicorninvesting
-
-# Remove any broken virtual environment
-if [ -d ".venv" ] && [ ! -f ".venv/bin/activate" ]; then
-    log_info "Removing broken virtual environment..."
-    rm -rf .venv
-fi
-
-if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
-    log_success "Python virtual environment created"
+# Step 6: Set up Python virtual environment (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ]; then
+    log_info "Skipping Python setup - using existing functional environment"
+    cd /workspaces/unicorninvesting
+    source .venv/bin/activate
 else
-    log_success "Python virtual environment already exists"
-fi
+    log_info "Setting up Python virtual environment..."
+    cd /workspaces/unicorninvesting
 
-# Activate virtual environment and verify it works
-source .venv/bin/activate
-if [ "$VIRTUAL_ENV" != "" ]; then
-    log_success "Virtual environment activated: $VIRTUAL_ENV"
-else
-    log_error "Failed to activate virtual environment"
-    exit 1
-fi
+    # Remove any broken virtual environment
+    if [ -d ".venv" ] && [ ! -f ".venv/bin/activate" ]; then
+        log_info "Removing broken virtual environment..."
+        rm -rf .venv
+    fi
 
-# Step 7: Upgrade pip and install Python packages
-log_info "Installing Python packages..."
-pip install --upgrade pip setuptools wheel
-
-# Install core packages first
-pip install pandas numpy scipy scikit-learn
-
-# Install API and web framework packages
-log_info "Installing API and web framework packages..."
-pip install fastapi uvicorn
-
-# Install forecasting packages
-log_info "Installing forecasting packages..."
-pip install prophet
-
-# Install database packages
-log_info "Installing database packages..."
-pip install sqlalchemy pymysql
-
-# Install financial packages
-log_info "Installing financial data packages..."
-pip install yfinance alpha-vantage quandl ccxt fredapi beaapi
-
-# Install technical analysis and silver layer processing packages
-log_info "Installing technical analysis and advanced analytics packages..."
-
-# Try to install TA-Lib Python package
-log_info "Installing TA-Lib Python package..."
-if pip install TA-Lib; then
-    log_success "TA-Lib Python package installed successfully"
-else
-    log_warning "TA-Lib Python package installation failed"
-    
-    # Try alternative installation methods
-    log_info "Attempting alternative TA-Lib installation..."
-    
-    # Set environment variables in case they're needed
-    export TA_INCLUDE_PATH=/usr/local/include
-    export TA_LIBRARY_PATH=/usr/local/lib
-    export TALIB_INCLUDE=/usr/local/include
-    export TALIB_LIB=/usr/local/lib
-    
-    if pip install --no-cache-dir TA-Lib; then
-        log_success "TA-Lib installed with alternative method"
+    if [ ! -d ".venv" ]; then
+        python3 -m venv .venv
+        log_success "Python virtual environment created"
     else
-        log_error "TA-Lib installation failed completely - continuing without it"
+        log_success "Python virtual environment already exists"
+    fi
+
+    # Activate virtual environment and verify it works
+    source .venv/bin/activate
+    if [ "$VIRTUAL_ENV" != "" ]; then
+        log_success "Virtual environment activated: $VIRTUAL_ENV"
+    else
+        log_error "Failed to activate virtual environment"
+        exit 1
     fi
 fi
 
-# Install other technical analysis packages
-pip install matplotlib seaborn plotly || log_warning "Some visualization packages failed"
-
-# Install additional requirements
-log_info "Installing remaining Python packages (this may take a few minutes)..."
-if [ -f "BackendPython/requirements.txt" ]; then
-    # Install packages one by one to handle version conflicts
-    log_info "Installing core financial packages..."
+# Step 7: Install Python packages (conditional)
+if [ "$SKIP_PYTHON_SETUP" = true ]; then
+    log_info "Skipping Python package installation - using existing packages"
+elif [ "$INSTALL_TALIB_ONLY" = true ]; then
+    log_info "Installing TA-Lib only (core packages already available)..."
     
-    # Install quantlib-python with available version
-    pip install quantlib-python==1.18 || log_warning "QuantLib installation failed"
-    
-    # Install other core packages
-    pip install tensorflow keras torch xgboost lightgbm || log_warning "Some ML packages failed"
-    
-    # Install data sources
-    pip install pandas-datareader fredapi || log_warning "Some data source packages failed"
-    
-    # Install remaining packages (skip problematic ones)
-    pip install -r BackendPython/requirements.txt --no-deps || log_warning "Some packages from requirements.txt failed"
-    
-    log_success "Python packages installation completed (some packages may have been skipped)"
+    # Try to install TA-Lib Python package
+    log_info "Installing TA-Lib Python package..."
+    if pip install TA-Lib; then
+        log_success "TA-Lib Python package installed successfully"
+    else
+        log_warning "TA-Lib Python package installation failed"
+        
+        # Try alternative installation methods
+        log_info "Attempting alternative TA-Lib installation..."
+        
+        # Set environment variables in case they're needed
+        export TA_INCLUDE_PATH=/usr/local/include
+        export TA_LIBRARY_PATH=/usr/local/lib
+        export TALIB_INCLUDE=/usr/local/include
+        export TALIB_LIB=/usr/local/lib
+        
+        if pip install --no-cache-dir TA-Lib; then
+            log_success "TA-Lib installed with alternative method"
+        else
+            log_error "TA-Lib installation failed completely - continuing without it"
+        fi
+    fi
 else
-    log_warning "Requirements file not found, skipping package installation"
+    log_info "Installing Python packages..."
+    pip install --upgrade pip setuptools wheel
+
+    # Install core packages first
+    pip install pandas numpy scipy scikit-learn
+
+    # Install API and web framework packages
+    log_info "Installing API and web framework packages..."
+    pip install fastapi uvicorn
+
+    # Install forecasting packages
+    log_info "Installing forecasting packages..."
+    pip install prophet
+
+    # Install database packages
+    log_info "Installing database packages..."
+    pip install sqlalchemy pymysql
+
+    # Install financial packages
+    log_info "Installing financial data packages..."
+    pip install yfinance alpha-vantage quandl ccxt fredapi beaapi
+
+    # Install technical analysis and silver layer processing packages
+    log_info "Installing technical analysis and advanced analytics packages..."
+
+    # Try to install TA-Lib Python package
+    log_info "Installing TA-Lib Python package..."
+    if pip install TA-Lib; then
+        log_success "TA-Lib Python package installed successfully"
+    else
+        log_warning "TA-Lib Python package installation failed"
+        
+        # Try alternative installation methods
+        log_info "Attempting alternative TA-Lib installation..."
+        
+        # Set environment variables in case they're needed
+        export TA_INCLUDE_PATH=/usr/local/include
+        export TA_LIBRARY_PATH=/usr/local/lib
+        export TALIB_INCLUDE=/usr/local/include
+        export TALIB_LIB=/usr/local/lib
+        
+        if pip install --no-cache-dir TA-Lib; then
+            log_success "TA-Lib installed with alternative method"
+        else
+            log_error "TA-Lib installation failed completely - continuing without it"
+        fi
+    fi
+
+    # Install other technical analysis packages
+    pip install matplotlib seaborn plotly || log_warning "Some visualization packages failed"
+
+    # Install additional requirements
+    log_info "Installing remaining Python packages (this may take a few minutes)..."
+    if [ -f "BackendPython/requirements.txt" ]; then
+        # Install packages one by one to handle version conflicts
+        log_info "Installing core financial packages..."
+        
+        # Install quantlib-python with available version
+        pip install quantlib-python==1.18 || log_warning "QuantLib installation failed"
+        
+        # Install other core packages
+        pip install tensorflow keras torch xgboost lightgbm || log_warning "Some ML packages failed"
+        
+        # Install data sources
+        pip install pandas-datareader fredapi || log_warning "Some data source packages failed"
+        
+        # Install remaining packages (skip problematic ones)
+        pip install -r BackendPython/requirements.txt --no-deps || log_warning "Some packages from requirements.txt failed"
+        
+        log_success "Python packages installation completed (some packages may have been skipped)"
+    else
+        log_warning "Requirements file not found, skipping package installation"
+    fi
 fi
 
 # Step 8: Install LEAN Framework (TEMPORARILY DISABLED)
