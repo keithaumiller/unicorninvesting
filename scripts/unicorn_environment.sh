@@ -1056,9 +1056,17 @@ run_health_checks() {
         check_status 1 "Cron Service: Not running" "Run: sudo service cron start"
     fi
 
+    # Enhanced cron job validation
+    echo -e "\n${YELLOW}📋 Cron Jobs Detailed Validation${NC}"
+    echo "--------------------------------"
+    
     # Check for data refresh cron jobs
     if crontab -l 2>/dev/null | grep -q "automated_data_refresh"; then
         check_status 0 "Data Refresh Job: Installed (5-minute intervals)"
+        
+        # Validate cron job schedule
+        CRON_SCHEDULE=$(crontab -l 2>/dev/null | grep "automated_data_refresh" | awk '{print $1, $2, $3, $4, $5}')
+        echo -e "   ${BLUE}ℹ️  Schedule: $CRON_SCHEDULE${NC}"
         
         # Count total cron jobs for context
         CRON_COUNT=$(crontab -l 2>/dev/null | grep -v '^#' | grep -v '^$' | wc -l)
@@ -1067,14 +1075,71 @@ run_health_checks() {
         check_status 1 "Data Refresh Job: Not installed" "Run: cron-install"
     fi
 
-    # Check data refresh script
+    # Check alpha model cron jobs
+    if crontab -l 2>/dev/null | grep -q "multi_asset_alpha_scheduler"; then
+        ALPHA_JOBS=$(crontab -l 2>/dev/null | grep "multi_asset_alpha_scheduler" | wc -l)
+        check_status 0 "Alpha Model Jobs: $ALPHA_JOBS jobs installed"
+        
+        # Show alpha job schedules
+        echo -e "   ${BLUE}ℹ️  Alpha Model Schedules:${NC}"
+        crontab -l 2>/dev/null | grep "multi_asset_alpha_scheduler" | while read line; do
+            schedule=$(echo "$line" | awk '{print $1, $2, $3, $4, $5}')
+            description=$(echo "$line" | sed 's/.*multi_asset_alpha_scheduler.py/Alpha:/')
+            echo -e "      • $schedule -> $description"
+        done
+    else
+        check_status 1 "Alpha Model Jobs: Not installed" "Alpha model automation missing"
+    fi
+
+    # Check portfolio health check job
+    if crontab -l 2>/dev/null | grep -q "silver_layer_data_connector"; then
+        check_status 0 "Portfolio Health Check: Installed (hourly)"
+    else
+        check_status 1 "Portfolio Health Check: Not installed" "Portfolio validation missing"
+    fi
+
+    # Check data cleanup jobs
+    if crontab -l 2>/dev/null | grep -q "data_refresh.*-delete"; then
+        check_status 0 "Data Cleanup Jobs: Installed (weekly)"
+    else
+        check_status 1 "Data Cleanup Jobs: Not installed" "Log cleanup automation missing"
+    fi
+
+    # Enhanced data refresh script validation
+    echo -e "\n${YELLOW}📋 Data Refresh Scripts Validation${NC}"
+    echo "-----------------------------------"
+    
     REFRESH_SCRIPT="$UNICORN_ROOT/scripts/cron/jobs/automated_data_refresh.sh"
     if [ -x "$REFRESH_SCRIPT" ]; then
         check_status 0 "Data Refresh Script: Available and executable"
+        
+        # Test script syntax
+        if bash -n "$REFRESH_SCRIPT" 2>/dev/null; then
+            check_status 0 "Script Syntax: Valid bash syntax"
+        else
+            check_status 1 "Script Syntax: Syntax errors detected" "Check script for syntax issues"
+        fi
     elif [ -f "$REFRESH_SCRIPT" ]; then
         check_status 1 "Data Refresh Script: Found but not executable" "Run: chmod +x $REFRESH_SCRIPT"
     else
         check_status 1 "Data Refresh Script: Missing" "Expected: $REFRESH_SCRIPT"
+    fi
+
+    # Check alpha scheduler script
+    ALPHA_SCRIPT="$UNICORN_ROOT/scripts/cron/jobs/multi_asset_alpha_scheduler.py"
+    if [ -f "$ALPHA_SCRIPT" ]; then
+        check_status 0 "Alpha Scheduler Script: Available"
+        
+        # Test Python syntax if virtual environment is available
+        if [ -f "$UNICORN_ROOT/.venv/bin/python" ]; then
+            if "$UNICORN_ROOT/.venv/bin/python" -m py_compile "$ALPHA_SCRIPT" 2>/dev/null; then
+                check_status 0 "Alpha Script Syntax: Valid Python syntax"
+            else
+                check_status 1 "Alpha Script Syntax: Python syntax errors" "Check script for syntax issues"
+            fi
+        fi
+    else
+        check_status 1 "Alpha Scheduler Script: Missing" "Expected: $ALPHA_SCRIPT"
     fi
 
     # Check cron management tools
@@ -1085,12 +1150,31 @@ run_health_checks() {
         check_status 1 "Cron Management Tools: Missing" "Expected: $CRON_MANAGER"
     fi
 
+    # Enhanced activity and logging validation
+    echo -e "\n${YELLOW}📋 Data Refresh Activity & Logging${NC}"
+    echo "-----------------------------------"
+    
     # Check recent data refresh activity
     REFRESH_LOG_DIR="$UNICORN_ROOT/logs/data_refresh"
     if [ -d "$REFRESH_LOG_DIR" ] && [ "$(ls -A $REFRESH_LOG_DIR 2>/dev/null)" ]; then
         RECENT_LOGS=$(find "$REFRESH_LOG_DIR" -name "*.log" -mmin -10 | wc -l)
         if [ $RECENT_LOGS -gt 0 ]; then
             check_status 0 "Recent Activity: Data refresh executed within last 10 minutes"
+            
+            # Show most recent log file details
+            LATEST_LOG=$(find "$REFRESH_LOG_DIR" -name "*.log" -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
+            if [ -n "$LATEST_LOG" ]; then
+                LOG_SIZE=$(stat -c%s "$LATEST_LOG" 2>/dev/null || echo "unknown")
+                LOG_TIME=$(stat -c%y "$LATEST_LOG" 2>/dev/null | cut -d'.' -f1)
+                echo -e "   ${BLUE}ℹ️  Latest log: $LOG_TIME, size: $LOG_SIZE bytes${NC}"
+                
+                # Check for errors in recent logs
+                if tail -20 "$LATEST_LOG" 2>/dev/null | grep -qi "error"; then
+                    check_status 1 "Log Quality: Errors detected in recent logs" "Check: $LATEST_LOG"
+                else
+                    check_status 0 "Log Quality: No errors in recent execution"
+                fi
+            fi
         else
             # Check for any recent log activity
             RECENT_ACTIVITY=$(find "$REFRESH_LOG_DIR" -name "*.log" -mmin -60 | wc -l)
@@ -1104,6 +1188,74 @@ run_health_checks() {
         check_status 1 "Log Directory: Missing or empty" "Expected: $REFRESH_LOG_DIR"
     fi
 
+    # Check alpha forecast logs
+    ALPHA_LOG_DIR="$UNICORN_ROOT/logs/alpha_forecasts"
+    if [ -d "$ALPHA_LOG_DIR" ] && [ "$(ls -A $ALPHA_LOG_DIR 2>/dev/null)" ]; then
+        RECENT_ALPHA_LOGS=$(find "$ALPHA_LOG_DIR" -name "*.log" -mmin -30 | wc -l)
+        if [ $RECENT_ALPHA_LOGS -gt 0 ]; then
+            check_status 0 "Alpha Forecast Activity: Recent alpha model executions detected"
+        else
+            check_status 1 "Alpha Forecast Activity: No recent alpha model activity" "Alpha models may not be running"
+        fi
+    else
+        check_status 1 "Alpha Log Directory: Missing or empty" "Expected: $ALPHA_LOG_DIR"
+    fi
+
+    # Data connector validation
+    echo -e "\n${YELLOW}📋 Data Connectors Validation${NC}"
+    echo "------------------------------"
+    
+    # Check Yahoo Finance data freshness
+    YAHOO_DATA_DIR="$UNICORN_ROOT/BackendPython/unicorn/1_data_sources/3_silver/yahoo_finance_assets"
+    if [ -d "$YAHOO_DATA_DIR" ]; then
+        # Check for recent data files
+        FRESH_YAHOO_FILES=$(find "$YAHOO_DATA_DIR" -name "*.json" -mmin -60 | wc -l)
+        if [ $FRESH_YAHOO_FILES -gt 0 ]; then
+            check_status 0 "Yahoo Finance Data: $FRESH_YAHOO_FILES files updated within last hour"
+            
+            # Check specific assets
+            for asset in ETH BTC EURUSD USDJPY; do
+                ASSET_FILES=$(find "$YAHOO_DATA_DIR" -name "*${asset}*" -mmin -60 | wc -l)
+                if [ $ASSET_FILES -gt 0 ]; then
+                    echo -e "   ${GREEN}✅ $asset: $ASSET_FILES fresh files${NC}"
+                else
+                    echo -e "   ${RED}❌ $asset: No recent data${NC}"
+                fi
+            done
+        else
+            check_status 1 "Yahoo Finance Data: No recent updates detected" "Data refresh may be failing"
+        fi
+    else
+        check_status 1 "Yahoo Finance Data Directory: Missing" "Expected: $YAHOO_DATA_DIR"
+    fi
+
+    # Check silver layer data integrity
+    SILVER_LAYERS=("yahoo_finance_assets" "fred_economic_data" "alpha_vantage_data")
+    HEALTHY_LAYERS=0
+    
+    for layer in "${SILVER_LAYERS[@]}"; do
+        LAYER_DIR="$UNICORN_ROOT/BackendPython/unicorn/1_data_sources/3_silver/$layer"
+        if [ -d "$LAYER_DIR" ]; then
+            FILE_COUNT=$(find "$LAYER_DIR" -name "*.json" | wc -l)
+            if [ $FILE_COUNT -gt 0 ]; then
+                HEALTHY_LAYERS=$((HEALTHY_LAYERS + 1))
+                echo -e "   ${GREEN}✅ $layer: $FILE_COUNT files${NC}"
+            else
+                echo -e "   ${RED}❌ $layer: No data files${NC}"
+            fi
+        else
+            echo -e "   ${RED}❌ $layer: Directory missing${NC}"
+        fi
+    done
+    
+    if [ $HEALTHY_LAYERS -eq ${#SILVER_LAYERS[@]} ]; then
+        check_status 0 "Silver Layer Integrity: All $HEALTHY_LAYERS layers healthy"
+    elif [ $HEALTHY_LAYERS -gt 0 ]; then
+        check_status 1 "Silver Layer Integrity: $HEALTHY_LAYERS/${#SILVER_LAYERS[@]} layers healthy" "Some data sources may be missing"
+    else
+        check_status 1 "Silver Layer Integrity: No healthy data layers" "Data collection system may be broken"
+    fi
+
     # Check data validation system
     VALIDATION_SCRIPT="$UNICORN_ROOT/scripts/cron/validate_data_refresh.sh"
     if [ -f "$VALIDATION_SCRIPT" ]; then
@@ -1111,6 +1263,28 @@ run_health_checks() {
         echo -e "   ${BLUE}💡 Run 'cron-validate' for comprehensive system validation${NC}"
     else
         check_status 1 "Data Validation System: Missing" "Expected: $VALIDATION_SCRIPT"
+    fi
+
+    # Real-time data connector test
+    echo -e "\n${YELLOW}📋 Real-time Data Connector Test${NC}"
+    echo "---------------------------------"
+    
+    # Test Yahoo Finance connectivity if yfinance is available
+    if command -v python3 >/dev/null 2>&1 && [ -f "$UNICORN_ROOT/.venv/bin/activate" ]; then
+        source "$UNICORN_ROOT/.venv/bin/activate" 2>/dev/null
+        
+        if python3 -c "import yfinance" 2>/dev/null; then
+            # Test basic Yahoo Finance connectivity
+            if timeout 10 python3 -c "import yfinance as yf; ticker = yf.Ticker('BTC-USD'); data = ticker.history(period='1d'); print('SUCCESS' if len(data) > 0 else 'NO_DATA')" 2>/dev/null | grep -q "SUCCESS"; then
+                check_status 0 "Yahoo Finance Live Test: Connectivity successful"
+            else
+                check_status 1 "Yahoo Finance Live Test: Connection failed" "Network or API issues"
+            fi
+        else
+            check_status 1 "Yahoo Finance Library: yfinance not available" "Install required packages"
+        fi
+    else
+        check_status 1 "Python Environment: Not available for testing" "Virtual environment issues"
     fi
 
     # 9. Summary
