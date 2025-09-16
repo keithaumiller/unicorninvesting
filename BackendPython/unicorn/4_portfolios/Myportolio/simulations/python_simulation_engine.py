@@ -206,7 +206,11 @@ class PythonSimulationEngine:
                 json.dump(lean_config, f, indent=2, default=str)
             
             # Generate LEAN algorithm file with enhanced logging
-            self._generate_enhanced_lean_algorithm(lean_config, sim_dir)
+            algorithm_file = self._prepare_algorithm_file(
+                algorithm_name=lean_config.get("algorithm_name", "MyportolioETHMomentum"),
+                parameters=lean_config.get("parameters", {}),
+                sim_dir=sim_dir
+            )
             
             # Log simulation start
             if self.performance_logger:
@@ -225,7 +229,7 @@ class PythonSimulationEngine:
             result = self._execute_lean_backtest(lean_config, sim_dir)
             
             # Process and store results with enhanced analysis
-            self._process_enhanced_backtest_results(simulation_id, result, sim_dir, trading_strategy, risk_algorithm)
+            self._process_backtest_results(simulation_id, result, sim_dir)
             
             # Generate performance report
             if self.performance_logger:

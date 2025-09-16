@@ -1,0 +1,286 @@
+{
+  "algorithm-type-name": "MyportolioETHMomentum",
+  "algorithm-location": "backtests/backtest_20250916_131653_97cf51be/",
+  "algorithm-language": "Python",
+  "data-folder": "/workspaces/unicorninvesting/data/",
+  "output-directory": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250916_131653_97cf51be/",
+  "result-destination-folder": "/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/Myportolio/simulations/backtests/backtest_20250916_131653_97cf51be/",
+  "close-automatically": true,
+  "debugging": false,
+  "debugging-method": "LocalCmdline",
+  "job-user-id": "1",
+  "api-access-token": "",
+  "job-organization-id": "",
+  "job-project-id": 0,
+  "environment": "backtesting",
+  "algorithm": "MyportolioETHMomentum",
+  "start-date": "2025-03-16",
+  "end-date": "2025-09-16",
+  "cash": 100000,
+  "parameters": {
+    "strategy_type": "dual_asset_economic_enhanced",
+    "btc_model_variant": "deep",
+    "eth_model_variant": "deep",
+    "btc_kelly_fraction": 0.2,
+    "eth_kelly_fraction": 0.2,
+    "btc_max_volatility": 0.3,
+    "eth_max_volatility": 0.3,
+    "max_drawdown": 0.15,
+    "var_limit_1day": 0.06,
+    "rebalance_frequency": "daily",
+    "lookback_period": 30,
+    "confidence_threshold": 0.65,
+    "economic_feature_weight_btc": 0.484,
+    "economic_feature_weight_eth": 0.414,
+    "correlation_filtering": true,
+    "volatility_adjustment": true
+  },
+  "best_model_config": {
+    "use_best_models": true,
+    "model_configs": {
+      "BTC": {
+        "algorithm": "MyportolioBTCEconomicEnhanced",
+        "model_configuration": {
+          "model_id": "btc_deep_enhanced_20250909_175420",
+          "model_variant": "deep",
+          "model_type": "xgboost_economic_enhanced",
+          "confidence_level": "HIGH",
+          "economic_importance": 0.4841424666915921
+        },
+        "parameters": {
+          "asset": "BTCUSD",
+          "strategy_type": "btc_economic_enhanced",
+          "kelly_fraction": 0.2004,
+          "max_volatility": 0.3,
+          "max_drawdown": 0.15,
+          "var_limit_1day": 0.06,
+          "rebalance_frequency": "daily",
+          "lookback_period": 30,
+          "confidence_threshold": 0.65,
+          "economic_feature_weight": 0.4841424666915921
+        },
+        "performance_expectations": {
+          "expected_r2": 0.92,
+          "expected_mae": 1125.5461183921839,
+          "expected_mape": 2.0,
+          "model_confidence": "HIGH"
+        },
+        "risk_management": {
+          "position_sizing": "kelly_criterion",
+          "risk_model": "enhanced_with_economic",
+          "volatility_adjustment": true,
+          "correlation_filtering": false
+        }
+      },
+      "ETH": {
+        "algorithm": "MyportolioETHEconomicEnhanced",
+        "model_configuration": {
+          "model_id": "eth_deep_enhanced_20250909_175420",
+          "model_variant": "deep",
+          "model_type": "xgboost_economic_enhanced",
+          "confidence_level": "HIGH",
+          "economic_importance": 0.41414246669159216
+        },
+        "parameters": {
+          "asset": "ETHUSD",
+          "strategy_type": "eth_economic_enhanced",
+          "kelly_fraction": 0.2004,
+          "max_volatility": 0.3,
+          "max_drawdown": 0.15,
+          "var_limit_1day": 0.06,
+          "rebalance_frequency": "daily",
+          "lookback_period": 30,
+          "confidence_threshold": 0.65,
+          "economic_feature_weight": 0.41414246669159216
+        },
+        "performance_expectations": {
+          "expected_r2": 0.8884100849597971,
+          "expected_mae": 70.03466570766815,
+          "expected_mape": 2.0,
+          "model_confidence": "HIGH"
+        },
+        "risk_management": {
+          "position_sizing": "kelly_criterion",
+          "risk_model": "enhanced_with_economic",
+          "volatility_adjustment": true,
+          "correlation_filtering": true
+        }
+      }
+    },
+    "best_models": {
+      "BTC": {
+        "model_id": "btc_deep_enhanced_20250909_175420",
+        "model_variant": "deep",
+        "performance": {
+          "r2_score": 0.92,
+          "mae": 1125.5461183921839,
+          "mape": 2.0,
+          "economic_importance": 0.4841424666915921
+        },
+        "features": {
+          "total_features": 85,
+          "feature_importance": {
+            "consumer_business_consumer_confidence_1": 0.046395,
+            "international_trade_gdp_growth_2": 0.038874,
+            "btc_return_7d": 0.036232,
+            "monetary_policy_retail_sales_2": 0.032999,
+            "consumer_business_interest_rates_2": 0.032115,
+            "btc_price_ma_5": 0.029891,
+            "monetary_policy_interest_rates_0": 0.025876,
+            "economic_growth_consumer_confidence_0": 0.025064,
+            "economic_growth_housing_starts_0": 0.022064,
+            "btc_volatility_14d": 0.021672,
+            "international_trade_industrial_production_0": 0.021653,
+            "monetary_policy_pmi_manufacturing_0": 0.021163,
+            "international_trade_treasury_yields_1": 0.019049,
+            "economic_growth_pmi_manufacturing_1": 0.018137,
+            "consumer_business_inflation_rate_0": 0.017757,
+            "btc_price_ma_200": 0.017547,
+            "consumer_business_treasury_yields_0": 0.017351,
+            "btc_return_1d": 0.017063,
+            "monetary_policy_treasury_yields_2": 0.015916,
+            "btc_price_ma_50": 0.015542
+          },
+          "top_economic_features": [
+            {
+              "feature": "consumer_business_consumer_confidence_1",
+              "importance": 0.046395
+            },
+            {
+              "feature": "international_trade_gdp_growth_2",
+              "importance": 0.038874
+            },
+            {
+              "feature": "monetary_policy_retail_sales_2",
+              "importance": 0.032999
+            },
+            {
+              "feature": "consumer_business_interest_rates_2",
+              "importance": 0.032115
+            },
+            {
+              "feature": "monetary_policy_interest_rates_0",
+              "importance": 0.025876
+            },
+            {
+              "feature": "economic_growth_consumer_confidence_0",
+              "importance": 0.025064
+            },
+            {
+              "feature": "economic_growth_housing_starts_0",
+              "importance": 0.022064
+            },
+            {
+              "feature": "international_trade_industrial_production_0",
+              "importance": 0.021653
+            },
+            {
+              "feature": "monetary_policy_pmi_manufacturing_0",
+              "importance": 0.021163
+            },
+            {
+              "feature": "international_trade_treasury_yields_1",
+              "importance": 0.019049
+            }
+          ]
+        },
+        "confidence_level": "HIGH",
+        "status": "READY_FOR_PRODUCTION",
+        "created_at": "2025-09-09T17:54:20.185552"
+      },
+      "ETH": {
+        "model_id": "eth_deep_enhanced_20250909_175420",
+        "model_variant": "deep",
+        "performance": {
+          "r2_score": 0.8884100849597971,
+          "mae": 70.03466570766815,
+          "mape": 2.0,
+          "economic_importance": 0.41414246669159216
+        },
+        "features": {
+          "total_features": 85,
+          "feature_importance": {
+            "monetary_policy_pmi_manufacturing_0": 0.048228,
+            "economic_growth_trade_balance_1": 0.040409,
+            "eth_return_14d": 0.037664,
+            "consumer_business_housing_starts_1": 0.034303,
+            "monetary_policy_corporate_earnings_1": 0.033383,
+            "eth_price_ma_5": 0.031072,
+            "international_trade_industrial_production_0": 0.022935,
+            "eth_rsi_14": 0.022529,
+            "economic_growth_gdp_growth_0": 0.022508,
+            "consumer_business_retail_sales_0": 0.021999,
+            "economic_growth_interest_rates_1": 0.019801,
+            "international_trade_retail_sales_1": 0.018854,
+            "eth_return_1d": 0.01824,
+            "monetary_policy_interest_rates_0": 0.018036,
+            "eth_return_3d": 0.017737,
+            "consumer_business_interest_rates_2": 0.016544,
+            "eth_price_ma_50": 0.016156,
+            "eth_volatility_30d": 0.016151,
+            "international_trade_gdp_growth_2": 0.015768,
+            "eth_feature_47": 0.015677
+          },
+          "top_economic_features": [
+            {
+              "feature": "monetary_policy_pmi_manufacturing_0",
+              "importance": 0.048228
+            },
+            {
+              "feature": "economic_growth_trade_balance_1",
+              "importance": 0.040409
+            },
+            {
+              "feature": "consumer_business_housing_starts_1",
+              "importance": 0.034303
+            },
+            {
+              "feature": "monetary_policy_corporate_earnings_1",
+              "importance": 0.033383
+            },
+            {
+              "feature": "international_trade_industrial_production_0",
+              "importance": 0.022935
+            },
+            {
+              "feature": "economic_growth_gdp_growth_0",
+              "importance": 0.022508
+            },
+            {
+              "feature": "consumer_business_retail_sales_0",
+              "importance": 0.021999
+            },
+            {
+              "feature": "economic_growth_interest_rates_1",
+              "importance": 0.019801
+            },
+            {
+              "feature": "international_trade_retail_sales_1",
+              "importance": 0.018854
+            },
+            {
+              "feature": "monetary_policy_interest_rates_0",
+              "importance": 0.018036
+            }
+          ]
+        },
+        "confidence_level": "HIGH",
+        "status": "READY_FOR_PRODUCTION",
+        "created_at": "2025-09-09T17:54:20.203636"
+      }
+    }
+  },
+  "performance_logging_enabled": true,
+  "simulation_id": "backtest_20250916_131653_97cf51be",
+  "risk_management": {
+    "max_drawdown": 0.15,
+    "max_position_pct": 0.8,
+    "var_confidence": 0.05
+  },
+  "trading_strategy": {
+    "short_ma_period": 5,
+    "long_ma_period": 20,
+    "max_position_size": 0.1,
+    "volatility_window": 14
+  }
+}

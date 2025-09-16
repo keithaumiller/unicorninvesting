@@ -61,6 +61,7 @@ class SimulationRequest:
     strategy_template: str = "momentum"  # Default template
     algorithm_name: str = "MyportolioETHMomentum"
     parameters: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 @dataclass 
 class SimulationResult:
