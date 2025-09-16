@@ -49,8 +49,9 @@ class BaseEconomicProcessor(ABC):
         
         # Set default paths
         if raw_data_path is None:
+            # Use absolute path to avoid relative path issues
             current_dir = os.path.dirname(os.path.abspath(__file__))
-            self.raw_data_path = os.path.join(current_dir, '..', '..', '1_raw', 'data', 'economic_indicators')
+            self.raw_data_path = "/workspaces/unicorninvesting/BackendPython/unicorn/1_data_sources/1_raw/data/economic_indicators"
         else:
             self.raw_data_path = raw_data_path
             
@@ -99,7 +100,10 @@ class BaseEconomicProcessor(ABC):
         for file_path in files:
             try:
                 filename = os.path.basename(file_path)
-                df = pd.read_csv(file_path)
+                # Load CSV with index_col=0 to handle FRED-style data with date index
+                df = pd.read_csv(file_path, index_col=0)
+                # Reset index to make date column accessible for standardize_timestamps
+                df = df.reset_index()
                 data[filename] = df
                 self.logger.info(f"Loaded {filename}: {df.shape[0]} rows, {df.shape[1]} columns")
             except Exception as e:
@@ -109,7 +113,7 @@ class BaseEconomicProcessor(ABC):
     
     def standardize_timestamps(self, df: pd.DataFrame, date_column: str = 'Date') -> pd.DataFrame:
         """
-        Standardize timestamp formats and set as index.
+        Standardize timestamp formats and set as index with robust datetime parsing.
         
         Args:
             df: Input DataFrame
@@ -120,12 +124,42 @@ class BaseEconomicProcessor(ABC):
         """
         df = df.copy()
         
-        # Convert date column to datetime
+        # Handle case where first column is unnamed index column (common in FRED data)
+        if df.columns[0] == 'Unnamed: 0' or (date_column not in df.columns and len(df.columns) > 0):
+            if df.columns[0] in ['Unnamed: 0', '']:
+                df.rename(columns={df.columns[0]: 'Date'}, inplace=True)
+                date_column = 'Date'
+            else:
+                # Try to find a date-like column
+                date_cols = [col for col in df.columns if 'date' in col.lower() or 'time' in col.lower()]
+                if date_cols:
+                    date_column = date_cols[0]
+                else:
+                    # Use first column as date column
+                    date_column = df.columns[0]
+        
+        # Convert date column to datetime with multiple format attempts
         try:
+            # First try standard pandas parsing
             df[date_column] = pd.to_datetime(df[date_column])
-        except Exception as e:
-            self.logger.warning(f"Date conversion failed: {str(e)}")
-            return df
+        except Exception as e1:
+            try:
+                # Try with common FRED date formats
+                df[date_column] = pd.to_datetime(df[date_column], format='%Y-%m-%d')
+            except Exception as e2:
+                try:
+                    # Try with inference and error handling
+                    df[date_column] = pd.to_datetime(df[date_column], infer_datetime_format=True, errors='coerce')
+                    # Remove any rows where date parsing failed
+                    df = df.dropna(subset=[date_column])
+                except Exception as e3:
+                    self.logger.error(f"All date conversion attempts failed: {str(e1)}, {str(e2)}, {str(e3)}")
+                    return pd.DataFrame()  # Return empty DataFrame on failure
+        
+        # Ensure we have valid dates
+        if df.empty or df[date_column].isna().all():
+            self.logger.warning("No valid dates found after conversion")
+            return pd.DataFrame()
             
         # Set as index and sort
         df.set_index(date_column, inplace=True)
@@ -133,6 +167,9 @@ class BaseEconomicProcessor(ABC):
         
         # Remove any duplicate timestamps
         df = df[~df.index.duplicated(keep='first')]
+        
+        # Log success
+        self.logger.info(f"Successfully standardized timestamps: {len(df)} records from {df.index.min()} to {df.index.max()}")
         
         return df
     

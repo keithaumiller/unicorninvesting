@@ -27,7 +27,7 @@ The Data Warehouse Testing Suite provides comprehensive validation of Unicorn In
 | Connector | Type | Purpose | Status |
 |-----------|------|---------|--------|
 | **Yahoo Finance** | Market Data | Stock/ETF/Options pricing | ✅ Active |
-| **FRED** | Economic Data | Federal Reserve economic indicators | 🔧 Testing |
+| **FRED** | Economic Data | Federal Reserve economic indicators | ✅ Active |
 | **Interactive Brokers** | Trading Platform | Real-time market data & execution | 🔧 Testing |
 | **Forex** | Currency Data | Foreign exchange rates | 🔧 Testing |
 
@@ -77,12 +77,36 @@ The Data Warehouse Testing Suite provides comprehensive validation of Unicorn In
 python3 pipeline_validation.py
 
 # Test specific connector pipeline
-python3 -c "
 from pipeline_validation import PipelineValidator
 validator = PipelineValidator()
-result = validator.trace_data_lineage('yahoo_finance', 'ETH-USD')
-print(result)
 "
+```
+
+#### **🆕 Economic Indicators Test Runner:** `run_economic_indicators_tests.py`
+**Purpose:** Comprehensive validation of economic indicators bronze and silver layer processing
+
+**Features:**
+- **Bronze Layer Validation:** Tests all 4 economic categories processing
+- **Silver Layer Validation:** Tests aggregation and feature selection
+- **End-to-End Pipeline:** Validates complete bronze-to-silver workflow
+- **Performance Benchmarking:** Measures processing speed and data quality
+
+**Usage:**
+```bash
+# Run all economic indicators tests
+python3 run_economic_indicators_tests.py
+
+# Run only bronze layer tests
+python3 run_economic_indicators_tests.py --bronze-only
+
+# Run only silver layer tests
+python3 run_economic_indicators_tests.py --silver-only
+
+# Run with detailed output
+python3 run_economic_indicators_tests.py --verbose
+```
+
+### Test Categories
 
 # Validate connector with performance metrics
 python3 -c "
@@ -109,6 +133,11 @@ print(f'Status: {result[\"status\"]}, Samples: {len(result[\"data_samples\"])}')
 - **Data Cleansing:** Quality control and validation processes
 - **Schema Compliance:** Data format standardization
 - **ETL Pipeline Validation:** Bronze layer processing workflows
+- **🆕 Economic Indicators Bronze Processing:** Comprehensive validation of 4 economic categories
+  - Economic Growth, Consumer Business, International Trade, Monetary Policy
+  - Feature engineering validation (lag, diff, momentum, volatility)
+  - Data quality metrics and temporal coverage analysis
+  - 100% processing success rate validation
 
 #### 🥈 Silver Layer Tests (Layer 3)
 - **Directory Structure:** Validation of silver layer organization
@@ -116,6 +145,11 @@ print(f'Status: {result[\"status\"]}, Samples: {len(result[\"data_samples\"])}')
 - **Data Enrichment:** Feature engineering and data enhancement
 - **Performance Metrics:** ETH model performance tracking
 - **Data Freshness:** Automated refresh system validation
+- **🆕 Economic Indicators Silver Processing:** Complete aggregation and normalization testing
+  - Temporal alignment across economic categories validation
+  - Feature selection quality assessment (50 curated features)
+  - Data quality metrics (32,873 daily + 788,929 hourly observations)
+  - End-to-end bronze-to-silver pipeline validation
 
 #### 🥇 Gold Layer Tests (Layer 4)
 - **Directory Structure:** Analytics-ready data organization

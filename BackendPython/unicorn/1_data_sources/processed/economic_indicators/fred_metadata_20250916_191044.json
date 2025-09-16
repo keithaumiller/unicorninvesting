@@ -1,0 +1,68 @@
+{
+  "collection_timestamp": "20250916_191044",
+  "date_range": {
+    "start": "2020-09-17",
+    "end": "2025-09-16"
+  },
+  "series_count": 8,
+  "features_count": 175,
+  "observations": 26097,
+  "series_info": {
+    "FEDFUNDS": {
+      "name": "Federal Funds Rate",
+      "category": "monetary_policy",
+      "priority": 1,
+      "frequency": "Monthly",
+      "description": "Effective Federal Funds Rate"
+    },
+    "DFF": {
+      "name": "Daily Federal Funds Rate",
+      "category": "monetary_policy",
+      "priority": 1,
+      "frequency": "Daily",
+      "description": "Effective Federal Funds Rate (Daily)"
+    },
+    "M2SL": {
+      "name": "M2 Money Supply",
+      "category": "monetary_policy",
+      "priority": 1,
+      "frequency": "Monthly",
+      "description": "M2 Money Stock"
+    },
+    "CPIAUCSL": {
+      "name": "Consumer Price Index",
+      "category": "inflation",
+      "priority": 1,
+      "frequency": "Monthly",
+      "description": "Consumer Price Index for All Urban Consumers: All Items"
+    },
+    "CPILFESL": {
+      "name": "Core CPI",
+      "category": "inflation",
+      "priority": 1,
+      "frequency": "Monthly",
+      "description": "Consumer Price Index: All Items Less Food & Energy"
+    },
+    "DGS10": {
+      "name": "10-Year Treasury",
+      "category": "interest_rates",
+      "priority": 1,
+      "frequency": "Daily",
+      "description": "10-Year Treasury Constant Maturity Rate"
+    },
+    "DGS2": {
+      "name": "2-Year Treasury",
+      "category": "interest_rates",
+      "priority": 1,
+      "frequency": "Daily",
+      "description": "2-Year Treasury Constant Maturity Rate"
+    },
+    "DGS5": {
+      "name": "5-Year Treasury",
+      "category": "interest_rates",
+      "priority": 1,
+      "frequency": "Daily",
+      "description": "5-Year Treasury Constant Maturity Rate"
+    }
+  }
+}

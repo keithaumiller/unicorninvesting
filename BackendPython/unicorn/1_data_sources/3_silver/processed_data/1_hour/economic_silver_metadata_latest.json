@@ -1,0 +1,43 @@
+{
+  "processing_timestamp": "2025-09-16T19:54:18.686632",
+  "total_features": 50,
+  "total_observations": 788929,
+  "date_range": {
+    "start": "2010-01-01T00:00:00",
+    "end": "2100-01-01T00:00:00"
+  },
+  "categories": {
+    "economic_growth": {
+      "feature_count": 0,
+      "features": []
+    },
+    "consumer_business": {
+      "feature_count": 0,
+      "features": []
+    },
+    "international_trade": {
+      "feature_count": 50,
+      "features": [
+        "international_trade_trade_balance_datavalue_diff_12",
+        "international_trade_trade_balance_datavalue_diff_6",
+        "international_trade_trade_balance_datavalue_diff_3",
+        "international_trade_trade_balance_datavalue",
+        "international_trade_trade_trend_12m_mean_24",
+        "international_trade_trade_trend_6m_diff_12",
+        "international_trade_trade_trend_12m_diff_12",
+        "international_trade_trade_trend_6m_diff_6",
+        "international_trade_trade_balance_datavalue_diff_1",
+        "international_trade_trade_trend_12m_diff_6"
+      ]
+    },
+    "monetary_policy": {
+      "feature_count": 0,
+      "features": []
+    }
+  },
+  "data_quality": {
+    "missing_data_percentage": 0.0,
+    "numeric_features": 50,
+    "categorical_features": 0
+  }
+}
