@@ -1,0 +1,27 @@
+{
+  "asset": "USDCHF",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_143711",
+  "metrics": {
+    "r2": -0.11736683953609939,
+    "mae": 0.002266220207028671,
+    "mse": 6.757982270624271e-06,
+    "features_used": 3,
+    "training_records": 296,
+    "validation_records": 74,
+    "train_r2": 0.9254601354016009,
+    "validation_r2": -0.11736683953609939,
+    "overfitting_gap": 1.0428269749377002,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Simple leak-free forex models with basic features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_5"
+    ],
+    "expected_count": 3
+  }
+}

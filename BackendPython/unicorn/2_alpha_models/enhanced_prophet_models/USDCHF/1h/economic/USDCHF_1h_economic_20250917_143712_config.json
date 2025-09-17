@@ -1,0 +1,31 @@
+{
+  "asset": "USDCHF",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_143712",
+  "metrics": {
+    "r2": -0.00016807884935232664,
+    "mae": 0.002300441109903136,
+    "mse": 6.0491486818370804e-06,
+    "features_used": 7,
+    "training_records": 296,
+    "validation_records": 74,
+    "train_r2": 0.9392156144847729,
+    "validation_r2": -0.00016807884935232664,
+    "overfitting_gap": 0.9393836933341252,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Economic-focused leak-free forex models",
+    "features": [
+      "market_session",
+      "volatility_regime",
+      "return_regime",
+      "momentum_lag_20",
+      "volatility_lag_20",
+      "hour_sin",
+      "day_sin"
+    ],
+    "expected_count": 7
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "asset": "GBPUSD",
+  "interval": "1d",
+  "variant": "ensemble",
+  "timestamp": "20250917_143706",
+  "metrics": {
+    "r2": -29.199887125787242,
+    "mae": 0.03797479457494026,
+    "mse": 0.001768816509934139,
+    "features_used": 8,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9733584666679449,
+    "validation_r2": -29.199887125787242,
+    "overfitting_gap": 30.17324559245519,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Hybrid leak-free forex models with balanced feature set",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin",
+      "day_sin",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 8
+  }
+}

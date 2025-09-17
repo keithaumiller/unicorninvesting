@@ -1,0 +1,31 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_143715",
+  "metrics": {
+    "r2": -2.132526998418558,
+    "mae": 0.45096798372968716,
+    "mse": 0.2781731314663549,
+    "features_used": 7,
+    "training_records": 296,
+    "validation_records": 74,
+    "train_r2": 0.9217335529287397,
+    "validation_r2": -2.132526998418558,
+    "overfitting_gap": 3.054260551347298,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Economic-focused leak-free forex models",
+    "features": [
+      "market_session",
+      "volatility_regime",
+      "return_regime",
+      "momentum_lag_20",
+      "volatility_lag_20",
+      "hour_sin",
+      "day_sin"
+    ],
+    "expected_count": 7
+  }
+}

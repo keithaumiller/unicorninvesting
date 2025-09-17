@@ -1,0 +1,30 @@
+{
+  "asset": "USDCHF",
+  "interval": "1d",
+  "variant": "standard",
+  "timestamp": "20250917_143713",
+  "metrics": {
+    "r2": -2.032336830465707,
+    "mae": 0.005803947400895982,
+    "mse": 4.61820711409459e-05,
+    "features_used": 6,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9804067189741046,
+    "validation_r2": -2.032336830465707,
+    "overfitting_gap": 3.0127435494398114,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Balanced leak-free forex models with time and lagged features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin"
+    ],
+    "expected_count": 6
+  }
+}

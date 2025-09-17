@@ -1,0 +1,27 @@
+{
+  "asset": "EURUSD",
+  "interval": "1d",
+  "variant": "conservative",
+  "timestamp": "20250917_143703",
+  "metrics": {
+    "r2": -10.241518346998257,
+    "mae": 0.012839081860670256,
+    "mse": 0.0002166451950577572,
+    "features_used": 3,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9646730976628932,
+    "validation_r2": -10.241518346998257,
+    "overfitting_gap": 11.206191444661151,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Simple leak-free forex models with basic features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_5"
+    ],
+    "expected_count": 3
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_143714",
+  "metrics": {
+    "r2": -8.443052923429187,
+    "mae": 0.7840091953727562,
+    "mse": 0.8385573703399665,
+    "features_used": 14,
+    "training_records": 296,
+    "validation_records": 74,
+    "train_r2": 0.9368146552166424,
+    "validation_r2": -8.443052923429187,
+    "overfitting_gap": 9.379867578645829,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Complex leak-free forex models with full feature suite",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "returns_lag_5",
+      "volatility_lag_20",
+      "volatility_lag_5",
+      "momentum_lag_10",
+      "momentum_lag_20",
+      "hour_sin",
+      "hour_cos",
+      "day_sin",
+      "day_cos",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 14
+  }
+}

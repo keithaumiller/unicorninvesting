@@ -1,0 +1,31 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_143703",
+  "metrics": {
+    "r2": 0.05313952162659241,
+    "mae": 0.0023015596533745965,
+    "mse": 7.3512578447611855e-06,
+    "features_used": 7,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9070035845362673,
+    "validation_r2": 0.05313952162659241,
+    "overfitting_gap": 0.8538640629096749,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Economic-focused leak-free forex models",
+    "features": [
+      "market_session",
+      "volatility_regime",
+      "return_regime",
+      "momentum_lag_20",
+      "volatility_lag_20",
+      "hour_sin",
+      "day_sin"
+    ],
+    "expected_count": 7
+  }
+}

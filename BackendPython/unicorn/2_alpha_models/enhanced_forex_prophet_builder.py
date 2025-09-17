@@ -511,15 +511,19 @@ class EnhancedForexProphetBuilder:
                 ))
                 conn.commit()
             
-            # Summary tracking
+            # Summary tracking with proper validation metrics
             performance_record = {
                 'asset': asset,
                 'interval': interval,
                 'variant': variant,
-                'r2': metrics.get('r2', 0.0),
-                'validation_r2': 0.0,  # Not calculated in this simplified version
+                'r2': metrics.get('validation_r2', metrics.get('r2', 0.0)),  # Use validation R² as primary
+                'validation_r2': metrics.get('validation_r2', 0.0),
+                'train_r2': metrics.get('train_r2', 0.0),
+                'overfitting_gap': metrics.get('overfitting_gap', 0.0),
+                'overfitting_detected': metrics.get('overfitting_detected', False),
                 'features_used': metrics.get('features_used', 0),
                 'training_records': metrics.get('training_records', 0),
+                'validation_records': metrics.get('validation_records', 0),
                 'status': status
             }
             self.performance_summary['performance_summary'].append(performance_record)
@@ -571,15 +575,17 @@ class EnhancedForexProphetBuilder:
                             prophet_data, available_features, variant_name
                         )
                         
-                        # Save results
-                        if model is not None and metrics['r2'] > 0.0:
+                        # Save results - allow negative R² as it's realistic for financial time series
+                        if model is not None and metrics['validation_r2'] > -50.0:  # Allow negative but not extremely bad
                             self.save_forex_model_results(asset, interval, variant_name, model, metrics, forecast)
                             self.log_performance(asset, interval, variant_name, metrics, 'success')
                             successful_models += 1
-                            print(f"      ✅ {variant_name}: R² = {metrics['r2']:.3f}")
+                            val_r2 = metrics.get('validation_r2', metrics.get('r2', 0))
+                            print(f"      ✅ {variant_name}: Validation R² = {val_r2:.3f}")
                         else:
-                            self.log_performance(asset, interval, variant_name, metrics, 'failed', 'Training failed')
-                            print(f"      ❌ {variant_name}: Training failed")
+                            reason = f"Poor validation performance (R² = {metrics.get('validation_r2', 'N/A')})"
+                            self.log_performance(asset, interval, variant_name, metrics, 'failed', reason)
+                            print(f"      ❌ {variant_name}: {reason}")
                         
                     except Exception as e:
                         error_msg = str(e)

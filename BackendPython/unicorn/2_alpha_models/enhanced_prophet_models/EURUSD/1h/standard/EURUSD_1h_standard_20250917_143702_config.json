@@ -1,0 +1,30 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_143702",
+  "metrics": {
+    "r2": -11.755279157705122,
+    "mae": 0.009321737408366738,
+    "mse": 9.902973892339413e-05,
+    "features_used": 6,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9216439182369863,
+    "validation_r2": -11.755279157705122,
+    "overfitting_gap": 12.676923075942108,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Balanced leak-free forex models with time and lagged features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin"
+    ],
+    "expected_count": 6
+  }
+}

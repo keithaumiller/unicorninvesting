@@ -1,0 +1,38 @@
+{
+  "asset": "NZDUSD",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_143707",
+  "metrics": {
+    "r2": -43.88601325732723,
+    "mae": 0.005326392257415623,
+    "mse": 3.373977951907149e-05,
+    "features_used": 14,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9578080050143618,
+    "validation_r2": -43.88601325732723,
+    "overfitting_gap": 44.84382126234159,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Complex leak-free forex models with full feature suite",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "returns_lag_5",
+      "volatility_lag_20",
+      "volatility_lag_5",
+      "momentum_lag_10",
+      "momentum_lag_20",
+      "hour_sin",
+      "hour_cos",
+      "day_sin",
+      "day_cos",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 14
+  }
+}

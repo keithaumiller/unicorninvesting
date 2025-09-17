@@ -1,0 +1,30 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_143709",
+  "metrics": {
+    "r2": -0.49552969276949654,
+    "mae": 0.0031303838923468627,
+    "mse": 1.1170968255658294e-05,
+    "features_used": 6,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9733059152062231,
+    "validation_r2": -0.49552969276949654,
+    "overfitting_gap": 1.4688356079757197,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Balanced leak-free forex models with time and lagged features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin"
+    ],
+    "expected_count": 6
+  }
+}

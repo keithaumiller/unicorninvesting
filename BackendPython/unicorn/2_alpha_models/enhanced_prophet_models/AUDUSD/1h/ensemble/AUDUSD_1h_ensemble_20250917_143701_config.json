@@ -1,0 +1,32 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1h",
+  "variant": "ensemble",
+  "timestamp": "20250917_143701",
+  "metrics": {
+    "r2": -30.725958182184765,
+    "mae": 0.006083116303292777,
+    "mse": 4.603683818102068e-05,
+    "features_used": 8,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9756551721533603,
+    "validation_r2": -30.725958182184765,
+    "overfitting_gap": 31.701613354338125,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Hybrid leak-free forex models with balanced feature set",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin",
+      "day_sin",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 8
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_143700",
+  "metrics": {
+    "r2": 0.24989226693347577,
+    "mae": 0.0008359678155273557,
+    "mse": 1.0884647873269622e-06,
+    "features_used": 7,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9760011283917265,
+    "validation_r2": 0.24989226693347577,
+    "overfitting_gap": 0.7261088614582507,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Economic-focused leak-free forex models",
+    "features": [
+      "market_session",
+      "volatility_regime",
+      "return_regime",
+      "momentum_lag_20",
+      "volatility_lag_20",
+      "hour_sin",
+      "day_sin"
+    ],
+    "expected_count": 7
+  }
+}

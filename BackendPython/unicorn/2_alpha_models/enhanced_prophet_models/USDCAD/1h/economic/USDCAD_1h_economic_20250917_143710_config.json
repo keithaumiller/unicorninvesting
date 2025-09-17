@@ -1,0 +1,31 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_143710",
+  "metrics": {
+    "r2": 0.7834946253746533,
+    "mae": 0.00102806782383207,
+    "mse": 1.6172027067147815e-06,
+    "features_used": 7,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.970917918620965,
+    "validation_r2": 0.7834946253746533,
+    "overfitting_gap": 0.18742329324631168,
+    "overfitting_detected": false
+  },
+  "variant_config": {
+    "description": "Economic-focused leak-free forex models",
+    "features": [
+      "market_session",
+      "volatility_regime",
+      "return_regime",
+      "momentum_lag_20",
+      "volatility_lag_20",
+      "hour_sin",
+      "day_sin"
+    ],
+    "expected_count": 7
+  }
+}

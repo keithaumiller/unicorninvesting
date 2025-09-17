@@ -1,0 +1,27 @@
+{
+  "asset": "GBPUSD",
+  "interval": "1d",
+  "variant": "conservative",
+  "timestamp": "20250917_143706",
+  "metrics": {
+    "r2": -26.523788976754094,
+    "mae": 0.035847366568744876,
+    "mse": 0.001612076633109496,
+    "features_used": 3,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9608158579525439,
+    "validation_r2": -26.523788976754094,
+    "overfitting_gap": 27.484604834706637,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Simple leak-free forex models with basic features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_5"
+    ],
+    "expected_count": 3
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_143709",
+  "metrics": {
+    "r2": 0.23206040160603403,
+    "mae": 0.0020381557344674424,
+    "mse": 5.736180911283439e-06,
+    "features_used": 3,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9655192336803504,
+    "validation_r2": 0.23206040160603403,
+    "overfitting_gap": 0.7334588320743164,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Simple leak-free forex models with basic features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "volatility_lag_5"
+    ],
+    "expected_count": 3
+  }
+}

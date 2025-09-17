@@ -1,0 +1,30 @@
+{
+  "asset": "NZDUSD",
+  "interval": "1d",
+  "variant": "standard",
+  "timestamp": "20250917_143708",
+  "metrics": {
+    "r2": 0.20309503167225784,
+    "mae": 0.0031873961536607004,
+    "mse": 1.344053830332131e-05,
+    "features_used": 6,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9417635451456624,
+    "validation_r2": 0.20309503167225784,
+    "overfitting_gap": 0.7386685134734046,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Balanced leak-free forex models with time and lagged features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin"
+    ],
+    "expected_count": 6
+  }
+}

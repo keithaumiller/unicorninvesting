@@ -1,0 +1,30 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1d",
+  "variant": "standard",
+  "timestamp": "20250917_143701",
+  "metrics": {
+    "r2": 0.10839301398864565,
+    "mae": 0.003167432932396113,
+    "mse": 1.708073043947995e-05,
+    "features_used": 6,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.918420189013067,
+    "validation_r2": 0.10839301398864565,
+    "overfitting_gap": 0.8100271750244213,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Balanced leak-free forex models with time and lagged features",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "volatility_lag_20",
+      "momentum_lag_10",
+      "hour_sin"
+    ],
+    "expected_count": 6
+  }
+}

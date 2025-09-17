@@ -1,0 +1,38 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_143703",
+  "metrics": {
+    "r2": -7.441642051565459,
+    "mae": 0.007403643623473392,
+    "mse": 6.553942082453628e-05,
+    "features_used": 14,
+    "training_records": 297,
+    "validation_records": 75,
+    "train_r2": 0.9320001965565672,
+    "validation_r2": -7.441642051565459,
+    "overfitting_gap": 8.373642248122026,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Complex leak-free forex models with full feature suite",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "returns_lag_5",
+      "volatility_lag_20",
+      "volatility_lag_5",
+      "momentum_lag_10",
+      "momentum_lag_20",
+      "hour_sin",
+      "hour_cos",
+      "day_sin",
+      "day_cos",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 14
+  }
+}

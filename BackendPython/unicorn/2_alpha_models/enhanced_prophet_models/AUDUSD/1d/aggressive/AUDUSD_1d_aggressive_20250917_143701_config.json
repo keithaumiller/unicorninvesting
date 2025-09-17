@@ -1,0 +1,38 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1d",
+  "variant": "aggressive",
+  "timestamp": "20250917_143701",
+  "metrics": {
+    "r2": -0.029474727352881924,
+    "mae": 0.003332041723887994,
+    "mse": 1.9721896068620264e-05,
+    "features_used": 14,
+    "training_records": 115,
+    "validation_records": 29,
+    "train_r2": 0.9457458320367813,
+    "validation_r2": -0.029474727352881924,
+    "overfitting_gap": 0.9752205593896632,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Complex leak-free forex models with full feature suite",
+    "features": [
+      "market_session",
+      "returns_lag_1",
+      "returns_lag_2",
+      "returns_lag_5",
+      "volatility_lag_20",
+      "volatility_lag_5",
+      "momentum_lag_10",
+      "momentum_lag_20",
+      "hour_sin",
+      "hour_cos",
+      "day_sin",
+      "day_cos",
+      "volatility_regime",
+      "return_regime"
+    ],
+    "expected_count": 14
+  }
+}
