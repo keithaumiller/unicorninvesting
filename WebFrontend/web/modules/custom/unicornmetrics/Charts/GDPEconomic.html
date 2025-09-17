@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDP Economic Network - Progressive Discovery</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #AEC6CF;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #bdc3c7;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        select, button, input[type="range"] {
+            padding: 8px 12px;
+            background: rgba(236, 240, 241, 0.1);
+            border: 1px solid rgba(174, 198, 207, 0.3);
+            border-radius: 8px;
+            color: #ecf0f1;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        select:hover, button:hover {
+            background: rgba(174, 198, 207, 0.2);
+            border-color: rgba(174, 198, 207, 0.5);
+        }
+        
+        button {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: rgba(174, 198, 207, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(174, 198, 207, 0.2);
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            width: 150px;
+            background: rgba(174, 198, 207, 0.1);
+        }
+        
+        .chart-container {
+            background: rgba(44, 62, 80, 0.3);
+            border-radius: 16px;
+            border: 1px solid rgba(174, 198, 207, 0.2);
+            position: relative;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            background: rgba(44, 62, 80, 0.9);
+            border: 1px solid rgba(174, 198, 207, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 300px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .legend {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(44, 62, 80, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(174, 198, 207, 0.2);
+            font-size: 12px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .legend h4 {
+            margin: 0 0 10px 0;
+            color: #AEC6CF;
+        }
+        
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(44, 62, 80, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(174, 198, 207, 0.2);
+            font-size: 12px;
+            max-width: 300px;
+            display: none;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .focus-indicator {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: rgba(174, 198, 207, 0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: 1px solid rgba(174, 198, 207, 0.3);
+            backdrop-filter: blur(15px);
+            display: none;
+        }
+        
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .node:hover {
+            stroke-width: 3px;
+            filter: drop-shadow(0 4px 8px rgba(174, 198, 207, 0.4));
+        }
+        
+        .node.selected {
+            stroke: #FFB7C5;
+            stroke-width: 4px;
+            filter: drop-shadow(0 0 12px rgba(255, 183, 197, 0.6));
+        }
+        
+        .node.dimmed {
+            opacity: 0.3;
+            filter: none;
+        }
+        
+        .node.focused-center {
+            stroke: #FF6B6B;
+            stroke-width: 5px;
+            filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.8));
+        }
+        
+        .link {
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        }
+        
+        .link.dimmed {
+            opacity: 0.1;
+            filter: none;
+        }
+        
+        .link.highlighted {
+            stroke-width: 4px;
+            opacity: 0.9;
+            filter: drop-shadow(0 2px 6px rgba(174, 198, 207, 0.4));
+        }
+        
+        .curved-link {
+            fill: none;
+            stroke-dasharray: 3,3;
+            opacity: 0.6;
+        }
+        
+        .node-label {
+            pointer-events: none;
+            text-anchor: middle;
+            font-size: 10px;
+            fill: #ecf0f1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            font-weight: 500;
+        }
+        
+        .status-bar {
+            text-align: center;
+            margin-top: 15px;
+            color: #bdc3c7;
+            font-size: 14px;
+            padding: 10px;
+            background: rgba(44, 62, 80, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(174, 198, 207, 0.2);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GDP Economic Network - Progressive Discovery</h1>
+        <p class="subtitle">Start with Core & Supporting indicators • Click any node to explore its 2-degree network • Ordered by predictive lead time</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>View Mode:</label>
+                <select id="viewMode">
+                    <option value="overview">Overview (Tiers 1-2)</option>
+                    <option value="focused">Focused Network</option>
+                    <option value="all">All Tiers (Power User)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Institution:</label>
+                <select id="institutionFilter">
+                    <option value="">All Institutions</option>
+                    <option value="Bureau of Economic Analysis">Bureau of Economic Analysis</option>
+                    <option value="Federal Reserve">Federal Reserve</option>
+                    <option value="Bureau of Labor Statistics">Bureau of Labor Statistics</option>
+                    <option value="Census Bureau">Census Bureau</option>
+                    <option value="Private Sources">Private/Alternative Sources</option>
+                </select>
+            </div>
+            
+            <div class="slider-container">
+                <label>Min Strength:</label>
+                <input type="range" id="strengthSlider" min="0.1" max="1.0" step="0.05" value="0.1">
+                <span id="strengthValue">0.1</span>
+            </div>
+            
+            <div class="control-group">
+                <button id="resetView">Reset View</button>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <svg id="networkChart" width="1400" height="800"></svg>
+            
+            <div class="legend">
+                <h4>Progressive Discovery</h4>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #A8E6CF;"></div>
+                    <span>Tier 1 (Core Indicators)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #C7CEEA;"></div>
+                    <span>Tier 2 (Supporting)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FFCAB0;"></div>
+                    <span>Tier 3 (Foundation)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #F7CAC9;"></div>
+                    <span>Tier 4 (Raw Inputs)</span>
+                </div>
+                <div style="margin-top: 15px; font-size: 11px; line-height: 1.4;">
+                    <div><strong>Overview:</strong> Core + Supporting</div>
+                    <div><strong>Click Node:</strong> 2-degree network</div>
+                    <div><strong>Lead Time:</strong> Left → Right</div>
+                    <div><strong>Red Border:</strong> Focus Center</div>
+                </div>
+            </div>
+            
+            <div class="focus-indicator" id="focusIndicator">
+                <div id="focusInfo"></div>
+            </div>
+            
+            <div class="info-panel" id="infoPanel">
+                <div id="nodeInfo"></div>
+            </div>
+            
+            <div class="tooltip" id="tooltip"></div>
+        </div>
+        
+        <div class="status-bar" id="statusBar">
+            Showing overview with core & supporting indicators • Click any node to explore its neighborhood • Use View Mode to change perspective
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive Economic network data with 4-tier system
+        const networkData = {
+            nodes: [
+                // TIER 1 - Core Economic Indicators
+                {
+                    id: "gdp", name: "Gross Domestic Product", category: "macro_aggregate", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 100, organization: "Bureau of Economic Analysis", tier: 1
+                },
+                {
+                    id: "consumption", name: "Personal Consumption", category: "gdp_component", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 68, organization: "Bureau of Economic Analysis", tier: 1
+                },
+                {
+                    id: "employment_rate", name: "Employment Rate", category: "labor_market", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 95.7, gdp_weight: 15, organization: "Bureau of Labor Statistics", tier: 1
+                },
+                {
+                    id: "federal_funds_rate", name: "Federal Funds Rate", category: "monetary_policy", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 95.3, gdp_weight: 20, organization: "Federal Reserve", tier: 1
+                },
+                {
+                    id: "consumer_confidence", name: "Consumer Confidence", category: "sentiment", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 88.3, gdp_weight: 10, organization: "Conference Board", tier: 1
+                },
+                {
+                    id: "business_investment", name: "Business Investment", category: "gdp_component", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 18, organization: "Bureau of Economic Analysis", tier: 1
+                },
+                {
+                    id: "housing_starts", name: "Housing Starts", category: "housing", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 92.8, gdp_weight: 4, organization: "Census Bureau", tier: 1
+                },
+                {
+                    id: "industrial_production", name: "Industrial Production", category: "production", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 95.3, gdp_weight: 12, organization: "Federal Reserve", tier: 1
+                },
+                {
+                    id: "inflation_cpi", name: "Consumer Price Index", category: "prices", indicator_type: "lagging",
+                    quality_tier: "tier_1", composite_score: 95.7, gdp_weight: 15, organization: "Bureau of Labor Statistics", tier: 1
+                },
+                {
+                    id: "stock_market", name: "Stock Market Index", category: "financial_markets", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 90.0, gdp_weight: 8, organization: "Private Sources", tier: 1
+                },
+
+                // TIER 2 - Supporting Indicators
+                {
+                    id: "real_disposable_income", name: "Real Disposable Income", category: "income", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 35, organization: "Bureau of Economic Analysis", tier: 2
+                },
+                {
+                    id: "personal_savings_rate", name: "Personal Savings Rate", category: "household_finance", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 25, organization: "Bureau of Economic Analysis", tier: 2
+                },
+                {
+                    id: "initial_jobless_claims", name: "Initial Jobless Claims", category: "labor_market", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 94.5, gdp_weight: 10, organization: "Department of Labor", tier: 2
+                },
+                {
+                    id: "money_supply_m2", name: "Money Supply M2", category: "monetary_policy", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 95.3, gdp_weight: 18, organization: "Federal Reserve", tier: 2
+                },
+                {
+                    id: "consumer_credit", name: "Consumer Credit Outstanding", category: "household_finance", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 95.3, gdp_weight: 15, organization: "Federal Reserve", tier: 2
+                },
+                {
+                    id: "pmi_manufacturing", name: "PMI Manufacturing", category: "sentiment", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 87.8, gdp_weight: 12, organization: "Institute for Supply Management", tier: 2
+                },
+                {
+                    id: "wage_growth", name: "Wage Growth", category: "labor_market", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 95.7, gdp_weight: 8, organization: "Bureau of Labor Statistics", tier: 2
+                },
+                {
+                    id: "mortgage_rates", name: "Mortgage Rates", category: "housing", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 90.5, gdp_weight: 8, organization: "Private Sources", tier: 2
+                },
+                {
+                    id: "corporate_profits", name: "Corporate Profits", category: "business_finance", indicator_type: "lagging",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 15, organization: "Bureau of Economic Analysis", tier: 2
+                },
+                {
+                    id: "vehicle_sales", name: "Motor Vehicle Sales", category: "consumption", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 96.8, gdp_weight: 6, organization: "Bureau of Economic Analysis", tier: 2
+                },
+
+                // TIER 3 - Foundation Layer
+                {
+                    id: "working_age_population", name: "Working Age Population", category: "demographics", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 97.0, gdp_weight: 30, organization: "Census Bureau", tier: 3
+                },
+                {
+                    id: "educational_attainment", name: "Educational Attainment", category: "demographics", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 88.0, gdp_weight: 15, organization: "Department of Education", tier: 3
+                },
+                {
+                    id: "credit_card_spending", name: "Real-time Credit Card Spending", category: "real_time_data", indicator_type: "leading",
+                    quality_tier: "tier_3", composite_score: 78.0, gdp_weight: 20, organization: "Private Sources", tier: 3
+                },
+                {
+                    id: "small_business_optimism", name: "Small Business Optimism", category: "sentiment", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 86.3, gdp_weight: 18, organization: "Private Sources", tier: 3
+                },
+                {
+                    id: "energy_consumption", name: "Energy Consumption", category: "activity_proxy", indicator_type: "coincident",
+                    quality_tier: "tier_2", composite_score: 89.0, gdp_weight: 12, organization: "Energy Information Administration", tier: 3
+                },
+
+                // TIER 4 - Raw Input Data (Selected key inputs)
+                
+                // GDP Raw Inputs
+                {
+                    id: "quarterly_earnings", name: "Quarterly Corporate Earnings", category: "financial_data", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 94.0, gdp_weight: 5, organization: "SEC Filings", tier: 4, feeds_into: "gdp"
+                },
+                {
+                    id: "retail_sales_monthly", name: "Monthly Retail Sales", category: "consumption_data", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 95.0, gdp_weight: 4, organization: "Census Bureau", tier: 4, feeds_into: "gdp"
+                },
+                {
+                    id: "manufacturing_shipments", name: "Manufacturing Shipments", category: "production_data", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 93.0, gdp_weight: 3, organization: "Census Bureau", tier: 4, feeds_into: "gdp"
+                },
+                {
+                    id: "services_revenue", name: "Services Sector Revenue", category: "services_data", indicator_type: "coincident",
+                    quality_tier: "tier_2", composite_score: 88.0, gdp_weight: 4, organization: "Census Bureau", tier: 4, feeds_into: "gdp"
+                },
+                {
+                    id: "construction_spending", name: "Construction Spending", category: "investment_data", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 92.0, gdp_weight: 3, organization: "Census Bureau", tier: 4, feeds_into: "gdp"
+                },
+
+                // Consumption Raw Inputs
+                {
+                    id: "personal_income_monthly", name: "Monthly Personal Income", category: "income_data", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 96.0, gdp_weight: 8, organization: "Bureau of Economic Analysis", tier: 4, feeds_into: "consumption"
+                },
+                {
+                    id: "consumer_spending_categories", name: "Consumer Spending by Category", category: "expenditure_data", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 95.0, gdp_weight: 7, organization: "Bureau of Economic Analysis", tier: 4, feeds_into: "consumption"
+                },
+                {
+                    id: "household_wealth", name: "Household Net Worth", category: "wealth_data", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 93.0, gdp_weight: 6, organization: "Federal Reserve", tier: 4, feeds_into: "consumption"
+                },
+                {
+                    id: "consumer_price_expectations", name: "Consumer Price Expectations", category: "expectation_data", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 85.0, gdp_weight: 4, organization: "University of Michigan", tier: 4, feeds_into: "consumption"
+                },
+                {
+                    id: "consumer_balance_sheets", name: "Consumer Balance Sheet Health", category: "financial_health", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 91.0, gdp_weight: 5, organization: "Federal Reserve", tier: 4, feeds_into: "consumption"
+                },
+
+                // Employment Raw Inputs
+                {
+                    id: "job_openings_jolts", name: "Job Openings (JOLTS)", category: "labor_demand", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 95.0, gdp_weight: 6, organization: "Bureau of Labor Statistics", tier: 4, feeds_into: "employment_rate"
+                },
+                {
+                    id: "continuing_claims", name: "Continuing Unemployment Claims", category: "labor_supply", indicator_type: "coincident",
+                    quality_tier: "tier_1", composite_score: 94.0, gdp_weight: 5, organization: "Department of Labor", tier: 4, feeds_into: "employment_rate"
+                },
+                {
+                    id: "labor_force_participation", name: "Labor Force Participation Rate", category: "labor_supply", indicator_type: "leading",
+                    quality_tier: "tier_1", composite_score: 96.0, gdp_weight: 7, organization: "Bureau of Labor Statistics", tier: 4, feeds_into: "employment_rate"
+                },
+                {
+                    id: "online_job_postings", name: "Online Job Postings Index", category: "digital_labor_data", indicator_type: "leading",
+                    quality_tier: "tier_3", composite_score: 82.0, gdp_weight: 4, organization: "Private Sources", tier: 4, feeds_into: "employment_rate"
+                },
+                {
+                    id: "hiring_announcements", name: "Corporate Hiring Announcements", category: "labor_intentions", indicator_type: "leading",
+                    quality_tier: "tier_3", composite_score: 78.0, gdp_weight: 3, organization: "Private Sources", tier: 4, feeds_into: "employment_rate"
+                },
+
+                // Federal Funds Rate Raw Inputs
+                {
+                    id: "fed_meeting_minutes", name: "Fed Meeting Minutes Sentiment", category: "policy_communication", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 88.0, gdp_weight: 4, organization: "Federal Reserve", tier: 4, feeds_into: "federal_funds_rate"
+                },
+                {
+                    id: "core_pce_inflation", name: "Core PCE Inflation", category: "price_data", indicator_type: "lagging",
+                    quality_tier: "tier_1", composite_score: 96.0, gdp_weight: 8, organization: "Bureau of Economic Analysis", tier: 4, feeds_into: "federal_funds_rate"
+                },
+                {
+                    id: "market_inflation_expectations", name: "Market-Based Inflation Expectations", category: "market_expectations", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 89.0, gdp_weight: 5, organization: "Private Sources", tier: 4, feeds_into: "federal_funds_rate"
+                },
+                {
+                    id: "financial_conditions_index", name: "Financial Conditions Index", category: "financial_stability", indicator_type: "leading",
+                    quality_tier: "tier_2", composite_score: 87.0, gdp_weight: 6, organization: "Federal Reserve", tier: 4, feeds_into: "federal_funds_rate"
+                },
+                {
+                    id: "unemployment_rate_trend", name: "Unemployment Rate Trend", category: "labor_conditions", indicator_type: "lagging",
+                    quality_tier: "tier_1", composite_score: 95.0, gdp_weight: 7, organization: "Bureau of Labor Statistics", tier: 4, feeds_into: "federal_funds_rate"
+                }
+            ],
+            
+            relationships: [
+                // TIER 1 Core relationships
+                {source: "consumption", target: "gdp", strength: 0.95, time_lag_months: 0, direction: "positive"},
+                {source: "business_investment", target: "gdp", strength: 0.85, time_lag_months: 1, direction: "positive"},
+                {source: "housing_starts", target: "gdp", strength: 0.60, time_lag_months: 6, direction: "positive"},
+                {source: "industrial_production", target: "gdp", strength: 0.75, time_lag_months: 0, direction: "positive"},
+                
+                {source: "employment_rate", target: "consumption", strength: 0.85, time_lag_months: 2, direction: "positive"},
+                {source: "consumer_confidence", target: "consumption", strength: 0.75, time_lag_months: 3, direction: "positive"},
+                {source: "federal_funds_rate", target: "consumption", strength: 0.70, time_lag_months: 6, direction: "negative"},
+                {source: "stock_market", target: "consumption", strength: 0.50, time_lag_months: 3, direction: "positive"},
+                
+                {source: "federal_funds_rate", target: "business_investment", strength: 0.85, time_lag_months: 9, direction: "negative"},
+                {source: "federal_funds_rate", target: "stock_market", strength: 0.65, time_lag_months: 0, direction: "negative"},
+                {source: "inflation_cpi", target: "federal_funds_rate", strength: 0.80, time_lag_months: 2, direction: "positive"},
+                {source: "employment_rate", target: "federal_funds_rate", strength: 0.70, time_lag_months: 3, direction: "negative"},
+                
+                // TIER 2 Supporting relationships
+                {source: "real_disposable_income", target: "consumption", strength: 0.90, time_lag_months: 1, direction: "positive"},
+                {source: "personal_savings_rate", target: "consumption", strength: 0.80, time_lag_months: 3, direction: "negative"},
+                {source: "consumer_credit", target: "consumption", strength: 0.75, time_lag_months: 1, direction: "positive"},
+                {source: "vehicle_sales", target: "consumption", strength: 0.85, time_lag_months: 0, direction: "positive"},
+                
+                {source: "initial_jobless_claims", target: "employment_rate", strength: 0.85, time_lag_months: 1, direction: "negative"},
+                {source: "wage_growth", target: "employment_rate", strength: 0.75, time_lag_months: 1, direction: "positive"},
+                {source: "wage_growth", target: "real_disposable_income", strength: 0.80, time_lag_months: 1, direction: "positive"},
+                
+                {source: "money_supply_m2", target: "federal_funds_rate", strength: 0.65, time_lag_months: 6, direction: "negative"},
+                {source: "pmi_manufacturing", target: "industrial_production", strength: 0.85, time_lag_months: 2, direction: "positive"},
+                {source: "mortgage_rates", target: "housing_starts", strength: 0.75, time_lag_months: 4, direction: "negative"},
+                {source: "corporate_profits", target: "business_investment", strength: 0.80, time_lag_months: 6, direction: "positive"},
+                {source: "corporate_profits", target: "stock_market", strength: 0.80, time_lag_months: 1, direction: "positive"},
+                
+                // TIER 3 Foundation relationships
+                {source: "working_age_population", target: "employment_rate", strength: 0.75, time_lag_months: 12, direction: "positive"},
+                {source: "educational_attainment", target: "wage_growth", strength: 0.70, time_lag_months: 24, direction: "positive"},
+                {source: "credit_card_spending", target: "consumption", strength: 0.85, time_lag_months: 0, direction: "positive"},
+                {source: "small_business_optimism", target: "employment_rate", strength: 0.70, time_lag_months: 4, direction: "positive"},
+                {source: "energy_consumption", target: "industrial_production", strength: 0.70, time_lag_months: 0, direction: "positive"},
+                
+                // TIER 4 Raw Input relationships
+                // GDP inputs
+                {source: "quarterly_earnings", target: "gdp", strength: 0.85, time_lag_months: 1, direction: "positive"},
+                {source: "retail_sales_monthly", target: "gdp", strength: 0.80, time_lag_months: 0, direction: "positive"},
+                {source: "manufacturing_shipments", target: "gdp", strength: 0.75, time_lag_months: 0, direction: "positive"},
+                {source: "services_revenue", target: "gdp", strength: 0.70, time_lag_months: 0, direction: "positive"},
+                {source: "construction_spending", target: "gdp", strength: 0.65, time_lag_months: 1, direction: "positive"},
+                
+                // Consumption inputs
+                {source: "personal_income_monthly", target: "consumption", strength: 0.90, time_lag_months: 0, direction: "positive"},
+                {source: "consumer_spending_categories", target: "consumption", strength: 0.95, time_lag_months: 0, direction: "positive"},
+                {source: "household_wealth", target: "consumption", strength: 0.70, time_lag_months: 2, direction: "positive"},
+                {source: "consumer_price_expectations", target: "consumption", strength: 0.60, time_lag_months: 3, direction: "negative"},
+                {source: "consumer_balance_sheets", target: "consumption", strength: 0.75, time_lag_months: 1, direction: "positive"},
+                
+                // Employment inputs
+                {source: "job_openings_jolts", target: "employment_rate", strength: 0.85, time_lag_months: 2, direction: "positive"},
+                {source: "continuing_claims", target: "employment_rate", strength: 0.80, time_lag_months: 1, direction: "negative"},
+                {source: "labor_force_participation", target: "employment_rate", strength: 0.90, time_lag_months: 1, direction: "positive"},
+                {source: "online_job_postings", target: "employment_rate", strength: 0.70, time_lag_months: 2, direction: "positive"},
+                {source: "hiring_announcements", target: "employment_rate", strength: 0.65, time_lag_months: 3, direction: "positive"},
+                
+                // Federal Funds Rate inputs
+                {source: "fed_meeting_minutes", target: "federal_funds_rate", strength: 0.75, time_lag_months: 1, direction: "positive"},
+                {source: "core_pce_inflation", target: "federal_funds_rate", strength: 0.85, time_lag_months: 1, direction: "positive"},
+                {source: "market_inflation_expectations", target: "federal_funds_rate", strength: 0.80, time_lag_months: 1, direction: "positive"},
+                {source: "financial_conditions_index", target: "federal_funds_rate", strength: 0.70, time_lag_months: 2, direction: "negative"},
+                {source: "unemployment_rate_trend", target: "federal_funds_rate", strength: 0.75, time_lag_months: 2, direction: "negative"}
+            ]
+        };
+
+        // Set up visualization
+        const width = 1400;
+        const height = 800;
+        const svg = d3.select("#networkChart");
+        const container = svg.append("g");
+
+        // Color schemes
+        const tierColors = {
+            1: "#A8E6CF", // Core - Soft mint green
+            2: "#C7CEEA", // Supporting - Soft lavender
+            3: "#FFCAB0", // Foundation - Soft peach
+            4: "#F7CAC9"  // Raw inputs - Soft rose
+        };
+
+        const institutionalColors = {
+            "Bureau of Economic Analysis": "#3498db",
+            "Federal Reserve": "#e74c3c", 
+            "Bureau of Labor Statistics": "#2ecc71",
+            "Census Bureau": "#f39c12",
+            "Department of Labor": "#34495e",
+            "Private Sources": "#e67e22"
+        };
+
+        // Scales
+        const radiusScale = d3.scaleLinear().domain([0, 100]).range([8, 25]);
+        const strengthScale = d3.scaleLinear().domain([0.1, 1.0]).range([1, 6]);
+
+        // State management
+        let currentMode = "overview";
+        let focusedNode = null;
+        let currentNodes = [];
+        let currentLinks = [];
+        let selectedNode = null;
+
+        // Force simulation
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id).distance(80))
+            .force("charge", d3.forceManyBody().strength(-400))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(d => radiusScale(d.gdp_weight) + 10))
+            .force("temporalX", d3.forceX().x(d => getTemporalX(d)).strength(0.4));
+
+        // Tooltip
+        const tooltip = d3.select("#tooltip");
+
+        // Helper functions
+        function getTemporalX(d) {
+            if (d.id === "gdp") return width * 0.95;
+            
+            const outgoingConnections = networkData.relationships.filter(rel => 
+                rel.source === d.id || (rel.source.id && rel.source.id === d.id)
+            );
+            
+            let maxLeadTime = 0;
+            if (outgoingConnections.length > 0) {
+                const leadTimes = outgoingConnections.map(rel => rel.time_lag_months);
+                maxLeadTime = Math.max(...leadTimes);
+            }
+            
+            // Position based on lead time: 24+ months = far left, 0 months = center-right
+            if (maxLeadTime >= 24) return width * 0.05;
+            else if (maxLeadTime >= 12) return width * 0.15;
+            else if (maxLeadTime >= 6) return width * 0.30;
+            else if (maxLeadTime >= 3) return width * 0.45;
+            else if (maxLeadTime >= 1) return width * 0.60;
+            else return width * 0.75;
+        }
+
+        function getTwoDegreesNetwork(centerNodeId) {
+            const centerNode = networkData.nodes.find(n => n.id === centerNodeId);
+            if (!centerNode) return { nodes: [], links: [] };
+
+            const nodeIds = new Set([centerNodeId]);
+            const links = [];
+            
+            // Find all direct connections (1 degree)
+            networkData.relationships.forEach(link => {
+                if (link.source === centerNodeId || link.source.id === centerNodeId) {
+                    const targetId = link.target.id || link.target;
+                    nodeIds.add(targetId);
+                    links.push(link);
+                }
+                if (link.target === centerNodeId || link.target.id === centerNodeId) {
+                    const sourceId = link.source.id || link.source;
+                    nodeIds.add(sourceId);
+                    links.push(link);
+                }
+            });
+
+            // Find second degree connections
+            const firstDegreeNodes = Array.from(nodeIds).filter(id => id !== centerNodeId);
+            firstDegreeNodes.forEach(nodeId => {
+                networkData.relationships.forEach(link => {
+                    if (link.source === nodeId || link.source.id === nodeId) {
+                        const targetId = link.target.id || link.target;
+                        if (networkData.nodes.find(n => n.id === targetId)) {
+                            nodeIds.add(targetId);
+                            if (!links.find(l => l === link)) links.push(link);
+                        }
+                    }
+                    if (link.target === nodeId || link.target.id === nodeId) {
+                        const sourceId = link.source.id || link.source;
+                        if (networkData.nodes.find(n => n.id === sourceId)) {
+                            nodeIds.add(sourceId);
+                            if (!links.find(l => l === link)) links.push(link);
+                        }
+                    }
+                });
+            });
+
+            const nodes = networkData.nodes.filter(n => nodeIds.has(n.id));
+            return { nodes, links };
+        }
+
+        function updateVisualization() {
+            const mode = document.getElementById("viewMode").value;
+            const institutionFilter = document.getElementById("institutionFilter").value;
+            const minStrength = parseFloat(document.getElementById("strengthSlider").value);
+
+            let filteredData;
+            
+            if (mode === "overview") {
+                // Show only Tiers 1-2
+                filteredData = {
+                    nodes: networkData.nodes.filter(n => n.tier <= 2),
+                    links: networkData.relationships.filter(l => l.strength >= minStrength)
+                };
+                focusedNode = null;
+                document.getElementById("focusIndicator").style.display = "none";
+            } else if (mode === "focused" && focusedNode) {
+                // Show 2-degree network around focused node
+                filteredData = getTwoDegreesNetwork(focusedNode.id);
+                filteredData.links = filteredData.links.filter(l => l.strength >= minStrength);
+                document.getElementById("focusIndicator").style.display = "block";
+                document.getElementById("focusInfo").textContent = `Focused on: ${focusedNode.name}`;
+            } else if (mode === "all") {
+                // Show all tiers
+                filteredData = {
+                    nodes: networkData.nodes,
+                    links: networkData.relationships.filter(l => l.strength >= minStrength)
+                };
+                focusedNode = null;
+                document.getElementById("focusIndicator").style.display = "none";
+            } else {
+                // Default to overview
+                filteredData = {
+                    nodes: networkData.nodes.filter(n => n.tier <= 2),
+                    links: networkData.relationships.filter(l => l.strength >= minStrength)
+                };
+            }
+
+            // Apply institution filter
+            if (institutionFilter) {
+                filteredData.nodes = filteredData.nodes.filter(n => {
+                    if (institutionFilter === "Private Sources") {
+                        return !["Bureau of Economic Analysis", "Federal Reserve", "Bureau of Labor Statistics", "Census Bureau", "Department of Labor"].includes(n.organization);
+                    }
+                    return n.organization === institutionFilter;
+                });
+            }
+
+            // Filter links to only include nodes that exist
+            const nodeIds = new Set(filteredData.nodes.map(n => n.id));
+            filteredData.links = filteredData.links.filter(l => 
+                nodeIds.has(l.source.id || l.source) && nodeIds.has(l.target.id || l.target)
+            );
+
+            currentNodes = filteredData.nodes;
+            currentLinks = filteredData.links;
+            currentMode = mode;
+
+            renderNetwork();
+        }
+
+        function renderNetwork() {
+            // Clear previous elements
+            container.selectAll("*").remove();
+
+            // Create arrowhead markers
+            const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
+            
+            defs.selectAll("marker").remove();
+            defs.append("marker")
+                .attr("id", "arrowhead-positive")
+                .attr("viewBox", "0 -2.5 5 5")
+                .attr("refX", 15)
+                .attr("refY", 0)
+                .attr("markerWidth", 3)
+                .attr("markerHeight", 3)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-2.5L5,0L0,2.5")
+                .attr("fill", "#AEC6CF");
+                
+            defs.append("marker")
+                .attr("id", "arrowhead-negative")
+                .attr("viewBox", "0 -2.5 5 5")
+                .attr("refX", 15)
+                .attr("refY", 0)
+                .attr("markerWidth", 3)
+                .attr("markerHeight", 3)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-2.5L5,0L0,2.5")
+                .attr("fill", "#F7CAC9");
+
+            // Create links
+            const link = container.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(currentLinks)
+                .enter().append("line")
+                .attr("class", "link")
+                .attr("stroke", d => d.direction === "positive" ? "#AEC6CF" : "#F7CAC9")
+                .attr("stroke-width", d => strengthScale(d.strength))
+                .attr("stroke-opacity", 0.6)
+                .attr("marker-end", d => d.direction === "positive" ? "url(#arrowhead-positive)" : "url(#arrowhead-negative)");
+
+            // Create nodes
+            const node = container.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
+                .data(currentNodes)
+                .enter().append("circle")
+                .attr("class", "node")
+                .attr("r", d => radiusScale(d.gdp_weight))
+                .attr("fill", d => tierColors[d.tier])
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // Create labels
+            const labels = container.append("g")
+                .attr("class", "labels")
+                .selectAll("text")
+                .data(currentNodes)
+                .enter().append("text")
+                .attr("class", "node-label")
+                .text(d => d.name.length > 20 ? d.name.substring(0, 17) + "..." : d.name)
+                .attr("dy", d => radiusScale(d.gdp_weight) + 15);
+
+            // Add event listeners
+            node
+                .on("click", function(event, d) {
+                    event.stopPropagation();
+                    handleNodeClick(d);
+                })
+                .on("mouseover", function(event, d) {
+                    showTooltip(event, d);
+                })
+                .on("mouseout", function() {
+                    hideTooltip();
+                });
+
+            // Highlight focused node
+            if (focusedNode) {
+                node.filter(d => d.id === focusedNode.id)
+                    .classed("focused-center", true);
+            }
+
+            // Update simulation
+            simulation.nodes(currentNodes).on("tick", ticked);
+            simulation.force("link").links(currentLinks);
+            simulation.alpha(1).restart();
+
+            function ticked() {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+
+                labels
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            }
+
+            // Update status bar
+            const modeText = currentMode === "overview" ? "Overview (Tiers 1-2)" : 
+                           currentMode === "focused" ? `Focused on ${focusedNode?.name}` : 
+                           "All Tiers";
+            document.getElementById("statusBar").textContent = 
+                `${modeText} • ${currentNodes.length} nodes, ${currentLinks.length} relationships • Click nodes to focus`;
+        }
+
+        function handleNodeClick(d) {
+            focusedNode = d;
+            selectedNode = d;
+            document.getElementById("viewMode").value = "focused";
+            updateVisualization();
+            showNodeInfo(d);
+        }
+
+        function showNodeInfo(node) {
+            const infoPanel = document.getElementById("infoPanel");
+            const nodeInfo = document.getElementById("nodeInfo");
+            const tierNames = {1: "Core", 2: "Supporting", 3: "Foundation", 4: "Raw Inputs"};
+
+            // Find connections
+            const connections = currentLinks.filter(link => 
+                (link.source.id === node.id || link.target.id === node.id)
+            );
+
+            const connectionsText = connections.slice(0, 8).map(link => {
+                const isSource = (link.source.id === node.id);
+                const otherNode = isSource ? link.target : link.source;
+                const direction = isSource ? "→" : "←";
+                const color = link.direction === "positive" ? "🟢" : "🔴";
+                const lagText = link.time_lag_months > 0 ? ` (${link.time_lag_months}mo)` : "";
+                return `${direction} ${(otherNode.name || otherNode).substring(0, 25)} ${color} ${Math.round(link.strength * 100)}%${lagText}`;
+            }).join('<br>');
+
+            nodeInfo.innerHTML = `
+                <h4>${node.name}</h4>
+                <div><strong>Tier:</strong> ${node.tier} (${tierNames[node.tier]})</div>
+                <div><strong>Organization:</strong> ${node.organization}</div>
+                <div><strong>Type:</strong> ${node.indicator_type}</div>
+                <div><strong>Quality:</strong> ${node.composite_score}%</div>
+                <div><strong>GDP Weight:</strong> ${node.gdp_weight}%</div>
+                <br>
+                <div><strong>Connections (${connections.length}):</strong></div>
+                <div style="font-size: 11px; margin-top: 5px; line-height: 1.4;">${connectionsText}</div>
+                ${connections.length > 8 ? '<div style="font-size: 11px; color: #bdc3c7; margin-top: 5px;">...and more</div>' : ''}
+            `;
+
+            infoPanel.style.display = "block";
+        }
+
+        function showTooltip(event, d) {
+            const tierNames = {1: "Core", 2: "Supporting", 3: "Foundation", 4: "Raw Inputs"};
+            tooltip
+                .style("opacity", 1)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 10) + "px")
+                .html(`
+                    <strong>${d.name}</strong><br>
+                    Tier: ${d.tier} (${tierNames[d.tier]})<br>
+                    Organization: ${d.organization}<br>
+                    Quality: ${d.composite_score}%<br>
+                    GDP Impact: ${d.gdp_weight}%<br>
+                    Type: ${d.indicator_type}<br>
+                    <em>Click to focus on this node</em>
+                `);
+        }
+
+        function hideTooltip() {
+            tooltip.style("opacity", 0);
+        }
+
+        // Drag functions
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+        }
+
+        // Event listeners
+        document.getElementById("viewMode").addEventListener("change", updateVisualization);
+        document.getElementById("institutionFilter").addEventListener("change", updateVisualization);
+        
+        document.getElementById("strengthSlider").addEventListener("input", function() {
+            document.getElementById("strengthValue").textContent = this.value;
+            updateVisualization();
+        });
+
+        document.getElementById("resetView").addEventListener("click", function() {
+            focusedNode = null;
+            selectedNode = null;
+            document.getElementById("viewMode").value = "overview";
+            document.getElementById("infoPanel").style.display = "none";
+            document.getElementById("focusIndicator").style.display = "none";
+            updateVisualization();
+        });
+
+        // Click background to deselect
+        svg.on("click", function(event) {
+            if (event.target === svg.node()) {
+                document.getElementById("infoPanel").style.display = "none";
+            }
+        });
+
+        // Initialize
+        updateVisualization();
+    </script>
+</body>
+</html>
