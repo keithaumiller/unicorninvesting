@@ -50,37 +50,37 @@ class EnhancedForexProphetBuilder:
         self.forex_assets = ['AUDUSD', 'EURUSD', 'GBPUSD', 'NZDUSD', 'USDCAD', 'USDCHF', 'USDJPY']
         self.timeframes = ['1h', '1d']
         
-        # Enhanced forex-specific variants
+        # Enhanced leak-free forex variants
         self.variants = {
             'conservative': {
-                'description': 'Simple, stable forex models',
-                'features': ['ma_5', 'rsi_14', 'market_session'],
+                'description': 'Simple leak-free forex models with basic features',
+                'features': ['market_session', 'returns_lag_1', 'volatility_lag_5'],
                 'expected_count': 3
             },
             'standard': {
-                'description': 'Balanced forex models with technical indicators',
-                'features': ['ma_5', 'ma_20', 'rsi_14', 'bbands_upper', 'bbands_lower', 'atr_14'],
+                'description': 'Balanced leak-free forex models with time and lagged features',
+                'features': ['market_session', 'returns_lag_1', 'returns_lag_2', 'volatility_lag_20', 
+                           'momentum_lag_10', 'hour_sin'],
                 'expected_count': 6
             },
             'aggressive': {
-                'description': 'Complex forex models with full technical suite',
-                'features': ['ma_5', 'ma_20', 'ma_50', 'rsi_14', 'rsi_9', 'macd', 'macd_signal',
-                           'bbands_upper', 'bbands_lower', 'atr_14', 'cci', 'williams_r',
-                           'stoch_k', 'market_session', 'volatility_regime'],
-                'expected_count': 15
+                'description': 'Complex leak-free forex models with full feature suite',
+                'features': ['market_session', 'returns_lag_1', 'returns_lag_2', 'returns_lag_5',
+                           'volatility_lag_20', 'volatility_lag_5', 'momentum_lag_10', 'momentum_lag_20',
+                           'hour_sin', 'hour_cos', 'day_sin', 'day_cos', 'volatility_regime', 'return_regime'],
+                'expected_count': 14
             },
             'economic': {
-                'description': 'Economically-focused forex models',
-                'features': ['ma_20', 'atr_14', 'rsi_14', 'carry_trade_proxy', 
-                           'volatility_regime', 'market_session', 'momentum_5', 'mean_reversion',
-                           'risk_sentiment'],
-                'expected_count': 9
+                'description': 'Economic-focused leak-free forex models',
+                'features': ['market_session', 'volatility_regime', 'return_regime', 'momentum_lag_20',
+                           'volatility_lag_20', 'hour_sin', 'day_sin'],
+                'expected_count': 7
             },
             'ensemble': {
-                'description': 'Hybrid forex models combining technical and fundamental',
-                'features': ['ma_5', 'ma_20', 'rsi_14', 'macd', 'bbands_upper', 'atr_14',
-                           'market_session', 'volatility_regime', 'momentum_5', 'carry_trade_proxy'],
-                'expected_count': 10
+                'description': 'Hybrid leak-free forex models with balanced feature set',
+                'features': ['market_session', 'returns_lag_1', 'volatility_lag_20', 'momentum_lag_10',
+                           'hour_sin', 'day_sin', 'volatility_regime', 'return_regime'],
+                'expected_count': 8
             }
         }
         
@@ -188,7 +188,7 @@ class EnhancedForexProphetBuilder:
         return None
 
     def add_forex_features(self, df: pd.DataFrame, asset: str) -> pd.DataFrame:
-        """Add forex-specific features with enhanced error handling"""
+        """Add leak-free forex features for realistic financial modeling"""
         try:
             df = df.copy()
             
@@ -199,96 +199,81 @@ class EnhancedForexProphetBuilder:
                 print(f"   ⚠️  Missing price columns: {missing_cols}")
                 return df
             
-            # Basic technical indicators
-            if 'ma_5' not in df.columns:
-                df['ma_5'] = ta.trend.sma_indicator(df['close'], window=5)
-            if 'ma_20' not in df.columns:
-                df['ma_20'] = ta.trend.sma_indicator(df['close'], window=20)
-            if 'ma_50' not in df.columns:
-                df['ma_50'] = ta.trend.sma_indicator(df['close'], window=50)
+            # Calculate returns (future-looking prevention)
+            returns = df['close'].pct_change()
             
-            # RSI indicators
-            if 'rsi_14' not in df.columns:
-                df['rsi_14'] = ta.momentum.rsi(df['close'], window=14)
-            if 'rsi_9' not in df.columns:
-                df['rsi_9'] = ta.momentum.rsi(df['close'], window=9)
+            # LEAK-FREE FEATURE SET - No direct OHLC dependencies
             
-            # MACD
-            if 'macd' not in df.columns:
-                macd_line = ta.trend.macd_diff(df['close'])
-                df['macd'] = macd_line
-                df['macd_signal'] = ta.trend.macd_signal(df['close'])
+            # 1. Time-based features (no price dependency)
+            if not pd.api.types.is_datetime64_any_dtype(df['timestamp']):
+                df['timestamp'] = pd.to_datetime(df['timestamp'])
             
-            # Bollinger Bands
-            if 'bbands_upper' not in df.columns:
-                df['bbands_upper'] = ta.volatility.bollinger_hband(df['close'])
-                df['bbands_lower'] = ta.volatility.bollinger_lband(df['close'])
+            df['hour'] = df['timestamp'].dt.hour
+            df['day_of_week'] = df['timestamp'].dt.dayofweek
+            df['month'] = df['timestamp'].dt.month
             
-            # ATR
-            if 'atr_14' not in df.columns:
-                df['atr_14'] = ta.volatility.average_true_range(df['high'], df['low'], df['close'], window=14)
+            # Market session (time-based only)
+            df['market_session'] = np.where(
+                ((df['hour'] >= 8) & (df['hour'] <= 16)), 1,  # London/NY overlap
+                np.where(((df['hour'] >= 0) & (df['hour'] <= 8)), 0.5, 0.2)  # Tokyo session
+            )
             
-            # Additional momentum indicators
-            if 'cci' not in df.columns:
-                df['cci'] = ta.trend.cci(df['high'], df['low'], df['close'], window=20)
-            if 'williams_r' not in df.columns:
-                df['williams_r'] = ta.momentum.williams_r(df['high'], df['low'], df['close'], lbp=14)
-            if 'stoch_k' not in df.columns:
-                df['stoch_k'] = ta.momentum.stoch(df['high'], df['low'], df['close'], k=14)
+            # 2. Lagged return features (avoiding look-ahead bias)
+            df['returns_lag_1'] = returns.shift(1)  # Previous period return
+            df['returns_lag_2'] = returns.shift(2)  # 2 periods ago
+            df['returns_lag_5'] = returns.shift(5)  # 5 periods ago
             
-            # Forex-specific features
-            # Market session indicator (simplified)
-            if 'market_session' not in df.columns:
-                # Ensure timestamp is datetime for dt accessor
-                if not pd.api.types.is_datetime64_any_dtype(df['timestamp']):
-                    df['timestamp'] = pd.to_datetime(df['timestamp'])
-                
-                df['hour'] = df['timestamp'].dt.hour
-                df['market_session'] = np.where(
-                    ((df['hour'] >= 8) & (df['hour'] <= 16)), 1,  # London/NY overlap
-                    np.where(((df['hour'] >= 0) & (df['hour'] <= 8)), 0.5, 0.2)  # Tokyo session
-                )
+            # 3. Historical volatility (lagged to avoid leakage)
+            df['volatility_lag_20'] = returns.rolling(window=20).std().shift(1)
+            df['volatility_lag_5'] = returns.rolling(window=5).std().shift(1)
             
-            # Volatility regime
-            if 'volatility_regime' not in df.columns:
-                returns = df['close'].pct_change()
-                rolling_vol = returns.rolling(window=20).std()
-                vol_percentile = rolling_vol.rolling(window=100).rank(pct=True)
-                df['volatility_regime'] = vol_percentile
+            # 4. Historical momentum (lagged)
+            df['momentum_lag_10'] = returns.rolling(window=10).mean().shift(1)
+            df['momentum_lag_20'] = returns.rolling(window=20).mean().shift(1)
             
-            # Momentum features
-            if 'momentum_5' not in df.columns:
-                df['momentum_5'] = df['close'].pct_change(periods=5)
+            # 5. Volume-based features (if volume available and not price-correlated)
+            if 'volume' in df.columns and df['volume'].std() > 0:
+                df['volume_lag_1'] = df['volume'].shift(1)
+                df['volume_ma_5'] = df['volume'].rolling(window=5).mean().shift(1)
+                df['volume_relative'] = (df['volume'] / df['volume'].rolling(window=20).mean()).shift(1)
             
-            # Mean reversion indicator
-            if 'mean_reversion' not in df.columns:
-                ma_20 = df['ma_20'] if 'ma_20' in df.columns else ta.trend.sma_indicator(df['close'], window=20)
-                df['mean_reversion'] = (df['close'] - ma_20) / ma_20
+            # 6. Seasonal/cyclic features
+            df['hour_sin'] = np.sin(2 * np.pi * df['hour'] / 24)
+            df['hour_cos'] = np.cos(2 * np.pi * df['hour'] / 24)
+            df['day_sin'] = np.sin(2 * np.pi * df['day_of_week'] / 7)
+            df['day_cos'] = np.cos(2 * np.pi * df['day_of_week'] / 7)
             
-            # Carry trade proxy (simplified interest rate differential proxy)
-            if 'carry_trade_proxy' not in df.columns:
-                # Use long-term moving average ratio as a proxy
-                ma_long = ta.trend.sma_indicator(df['close'], window=100)
-                df['carry_trade_proxy'] = df['close'] / ma_long
+            # 7. Volatility regime (historical)
+            vol_percentile = df['volatility_lag_20'].rolling(window=100).rank(pct=True)
+            df['volatility_regime'] = vol_percentile
             
-            # Risk sentiment (VIX-like measure using price volatility)
-            if 'risk_sentiment' not in df.columns:
-                returns = df['close'].pct_change()
-                rolling_vol = returns.rolling(window=20).std()
-                df['risk_sentiment'] = 1 / (1 + rolling_vol * 100)  # Inverse volatility
+            # 8. Return regime classification (historical)
+            df['return_regime'] = np.where(
+                df['returns_lag_1'] > df['returns_lag_1'].rolling(100).quantile(0.8), 1,  # High return
+                np.where(df['returns_lag_1'] < df['returns_lag_1'].rolling(100).quantile(0.2), -1, 0)  # Low return
+            )
             
             # Clean up temporary columns
-            if 'hour' in df.columns:
-                df = df.drop('hour', axis=1)
+            temp_cols = ['hour', 'day_of_week', 'month']
+            for col in temp_cols:
+                if col in df.columns:
+                    df = df.drop(col, axis=1)
             
-            # Forward fill and backward fill missing values
-            df = df.fillna(method='ffill').fillna(method='bfill')
+            # Forward fill missing values (but limit to reasonable bounds)
+            df = df.fillna(method='ffill', limit=5).fillna(method='bfill', limit=5)
             
-            print(f"   ✅ Enhanced features added: {len(df.columns)} total columns")
+            # Remove any remaining NaN rows
+            initial_len = len(df)
+            df = df.dropna()
+            if len(df) < initial_len:
+                print(f"   📊 Removed {initial_len - len(df)} rows with NaN values")
+            
+            print(f"   ✅ Leak-free features added: {len(df.columns)} total columns")
+            print(f"   🔒 Features are lagged/time-based to prevent data leakage")
             return df
             
         except Exception as e:
-            print(f"   ❌ Error adding forex features: {e}")
+            print(f"   ❌ Error adding leak-free forex features: {e}")
             return df
 
     def prepare_prophet_data(self, df: pd.DataFrame, variant_features: List[str]) -> Tuple[pd.DataFrame, List[str]]:
@@ -373,11 +358,24 @@ class EnhancedForexProphetBuilder:
             for feature in features:
                 model.add_regressor(feature, standardize=True)
             
+            # Split data into train/validation sets (80/20 split) for proper evaluation
+            split_idx = int(len(df) * 0.8)
+            train_df = df[:split_idx].copy()
+            val_df = df[split_idx:].copy()
+            
+            print(f"   📊 Split data: {len(train_df)} training, {len(val_df)} validation records")
+            
             # Train model with enhanced error handling
             print(f"   🔄 Training {variant} Prophet model with {len(features)} features...")
-            model.fit(df)
+            model.fit(train_df)  # Train only on training set
             
-            # Generate forecast
+            # Generate validation predictions
+            val_future = val_df[['ds'] + [f for f in features if f != 'y']].copy()
+            val_forecast = model.predict(val_future)
+            val_predictions = val_forecast['yhat'].values
+            val_actual = val_df['y'].values
+            
+            # Generate forecast for future periods
             future = model.make_future_dataframe(periods=24)  # 24 periods ahead
             
             # Add regressor values for forecast
@@ -393,23 +391,35 @@ class EnhancedForexProphetBuilder:
             
             forecast = model.predict(future)
             
-            # Calculate performance metrics
-            train_predictions = forecast['yhat'][:len(df)]
-            actual_values = df['y'].values
+            # Calculate performance metrics on validation set (realistic evaluation)
+            val_r2 = r2_score(val_actual, val_predictions)
+            val_mae = mean_absolute_error(val_actual, val_predictions)
+            val_mse = mean_squared_error(val_actual, val_predictions)
             
-            r2 = r2_score(actual_values, train_predictions)
-            mae = mean_absolute_error(actual_values, train_predictions)
-            mse = mean_squared_error(actual_values, train_predictions)
+            # Also calculate training metrics for overfitting detection
+            train_future = train_df[['ds'] + [f for f in features if f != 'y']].copy()
+            train_forecast = model.predict(train_future)
+            train_predictions = train_forecast['yhat'].values
+            train_actual = train_df['y'].values
+            train_r2 = r2_score(train_actual, train_predictions)
+            
+            overfitting_gap = train_r2 - val_r2
             
             metrics = {
-                'r2': max(0.0, r2),  # Ensure non-negative R²
-                'mae': mae,
-                'mse': mse,
+                'r2': val_r2,  # Report validation R² (realistic performance)
+                'mae': val_mae,
+                'mse': val_mse,
                 'features_used': len(features),
-                'training_records': len(df)
+                'training_records': len(train_df),
+                'validation_records': len(val_df),
+                'train_r2': train_r2,
+                'validation_r2': val_r2,
+                'overfitting_gap': overfitting_gap,
+                'overfitting_detected': overfitting_gap > 0.3
             }
             
-            print(f"   ✅ Model trained successfully: R² = {metrics['r2']:.3f}")
+            status_icon = "⚠️" if metrics['overfitting_detected'] else "✅"
+            print(f"   {status_icon} Model trained: Validation R² = {val_r2:.3f} (Train R² = {train_r2:.3f}, Gap = {overfitting_gap:.3f})")
             return model, metrics, forecast
             
         except Exception as e:
@@ -584,9 +594,36 @@ class EnhancedForexProphetBuilder:
         return self.performance_summary
 
     def save_summary_report(self) -> str:
-        """Save comprehensive summary report"""
+        """Save comprehensive summary report with overfitting detection"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         summary_file = self.models_path / f"enhanced_forex_prophet_summary_{timestamp}.json"
+        
+        # Calculate overfitting statistics
+        performance_records = self.performance_summary.get('performance_summary', [])
+        overfitted_models = 0
+        total_evaluated = 0
+        avg_overfitting_gap = 0
+        
+        for record in performance_records:
+            if 'overfitting_detected' in record:
+                total_evaluated += 1
+                if record['overfitting_detected']:
+                    overfitted_models += 1
+                avg_overfitting_gap += record.get('overfitting_gap', 0)
+        
+        if total_evaluated > 0:
+            avg_overfitting_gap /= total_evaluated
+            overfitting_rate = (overfitted_models / total_evaluated) * 100
+        else:
+            overfitting_rate = 0
+        
+        # Add overfitting stats to summary
+        self.performance_summary['overfitting_statistics'] = {
+            'overfitted_models': overfitted_models,
+            'total_evaluated': total_evaluated,
+            'overfitting_rate_pct': overfitting_rate,
+            'avg_overfitting_gap': avg_overfitting_gap
+        }
         
         with open(summary_file, 'w') as f:
             json.dump(self.performance_summary, f, indent=2)
@@ -594,6 +631,11 @@ class EnhancedForexProphetBuilder:
         print(f"\n📊 Summary Report: {summary_file.name}")
         print(f"📈 Success Rate: {self.performance_summary['success_rate']:.1f}%")
         print(f"✅ Successful Models: {self.performance_summary['successful_models']}/{self.performance_summary['total_models']}")
+        
+        if total_evaluated > 0:
+            status_icon = "🚨" if overfitting_rate > 50 else "⚠️" if overfitting_rate > 20 else "✅"
+            print(f"{status_icon} Overfitting Rate: {overfitting_rate:.1f}% ({overfitted_models}/{total_evaluated} models)")
+            print(f"📊 Avg Train/Val Gap: {avg_overfitting_gap:.3f}")
         
         return str(summary_file)
 

@@ -1,0 +1,39 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_142906",
+  "metrics": {
+    "r2": 0.32044567067847585,
+    "mae": 0.0018611359639544665,
+    "mse": 5.869491376009223e-06,
+    "features_used": 15,
+    "training_records": 439,
+    "validation_records": 110,
+    "train_r2": 0.9937925577590042,
+    "validation_r2": 0.32044567067847585,
+    "overfitting_gap": 0.6733468870805284,
+    "overfitting_detected": true
+  },
+  "variant_config": {
+    "description": "Complex forex models with full technical suite",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "ma_50",
+      "rsi_14",
+      "rsi_9",
+      "macd",
+      "macd_signal",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14",
+      "cci",
+      "williams_r",
+      "stoch_k",
+      "market_session",
+      "volatility_regime"
+    ],
+    "expected_count": 15
+  }
+}
