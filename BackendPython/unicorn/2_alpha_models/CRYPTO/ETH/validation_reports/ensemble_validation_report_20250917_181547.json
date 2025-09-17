@@ -1,0 +1,258 @@
+{
+  "timestamp": "2025-09-17T18:15:47.067008",
+  "summary": {
+    "total_ensemble_files": 6,
+    "overfitted_files": 2,
+    "high_risk_files": 2,
+    "overfitting_rate": 33.3,
+    "validation_status": "WARNING"
+  },
+  "ensemble_files": [
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/eth_ensemble_framework.py",
+      "file_name": "eth_ensemble_framework.py",
+      "relative_path": "eth_ensemble_framework.py",
+      "last_modified": "2025-09-04T20:16:17.838768"
+    },
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/ensemble_model_validator.py",
+      "file_name": "ensemble_model_validator.py",
+      "relative_path": "ensemble_model_validator.py",
+      "last_modified": "2025-09-17T18:15:19.750766"
+    },
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/eth_ensemble_economic_enhanced.py",
+      "file_name": "eth_ensemble_economic_enhanced.py",
+      "relative_path": "eth_ensemble_economic_enhanced.py",
+      "last_modified": "2025-09-09T19:51:08.723065"
+    },
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/models/eth_ensemble_model.py",
+      "file_name": "eth_ensemble_model.py",
+      "relative_path": "models/eth_ensemble_model.py",
+      "last_modified": "2025-09-11T16:11:35.933935"
+    },
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/models/eth_ensemble.py",
+      "file_name": "eth_ensemble.py",
+      "relative_path": "models/eth_ensemble.py",
+      "last_modified": "2025-09-04T20:16:17.856768"
+    },
+    {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/multi_method_forecast_generator.py",
+      "file_name": "multi_method_forecast_generator.py",
+      "relative_path": "multi_method_forecast_generator.py",
+      "last_modified": "2025-09-04T20:16:17.856768"
+    }
+  ],
+  "overfitting_analysis": {
+    "eth_ensemble_framework.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/eth_ensemble_framework.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": false,
+        "component_bias_compounding": false,
+        "no_independent_validation": true,
+        "economic_data_leakage": false,
+        "improper_weight_calculation": false,
+        "same_data_validation": false
+      },
+      "analysis_details": {
+        "patterns_found": [
+          "No independent validation methodology detected"
+        ],
+        "risk_score": 20,
+        "code_samples": {},
+        "recommendations": [
+          "Add independent holdout validation for ensemble performance assessment"
+        ]
+      }
+    },
+    "ensemble_model_validator.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/ensemble_model_validator.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": true,
+        "component_bias_compounding": true,
+        "no_independent_validation": false,
+        "economic_data_leakage": true,
+        "improper_weight_calculation": true,
+        "same_data_validation": false
+      },
+      "analysis_details": {
+        "patterns_found": [
+          "Training data evaluation at line 119: 'r2_score(y_true, ensemble_predictions)',",
+          "Training data evaluation at line 120: 'r2_score(y, ensemble_pred)',",
+          "Training data evaluation at line 122: 'mape = np.mean(np.abs((y_true - ensemble_predictions)',",
+          "Component bias compounding at line 139: 'prophet_weight = prophet_r2',",
+          "Component bias compounding at line 140: 'weight.*r2_score',",
+          "Component bias compounding at line 141: 'total_r2 = prophet_r2 + xgb_r2'",
+          "Component bias compounding at line 185: 'prophet_weight = prophet_r2 / total_r2',",
+          "Potential economic data leakage at line 169: 'future_looking',",
+          "Potential economic data leakage at line 170: 'shift(-1)',",
+          "Potential economic data leakage at line 176: if pattern in line and ('shift(-1)' in line or 'future' in line.lower()):",
+          "Improper weight calculation using overfitted R\u00b2 scores"
+        ],
+        "risk_score": 80,
+        "code_samples": {
+          "training_evaluation": "Line 122: 'mape = np.mean(np.abs((y_true - ensemble_predictions)',",
+          "bias_compounding": "Line 185: 'prophet_weight = prophet_r2 / total_r2',",
+          "data_leakage": "Line 176: if pattern in line and ('shift(-1)' in line or 'future' in line.lower()):"
+        },
+        "recommendations": [
+          "Implement proper train/validation split before ensemble evaluation",
+          "Use cross-validation R\u00b2 scores for component weight calculation",
+          "Ensure economic features don't contain look-ahead bias",
+          "Replace overfitted R\u00b2 weights with proper validation-based weights"
+        ]
+      }
+    },
+    "eth_ensemble_economic_enhanced.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/eth_ensemble_economic_enhanced.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": false,
+        "component_bias_compounding": false,
+        "no_independent_validation": true,
+        "economic_data_leakage": false,
+        "improper_weight_calculation": false,
+        "same_data_validation": false
+      },
+      "analysis_details": {
+        "patterns_found": [
+          "No independent validation methodology detected"
+        ],
+        "risk_score": 20,
+        "code_samples": {},
+        "recommendations": [
+          "Add independent holdout validation for ensemble performance assessment"
+        ]
+      }
+    },
+    "eth_ensemble_model.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/models/eth_ensemble_model.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": false,
+        "component_bias_compounding": false,
+        "no_independent_validation": true,
+        "economic_data_leakage": false,
+        "improper_weight_calculation": false,
+        "same_data_validation": false
+      },
+      "analysis_details": {
+        "patterns_found": [
+          "No independent validation methodology detected"
+        ],
+        "risk_score": 20,
+        "code_samples": {},
+        "recommendations": [
+          "Add independent holdout validation for ensemble performance assessment"
+        ]
+      }
+    },
+    "eth_ensemble.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/models/eth_ensemble.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": false,
+        "component_bias_compounding": false,
+        "no_independent_validation": false,
+        "economic_data_leakage": false,
+        "improper_weight_calculation": false,
+        "same_data_validation": false
+      },
+      "analysis_details": {
+        "patterns_found": [],
+        "risk_score": 0,
+        "code_samples": {},
+        "recommendations": []
+      }
+    },
+    "multi_method_forecast_generator.py": {
+      "file_path": "/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/multi_method_forecast_generator.py",
+      "overfitting_patterns": {
+        "training_data_evaluation": true,
+        "component_bias_compounding": true,
+        "no_independent_validation": true,
+        "economic_data_leakage": true,
+        "improper_weight_calculation": true,
+        "same_data_validation": true
+      },
+      "analysis_details": {
+        "patterns_found": [
+          "Training data evaluation at line 347: y_true = prophet_data['y'].values",
+          "Training data evaluation at line 484: y_true = data['price'].values[:min_len]",
+          "Training data evaluation at line 485: mape = np.mean(np.abs((y_true - ensemble_predictions) / y_true)) * 100",
+          "Training data evaluation at line 487: r2 = r2_score(y_true, ensemble_predictions) if sklearn_available else 0",
+          "Component bias compounding at line 450: prophet_r2 = prophet_metrics.get('r2_score', 0)",
+          "Component bias compounding at line 451: xgb_r2 = xgb_metrics.get('r2_score', 0)",
+          "Component bias compounding at line 453: total_r2 = prophet_r2 + xgb_r2",
+          "Component bias compounding at line 455: prophet_weight = prophet_r2 / total_r2",
+          "No independent validation methodology detected",
+          "Potential economic data leakage at line 382: target = features['price'].shift(-1).dropna()",
+          "Improper weight calculation using overfitted R\u00b2 scores",
+          "Same data used for training and validation"
+        ],
+        "risk_score": 120,
+        "code_samples": {
+          "training_evaluation": "Line 487: r2 = r2_score(y_true, ensemble_predictions) if sklearn_available else 0",
+          "bias_compounding": "Line 455: prophet_weight = prophet_r2 / total_r2",
+          "data_leakage": "Line 382: target = features['price'].shift(-1).dropna()"
+        },
+        "recommendations": [
+          "Implement proper train/validation split before ensemble evaluation",
+          "Use cross-validation R\u00b2 scores for component weight calculation",
+          "Add independent holdout validation for ensemble performance assessment",
+          "Ensure economic features don't contain look-ahead bias",
+          "Replace overfitted R\u00b2 weights with proper validation-based weights",
+          "Separate training and validation datasets completely"
+        ]
+      }
+    }
+  },
+  "recommendations": [
+    "WARNING: Significant overfitting detected in ensemble models",
+    "Review and rebuild high-risk ensemble implementations",
+    "Implement proper validation methodology"
+  ],
+  "methodology": {
+    "data_splitting": {
+      "description": "Proper temporal splitting for financial time series",
+      "implementation": {
+        "training_split": "70% of historical data",
+        "validation_split": "20% of historical data (for component validation)",
+        "test_split": "10% of historical data (for ensemble validation)",
+        "temporal_order": "Strictly maintain chronological order",
+        "no_overlap": "Ensure no data leakage between splits"
+      }
+    },
+    "component_validation": {
+      "description": "Validate components before ensemble integration",
+      "requirements": {
+        "independent_validation": "Each component validated on held-out data",
+        "realistic_performance": "Component R\u00b2 must be < 0.10",
+        "stability_check": "Performance stable across multiple time periods",
+        "overfitting_screening": "Components must pass overfitting detection"
+      }
+    },
+    "ensemble_methodology": {
+      "description": "Leak-free ensemble construction and validation",
+      "steps": [
+        "Train components on training data only",
+        "Validate components on validation data",
+        "Calculate ensemble weights using validation performance",
+        "Combine components using validation-based weights",
+        "Evaluate final ensemble on independent test data"
+      ]
+    },
+    "weight_calculation": {
+      "description": "Proper ensemble weight calculation",
+      "method": "Cross-validation based weights",
+      "formula": "weights = softmax(1 / validation_errors)",
+      "fallback": "Equal weights if no component outperforms",
+      "constraints": "Sum to 1.0, all weights >= 0"
+    },
+    "performance_expectations": {
+      "realistic_r2_range": "0.02 to 0.15",
+      "typical_improvement": "5-15% error reduction vs best component",
+      "mape_range": "5% to 15% for crypto markets",
+      "overfitting_threshold": "R\u00b2 > 0.20 indicates overfitting"
+    }
+  }
+}
