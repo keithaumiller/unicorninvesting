@@ -1,0 +1,25 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_141023",
+  "metrics": {
+    "r2": 0.9972815164269854,
+    "mae": 0.00017246860891286477,
+    "mse": 6.636300099676984e-08,
+    "features_used": 6,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}

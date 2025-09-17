@@ -1,0 +1,22 @@
+{
+  "asset": "NZDUSD",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_140225",
+  "metrics": {
+    "r2": 0.9947925240798443,
+    "mae": 0.00021703608593870923,
+    "mse": 1.0494710033195044e-07,
+    "features_used": 3,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

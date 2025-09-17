@@ -1,0 +1,34 @@
+{
+  "asset": "USDCHF",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_135528",
+  "metrics": {
+    "r2": 0.9979095854649016,
+    "mae": 0.00013661465085117302,
+    "mse": 3.8064244813551906e-08,
+    "features_used": 15,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Complex forex models with full technical suite",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "ma_50",
+      "rsi_14",
+      "rsi_9",
+      "macd",
+      "macd_signal",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14",
+      "cci",
+      "williams_r",
+      "stoch_k",
+      "market_session",
+      "volatility_regime"
+    ],
+    "expected_count": 15
+  }
+}

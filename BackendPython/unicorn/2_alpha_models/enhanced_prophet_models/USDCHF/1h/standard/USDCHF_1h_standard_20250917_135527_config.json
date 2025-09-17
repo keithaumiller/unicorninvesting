@@ -1,0 +1,25 @@
+{
+  "asset": "USDCHF",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_135527",
+  "metrics": {
+    "r2": 0.9962643188206927,
+    "mae": 0.00018844089181912967,
+    "mse": 6.80228158420452e-08,
+    "features_used": 6,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}

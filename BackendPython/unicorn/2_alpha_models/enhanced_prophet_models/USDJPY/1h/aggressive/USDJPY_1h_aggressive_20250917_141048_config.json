@@ -1,0 +1,34 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "aggressive",
+  "timestamp": "20250917_141048",
+  "metrics": {
+    "r2": 0.9935740452043408,
+    "mae": 0.02970247979708021,
+    "mse": 0.0018038223696504707,
+    "features_used": 15,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Complex forex models with full technical suite",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "ma_50",
+      "rsi_14",
+      "rsi_9",
+      "macd",
+      "macd_signal",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14",
+      "cci",
+      "williams_r",
+      "stoch_k",
+      "market_session",
+      "volatility_regime"
+    ],
+    "expected_count": 15
+  }
+}

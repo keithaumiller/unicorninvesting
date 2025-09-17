@@ -1,0 +1,29 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1h",
+  "variant": "ensemble",
+  "timestamp": "20250917_135515",
+  "metrics": {
+    "r2": 0.9986464858148102,
+    "mae": 0.00013415531865632578,
+    "mse": 3.304167960128123e-08,
+    "features_used": 10,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Hybrid forex models combining technical and fundamental",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "macd",
+      "bbands_upper",
+      "atr_14",
+      "market_session",
+      "volatility_regime",
+      "momentum_5",
+      "carry_trade_proxy"
+    ],
+    "expected_count": 10
+  }
+}

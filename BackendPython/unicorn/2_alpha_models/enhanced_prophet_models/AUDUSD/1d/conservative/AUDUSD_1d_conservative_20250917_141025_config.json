@@ -1,0 +1,22 @@
+{
+  "asset": "AUDUSD",
+  "interval": "1d",
+  "variant": "conservative",
+  "timestamp": "20250917_141025",
+  "metrics": {
+    "r2": 0.9904440106104164,
+    "mae": 0.0011605166959219792,
+    "mse": 2.906034358438436e-06,
+    "features_used": 3,
+    "training_records": 259
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

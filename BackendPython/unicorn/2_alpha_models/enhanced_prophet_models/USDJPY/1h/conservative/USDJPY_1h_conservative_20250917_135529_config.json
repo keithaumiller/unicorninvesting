@@ -1,0 +1,22 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_135529",
+  "metrics": {
+    "r2": 0.984448124861619,
+    "mae": 0.046574555756038034,
+    "mse": 0.004365548958354412,
+    "features_used": 3,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

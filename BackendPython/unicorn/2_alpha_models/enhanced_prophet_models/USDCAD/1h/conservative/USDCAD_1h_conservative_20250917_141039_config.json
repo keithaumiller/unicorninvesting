@@ -1,0 +1,22 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_141039",
+  "metrics": {
+    "r2": 0.9964388880483379,
+    "mae": 0.00018214615685735306,
+    "mse": 6.81522370753508e-08,
+    "features_used": 3,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

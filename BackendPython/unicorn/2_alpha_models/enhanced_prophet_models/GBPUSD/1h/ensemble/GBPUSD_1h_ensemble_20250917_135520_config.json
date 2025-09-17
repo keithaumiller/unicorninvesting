@@ -1,0 +1,29 @@
+{
+  "asset": "GBPUSD",
+  "interval": "1h",
+  "variant": "ensemble",
+  "timestamp": "20250917_135520",
+  "metrics": {
+    "r2": 0.9958574303646631,
+    "mae": 0.00022990977113596393,
+    "mse": 1.0757777273596409e-07,
+    "features_used": 10,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Hybrid forex models combining technical and fundamental",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "macd",
+      "bbands_upper",
+      "atr_14",
+      "market_session",
+      "volatility_regime",
+      "momentum_5",
+      "carry_trade_proxy"
+    ],
+    "expected_count": 10
+  }
+}

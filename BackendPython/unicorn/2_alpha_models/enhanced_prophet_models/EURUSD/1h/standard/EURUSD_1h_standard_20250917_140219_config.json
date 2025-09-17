@@ -1,0 +1,25 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_140219",
+  "metrics": {
+    "r2": 0.9906822371701514,
+    "mae": 0.0002749745974138753,
+    "mse": 1.498438141292245e-07,
+    "features_used": 6,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}

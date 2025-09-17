@@ -355,6 +355,10 @@ else
 
     # Install technical analysis and silver layer processing packages
     log_info "Installing technical analysis and advanced analytics packages..."
+    
+    # Install ta (Technical Analysis Library) - different from TA-Lib
+    log_info "Installing ta (Technical Analysis) package..."
+    pip install ta
 
     # Try to install TA-Lib Python package
     log_info "Installing TA-Lib Python package..."

@@ -1,0 +1,29 @@
+{
+  "asset": "NZDUSD",
+  "interval": "1d",
+  "variant": "ensemble",
+  "timestamp": "20250917_141039",
+  "metrics": {
+    "r2": 0.9961582576101575,
+    "mae": 0.0008015220896298681,
+    "mse": 1.2190804904224516e-06,
+    "features_used": 10,
+    "training_records": 259
+  },
+  "variant_config": {
+    "description": "Hybrid forex models combining technical and fundamental",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "macd",
+      "bbands_upper",
+      "atr_14",
+      "market_session",
+      "volatility_regime",
+      "momentum_5",
+      "carry_trade_proxy"
+    ],
+    "expected_count": 10
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "asset": "GBPUSD",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_135518",
+  "metrics": {
+    "r2": 0.9891829924799607,
+    "mae": 0.0003626448065701415,
+    "mse": 2.8090525425274874e-07,
+    "features_used": 3,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

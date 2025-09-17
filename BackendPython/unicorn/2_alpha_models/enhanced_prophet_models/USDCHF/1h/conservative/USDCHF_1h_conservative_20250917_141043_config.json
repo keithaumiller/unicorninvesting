@@ -1,0 +1,22 @@
+{
+  "asset": "USDCHF",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_141043",
+  "metrics": {
+    "r2": 0.9947445282094963,
+    "mae": 0.00022560997157541988,
+    "mse": 9.569660059555082e-08,
+    "features_used": 3,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

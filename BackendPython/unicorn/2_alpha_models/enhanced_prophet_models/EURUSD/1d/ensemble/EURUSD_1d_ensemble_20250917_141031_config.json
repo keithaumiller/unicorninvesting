@@ -1,0 +1,29 @@
+{
+  "asset": "EURUSD",
+  "interval": "1d",
+  "variant": "ensemble",
+  "timestamp": "20250917_141031",
+  "metrics": {
+    "r2": 0.9994209490565041,
+    "mae": 0.0008710259661850907,
+    "mse": 1.362115281032874e-06,
+    "features_used": 10,
+    "training_records": 259
+  },
+  "variant_config": {
+    "description": "Hybrid forex models combining technical and fundamental",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "macd",
+      "bbands_upper",
+      "atr_14",
+      "market_session",
+      "volatility_regime",
+      "momentum_5",
+      "carry_trade_proxy"
+    ],
+    "expected_count": 10
+  }
+}

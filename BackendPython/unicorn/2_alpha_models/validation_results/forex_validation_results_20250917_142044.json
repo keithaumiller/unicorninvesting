@@ -1,0 +1,1573 @@
+{
+  "timestamp": "2025-09-17T14:20:30.056539",
+  "validation_summary": {
+    "total_models_tested": 70,
+    "overfitting_models": 68,
+    "overfitting_rate": 0.9714285714285714,
+    "assets_tested": 7,
+    "intervals_tested": 2
+  },
+  "assets": {
+    "EURUSD": {
+      "1h": {
+        "asset": "EURUSD",
+        "interval": "1h",
+        "total_records": 549,
+        "train_records": 384,
+        "val_records": 165,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 379,
+            "val_records": 165,
+            "train_r2": 0.9446312578988822,
+            "train_mae": 0.0006470076200837428,
+            "train_mape": 0.055471686540105175,
+            "val_r2": -0.7421375890662869,
+            "val_mae": 0.0043193874971005275,
+            "val_mape": 0.36877969873921956,
+            "overfitting_gap": 1.6867688469651692,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9560626259918668,
+            "train_mae": 0.000536456826352266,
+            "train_mape": 0.04597511553551477,
+            "val_r2": -85.50769549094835,
+            "val_mae": 0.03548501191701344,
+            "val_mape": 3.0309840551197254,
+            "overfitting_gap": 86.46375811694021,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9901974949976056,
+            "train_mae": 0.00024459639691971224,
+            "train_mape": 0.020958865388096673,
+            "val_r2": -2.4227242361214487,
+            "val_mae": 0.007123746941369736,
+            "val_mape": 0.6087268181897268,
+            "overfitting_gap": 3.412921731119054,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 364,
+            "val_records": 165,
+            "train_r2": 0.9393470689582144,
+            "train_mae": 0.0006458833592660617,
+            "train_mape": 0.0553425416708712,
+            "val_r2": -14.263425535343613,
+            "val_mae": 0.014401957716924851,
+            "val_mape": 1.2301297606102186,
+            "overfitting_gap": 15.202772604301828,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9842497595916581,
+            "train_mae": 0.0003128804297635607,
+            "train_mape": 0.02681511269383202,
+            "val_r2": -1.7802313042008637,
+            "val_mae": 0.006389555520137493,
+            "val_mape": 0.545995757930501,
+            "overfitting_gap": 2.764481063792522,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "EURUSD",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9528161159338225,
+            "train_mae": 0.005620465598377466,
+            "train_mape": 0.5185003424569593,
+            "val_r2": -5.547696674205829,
+            "val_mae": 0.02992442385884306,
+            "val_mape": 2.5701951496006727,
+            "overfitting_gap": 6.500512790139652,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9813287824929471,
+            "train_mae": 0.004092483685340859,
+            "train_mape": 0.38105463248292987,
+            "val_r2": -2.86217402751613,
+            "val_mae": 0.02000331508964833,
+            "val_mape": 1.7148490513774433,
+            "overfitting_gap": 3.8435028100090767,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9979741565860611,
+            "train_mae": 0.0012055597034516244,
+            "train_mape": 0.11137998235086063,
+            "val_r2": 0.8358730630829767,
+            "val_mae": 0.004573911993007894,
+            "val_mape": 0.39395034273202534,
+            "overfitting_gap": 0.16210109350308444,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9787313020021378,
+            "train_mae": 0.0038225511668732214,
+            "train_mape": 0.35497299272928645,
+            "val_r2": -0.7359864496612247,
+            "val_mae": 0.01439872210453999,
+            "val_mape": 1.2339780414825896,
+            "overfitting_gap": 1.7147177516633625,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9965893409714198,
+            "train_mae": 0.0016676469225167271,
+            "train_mape": 0.1542536406190089,
+            "val_r2": 0.6706669978630155,
+            "val_mae": 0.006452904357374818,
+            "val_mape": 0.5552127938785633,
+            "overfitting_gap": 0.3259223431084043,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "GBPUSD": {
+      "1h": {
+        "asset": "GBPUSD",
+        "interval": "1h",
+        "total_records": 549,
+        "train_records": 384,
+        "val_records": 165,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 379,
+            "val_records": 165,
+            "train_r2": 0.9591164358036978,
+            "train_mae": 0.0006943906918091689,
+            "train_mape": 0.0514659006737754,
+            "val_r2": -38.8479320425072,
+            "val_mae": 0.03303827668014744,
+            "val_mape": 2.445353732528336,
+            "overfitting_gap": 39.807048478310904,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.977245705586612,
+            "train_mae": 0.0004948492874371786,
+            "train_mape": 0.03668440728867019,
+            "val_r2": -89.13961094414793,
+            "val_mae": 0.05339769072826865,
+            "val_mape": 3.955845926718651,
+            "overfitting_gap": 90.11685664973454,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9914103273193667,
+            "train_mae": 0.0002750536584795184,
+            "train_mape": 0.0203861766923373,
+            "val_r2": -1.4412252591971892,
+            "val_mae": 0.008889501503341017,
+            "val_mape": 0.6589489064183237,
+            "overfitting_gap": 2.432635586516556,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 364,
+            "val_records": 165,
+            "train_r2": 0.947039368863687,
+            "train_mae": 0.0007455717696597222,
+            "train_mape": 0.05526016433215131,
+            "val_r2": -44.273130163417136,
+            "val_mae": 0.03537716824521977,
+            "val_mape": 2.618548516456256,
+            "overfitting_gap": 45.22016953228082,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9881606719874514,
+            "train_mae": 0.0003384297838385657,
+            "train_mape": 0.025093317005595864,
+            "val_r2": -0.1333127109321166,
+            "val_mae": 0.0060172545947418995,
+            "val_mape": 0.446056719634103,
+            "overfitting_gap": 1.121473382919568,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "GBPUSD",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9674296109662568,
+            "train_mae": 0.00455812717703814,
+            "train_mape": 0.35382272553801464,
+            "val_r2": -10.402538357603603,
+            "val_mae": 0.029253241438928042,
+            "val_mape": 2.172941655444639,
+            "overfitting_gap": 11.36996796856986,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9811752643815282,
+            "train_mae": 0.0035863377660074174,
+            "train_mape": 0.27953447420407324,
+            "val_r2": -0.16389769679653776,
+            "val_mae": 0.00959198758012759,
+            "val_mape": 0.7128063479050545,
+            "overfitting_gap": 1.145072961178066,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9980163106233759,
+            "train_mae": 0.0011780186997688467,
+            "train_mape": 0.0917910223453669,
+            "val_r2": 0.13190706451005696,
+            "val_mae": 0.006756439167440429,
+            "val_mape": 0.5009667040721006,
+            "overfitting_gap": 0.866109246113319,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9773884838312387,
+            "train_mae": 0.0037671986614363612,
+            "train_mape": 0.2930922464116287,
+            "val_r2": -3.286175492148617,
+            "val_mae": 0.01811845443606662,
+            "val_mape": 1.3461034344216651,
+            "overfitting_gap": 4.263563975979856,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9959253150920636,
+            "train_mae": 0.0016783934805121724,
+            "train_mape": 0.13091058969626698,
+            "val_r2": 0.6033283195191728,
+            "val_mae": 0.005952595940031678,
+            "val_mape": 0.4411157096817806,
+            "overfitting_gap": 0.39259699557289085,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "USDJPY": {
+      "1h": {
+        "asset": "USDJPY",
+        "interval": "1h",
+        "total_records": 546,
+        "train_records": 382,
+        "val_records": 164,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 377,
+            "val_records": 164,
+            "train_r2": 0.9291906108862281,
+            "train_mae": 0.09621045510915152,
+            "train_mape": 0.06521098628949237,
+            "val_r2": -10.266511934711579,
+            "val_mae": 1.4159848100661654,
+            "val_mape": 0.9601169292095529,
+            "overfitting_gap": 11.195702545597808,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9490467072799583,
+            "train_mae": 0.08030816920916846,
+            "train_mape": 0.05446253687261684,
+            "val_r2": -86.0493514903168,
+            "val_mae": 4.817145620703417,
+            "val_mape": 3.261526627222217,
+            "overfitting_gap": 86.99839819759676,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9886736458576655,
+            "train_mae": 0.03572022692955326,
+            "train_mape": 0.024225246308016764,
+            "val_r2": -1.9670056536295926,
+            "val_mae": 0.8700233855879297,
+            "val_mape": 0.5884802643858243,
+            "overfitting_gap": 2.955679299487258,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 362,
+            "val_records": 164,
+            "train_r2": 0.9182321147626592,
+            "train_mae": 0.10265213703165647,
+            "train_mape": 0.06961105455384567,
+            "val_r2": -38.720524949298586,
+            "val_mae": 2.9674226411748816,
+            "val_mape": 2.010474790473221,
+            "overfitting_gap": 39.638757064061245,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9830720677860362,
+            "train_mae": 0.045291740433316206,
+            "train_mape": 0.030714106992610395,
+            "val_r2": -1.4665954433379853,
+            "val_mae": 0.7466882491191311,
+            "val_mape": 0.5049397478248533,
+            "overfitting_gap": 2.4496675111240216,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "USDJPY",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9448790101537807,
+            "train_mae": 0.7647846214038363,
+            "train_mape": 0.5129568380419781,
+            "val_r2": -3.01364808323794,
+            "val_mae": 3.2043049556107928,
+            "val_mape": 2.181111963401571,
+            "overfitting_gap": 3.9585270933917207,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9771353562041583,
+            "train_mae": 0.5451203963759189,
+            "train_mape": 0.36605158336413407,
+            "val_r2": -13.231026180534844,
+            "val_mae": 6.339297218505651,
+            "val_mape": 4.3176583738290795,
+            "overfitting_gap": 14.208161536739002,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9973400381342242,
+            "train_mae": 0.18530067375088777,
+            "train_mape": 0.12349192474364297,
+            "val_r2": -1.3471168947340275,
+            "val_mae": 2.112594515913761,
+            "val_mape": 1.4324299271541014,
+            "overfitting_gap": 2.3444569328682516,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9642402506810398,
+            "train_mae": 0.6494393968736927,
+            "train_mape": 0.43422070067562935,
+            "val_r2": -5.923459236894565,
+            "val_mae": 4.5186667182253135,
+            "val_mape": 3.080699757926265,
+            "overfitting_gap": 6.887699487575604,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.994513737099291,
+            "train_mae": 0.27489624170927,
+            "train_mape": 0.18343844134536372,
+            "val_r2": 0.7517889780326145,
+            "val_mae": 0.8048889847658162,
+            "val_mape": 0.548753941956058,
+            "overfitting_gap": 0.24272475906667657,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "AUDUSD": {
+      "1h": {
+        "asset": "AUDUSD",
+        "interval": "1h",
+        "total_records": 549,
+        "train_records": 384,
+        "val_records": 165,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 379,
+            "val_records": 165,
+            "train_r2": 0.9836818069313763,
+            "train_mae": 0.0003711675723011911,
+            "train_mape": 0.057113424644419215,
+            "val_r2": -5.079164488619856,
+            "val_mae": 0.007612950215556586,
+            "val_mape": 1.1551683948859448,
+            "overfitting_gap": 6.062846295551233,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9862160522781759,
+            "train_mae": 0.0003458657016747595,
+            "train_mape": 0.05324056979366459,
+            "val_r2": -17.479154840246128,
+            "val_mae": 0.014737877198178517,
+            "val_mape": 2.238945836157421,
+            "overfitting_gap": 18.465370892524305,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9967588635820245,
+            "train_mae": 0.00015300507476439392,
+            "train_mape": 0.023549839833404654,
+            "val_r2": 0.86618429712083,
+            "val_mae": 0.0010962937742449406,
+            "val_mape": 0.16716677407685765,
+            "overfitting_gap": 0.13057456646119447,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 364,
+            "val_records": 165,
+            "train_r2": 0.9819258416391642,
+            "train_mae": 0.00039362252900639646,
+            "train_mape": 0.06055115747336489,
+            "val_r2": -12.683908611156939,
+            "val_mae": 0.011943720599097256,
+            "val_mape": 1.8132411833068844,
+            "overfitting_gap": 13.665834452796103,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9955747355440111,
+            "train_mae": 0.0001885073073633755,
+            "train_mape": 0.029018126683690228,
+            "val_r2": 0.8958470608941624,
+            "val_mae": 0.0009805701286961003,
+            "val_mape": 0.14940237194013525,
+            "overfitting_gap": 0.09972767464984866,
+            "is_overfitting": false,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "AUDUSD",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9449243731748829,
+            "train_mae": 0.0027337851199126786,
+            "train_mape": 0.4305485760060781,
+            "val_r2": -36.83016118151791,
+            "val_mae": 0.024002259259045394,
+            "val_mape": 3.682738039104855,
+            "overfitting_gap": 37.775085554692794,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.897506963586672,
+            "train_mae": 0.0026246738572082403,
+            "train_mape": 0.4155141971056169,
+            "val_r2": -222.17033417822785,
+            "val_mae": 0.05956790944398472,
+            "val_mape": 9.13705780968734,
+            "overfitting_gap": 223.0678411418145,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9867665536096507,
+            "train_mae": 0.0008759188636830249,
+            "train_mape": 0.13920203159989228,
+            "val_r2": 0.4435031345164945,
+            "val_mae": 0.002863393542213366,
+            "val_mape": 0.4389508746320674,
+            "overfitting_gap": 0.5432634190931562,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9443012552397592,
+            "train_mae": 0.0027136492067311485,
+            "train_mape": 0.427453912562652,
+            "val_r2": -39.01364035005012,
+            "val_mae": 0.024651784854116683,
+            "val_mape": 3.782344719765881,
+            "overfitting_gap": 39.957941605289875,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9713678267017432,
+            "train_mae": 0.0013175599141325685,
+            "train_mape": 0.2092842051100851,
+            "val_r2": -1.5796368148129574,
+            "val_mae": 0.006065171443856505,
+            "val_mape": 0.9293933429176273,
+            "overfitting_gap": 2.5510046415147007,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "USDCAD": {
+      "1h": {
+        "asset": "USDCAD",
+        "interval": "1h",
+        "total_records": 549,
+        "train_records": 384,
+        "val_records": 165,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 379,
+            "val_records": 165,
+            "train_r2": 0.9856346577345002,
+            "train_mae": 0.0004469688805719495,
+            "train_mape": 0.03236360363073731,
+            "val_r2": -11.817980296558403,
+            "val_mae": 0.008665514218889605,
+            "val_mape": 0.6264326082713801,
+            "overfitting_gap": 12.803614954292904,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9869647566580789,
+            "train_mae": 0.0004299850584638431,
+            "train_mape": 0.031130351408055174,
+            "val_r2": -21.944725799932623,
+            "val_mae": 0.0117463860631186,
+            "val_mape": 0.8492823862256008,
+            "overfitting_gap": 22.931690556590702,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9977878951732407,
+            "train_mae": 0.00016679578857752784,
+            "train_mape": 0.01207695768480705,
+            "val_r2": -0.3353644969527543,
+            "val_mae": 0.002736846517745052,
+            "val_mape": 0.19788165543711067,
+            "overfitting_gap": 1.333152392125995,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 364,
+            "val_records": 165,
+            "train_r2": 0.9843706487141686,
+            "train_mae": 0.00045292823711115505,
+            "train_mape": 0.032796698518231054,
+            "val_r2": -3.4927731842165084,
+            "val_mae": 0.005034281554704073,
+            "val_mape": 0.3639939183939481,
+            "overfitting_gap": 4.477143832930677,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9965649083282115,
+            "train_mae": 0.00022378790710444397,
+            "train_mape": 0.01619999321389904,
+            "val_r2": 0.4606514665923964,
+            "val_mae": 0.0017424686032122799,
+            "val_mape": 0.1260368305501964,
+            "overfitting_gap": 0.5359134417358151,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "USDCAD",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9547269739233573,
+            "train_mae": 0.0037311634905662825,
+            "train_mape": 0.264481032184364,
+            "val_r2": -14.606727166212249,
+            "val_mae": 0.028278684778831626,
+            "val_mape": 2.05615160309385,
+            "overfitting_gap": 15.561454140135606,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9599187089697402,
+            "train_mae": 0.003208738083543062,
+            "train_mape": 0.22644868579415664,
+            "val_r2": -9.64790565579457,
+            "val_mae": 0.020904143947260336,
+            "val_mape": 1.5186611054832413,
+            "overfitting_gap": 10.60782436476431,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9942789970170417,
+            "train_mae": 0.001252448222155387,
+            "train_mape": 0.08809256729080898,
+            "val_r2": 0.4673712002840722,
+            "val_mae": 0.004348253567019537,
+            "val_mape": 0.31566739694060625,
+            "overfitting_gap": 0.5269077967329695,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9658002743512822,
+            "train_mae": 0.0032930353105160887,
+            "train_mape": 0.23314052685975342,
+            "val_r2": 0.4996894055568455,
+            "val_mae": 0.004163476334328345,
+            "val_mape": 0.30389768984425164,
+            "overfitting_gap": 0.46611086879443675,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9876284733065792,
+            "train_mae": 0.0018650766880612788,
+            "train_mape": 0.13152514132526313,
+            "val_r2": 0.043833670641892364,
+            "val_mae": 0.007342140089271701,
+            "val_mape": 0.5345681365963896,
+            "overfitting_gap": 0.9437948026646868,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "USDCHF": {
+      "1h": {
+        "asset": "USDCHF",
+        "interval": "1h",
+        "total_records": 546,
+        "train_records": 382,
+        "val_records": 164,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 377,
+            "val_records": 164,
+            "train_r2": 0.9749649758352376,
+            "train_mae": 0.00037650444942831276,
+            "train_mape": 0.04677016276588068,
+            "val_r2": -3.96414018218364,
+            "val_mae": 0.007910865019740436,
+            "val_mape": 0.9923672665832741,
+            "overfitting_gap": 4.939105158018878,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9759823096765032,
+            "train_mae": 0.0003143590126177603,
+            "train_mape": 0.039087517268066314,
+            "val_r2": -18.860150332355502,
+            "val_mae": 0.018202145342455053,
+            "val_mape": 2.2779014714187737,
+            "overfitting_gap": 19.836132642032005,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9937533141857109,
+            "train_mae": 0.0001594431409459338,
+            "train_mape": 0.019822693106434253,
+            "val_r2": 0.7423678843141536,
+            "val_mae": 0.0019151392306112184,
+            "val_mape": 0.23928758527159336,
+            "overfitting_gap": 0.2513854298715573,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 362,
+            "val_records": 164,
+            "train_r2": 0.9629530388301143,
+            "train_mae": 0.0004114579674641603,
+            "train_mape": 0.051147515623097384,
+            "val_r2": -3.1089627888300075,
+            "val_mae": 0.006959929597213119,
+            "val_mape": 0.8733739124330213,
+            "overfitting_gap": 4.0719158276601215,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 333,
+            "val_records": 164,
+            "train_r2": 0.9900331710082936,
+            "train_mae": 0.0002131961501675083,
+            "train_mape": 0.026506883277342425,
+            "val_r2": 0.7771879282229246,
+            "val_mae": 0.0017433515919178738,
+            "val_mape": 0.21830034404179888,
+            "overfitting_gap": 0.21284524278536898,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "USDCHF",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9496409516061451,
+            "train_mae": 0.004521698034146763,
+            "train_mape": 0.5245388904025554,
+            "val_r2": -9.8224575398218,
+            "val_mae": 0.028774574589296067,
+            "val_mape": 3.5794076226489793,
+            "overfitting_gap": 10.772098491427945,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9868438799272158,
+            "train_mae": 0.0027605349076391048,
+            "train_mape": 0.31668347144551323,
+            "val_r2": -3.3539229420868804,
+            "val_mae": 0.016175709028233693,
+            "val_mape": 2.0103743475874087,
+            "overfitting_gap": 4.340766822014096,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9975855071343085,
+            "train_mae": 0.0010750578712879287,
+            "train_mape": 0.12449641129275574,
+            "val_r2": 0.0656630970511366,
+            "val_mae": 0.008069126400290873,
+            "val_mape": 1.0012166275076517,
+            "overfitting_gap": 0.9319224100831719,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.9840283440946033,
+            "train_mae": 0.002812384449450482,
+            "train_mape": 0.32348845747682775,
+            "val_r2": -8.662605665625975,
+            "val_mae": 0.02105621619825068,
+            "val_mape": 2.61799594472675,
+            "overfitting_gap": 9.646634009720579,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9952136132232137,
+            "train_mae": 0.0016318928181958277,
+            "train_mape": 0.18872892051409104,
+            "val_r2": -1.5952352677293944,
+            "val_mae": 0.013281704104749737,
+            "val_mape": 1.6498256804104692,
+            "overfitting_gap": 2.590448880952608,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    },
+    "NZDUSD": {
+      "1h": {
+        "asset": "NZDUSD",
+        "interval": "1h",
+        "total_records": 549,
+        "train_records": 384,
+        "val_records": 165,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 1,
+            "train_records": 379,
+            "val_records": 165,
+            "train_r2": 0.9888336508433876,
+            "train_mae": 0.0003743260589144869,
+            "train_mape": 0.06358397834651865,
+            "val_r2": -3.1660271144271848,
+            "val_mae": 0.005983678704439892,
+            "val_mape": 1.009446011072756,
+            "overfitting_gap": 4.1548607652705725,
+            "is_overfitting": true,
+            "features": [
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 3,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.988027152792707,
+            "train_mae": 0.0003487617080183053,
+            "train_mape": 0.05933182380862177,
+            "val_r2": -10.6236742003255,
+            "val_mae": 0.011586226215056955,
+            "val_mape": 1.9572230286368069,
+            "overfitting_gap": 11.611701353118207,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 8,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9972006919966604,
+            "train_mae": 0.0001605850486001428,
+            "train_mape": 0.027327992534802597,
+            "val_r2": 0.7187449214500308,
+            "val_mae": 0.00154172108600022,
+            "val_mape": 0.26160131232709405,
+            "overfitting_gap": 0.2784557705466296,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 2,
+            "train_records": 364,
+            "val_records": 165,
+            "train_r2": 0.9860508623736386,
+            "train_mae": 0.00040557116306109595,
+            "train_mape": 0.06892809075258222,
+            "val_r2": -4.452533003743424,
+            "val_mae": 0.006913045161545822,
+            "val_mape": 1.1662525080435986,
+            "overfitting_gap": 5.438583866117063,
+            "is_overfitting": true,
+            "features": [
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 5,
+            "train_records": 335,
+            "val_records": 165,
+            "train_r2": 0.9962718365987773,
+            "train_mae": 0.00019153139759325782,
+            "train_mape": 0.0325956284284818,
+            "val_r2": 0.8499630023690276,
+            "val_mae": 0.0011375817161309906,
+            "val_mape": 0.19307654315708922,
+            "overfitting_gap": 0.14630883422974972,
+            "is_overfitting": true,
+            "features": [
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      },
+      "1d": {
+        "asset": "NZDUSD",
+        "interval": "1d",
+        "total_records": 259,
+        "train_records": 181,
+        "val_records": 78,
+        "models": {
+          "conservative": {
+            "variant": "conservative",
+            "features_used": 2,
+            "train_records": 162,
+            "val_records": 78,
+            "train_r2": 0.9167363699042806,
+            "train_mae": 0.0032044529238205444,
+            "train_mape": 0.5509250695268187,
+            "val_r2": -11.402592879838718,
+            "val_mae": 0.019944116660169684,
+            "val_mape": 3.3626719290736378,
+            "overfitting_gap": 12.319329249742998,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "momentum_5"
+            ]
+          },
+          "standard": {
+            "variant": "standard",
+            "features_used": 4,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.8791098291401438,
+            "train_mae": 0.003273946538463528,
+            "train_mape": 0.5665682881025896,
+            "val_r2": -2.458663672759568,
+            "val_mae": 0.010786798605965021,
+            "val_mape": 1.8177414823169178,
+            "overfitting_gap": 3.337773501899712,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "aggressive": {
+            "variant": "aggressive",
+            "features_used": 9,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.9935700993676244,
+            "train_mae": 0.000755469887423343,
+            "train_mape": 0.131315493283202,
+            "val_r2": 0.9511365853517317,
+            "val_mae": 0.0012407824153862653,
+            "val_mape": 0.20773638887978518,
+            "overfitting_gap": 0.04243351401589268,
+            "is_overfitting": false,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "macd_signal",
+              "cci",
+              "williams_r",
+              "stoch_k",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "economic": {
+            "variant": "economic",
+            "features_used": 3,
+            "train_records": 161,
+            "val_records": 78,
+            "train_r2": 0.925331355785135,
+            "train_mae": 0.0030383610469472415,
+            "train_mape": 0.5234324118654288,
+            "val_r2": -7.741054778949383,
+            "val_mae": 0.01639844068805802,
+            "val_mape": 2.7662553592035137,
+            "overfitting_gap": 8.666386134734518,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "volatility_20",
+              "momentum_5"
+            ]
+          },
+          "ensemble": {
+            "variant": "ensemble",
+            "features_used": 6,
+            "train_records": 132,
+            "val_records": 78,
+            "train_r2": 0.985348278326592,
+            "train_mae": 0.00116862560749001,
+            "train_mape": 0.20336398781878812,
+            "val_r2": -0.23293968916220908,
+            "val_mae": 0.005329109487275086,
+            "val_mape": 0.8997568559946668,
+            "overfitting_gap": 1.2182879674888012,
+            "is_overfitting": true,
+            "features": [
+              "ma_20",
+              "ma_50",
+              "macd",
+              "cci",
+              "volatility_20",
+              "momentum_5"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

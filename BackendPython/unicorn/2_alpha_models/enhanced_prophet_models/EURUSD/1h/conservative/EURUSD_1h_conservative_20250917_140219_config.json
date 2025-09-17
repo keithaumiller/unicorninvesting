@@ -1,0 +1,22 @@
+{
+  "asset": "EURUSD",
+  "interval": "1h",
+  "variant": "conservative",
+  "timestamp": "20250917_140219",
+  "metrics": {
+    "r2": 0.9878130863776257,
+    "mae": 0.0003115480680679351,
+    "mse": 1.959841276266559e-07,
+    "features_used": 3,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Simple, stable forex models",
+    "features": [
+      "ma_5",
+      "rsi_14",
+      "market_session"
+    ],
+    "expected_count": 3
+  }
+}

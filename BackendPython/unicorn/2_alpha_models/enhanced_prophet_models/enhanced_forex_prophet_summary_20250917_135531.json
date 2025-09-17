@@ -1,0 +1,715 @@
+{
+  "timestamp": "2025-09-17T13:55:11.204361",
+  "total_models": 70,
+  "successful_models": 35,
+  "success_rate": 50.0,
+  "model_variants": [
+    "conservative",
+    "standard",
+    "aggressive",
+    "economic",
+    "ensemble"
+  ],
+  "performance_summary": [
+    {
+      "asset": "AUDUSD",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.9967944919988893,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9972815164269854,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9987077472604908,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9995983677927542,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9986464858148102,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "AUDUSD",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.987575826950298,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9906822371701514,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9957157133553791,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9992053411008458,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9952347204215717,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "EURUSD",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.9891829924799607,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9900678615893408,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9959733904172265,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9989435123642186,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9958574303646631,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "GBPUSD",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.994805313695064,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9955490116859583,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9982018121458335,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9997722311224688,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.998208649548495,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "NZDUSD",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.9964128973342535,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9964850134065713,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9981530847177246,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.999787110675709,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9981151228438311,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 549,
+      "status": "success"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCAD",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.9947453882370824,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9962643188206927,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9979095854649016,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9993168836740711,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9980505918013711,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDCHF",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1h",
+      "variant": "conservative",
+      "r2": 0.984448124861619,
+      "validation_r2": 0.0,
+      "features_used": 3,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1h",
+      "variant": "standard",
+      "r2": 0.9883985991690131,
+      "validation_r2": 0.0,
+      "features_used": 6,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1h",
+      "variant": "aggressive",
+      "r2": 0.9935427609797263,
+      "validation_r2": 0.0,
+      "features_used": 15,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1h",
+      "variant": "economic",
+      "r2": 0.9991834322107994,
+      "validation_r2": 0.0,
+      "features_used": 9,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1h",
+      "variant": "ensemble",
+      "r2": 0.9928658559574072,
+      "validation_r2": 0.0,
+      "features_used": 10,
+      "training_records": 546,
+      "status": "success"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1d",
+      "variant": "conservative",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1d",
+      "variant": "standard",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1d",
+      "variant": "aggressive",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1d",
+      "variant": "economic",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    },
+    {
+      "asset": "USDJPY",
+      "interval": "1d",
+      "variant": "ensemble",
+      "r2": 0.0,
+      "validation_r2": 0.0,
+      "features_used": 0,
+      "training_records": 0,
+      "status": "failed"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "economic",
+  "timestamp": "20250917_141049",
+  "metrics": {
+    "r2": 0.9991867068598417,
+    "mae": 0.005677622541376813,
+    "mse": 0.0002282985806703708,
+    "features_used": 9,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Economically-focused forex models",
+    "features": [
+      "ma_20",
+      "atr_14",
+      "rsi_14",
+      "carry_trade_proxy",
+      "volatility_regime",
+      "market_session",
+      "momentum_5",
+      "mean_reversion",
+      "risk_sentiment"
+    ],
+    "expected_count": 9
+  }
+}

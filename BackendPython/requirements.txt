@@ -28,6 +28,7 @@ ccxt  # Cryptocurrency exchanges
 # Quantitative finance libraries
 quantlib-python>=1.29
 TA-Lib>=0.4.24
+ta>=0.11.0
 zipline-reloaded>=2.2.0
 empyrical>=0.5.5
 pyfolio>=0.9.2

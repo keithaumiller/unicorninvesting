@@ -1,0 +1,25 @@
+{
+  "asset": "USDJPY",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_141048",
+  "metrics": {
+    "r2": 0.9883985991690131,
+    "mae": 0.039622855303330005,
+    "mse": 0.003256615865451176,
+    "features_used": 6,
+    "training_records": 546
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "ensemble",
+  "timestamp": "20250917_135526",
+  "metrics": {
+    "r2": 0.9981151228438311,
+    "mae": 0.00014224258545441422,
+    "mse": 3.607260781149531e-08,
+    "features_used": 10,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Hybrid forex models combining technical and fundamental",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "macd",
+      "bbands_upper",
+      "atr_14",
+      "market_session",
+      "volatility_regime",
+      "momentum_5",
+      "carry_trade_proxy"
+    ],
+    "expected_count": 10
+  }
+}

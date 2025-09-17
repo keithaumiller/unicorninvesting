@@ -1,0 +1,25 @@
+{
+  "asset": "NZDUSD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_135521",
+  "metrics": {
+    "r2": 0.9955490116859583,
+    "mae": 0.00019694023142660723,
+    "mse": 8.970148385364262e-08,
+    "features_used": 6,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "asset": "USDCAD",
+  "interval": "1h",
+  "variant": "standard",
+  "timestamp": "20250917_135524",
+  "metrics": {
+    "r2": 0.9964850134065713,
+    "mae": 0.0001807770030175123,
+    "mse": 6.72694941590446e-08,
+    "features_used": 6,
+    "training_records": 549
+  },
+  "variant_config": {
+    "description": "Balanced forex models with technical indicators",
+    "features": [
+      "ma_5",
+      "ma_20",
+      "rsi_14",
+      "bbands_upper",
+      "bbands_lower",
+      "atr_14"
+    ],
+    "expected_count": 6
+  }
+}
