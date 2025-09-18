@@ -6,7 +6,7 @@ applyTo: '**'
 
 ## Project Overview
 
-Unicorn Investing is a financial analytics platform for algorithmic trading with LEAN framework integration.
+Unicorn Investing is a financial analytics platform for algorithmic trading
 
 ## 🚨 CRITICAL SECURITY RULE - DO NOT TOUCH SECRETS.JSON
 
@@ -43,13 +43,6 @@ Unicorn Investing is a financial analytics platform for algorithmic trading with
   - Service startup (Apache, MySQL, IBKR Gateway)
   - Complete health validation
 
-**Common Issues Resolved by Environment Script:**
-- `ModuleNotFoundError: No module named 'yfinance'`
-- `ModuleNotFoundError: No module named 'xgboost'`
-- `ModuleNotFoundError: No module named 'sklearn'`
-- Missing Python virtual environment
-- Inactive services (Apache, MySQL)
-- IBKR Gateway not running
 
 **Rule:** If you encounter ANY package/import error, verify environment setup first.
 
@@ -91,13 +84,7 @@ Unicorn Investing is a financial analytics platform for algorithmic trading with
 
 ## Architecture Principles
 
-### Clean Algorithm Separation
-- **Risk Algorithms**: Pure risk calculations with NO trading decisions
-- **Trading Algorithms**: Pure trading strategies with NO risk calculations
-- **Framework Utilities**: Shared components for portfolio management
-- **Single Portfolio Focus**: Myportolio as the ONLY portfolio implementation
-
-### LEAN Framework Integration (6-Layer Architecture)
+###(6-Layer Architecture)
 1. **Data Sources** → Raw market data collection
 2. **Alpha Models** → ETH models and trading signals  
 3. **Risk Management** → Risk controls and limits
@@ -112,7 +99,7 @@ Unicorn Investing is a financial analytics platform for algorithmic trading with
 - **Backend**: Python 3.9+ with LEAN framework integration
 - **Database**: MySQL 8.0+
 - **Web Server**: Apache/Nginx
-- **Trading Framework**: QuantConnect LEAN (6-layer architecture)
+- **Trading Framework**: Unicorninvesting (6-layer architecture)
 
 ### Python Dependencies (Core)
 - **Data**: pandas, numpy, scipy
@@ -139,10 +126,6 @@ Unicorn Investing is a financial analytics platform for algorithmic trading with
 ./scripts/startup_drupal.sh                   # Start Drupal services
 ./scripts/drupalcachreset.sh                  # Reset Drupal cache (if exists)
 
-# Legacy (use unicorn_environment.sh instead)
-./scripts/setup_environment.sh                # Basic environment setup
-./scripts/health_check.sh                     # Basic health check
-```
 
 ### **Available Aliases** (after setup)
 ```bash
@@ -155,7 +138,6 @@ drupal-cd          # Change to Drupal directory
 unicorn-root       # Change to root directory
 ```
 
-## Coding Standards
 
 ### Portfolio Algorithm Development
 
@@ -272,6 +254,8 @@ portfolio_targets = portfolio_manager.integrate(trading_signals, risk_constraint
 - **Create README.md files** for new directories or components
 - Include comprehensive information about functionality, usage, and architecture
 - Keep documentation current and accurate
+- Always read the readme file in any directory before making changes
+- Always update the readme file in any directory after making changes
 
 #### **2. Commit Messages (Action Reporting)**
 - **Use detailed commit messages** for after-action reporting
@@ -306,7 +290,6 @@ feat: Consolidate health_check.sh and setup_environment.sh scripts
 ## README.md Context
 When working on any part of this codebase, always consider:
 - Always review and update README.md in the same directory before and after any file change.
-- **Create GitHub Issues** for any new unimplemented features discovered in documentation.
 
 ## 🎯 **GitHub Issues Management Strategy**
 
@@ -350,29 +333,6 @@ When working on any part of this codebase, always consider:
 - **Clean Directory Structure**: Enforced single portfolio focus (Myportolio)
 - **Algorithm Separation**: Risk and trading algorithms completely separated
 - **Framework Utilities**: Portfolio management components organized in utilities/
-- **Basic ETH Algorithms**: Hello World implementations for momentum and risk
 - **Configuration System**: JSON-based portfolio configuration
 - **Documentation Standards**: README.md only approach implemented
 - **Script Organization**: All setup scripts properly organized in scripts/
-
-### 🚧 **Ready for Development**
-- **LEAN Integration**: Architecture ready for backtesting framework connection
-- **Advanced Algorithms**: Foundation ready for sophisticated algorithm development
-- **Data Pipeline**: ETH model performance system with SQLite database available
-- **Risk Management**: Basic risk framework ready for extension
-- **Portfolio Construction**: Framework components ready for enhancement
-
-### 🎯 **Development Focus Areas**
-1. **Algorithm Implementation**: Expand ETH momentum and risk algorithms
-2. **LEAN Framework Integration**: Connect portfolio construction to LEAN backtesting
-3. **Data Integration**: Leverage existing ETH models and performance data
-4. **Testing Framework**: Implement comprehensive testing for algorithm separation
-5. **API Development**: Create REST APIs for portfolio management
-
----
-
-**Architecture Status**: ✅ Complete  
-**Implementation Status**: 🚧 Ready for Algorithm Development  
-**LEAN Integration**: 🚧 Ready for Framework Connection  
-**Success Rate**: 100% clean separation achieved  
-**Next Phase**: Advanced ETH algorithm development and LEAN backtesting integration

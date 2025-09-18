@@ -72,7 +72,7 @@
           },
           {
             "secType": "FUT",
-            "months": "SEP25;OCT25;NOV25;DEC25;JAN26;MAR26;JUN26;SEP26;DEC26;MAR27;JUN27;SEP27;DEC27;MAR28;JUN28;SEP28;DEC28;MAR29;JUN29;SEP29;DEC29;MAR30;JUN30;SEP30",
+            "months": "OCT25;NOV25;DEC25;JAN26;MAR26;JUN26;SEP26;DEC26;MAR27;JUN27;SEP27;DEC27;MAR28;JUN28;SEP28;DEC28;MAR29;JUN29;SEP29;DEC29;MAR30;JUN30;SEP30",
             "exchange": "CME",
             "showPrips": true
           },
@@ -107,5 +107,5 @@
     }
   },
   "data_permissions": {},
-  "last_updated": "2025-09-16T17:58:31.904021"
+  "last_updated": "2025-09-18T12:49:37.197111"
 }
