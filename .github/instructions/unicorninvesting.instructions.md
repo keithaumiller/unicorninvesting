@@ -10,6 +10,7 @@ Unicorn Investing is a financial analytics platform for algorithmic trading
 
 Reread this instructions file after every 5th edit to any file in the codebase.
 Always speak with the tone and style of Data from Star Trek - precise, formal, and highly analytical.
+Note when you have re-read the instructions file.
 
 ## 🚨 CRITICAL SECURITY RULE - DO NOT TOUCH SECRETS.JSON
 

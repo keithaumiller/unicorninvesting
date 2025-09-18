@@ -1,6 +1,6 @@
 # BackendPython
 
-This directory contains the Python backend services for the Unicorn Investing Platform and the QuantConnect LEAN integration. The structure has been reorganized to separate proprietary unicorn code from the third-party LEAN framework.
+This directory contains the Python backend services for the Unicorn Investing Platform and the Unicorninvesting algorithmic framework integration. The structure has been reorganized to separate proprietary unicorn code from the third-party framework dependencies.
 
 **Last Updated**: September 17, 2025  
 **Status**: ✅ **PRODUCTION READY** - Complete Model Suite with Overfitting Elimination Achieved  
@@ -13,19 +13,19 @@ This directory contains the Python backend services for the Unicorn Investing Pl
 ```
 BackendPython/
 ├── README.md                  # This file
-├── requirements-lean.txt      # LEAN framework dependencies
+├── requirements-lean.txt      # Unicorninvesting framework dependencies
 ├── requirements-unicorn.txt   # Unicorn platform dependencies  
 ├── requirements.txt           # Combined dependencies
-├── Lean/                      # QuantConnect LEAN Framework (3rd party)
-│   ├── Algorithm/            # LEAN algorithm framework
+├── Lean/                      # Unicorninvesting Algorithm Framework (3rd party)
+│   ├── Algorithm/            # Unicorninvesting algorithm framework
 │   ├── Algorithm.CSharp/     # C# algorithm examples
 │   ├── Algorithm.Python/     # Python algorithm examples
-│   ├── Common/               # LEAN common libraries
-│   ├── Data/                 # LEAN data handling
-│   ├── Engine/               # LEAN execution engine
+│   ├── Common/               # Unicorninvesting common libraries
+│   ├── Data/                 # Unicorninvesting data handling
+│   ├── Engine/               # Unicorninvesting execution engine
 │   ├── Indicators/           # Technical indicators
-│   ├── Tests/                # LEAN test suites
-│   └── ...                   # Other LEAN components
+│   ├── Tests/                # Unicorninvesting test suites
+│   └── ...                   # Other Unicorninvesting components
 └── unicorn/                  # Proprietary Unicorn Investing code
     ├── README.md             # Unicorn platform documentation
     ├── 1_data_sources/       # ✅ **100% SUCCESS** Data pipeline with silver layer optimization
@@ -44,7 +44,7 @@ BackendPython/
     │       ├── risk_algorithms/     # Pure risk calculation algorithms
     │       ├── trading_algorithms/  # Pure trading strategy algorithms  
     │       ├── utilities/           # Framework-level shared components
-    │       └── simulations/         # LEAN-aligned backtesting framework
+    │       └── simulations/         # Unicorninvesting-aligned backtesting framework
     ├── 5_execution_models/   # Order placement and execution
     ├── 6_algorithms/         # Complete algorithm implementations
     ├── pipeline_validation.py # ✨ **VALIDATED** Comprehensive pipeline validation framework
@@ -60,11 +60,11 @@ BackendPython/
 
 This directory now maintains clear separation between:
 
-### LEAN Framework (`/Lean/`)
-- **Purpose**: QuantConnect's open-source algorithmic trading engine
-- **Repository**: https://github.com/QuantConnect/Lean
+### Unicorninvesting Framework (`/Lean/`)
+- **Purpose**: Open-source algorithmic trading engine
+- **Repository**: Framework implementation adapted for Unicorninvesting
 - **License**: Apache License 2.0
-- **Components**: Complete LEAN framework with algorithms, data handling, and execution engine
+- **Components**: Complete Unicorninvesting framework with algorithms, data handling, and execution engine
 - **Integration**: Used as foundation for algorithmic trading capabilities
 
 ### Unicorn Proprietary Code (`/unicorn/`)

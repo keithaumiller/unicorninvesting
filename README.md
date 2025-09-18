@@ -38,7 +38,7 @@
 - 🔒 [**SECURITY.md**](./SECURITY.md) - Security policy and vulnerability reporting
 
 ### **🏗️ Core System Directories**
-- 🐍 [**BackendPython/**](./BackendPython/README.md) - Python trading engine and LEAN integration
+- 🐍 [**BackendPython/**](./BackendPython/README.md) - Python trading engine and algorithmic framework
 - 🌐 [**WebFrontend/**](./WebFrontend/README.md) - Drupal 11 web interface and dashboard
 - ⚙️ [**config/**](./config/README.md) - Secure configuration management system
 - 🚀 [**deployment/**](./deployment/README.md) - Production deployment scripts and configurations
@@ -79,7 +79,7 @@
 
 ## 🏗️ Architecture Overview
 
-An advanced algorithmic trading platform that combines machine learning forecasting with LEAN framework integration for institutional-grade algorithmic trading execution. ✨ **Enhanced with complete ensemble trading system featuring 11 production models, Kelly Criterion optimization, and real-time multi-asset execution.**
+An advanced algorithmic trading platform that combines machine learning forecasting with Unicorninvesting framework integration for institutional-grade algorithmic trading execution. ✨ **Enhanced with complete ensemble trading system featuring 11 production models, Kelly Criterion optimization, and real-time multi-asset execution.**
 
 ## 📊 **Complete Model Overfitting Elimination (September 2025)**
 
@@ -158,13 +158,13 @@ python silver_layer_integration_mapper.py
 
 This will ensure Apache web server and MySQL database are running, automated data refresh is scheduled (every 5 minutes), and the Drupal site is accessible at:
 - **Homepage**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/
-- **LEAN Dashboard**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics
+- **Unicorninvesting Dashboard**: https://solid-acorn-gw6xx47pqxfv99p-80.app.github.dev/admin/metrics
 
 **Note**: Drupal frontend is functional but validation pending. Backend integration is in development.
 
 ## Overview
 
-Unicorn Investing is a sophisticated investment analysis and algorithmic trading platform that uses machine learning to optimize portfolio allocations across cryptocurrency markets. The platform has been modernized with a clean separation between proprietary algorithms and the QuantConnect LEAN trading framework, ✨ **now enhanced with Yahoo Finance integration (9 assets × 3 intervals) and comprehensive bronze layer processing with feature engineering**.
+Unicorn Investing is a sophisticated investment analysis and algorithmic trading platform that uses machine learning to optimize portfolio allocations across cryptocurrency markets. The platform has been modernized with a clean separation between proprietary algorithms and the Unicorninvesting trading framework, ✨ **now enhanced with Yahoo Finance integration (9 assets × 3 intervals) and comprehensive bronze layer processing with feature engineering**.
 
 ## 🎯 **Current Architecture Status & Capabilities**
 
@@ -276,7 +276,7 @@ This ensures **real-time trading capabilities** with 1-minute alpha model update
 ### Current Architecture (September 2025)
 - **Frontend**: Drupal 11 web interface with PHP 8.3 (functional, validation pending)
 - **Backend**: Python 3.12 with enhanced data science and economic processing capabilities
-- **Trading Engine**: QuantConnect LEAN framework integration ready for deployment
+- **Trading Engine**: Unicorninvesting framework integration ready for deployment
 - **Database**: MySQL 8.0 with financial-grade security and performance tracking databases
 - **Infrastructure**: Ubuntu 24.04 LAMP stack with SSL certificates
 - **🔄 Automation**: Cron-based data refresh (5-minute intervals) with real-time alpha model updates
@@ -291,7 +291,7 @@ This ensures **real-time trading capabilities** with 1-minute alpha model update
 - **⚡ Real-time Alpha Models**: ETH forecast generation (1-minute intervals) with configurable scheduling
 - **Enhanced Alpha Models**: Economic-enhanced XGBoost and ensemble models with multi-criteria selection  
 - **Portfolio Optimization**: Enhanced model selection with Kelly criterion integration
-- **LEAN Integration**: Algorithmic trading execution framework through QuantConnect
+- **Framework Integration**: Algorithmic trading execution framework through Unicorninvesting
 - **Pipeline Validation**: Comprehensive end-to-end validation from data sources to portfolio construction
 - **Performance Tracking**: Advanced model performance and ensemble effectiveness monitoring
 
@@ -315,7 +315,7 @@ For complete production deployment, see the **[Installation Guide](INSTALLATION.
 - Step-by-step setup instructions for all components
 - Database configuration and optimization
 - Python environment with Prophet forecasting
-- LEAN framework integration
+- Unicorninvesting framework integration
 - Apache/PHP/Drupal configuration
 - SSL certificate setup
 - Production deployment scripts
@@ -336,7 +336,7 @@ For immediate development, the workspace is pre-configured with:
 - Python 3.12 virtual environment at `/workspaces/unicorninvesting/.venv/`
 - FastAPI backend running at `http://localhost:8000`
 - Prophet forecasting capabilities fully installed and tested
-- LEAN framework available for algorithm development
+- Unicorninvesting framework available for algorithm development
 
 ## Project Structure
 
@@ -344,8 +344,8 @@ For immediate development, the workspace is pre-configured with:
 **Status**: ✅ Fully configured Python 3.12 environment with 90+ packages
 ```
 BackendPython/
-├── Lean/                      # QuantConnect LEAN Framework (git submodule)
-│   ├── Algorithm/            # LEAN algorithm framework
+├── Lean/                      # Unicorninvesting Algorithm Framework (git submodule)
+│   ├── Algorithm/            # Unicorninvesting algorithm framework
 │   ├── Algorithm.Python/     # Python algorithm examples
 │   ├── Data/                 # Market data handling
 │   └── Engine/               # Trading execution engine
@@ -355,8 +355,8 @@ BackendPython/
     │   ├── ml/              # Machine learning models
     │   ├── models/          # Database models
     │   └── services/        # Business logic
-    ├── algorithms/          # Custom LEAN algorithms
-    ├── integrations/        # LEAN integration layer
+    ├── algorithms/          # Custom Unicorninvesting algorithms
+    ├── integrations/        # Unicorninvesting integration layer
     ├── data/               # Market data and analysis
     ├── backtesting/        # Strategy validation
     └── legacy/             # R scripts (being migrated)
@@ -422,7 +422,7 @@ jupyter==1.1.1, pytest==8.4.1, structlog==25.4.0
 
 #### **✅ READY FOR DEVELOPMENT:**
 - **Python Environment**: Python 3.12.1 with enhanced ML and economic processing libraries ✅
-- **LEAN Framework**: .NET 8.0.412 ready for algorithmic trading ✅  
+- **Unicorninvesting Framework**: .NET 8.0.412 ready for algorithmic trading ✅  
 - **Enhanced ETH Alpha Models**: Economic-enhanced models with ensemble capabilities ✅
 - **Yahoo Finance Integration**: 9 assets × 3 intervals with bronze layer processing ✅
 - **Silver Layer Processing**: 580+ economic indicators with feature engineering ✅
@@ -504,7 +504,7 @@ Live ETH Data → ETH Models → Trading Signals → Portfolio Decisions → [EX
 ## Architecture Transition
 
 ### Completed Components ✅
-- **LEAN Integration**: QuantConnect framework cloned and configured as git submodule
+- **Unicorninvesting Integration**: Framework cloned and configured as git submodule
 - **Python Migration**: Virtual environment with all required packages
 - **Code Segregation**: Clean separation of proprietary vs third-party code
 - **Infrastructure**: Full LAMP stack with SSL certificates
@@ -513,7 +513,7 @@ Live ETH Data → ETH Models → Trading Signals → Portfolio Decisions → [EX
 
 ### In Progress 🔄
 - **Frontend Validation**: Drupal 11 is functional, comprehensive testing and backend integration pending
-- **LEAN Algorithm Development**: Creating custom trading algorithms for deployment
+- **Unicorninvesting Algorithm Development**: Creating custom trading algorithms for deployment
 - **Advanced Model Development**: Extending economic-enhanced models and ensemble capabilities
 - **Production Deployment**: Finalizing enhanced pipeline for live trading operations
 
@@ -561,13 +561,13 @@ Live ETH Data → ETH Models → Trading Signals → Portfolio Decisions → [EX
 - **Recent Results**: 7,872 records processed (2,222 crypto + 5,650 forex) with complete feature sets
 
 #### Alpha Vantage - 🔄 Framework Ready
-- **Status**: 🔄 **FRAMEWORK** - LEAN integration ready, configuration needed
+- **Status**: 🔄 **FRAMEWORK** - Unicorninvesting integration ready, configuration needed
 - **Authentication**: API key required (free tier: 500 calls/month)
 - **Data Types**: Stocks, forex, cryptocurrencies, economic indicators
-- **Implementation**: Complete LEAN framework integration (212 lines)
+- **Implementation**: Complete Unicorninvesting framework integration (212 lines)
 - **Location**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/alpha_vantage/`
 - **Features**: 
-  - LEAN framework custom data source
+  - Unicorninvesting framework custom data source
   - Rate limiting compliance (5 calls/minute)
   - Supports Resolution.MINUTE data
 - **Setup Required**: API key configuration for activation
