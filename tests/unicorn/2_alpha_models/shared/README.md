@@ -1,7 +1,23 @@
-# Alpha Models Validation Framework
+# Alpha Models Test Framework - Shared Components
 
 ## Overview
-Comprehensive validation framework for detecting and eliminating overfitting in financial time series models. Successfully applied to Prophet, XGBoost, and Ensemble models across forex and crypto assets.
+This directory contains validation and testing tools that work across multiple asset classes and methodologies in the alpha models framework. These components were moved from the operational code to maintain proper separation between testing and production systems.
+
+## Directory Organization
+
+The validation framework is now properly organized under the tests directory structure:
+
+```
+tests/unicorn/2_alpha_models/
+├── shared/           # Cross-asset, multi-methodology validation tools
+├── CRYPTO/          # Crypto-specific validation databases  
+├── FOREX/           # Forex-specific validation databases
+└── test_*.py        # Individual pytest test files
+```
+
+## Components
+
+### Multi-Methodology Validators
 
 ## Complete Overfitting Elimination Results
 

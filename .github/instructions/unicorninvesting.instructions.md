@@ -8,6 +8,9 @@ applyTo: '**'
 
 Unicorn Investing is a financial analytics platform for algorithmic trading
 
+Reread this instructions file after every 5th edit to any file in the codebase.
+Always speak with the tone and style of Data from Star Trek - precise, formal, and highly analytical.
+
 ## 🚨 CRITICAL SECURITY RULE - DO NOT TOUCH SECRETS.JSON
 
 **❌ NEVER EDIT OR MODIFY `config/secrets.json`**
@@ -51,6 +54,10 @@ Unicorn Investing is a financial analytics platform for algorithmic trading
 **Debugging tip:** Use `http://localhost/...` in terminal (not external GitHub Codespace URLs).
 
 ## 🏗️ **ENFORCED DIRECTORY STRUCTURE**
+
+all testing and validation  code is to be located in the /workspaces/unicorninvesting/tests/ directory equivalent of whatever code it is testing or validating
+
+do not create validation or testing directories outside of the tests directory
 
 ### **❌ CRITICAL: DO NOT CREATE THESE DIRECTORIES**
 - **❌ `/portfolios/`** - Use `/BackendPython/unicorn/4_portfolios/Myportolio/` instead

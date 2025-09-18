@@ -31,12 +31,14 @@ Comprehensive documentation update across all directories touched during the ens
 - Enhanced success metrics to include ensemble achievements
 
 ### 4. Validation Framework README
-**File**: `/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/validation/README.md`
+**File**: `/workspaces/unicorninvesting/tests/unicorn/2_alpha_models/shared/README.md`
 **Updates**:
+- Moved validation framework from operational to test directory structure
 - Added ensemble models section to overfitting elimination results
 - Updated validation framework components to include ensemble validator
 - Enhanced validation methodology to include ensemble-specific techniques
 - Added ensemble validation scripts to key scripts section
+- Organized validation tools into shared, CRYPTO, and FOREX test directories
 
 ### 5. ETH Models README
 **File**: `/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH/README.md`

@@ -37,7 +37,7 @@ import numpy as np
 
 # Add paths for imports
 sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/CRYPTO/ETH')
-sys.path.append('/workspaces/unicorninvesting/BackendPython/unicorn/2_alpha_models/validation')
+sys.path.append('/workspaces/unicorninvesting/tests/unicorn/2_alpha_models/shared')
 
 class EnsembleRebuildingCampaign:
     """
