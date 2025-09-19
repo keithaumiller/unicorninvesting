@@ -38,7 +38,7 @@ python run_all_tests.py --simulation-only   # Simulation tests only
 #### **Specialized Test Suites**  
 - **`simple_homepage_test.py`** - ✅ **ACTIVE** - Homepage functionality and restoration validation
 - **`test_forecasting_dashboard.py`** - ✅ **ACTIVE** - ETH algorithm integration testing
-- **`test_simulation_management.py`** - ✅ **ACTIVE** - LEAN Simulation Management (5 pages)
+- **`test_simulation_management.py`** - ✅ **ACTIVE** - Unicorninvesting Simulation Management (5 pages)
 - **`test_portfolio_simulation_selectors.py`** - ✅ **NEW** - Portfolio & Simulation Selector validation
 
 #### **🦄 Portfolio & Simulation Selector Tests** 
@@ -63,21 +63,21 @@ The test suite validates all 15 unicornmetrics routes:
 - `/admin/config/unicornmetrics/settings` - Configuration
 
 ### **Portfolio Management Routes**  
-- `/admin/metrics/lean/portfolio` - Portfolio Management
-- `/admin/metrics/lean/holdings` - Portfolio Holdings
-- `/admin/metrics/lean/performance` - Portfolio Performance
+- `/admin/metrics/unicorninvesting/portfolio` - Portfolio Management
+- `/admin/metrics/unicorninvesting/holdings` - Portfolio Holdings
+- `/admin/metrics/unicorninvesting/performance` - Portfolio Performance
 
 ### **Algorithm Management Routes**
-- `/admin/metrics/lean/algorithms` - Algorithm Management  
-- `/admin/metrics/lean/algorithms/performance` - Algorithm Performance
-- `/admin/metrics/lean/backtest` - Backtest Results
+- `/admin/metrics/unicorninvesting/algorithms` - Algorithm Management  
+- `/admin/metrics/unicorninvesting/algorithms/performance` - Algorithm Performance
+- `/admin/metrics/unicorninvesting/backtest` - Backtest Results
 
 ### **Simulation Management Routes** (NEW)
-- `/admin/metrics/lean/simulations` - Simulation Management
-- `/admin/metrics/lean/simulations/{id}/holdings` - Simulation Holdings
-- `/admin/metrics/lean/simulations/{id}/performance` - Simulation Performance  
-- `/admin/metrics/lean/simulations/{id}/algorithms` - Simulation Algorithms
-- `/admin/metrics/lean/simulations/{id}/backtest` - Simulation Backtest
+- `/admin/metrics/unicorninvesting/simulations` - Simulation Management
+- `/admin/metrics/unicorninvesting/simulations/{id}/holdings` - Simulation Holdings
+- `/admin/metrics/unicorninvesting/simulations/{id}/performance` - Simulation Performance  
+- `/admin/metrics/unicorninvesting/simulations/{id}/algorithms` - Simulation Algorithms
+- `/admin/metrics/unicorninvesting/simulations/{id}/backtest` - Simulation Backtest
 
 ## 📊 **Test Results & Reporting**
 
@@ -153,7 +153,7 @@ fi
 - Navigation functionality
 
 ### **5. Simulation Management (5 tests)**
-- LEAN simulation page accessibility
+- Unicorninvesting simulation page accessibility
 - Simulation-specific route validation
 - Backtest result integration
 
@@ -189,7 +189,7 @@ fi
    - ✅ Real-time validation against actual directory structure
    - ✅ Automatic detection of new portfolios and simulations  
    - ✅ Proper handling of directory naming conventions
-   - ✅ Status detection from simulation files (lean_config.json, error.json)
+   - ✅ Status detection from simulation files (unicorninvesting_config.json, error.json)
 
 ### **Test Architecture**
 ```python  

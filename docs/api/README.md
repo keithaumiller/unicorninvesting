@@ -4,13 +4,13 @@ This directory contains API specifications, integration guides, and technical do
 
 ## 📚 Documentation Files
 
-### QuantConnect API Integration
-- **[quantconnect-api-specification.md](quantconnect-api-specification.md)** - Comprehensive API specification for integrating with QuantConnect's platform, including REST endpoints, WebSocket streams, data schemas, authentication, error handling, and complete implementation examples
+### Unicorninvesting API Integration
+- **[unicorninvesting-api-specification.md](unicorninvesting-api-specification.md)** - Comprehensive API specification for integrating with Unicorninvesting's platform, including REST endpoints, WebSocket streams, data schemas, authentication, error handling, and complete implementation examples
 
 ## 🔌 API Integration Overview
 
 ### Supported Platforms
-- **QuantConnect LEAN**: Algorithmic trading platform with cloud execution
+- **Unicorninvesting Framework**: Algorithmic trading platform with cloud execution
 - **Interactive Brokers**: Professional brokerage API integration
 - **Alpha Streams**: Algorithm marketplace and licensing platform
 - **Market Data Providers**: Real-time and historical financial data feeds
@@ -42,8 +42,8 @@ This directory contains API specifications, integration guides, and technical do
 - **Alternative Data**: Social sentiment, news analytics, and satellite data
 
 ### Algorithm Deployment
-- **Cloud Execution**: Scalable algorithm deployment on QuantConnect's infrastructure
-- **Local Development**: LEAN CLI for local algorithm development and testing
+- **Cloud Execution**: Scalable algorithm deployment on Unicorninvesting's infrastructure
+- **Local Development**: Framework CLI for local algorithm development and testing
 - **Backtesting**: Historical simulation with realistic market conditions
 - **Live Trading**: Direct execution with professional brokerage connections
 
@@ -78,7 +78,7 @@ This directory contains API specifications, integration guides, and technical do
 ## 🚀 Getting Started
 
 ### Quick Setup
-1. **Create QuantConnect Account**: Sign up for algorithmic trading platform
+1. **Create Unicorninvesting Account**: Sign up for algorithmic trading platform
 2. **Generate API Keys**: Create authentication credentials for API access
 3. **Install Dependencies**: Set up Python environment with required packages
 4. **Run Sample Code**: Test connectivity with provided examples

@@ -13,14 +13,14 @@ This document defines the standardized directory structure for alpha models in t
 ├── ASSET_CLASSES/                    # Asset class directories
 │   ├── CRYPTO/                       # Cryptocurrency assets
 │   │   ├── ETH/                      # Ethereum-specific models
-│   │   │   ├── algorithms/           # LEAN algorithms
+│   │   │   ├── algorithms/           # Unicorninvesting algorithms
 │   │   │   ├── models/               # Alpha models (technical, prophet, xgboost, ensemble)
 │   │   │   ├── tests/                # Test suites
 │   │   │   ├── scripts/              # Utility scripts
 │   │   │   ├── research/             # Research notebooks/analysis
 │   │   │   └── features/             # Feature engineering
 │   │   ├── BTC/                      # Bitcoin-specific models
-│   │   │   ├── algorithms/           # LEAN algorithms
+│   │   │   ├── algorithms/           # Unicorninvesting algorithms
 │   │   │   ├── models/               # Alpha models
 │   │   │   ├── tests/                # Test suites
 │   │   │   ├── scripts/              # Utility scripts
@@ -69,7 +69,7 @@ This document defines the standardized directory structure for alpha models in t
 
 ### 3. Required Subdirectories for Each Asset
 Each asset directory MUST contain:
-- `algorithms/` - LEAN trading algorithms
+- `algorithms/` - Unicorninvesting trading algorithms
 - `models/` - Alpha models (technical, prophet, xgboost, ensemble)
 - `tests/` - Comprehensive test suites
 - `scripts/` - Model building and validation scripts
@@ -82,7 +82,7 @@ Each asset should implement:
 - **Prophet Model**: Time series forecasting
 - **XGBoost Model**: Gradient boosting prediction
 - **Ensemble Model**: Combined approach
-- **LEAN Algorithm**: Production trading algorithm
+- **Unicorninvesting Algorithm**: Production trading algorithm
 
 ## File Naming Standards
 
@@ -91,7 +91,7 @@ Each asset should implement:
 - `{asset}_prophet.py` - Prophet forecasting model
 - `{asset}_xgboost.py` - XGBoost prediction model
 - `{asset}_ensemble.py` - Ensemble model
-- `{asset}_algorithm.py` - LEAN algorithm
+- `{asset}_algorithm.py` - Unicorninvesting algorithm
 
 ### Test Files
 - `test_{asset}_models.py` - Comprehensive model tests

@@ -10,7 +10,7 @@ This directory contains the original scripts that have been replaced by the new 
 - Python environment validation  
 - Web server & database status
 - Directory structure verification
-- LEAN framework validation
+- Unicorninvesting framework validation
 - Functional testing
 
 **Replaced by:** `../unicorn_environment.sh --check-only`

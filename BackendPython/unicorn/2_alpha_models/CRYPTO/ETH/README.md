@@ -143,7 +143,7 @@ xgboost_id = xgboost.train_and_store_model(data, variant='tuned')
 ### **Organized Subdirectories**
 ```
 ETH/
-├── /algorithms/    # LEAN algorithm implementations
+├── /algorithms/    # Unicorninvesting algorithm implementations
 ├── /config/        # Configuration files
 ├── /deployment/    # Deployment scripts and automation
 ├── /forecasts/     # 🆕 Forecast storage (1min/, 1hour/, 1day/)
@@ -189,7 +189,7 @@ models/model_management/
 
 ### **Quick Access**
 - **Core Demos**: See `/tests/demo_*.py` for methodology comparisons
-- **LEAN Algorithms**: See `/algorithms/` for production algorithm implementations
+- **Unicorninvesting Algorithms**: See `/algorithms/` for production algorithm implementations
 - **Research**: See `/research/` for standalone research implementations
 - **Deployment**: See `/deployment/` for framework deployment scripts
 - **Utilities**: See `/utilities/` for model building and automation tools

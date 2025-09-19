@@ -78,12 +78,12 @@ These test files exist at the root level but are currently empty. They appear to
 - **`test_system_architecture.py`** - ✅ **ACTIVE** - Architecture compliance validation enforcing clean directory structure
 - **`final_integration_summary.py`** - Integration test reporting and summary generation
 
-### **🔬 LEAN Framework Testing (`lean/`)**
-- **`README.md`** - Documentation for LEAN framework validation tools
-- **`analyze_lean_structure.py`** - LEAN framework analysis and structure validation
-- **`lean_structure_simple.py`** - Simple LEAN compliance checking
-- **`quick_lean_analysis.py`** - Quick LEAN validation and insights
-- **`test_lean_insights.py`** - LEAN insights and analytics testing
+### **🔬 Unicorninvesting Framework Testing (`lean/`)**
+- **`README.md`** - Documentation for Unicorninvesting framework validation tools
+- **`analyze_unicorninvesting_structure.py`** - Unicorninvesting framework analysis and structure validation
+- **`unicorninvesting_structure_simple.py`** - Simple Unicorninvesting compliance checking
+- **`quick_unicorninvesting_analysis.py`** - Quick Unicorninvesting validation and insights
+- **`test_unicorninvesting_insights.py`** - Unicorninvesting insights and analytics testing
 
 ### **🦄 Unicorn Framework Testing (`unicorn/`)**
 
@@ -250,7 +250,7 @@ pytest -v -m system
 ### **⚠️ Incomplete/Empty Test Files:**
 - **Configuration files:** 2 empty files need population
 - **Root-level duplicates:** 5 potentially unused duplicate test files
-- **Some LEAN framework tests:** May need implementation updates
+- **Some Unicorninvesting framework tests:** May need implementation updates
 
 ### **🎯 Test Coverage:**
 - **Data Sources:** Comprehensive IBKR testing with real ETH data + Complete economic indicators pipeline validation
@@ -285,12 +285,12 @@ tests/
 │   ├── test_system_architecture.py          # Architecture compliance validation (ACTIVE)
 │   └── final_integration_summary.py         # Integration test reporting (placeholder)
 │
-├── 🔧 **LEAN FRAMEWORK TESTS**
-├── lean/                                # LEAN framework specific validation
-│   ├── analyze_lean_structure.py            # LEAN structure analysis (placeholder)
-│   ├── lean_structure_simple.py             # Simple LEAN validation (placeholder)
-│   ├── quick_lean_analysis.py               # Quick LEAN compliance check (placeholder)
-│   └── test_lean_insights.py                # LEAN insights and analytics (placeholder)
+├── 🔧 **UNICORNINVESTING FRAMEWORK TESTS**
+├── lean/                                # Unicorninvesting framework specific validation
+│   ├── analyze_unicorninvesting_structure.py     # Unicorninvesting structure analysis (placeholder)
+│   ├── unicorninvesting_structure_simple.py      # Simple Unicorninvesting validation (placeholder)
+│   ├── quick_unicorninvesting_analysis.py        # Quick Unicorninvesting compliance check (placeholder)
+│   └── test_unicorninvesting_insights.py         # Unicorninvesting insights and analytics (placeholder)
 │
 ├── 🌐 **FRONTEND TESTS**
 ├── WebFrontend/                         # Maps to: /WebFrontend/
@@ -334,13 +334,13 @@ tests/
 │       └── (empty - ready for complete algorithm tests)
 │
 └── 📋 **LEGACY ANALYSIS SCRIPTS** (root level - to be reorganized)
-    ├── analyze_lean_structure.py           # LEAN framework analysis
+    ├── analyze_unicorninvesting_structure.py    # Unicorninvesting framework analysis
     ├── final_integration_summary.py        # Integration summary scripts
-    ├── lean_structure_simple.py            # Simple LEAN analysis
-    ├── quick_lean_analysis.py              # Quick LEAN validation
+    ├── unicorninvesting_structure_simple.py     # Simple Unicorninvesting analysis
+    ├── quick_unicorninvesting_analysis.py       # Quick Unicorninvesting validation
     ├── simple_homepage_test.py             # Basic frontend tests
     ├── test_forecasting_dashboard.py       # Dashboard testing
-    └── test_lean_insights.py               # LEAN insights testing
+    └── test_unicorninvesting_insights.py        # Unicorninvesting insights testing
 ```
 
 ## 🎯 **Continuous Validation Methodology**
@@ -483,7 +483,7 @@ python test_complete_system_validation.py
 
 ### ✅ **Testing Infrastructure: 100% Operational**
 - **Complete System Validation**: ✅ Working (83.3% success rate)
-- **Architecture Compliance**: ✅ Working (LEAN 6-layer structure validated)
+- **Architecture Compliance**: ✅ Working (Unicorninvesting 6-layer structure validated)
 - **Component Testing**: ✅ Working (Kelly, Risk, Integration all validated)
 - **Myportolio Integration**: ✅ Working (Full portfolio system operational)
 - **Comprehensive Test Runner**: ✅ Working (Bash script with detailed reporting)
@@ -505,7 +505,7 @@ Myportolio Test: 100% operational (portfolio fully functional)
 
 ### 🚀 **Ready for Next Phase**
 The comprehensive testing framework validates that:
-1. ✅ **Architecture**: Clean LEAN 6-layer structure implemented
+1. ✅ **Architecture**: Clean Unicorninvesting 6-layer structure implemented
 2. ✅ **Algorithms**: Kelly Criterion & Risk Management operational
 3. ✅ **Integration**: Complete ETH portfolio system working
 4. ✅ **Configuration**: JSON-based portfolio configuration functional

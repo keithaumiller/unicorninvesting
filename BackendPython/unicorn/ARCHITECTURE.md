@@ -1,16 +1,16 @@
-# LEAN Algorithm Framework - Technical Architecture
+# Unicorninvesting Algorithm Framework - Technical Architecture
 
 ## 🏗️ Clean Portfolio-Based Architecture
 
-The Unicorn Investing platform implements a **clean portfolio-based architecture** that separates risk calculations from trading strategies within individual portfolios, integrated with the QuantConnect LEAN framework.
+The Unicorn Investing platform implements a **clean portfolio-based architecture** that separates risk calculations from trading strategies within individual portfolios, integrated with the Unicorninvesting algorithmic framework.
 
 ## 📁 Directory Structure
 
 ```
 BackendPython/unicorn/
-├── 1_data_sources/           # LEAN Layer 1: Market data collection
-├── 2_alpha_models/           # LEAN Layer 2: ETH models and signals  
-├── 4_portfolios/             # LEAN Layer 4: Portfolio construction
+├── 1_data_sources/           # Unicorninvesting Layer 1: Market data collection
+├── 2_alpha_models/           # Unicorninvesting Layer 2: ETH models and signals  
+├── 4_portfolios/             # Unicorninvesting Layer 4: Portfolio construction
 │   ├── Myportolio/          # Single consolidated portfolio
 │   │   ├── risk_algorithms/ # Pure risk calculations
 │   │   ├── trading_algorithms/ # Pure trading strategies
@@ -208,7 +208,7 @@ class MyAlgorithm(QCAlgorithm):
 ```
 
 ### Framework Orchestration
-LEAN automatically orchestrates the flow:
+Unicorninvesting automatically orchestrates the flow:
 1. Calls `Alpha.update()` on new data
 2. Calls `Portfolio.create_targets()` with insights
 3. Calls `Risk.manage_risk()` with targets

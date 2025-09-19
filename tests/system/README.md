@@ -106,7 +106,7 @@ python run_all_tests.py  # Includes all system tests in proper order
 - ✅ **Performance Metrics**: System responsiveness and throughput
 
 ### **Architecture Standards Enforced**
-- ✅ **Directory Structure**: LEAN framework 6-layer architecture compliance
+- ✅ **Directory Structure**: Unicorninvesting framework 6-layer architecture compliance
 - ✅ **Algorithm Separation**: Clean separation of risk and trading algorithms
 - ✅ **Component Organization**: Proper component placement and organization
 - ✅ **Documentation Standards**: Comprehensive documentation requirements

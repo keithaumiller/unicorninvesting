@@ -4,14 +4,14 @@ This directory contains deployment guides, operational procedures, and infrastru
 
 ## 📚 Documentation Files
 
-### QuantConnect Deployment
-- **[quantconnect-deployment-guide.md](quantconnect-deployment-guide.md)** - Comprehensive deployment guide for QuantConnect platform, including pre-deployment checklist, environment setup, algorithm packaging, testing procedures, live trading configuration, monitoring systems, and troubleshooting
+### Unicorninvesting Deployment
+- **[unicorninvesting-deployment-guide.md](unicorninvesting-deployment-guide.md)** - Comprehensive deployment guide for Unicorninvesting platform, including pre-deployment checklist, environment setup, algorithm packaging, testing procedures, live trading configuration, monitoring systems, and troubleshooting
 
 ## 🚀 Deployment Overview
 
 ### Supported Platforms
-- **QuantConnect Cloud**: Managed algorithmic trading platform with cloud execution
-- **Local LEAN**: Self-hosted LEAN engine for development and testing
+- **Unicorninvesting Cloud**: Managed algorithmic trading platform with cloud execution
+- **Local Framework**: Self-hosted framework engine for development and testing
 - **Hybrid Cloud**: Combination of cloud and on-premises infrastructure
 - **Docker Containers**: Containerized deployment for scalability and portability
 
@@ -25,7 +25,7 @@ This directory contains deployment guides, operational procedures, and infrastru
 
 ### Phase 1: Development Environment
 - **Local Setup**: Python virtual environment and dependencies
-- **LEAN CLI**: Command-line interface for algorithm development
+- **Framework CLI**: Command-line interface for algorithm development
 - **Version Control**: Git repository integration for code management
 - **Testing Framework**: Unit tests and integration tests
 
@@ -50,7 +50,7 @@ This directory contains deployment guides, operational procedures, and infrastru
 ## 🔧 Infrastructure Components
 
 ### Cloud Infrastructure
-- **QuantConnect Nodes**: Optimized compute nodes for algorithm execution
+- **Unicorninvesting Nodes**: Optimized compute nodes for algorithm execution
 - **Load Balancers**: Traffic distribution for high availability
 - **Auto-scaling**: Dynamic resource allocation based on demand
 - **CDN**: Content delivery network for global performance

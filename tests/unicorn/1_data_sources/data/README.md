@@ -71,7 +71,7 @@ Provides high-quality test data for:
 
 - **IBKR Tests**: `/tests/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
 - **Source Code**: `/BackendPython/unicorn/1_data_sources/`
-- **Main Data Pipeline**: `/BackendPython/Lean/`
+- **Main Data Pipeline**: `/BackendPython/unicorn/1_data_sources/`
 
 ## 📈 **Data Quality Metrics**
 

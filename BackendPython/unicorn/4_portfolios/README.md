@@ -37,8 +37,8 @@ This directory contains the portfolio construction framework with separated risk
 - **Framework Utilities**: Shared components for portfolio management
 - **Single Portfolio Focus**: Myportolio as the consolidated implementation
 
-### LEAN Framework Integration
-This directory implements **Layer 4** of the 6-layer LEAN architecture:
+### Unicorninvesting Framework Integration
+This directory implements **Layer 4** of the 6-layer Unicorninvesting architecture:
 
 1. **Data Sources** (`../1_data_sources/`) → Raw market data
 2. **Alpha Models** (`../2_alpha_models/`) → ETH models and trading signals
@@ -99,7 +99,7 @@ portfolio_targets = portfolio_manager.construct_portfolio(strategy, risk)
 - ✅ **Framework Utilities**: Portfolio management components organized
 - ✅ **Basic Algorithms**: Hello World ETH momentum and risk algorithms implemented
 - ✅ **Configuration System**: JSON-based portfolio configuration
-- 🚧 **LEAN Integration**: Ready for backtesting framework integration
+- 🚧 **Unicorninvesting Integration**: Ready for backtesting framework integration
 - 🚧 **Advanced Algorithms**: Ready for sophisticated algorithm development
 
 ## 📊 Advanced Analytics Methodologies - Out of Scope
@@ -138,7 +138,7 @@ Current implementation provides:
 
 **Architecture Status**: ✅ Complete  
 **Implementation Status**: 🚧 Ready for Algorithm Development  
-**LEAN Integration**: 🚧 Ready for Framework Connection  
+**Unicorninvesting Integration**: 🚧 Ready for Framework Connection  
 **Next Phase**: Advanced algorithm implementation and backtesting
 ```python
 # Deploy portfolio for live trading

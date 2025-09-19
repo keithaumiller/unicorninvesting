@@ -69,11 +69,11 @@ This directory now maintains clear separation between:
 
 ### Unicorn Proprietary Code (`/unicorn/`)
 - **Purpose**: Custom investment analysis, machine learning, and portfolio management
-- **Components**: ✨ **ENHANCED** Six-layer LEAN architecture with economic data processing
+- **Components**: ✨ **ENHANCED** Six-layer Unicorninvesting architecture with economic data processing
 - **Silver Layer Processing**: 580+ economic indicators with comprehensive feature engineering
 - **Enhanced Alpha Models**: Economic-enhanced XGBoost and ensemble models with multi-criteria selection
 - **Pipeline Validation**: Comprehensive end-to-end validation framework
-- **Integration**: Advanced interface with LEAN for algorithmic trading execution
+- **Integration**: Advanced interface with Unicorninvesting for algorithmic trading execution
 
 ## ✨ **Recent Enhancements (September 2025)**
 
@@ -115,11 +115,11 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 ### Install Dependencies
 
-#### LEAN Dependencies
+#### Unicorninvesting Dependencies
 ```bash
 cd Lean
-# Follow LEAN installation guide for Python requirements
-pip install -r requirements.txt  # If available in LEAN
+# Follow Unicorninvesting installation guide for Python requirements
+pip install -r requirements.txt  # If available in Unicorninvesting
 ```
 
 #### Unicorn Dependencies
@@ -136,25 +136,25 @@ pip install sqlite3 json pathlib datetime typing
 pip install pyarrow
 ```
 
-## LEAN Framework Integration
+## Unicorninvesting Framework Integration
 
 ### Installation and Setup
-The LEAN framework is cloned from the official QuantConnect repository and provides:
+The Unicorninvesting framework provides algorithmic trading capabilities including:
 - Algorithmic trading engine
 - Data feeds and market data handling
 - Backtesting infrastructure
 - Live trading capabilities
 - Research environment
 
-### Key LEAN Components
+### Key Unicorninvesting Components
 - **Algorithm Framework**: Base classes for trading algorithms
 - **Data Handling**: Market data ingestion and processing
 - **Execution Engine**: Order management and trade execution
 - **Indicators**: Technical analysis indicators
 - **Brokerages**: Integration with various brokers
 
-### LEAN Configuration
-LEAN configuration files are located in:
+### Unicorninvesting Configuration
+Unicorninvesting configuration files are located in:
 - `Lean/Launcher/config.json` - Main configuration
 - `Lean/Data/` - Data configuration and storage
 
@@ -201,12 +201,12 @@ unicorn/
 ```
 
 ### Core Services (Current Implementation)
-The unicorn directory implements a production-ready six-layer LEAN architecture:
+The unicorn directory implements a production-ready six-layer Unicorninvesting architecture:
 
 ### Migration Status
 
 #### ✅ **Completed Components (September 2025)**
-- ✅ **Six-Layer LEAN Architecture**: Complete implementation with data sources through algorithms
+- ✅ **Six-Layer Unicorninvesting Architecture**: Complete implementation with data sources through algorithms
 - ✅ **Silver Layer Economic Processing**: 580+ economic indicators with comprehensive feature engineering
 - ✅ **Enhanced Alpha Models**: Economic-enhanced XGBoost and ensemble models with performance tracking
 - ✅ **Multi-Criteria Model Selection**: Enhanced model selector with individual vs ensemble comparison
@@ -222,11 +222,11 @@ The unicorn directory implements a production-ready six-layer LEAN architecture:
 
 ## Running Components
 
-### LEAN Framework
+### Unicorninvesting Framework
 ```bash
 cd /workspaces/unicorninvesting/BackendPython/Lean
-# Follow LEAN documentation for running algorithms
-dotnet run --project Launcher/QuantConnect.Lean.Launcher.csproj
+# Follow Unicorninvesting documentation for running algorithms
+dotnet run --project Launcher/Unicorninvesting.Launcher.csproj
 ```
 
 ### ✨ **Unicorn Enhanced Services (September 2025)**
@@ -266,7 +266,7 @@ python -m uvicorn backend.api.main:app --reload --host 0.0.0.0 --port 8000
 4. **Alpha Model Integration**: Economic-enhanced XGBoost and ensemble models with 51 features
 5. **Model Selection**: Multi-criteria selection comparing individual vs ensemble models
 6. **Portfolio Construction**: Myportolio with enhanced utilities and risk management
-7. **LEAN Execution**: LEAN executes trades based on unicorn algorithm decisions
+7. **Unicorninvesting Execution**: Framework executes trades based on unicorn algorithm decisions
 8. **Monitoring**: Comprehensive pipeline validation and performance tracking
 
 ### Development Workflow
@@ -276,13 +276,13 @@ python -m uvicorn backend.api.main:app --reload --host 0.0.0.0 --port 8000
 4. **Algorithm Development**: Develop custom algorithms in `unicorn/6_algorithms/`
 5. **Pipeline Validation**: Validate complete pipeline from data sources to portfolio
 6. **Backtesting**: Test algorithms using Myportolio simulation framework
-7. **Production Deployment**: Deploy algorithms to LEAN for live trading
+7. **Production Deployment**: Deploy algorithms to Unicorninvesting for live trading
 8. **Performance Monitoring**: Monitor through pipeline validation and performance metrics
 
 ## Database Configuration
 
-### LEAN Database
-LEAN uses its own data storage mechanisms for market data and algorithm state.
+### Unicorninvesting Database
+Framework uses its own data storage mechanisms for market data and algorithm state.
 
 ### Unicorn Database
 Unicorn services connect to MySQL databases and SQLite performance databases:
@@ -309,15 +309,15 @@ Unicorn services connect to MySQL databases and SQLite performance databases:
 - **Performance Scoring**: Weighted scoring with R², economic importance, MAE, and complexity factors
 
 ### Legacy API Documentation
-- **LEAN API**: Follow QuantConnect documentation
+- **Framework API**: Follow Unicorninvesting documentation
 - **Unicorn API**: Available at `http://localhost:8000/docs` (when implemented)
 
 ## Testing
 
-### LEAN Tests
+### Unicorninvesting Tests
 ```bash
 cd Lean
-# Follow LEAN testing procedures
+# Follow Unicorninvesting testing procedures
 dotnet test
 ```
 
@@ -345,27 +345,27 @@ python -m pytest tests/ -v --coverage
 
 ## Security Considerations
 
-- **LEAN**: Follows QuantConnect security practices
+- **Framework**: Follows Unicorninvesting security practices
 - **Unicorn**: Implements additional security for proprietary algorithms and economic data
-- **Integration**: Secure communication between LEAN and unicorn services
+- **Integration**: Secure communication between Unicorninvesting and unicorn services
 - **Data Protection**: Encryption for sensitive financial algorithms and economic indicators
 - **✨ **Pipeline Security**: Validation framework ensures data integrity and processing security
 
 ## Documentation References
 
-- **LEAN Documentation**: https://www.quantconnect.com/docs/
-- **LEAN GitHub**: https://github.com/QuantConnect/Lean
-- **QuantConnect API**: https://www.quantconnect.com/docs/api-reference/
+- **Framework Documentation**: https://unicorninvesting.com/docs/
+- **Framework GitHub**: https://github.com/unicorninvesting/framework
+- **Unicorninvesting API**: https://unicorninvesting.com/docs/api-reference/
 - **✨ Unicorn Enhanced Architecture**: See `unicorn/README.md` for complete documentation
 - **Silver Layer Documentation**: See `unicorn/1_data_sources/3_silver/README.md`
 - **Enhanced Model Selection**: See `unicorn/4_portfolios/Myportolio/utilities/README.md`
 
 ## Contributing
 
-1. **LEAN Changes**: Contribute to QuantConnect's official repository
-2. **Unicorn Enhancements**: Follow internal development guidelines for economic processing and model selection
-3. **Integration**: Ensure compatibility between LEAN and enhanced unicorn components
-4. **Testing**: Test LEAN, unicorn components, and pipeline validation independently
+1. **Framework Changes**: Contribute to Unicorninvesting's official repository
+2. **Unicorn Code**: Submit PRs to this repository for unicorn-specific enhancements
+3. **Integration**: Ensure compatibility between Unicorninvesting and enhanced unicorn components
+4. **Testing**: Test Unicorninvesting, unicorn components, and pipeline validation independently
 5. **✨ Pipeline Validation**: Run comprehensive validation before contributing changes
 
 ## ✨ **Recent Achievements (September 2025)**
@@ -385,13 +385,13 @@ python -m pytest tests/ -v --coverage
 
 ### **🔧 Technical Excellence**
 - **Medallion Architecture**: Complete bronze→silver→gold data processing pipeline
-- **Clean Code Architecture**: Six-layer LEAN framework with clear separation of concerns
+- **Clean Code Architecture**: Six-layer Unicorninvesting framework with clear separation of concerns
 - **Comprehensive Testing**: Pipeline validation and component testing frameworks
 - **Documentation Standards**: Complete documentation with usage examples and API references
 
 ## Contact
 
 For questions about:
-- **LEAN Framework**: Refer to QuantConnect documentation and community
+- **Unicorninvesting Framework**: Refer to framework documentation and community
 - **Unicorn Integration**: Create issues in the internal repository
 - **Architecture**: Consult the main project documentation

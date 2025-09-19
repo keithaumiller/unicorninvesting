@@ -1,6 +1,6 @@
-# LEAN Layer 5: Execution Models
+# Unicorninvesting Layer 5: Execution Models
 
-This directory contains execution models for the LEAN 6-layer architecture.
+This directory contains execution models for the Unicorninvesting 6-layer architecture.
 
 ## Purpose
 
@@ -16,9 +16,9 @@ Execution models handle order placement, execution logic, and trade execution op
 └── slippage_models/            # Slippage and cost models
 ```
 
-## LEAN Integration
+## Unicorninvesting Integration
 
-Layer 5 in the LEAN framework focuses on:
+Layer 5 in the Unicorninvesting framework focuses on:
 - Order execution algorithms
 - Market impact modeling
 - Transaction cost analysis
@@ -58,5 +58,5 @@ Layer 5 in the LEAN framework focuses on:
 ### **Architecture Established**
 - Directory structure established
 - Architecture compliance maintained
-- Ready for LEAN integration
+- Ready for Unicorninvesting integration
 - **NEW**: Live trading execution models implemented and tested

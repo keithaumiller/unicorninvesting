@@ -92,7 +92,7 @@ Comprehensive multi-model framework for developing, testing, and deploying alpha
 ├── CRYPTO/                    # Individual cryptocurrency implementations
 │   ├── BTC/                   # Bitcoin models
 │   │   ├── models/            # All model types (alpha, prophet, xgboost, ensemble)
-│   │   ├── algorithms/        # LEAN trading algorithms
+│   │   ├── algorithms/        # Unicorninvesting trading algorithms
 │   │   ├── tests/             # Comprehensive test suites
 │   │   ├── scripts/           # Model building and validation
 │   │   ├── features/          # Feature engineering
@@ -138,7 +138,7 @@ Each asset implements specialized model types:
 - **Prophet**: Facebook Prophet time series forecasting
 - **XGBoost**: Gradient boosting prediction models
 - **Ensemble**: Combined multi-model approach
-- **LEAN Algorithm**: Production trading algorithms
+- **Unicorninvesting Algorithm**: Production trading algorithms
 
 ## 📊 Implemented Assets
 
@@ -174,7 +174,7 @@ Each asset implements specialized model types:
   - Prophet Forecasting Model (`btc_prophet.py`)
   - XGBoost Prediction Model (`btc_xgboost.py`)
   - Ensemble Model (`btc_ensemble.py`)
-  - LEAN Algorithm (`btc_algorithm.py`)
+  - Unicorninvesting Algorithm (`btc_algorithm.py`)
   - Trained models (`.pkl` files)
 
 - **ETH (Ethereum)**: Complete implementation with all model types  
@@ -237,7 +237,7 @@ python scripts/performance_summary.py
 - **ETH (Ethereum)**: Legacy implementation (needs framework migration)
   - Enhanced Technical Alpha (`enhanced_technical_alpha.py`)
   - Basic Technical Alpha (`basic_technical_alpha.py`)
-  - LEAN Algorithm (`enhanced_technical_algorithm.py`)
+  - Unicorninvesting Algorithm (`enhanced_technical_algorithm.py`)
   - Needs: Prophet, XGBoost, Ensemble models
 
 ### 🔧 FOREX
@@ -270,7 +270,7 @@ python scripts/performance_summary.py
 ### Asset Generation (`utils/enhanced_asset_generator.py`)
 - `EnhancedAssetTemplateGenerator`: Automated asset structure creation
 - Complete model templates for all types
-- LEAN algorithm generation
+- Unicorninvesting algorithm generation
 - Test suite and validation script creation
 
 ## 📋 Usage

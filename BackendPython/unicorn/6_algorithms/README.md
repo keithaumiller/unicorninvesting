@@ -1,10 +1,10 @@
-# LEAN Layer 6: Complete Algorithms
+# Unicorninvesting Layer 6: Complete Algorithms
 
-This directory contains complete trading algorithms that integrate all LEAN layers.
+This directory contains complete trading algorithms that integrate all Unicorninvesting layers.
 
 ## Purpose
 
-Complete algorithms that combine all LEAN framework layers (1-5) into executable trading strategies.
+Complete algorithms that combine all Unicorninvesting framework layers (1-5) into executable trading strategies.
 
 ## Structure
 
@@ -16,9 +16,9 @@ Complete algorithms that combine all LEAN framework layers (1-5) into executable
 └── backtesting/                # Algorithm backtesting frameworks
 ```
 
-## LEAN Integration
+## Unicorninvesting Integration
 
-Layer 6 represents the complete LEAN algorithm that integrates:
+Layer 6 represents the complete Unicorninvesting algorithm that integrates:
 1. Data Sources (Layer 1)
 2. Alpha Models (Layer 2) 
 3. Risk Management (Layer 3)
@@ -31,4 +31,4 @@ Layer 6 represents the complete LEAN algorithm that integrates:
 - Directory structure established
 - Architecture compliance maintained
 - Ready for complete algorithm development
-- Foundation for LEAN backtesting integration
+- Foundation for Unicorninvesting backtesting integration

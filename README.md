@@ -907,7 +907,7 @@ Enhanced portfolio structure:
 - `README.md` - Comprehensive portfolio documentation with economic integration details
 - **Algorithm Separation**: Clean separation ensuring maintainable, testable code architecture
 
-### Integration with LEAN Framework
+### Integration with Unicorninvesting Framework
 - **Data Sources**: Real-time feeds from IBKR, Yahoo Finance, Alpha Vantage
 - **Alpha Models**: Cryptocurrency, forex, and equity forecasting models
 - **Risk Management**: Integrated risk budgeting and portfolio construction
@@ -922,7 +922,7 @@ Enhanced portfolio structure:
 - **System Resources**: 63% disk usage, 66% memory (healthy) ✅
 - **Python Environment**: Version 3.12.1 with virtual environment ✅
 - **Web Services**: Apache and MySQL running ✅
-- **LEAN Framework**: .NET 8.0.412 available ✅
+- **Unicorninvesting Framework**: .NET 8.0.412 available ✅
 - **Data Sources**: Yahoo Finance, IBKR Gateway operational ✅
 - **Architecture**: Clean directory structure enforced ✅
 
@@ -962,7 +962,7 @@ Enhanced portfolio structure:
 - **Order Execution**: Not yet connected to live trading
 
 ### **📋 Architecture Compliance:**
-- **Directory Structure**: 100% compliant with LEAN 6-layer architecture ✅
+- **Directory Structure**: 100% compliant with Unicorninvesting 6-layer architecture ✅
 - **Algorithm Separation**: Risk and trading algorithms properly separated ✅
 - **Documentation Standards**: 96% compliant (root-level files being consolidated) ✅
 - **Code Organization**: Single portfolio focus (Myportolio) maintained ✅
@@ -1021,7 +1021,7 @@ Review our [**SECURITY.md**](./SECURITY.md) for vulnerability reporting and secu
 - 🔒 **Security Engineers** - Platform hardening and compliance frameworks
 
 #### **📊 Trading System Specialists**
-- 🏛️ **LEAN Framework Experts** - Deepen QuantConnect integration
+- 🏛️ **Algorithm Framework Experts** - Deepen Unicorninvesting integration
 - 🔌 **Broker Integration Specialists** - Additional trading platform connections
 - ⚡ **High-Frequency Trading Engineers** - Latency optimization and execution algorithms
 - 🎯 **Algorithm Strategists** - Novel trading strategy development
