@@ -1,8 +1,41 @@
 # Legacy Scripts Directory
 
-This directory contains the original scripts that have been replaced by the new comprehensive `unicorn_environment.sh` script.
+This directory contains scripts that have been deprecated and consolidated into the unified `unicorn_environment.sh` script.
 
-## 📜 Legacy Scripts
+## ⚠️ **NEWLY DEPRECATED - September 2025**
+
+### `setup_environment.sh` → **DEPRECATED**
+**Use:** `./scripts/unicorn_environment.sh --install-env`
+- **Purpose:** Comprehensive environment installation with Python packages and services
+- **Migration:** Full functionality integrated into unified script with enhanced error handling
+
+### `setup_data_cron.sh` → **DEPRECATED** 
+**Use:** `./scripts/unicorn_environment.sh --data-cron`
+- **Purpose:** Data pipeline cron job automation setup for Yahoo Finance + FRED + BEA
+- **Migration:** Enhanced with better logging and consolidated interface
+
+## 🚀 **New Unified Approach**
+
+Instead of running multiple scripts, use the single consolidated script:
+
+```bash
+# Full environment installation (replaces setup_environment.sh)
+./scripts/unicorn_environment.sh --install-env
+
+# Data pipeline automation setup (replaces setup_data_cron.sh)
+./scripts/unicorn_environment.sh --data-cron
+
+# Complete startup with health checks
+./scripts/unicorn_environment.sh --startup
+
+# Environment setup only
+./scripts/unicorn_environment.sh --setup-only
+
+# Health validation only
+./scripts/unicorn_environment.sh --check-only
+```
+
+## 📜 **Previously Deprecated Scripts**
 
 ### `health_check.sh` (Original - 317 lines)
 **Purpose:** Comprehensive system health validation

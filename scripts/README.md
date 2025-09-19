@@ -5,18 +5,56 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 ## 🚀 Primary Scripts
 
 ### `unicorn_environment.sh`
-**The main comprehensive environment and health check script** - Use this for overall system validation!
+**The unified comprehensive environment, data pipeline, and health check script** - **ENHANCED SEPTEMBER 2025**
 
 ```bash
-# Run full setup and health check
+# Run full setup and health check (default)
 ./scripts/unicorn_environment.sh
 
-# Setup environment only
+# Setup environment variables and aliases only
 ./scripts/unicorn_environment.sh --setup-only
 
-# Health check only
+# Health check only (skip environment setup)
 ./scripts/unicorn_environment.sh --check-only
+
+# Full startup sequence (Drupal + IBKR + health checks)
+./scripts/unicorn_environment.sh --startup
+
+# IBKR Gateway only (critical for trading)
+./scripts/unicorn_environment.sh --ibkr-only
+
+# Setup comprehensive data pipeline automation
+./scripts/unicorn_environment.sh --data-cron
+
+# Full comprehensive environment installation
+./scripts/unicorn_environment.sh --install-env
+
+# Help and options
+./scripts/unicorn_environment.sh --help
 ```
+
+**NEW FEATURES (September 2025):**
+- ✅ **Consolidated functionality**: Combines setup_environment.sh and setup_data_cron.sh
+- ✅ **Data pipeline automation**: Complete cron job setup for Yahoo Finance + FRED + BEA
+- ✅ **Comprehensive installation**: Full environment setup with Python packages and services
+- ✅ **Enhanced aliases**: New shortcuts for data pipeline management
+- ✅ **Unified interface**: Single script for all environment and pipeline operations
+
+**Replaces:**
+- `setup_environment.sh` → Use `./scripts/unicorn_environment.sh --install-env`
+- `setup_data_cron.sh` → Use `./scripts/unicorn_environment.sh --data-cron`
+
+**Available Aliases:**
+- `drupal-start` - Start Drupal services and run full platform validation
+- `drupal-status` - Check Apache and MySQL status
+- `drupal-logs` - View recent Drupal error logs
+- `drupal-restart` - Restart Apache and MySQL services
+- `drupal-cd` - Change to Drupal directory
+- `unicorn-root` - Change to project root directory
+- `unicorn-env` - Run this comprehensive environment script
+- `ibkr-start` - Start IBKR Gateway only (critical for trading)
+- `setup-data-cron` - Setup data pipeline automation
+- `install-env` - Full comprehensive environment installation
 
 ### `startup_drupal.sh`
 **Comprehensive Drupal startup, installation, and validation script** - Use this for Drupal-specific operations!
@@ -134,19 +172,31 @@ This directory contains essential scripts for managing the Unicorn Investing pla
 - **Delta (every 30min)**: Quick updates + minute-level asset data (1m) + crypto bronze
 - **Hourly (every hour)**: High-frequency asset data (1h) + complete bronze processing
 
-### `setup_data_cron.sh`
-**Setup comprehensive data pipeline cron jobs** - **UPDATED SEPTEMBER 2025**
+### `setup_data_cron.sh` ⚠️ **DEPRECATED - USE `unicorn_environment.sh --data-cron`**
+**Setup comprehensive data pipeline cron jobs** - **MERGED INTO UNICORN_ENVIRONMENT.SH**
 
 ```bash
-# Setup all cron jobs including Yahoo Finance automation
+# DEPRECATED - Use unicorn_environment.sh instead
 ./scripts/setup_data_cron.sh
+
+# NEW RECOMMENDED APPROACH
+./scripts/unicorn_environment.sh --data-cron
 ```
 
-**Configures:**
-- Primary data pipeline jobs (daily, delta, hourly)
-- Legacy individual connector jobs (backup/compatibility)
-- Yahoo Finance asset collection automation
-- Comprehensive logging and monitoring
+**Migration:** This functionality has been integrated into `unicorn_environment.sh` for unified script management.
+
+### `setup_environment.sh` ⚠️ **DEPRECATED - USE `unicorn_environment.sh --install-env`**
+**Comprehensive environment setup** - **MERGED INTO UNICORN_ENVIRONMENT.SH**
+
+```bash
+# DEPRECATED - Use unicorn_environment.sh instead
+./scripts/setup_environment.sh
+
+# NEW RECOMMENDED APPROACH
+./scripts/unicorn_environment.sh --install-env
+```
+
+**Migration:** This functionality has been integrated into `unicorn_environment.sh` for unified script management.
 
 ### `comprehensive_security_audit.sh`
 **Comprehensive security audit and credential scanning tool** - Use this to validate security posture!

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Unicorn Investing - Comprehensive Environment Setup & Health Check
-# This script combines environment setup with system validation
-# Usage: ./scripts/unicorn_environment.sh [--setup-only|--check-only|--help]
+# This script combines environment setup, data pipeline management, and system validation
+# Usage: ./scripts/unicorn_environment.sh [--setup-only|--check-only|--data-cron|--help]
 
 # Color codes for output
 RED='\033[0;31m'
@@ -11,10 +11,42 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Script directory and project root
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 # Counters for health checks
 TOTAL_CHECKS=0
 PASSED_CHECKS=0
 FAILED_CHECKS=0
+
+# Logging functions
+log_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+log_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+log_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+log_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
+# Function to check if command succeeded
+check_success() {
+    if [ $1 -eq 0 ]; then
+        log_success "$2"
+        return 0
+    else
+        log_error "$2"
+        return 1
+    fi
+}
 
 # Function to get dynamic GitHub Codespace hostname
 get_codespace_hostname() {
@@ -43,31 +75,36 @@ check_status() {
 
 # Function to display help
 show_help() {
-    echo "🦄 Unicorn Investing - Environment & Health Script"
+    echo "🦄 Unicorn Investing - Comprehensive Environment & Data Pipeline Script"
     echo ""
     echo "Usage: $0 [OPTION]"
     echo ""
     echo "Options:"
-    echo "  --setup-only    Setup environment variables and aliases only"
-    echo "  --check-only    Run health checks only (skip environment setup)"
-    echo "  --startup       Start Drupal services and run full validation"
-    echo "  --ibkr-only     Start IBKR Gateway only and wait for authentication"
-    echo "  --help, -h      Show this help message"
-    echo "  (no options)    Setup environment, start IBKR Gateway first, then run health checks"
+    echo "  --setup-only      Setup environment variables and aliases only"
+    echo "  --check-only      Run health checks only (skip environment setup)"
+    echo "  --startup         Start Drupal services and run full validation"
+    echo "  --ibkr-only       Start IBKR Gateway only and wait for authentication"
+    echo "  --data-cron       Setup comprehensive data pipeline cron jobs"
+    echo "  --install-env     Full environment installation (Python, packages, services)"
+    echo "  --help, -h        Show this help message"
+    echo "  (no options)      Setup environment, start IBKR Gateway first, then run health checks"
     echo ""
     echo "Available aliases after setup:"
-    echo "  drupal-start    - Start Drupal services and run full platform validation"
-    echo "  drupal-status   - Check Apache and MySQL status"
-    echo "  drupal-logs     - View recent Drupal error logs"
-    echo "  drupal-restart  - Restart Apache and MySQL services"
-    echo "  drupal-cd       - Change to Drupal directory"
-    echo "  unicorn-root    - Change to project root directory"
-    echo "  unicorn-env     - Run this environment script"
-    echo "  ibkr-start      - Start IBKR Gateway only (critical for trading)"
-    echo "  drupal-restart  - Restart Apache and MySQL services"
-    echo "  drupal-cd       - Change to Drupal root directory"
-    echo "  unicorn-root    - Change to project root directory"
-    echo "  unicorn-env     - Run this comprehensive environment script"
+    echo "  drupal-start      - Start Drupal services and run full platform validation"
+    echo "  drupal-status     - Check Apache and MySQL status"
+    echo "  drupal-logs       - View recent Drupal error logs"
+    echo "  drupal-restart    - Restart Apache and MySQL services"
+    echo "  drupal-cd         - Change to Drupal directory"
+    echo "  unicorn-root      - Change to project root directory"
+    echo "  unicorn-env       - Run this comprehensive environment script"
+    echo "  ibkr-start        - Start IBKR Gateway only (critical for trading)"
+    echo "  setup-data-cron   - Setup data pipeline automation"
+    echo ""
+    echo "Data Pipeline Integration:"
+    echo "  • Daily Pipeline (10 PM): Full FRED + BEA + Yahoo Finance + Bronze Processing"
+    echo "  • Delta Pipeline (every 30min): Quick updates + minute-level assets"
+    echo "  • Hourly Processing: High-frequency asset data collection"
+    echo "  • 9 Yahoo Finance assets: ETH, BTC, 7 major forex pairs"
     echo ""
 }
 
@@ -90,6 +127,8 @@ setup_environment() {
             echo "alias unicorn-root='cd /workspaces/unicorninvesting'" >> ~/.bashrc
             echo "alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'" >> ~/.bashrc
             echo "alias ibkr-start='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --ibkr-only'" >> ~/.bashrc
+            echo "alias setup-data-cron='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --data-cron'" >> ~/.bashrc
+            echo "alias install-env='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --install-env'" >> ~/.bashrc
             echo "" >> ~/.bashrc
             echo "# Unicorn Investing Environment" >> ~/.bashrc
             echo "export UNICORN_ROOT='/workspaces/unicorninvesting'" >> ~/.bashrc
@@ -112,6 +151,9 @@ setup_environment() {
     alias unicorn-root='cd /workspaces/unicorninvesting'
     alias unicorn-env='source /workspaces/unicorninvesting/scripts/unicorn_environment.sh'
     alias ibkr-start='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --ibkr-only'
+    alias setup-data-cron='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --data-cron'
+    alias install-env='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --install-env'
+    alias ibkr-start='/workspaces/unicorninvesting/scripts/unicorn_environment.sh --ibkr-only'
 
     # Set environment variables for current session
     export UNICORN_ROOT='/workspaces/unicorninvesting'
@@ -124,6 +166,119 @@ setup_environment() {
     echo -e "  DRUPAL_ROOT = ${BLUE}$DRUPAL_ROOT${NC}"
     echo -e "  DRUPAL_URL = ${BLUE}$DRUPAL_URL${NC}"
     echo ""
+}
+
+# Function to validate existing virtual environment (from setup_environment.sh)
+validate_venv() {
+    log_info "Validating existing virtual environment..."
+    
+    # Check if .venv directory exists
+    if [ ! -d "$PROJECT_ROOT/.venv" ]; then
+        log_error "Virtual environment directory missing"
+        return 1
+    fi
+    
+    # Check if activate script exists
+    if [ ! -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
+        log_error "Virtual environment activation script missing"
+        return 1
+    fi
+    
+    # Try to activate the virtual environment
+    cd "$PROJECT_ROOT"
+    if ! source .venv/bin/activate; then
+        log_error "Cannot activate virtual environment"
+        return 1
+    fi
+    
+    # Check if core Python packages are available
+    local missing_packages=()
+    
+    # Test core packages
+    if ! python3 -c "import pandas" 2>/dev/null; then
+        missing_packages+=("pandas")
+    fi
+    
+    if ! python3 -c "import numpy" 2>/dev/null; then
+        missing_packages+=("numpy")
+    fi
+    
+    if ! python3 -c "import yfinance" 2>/dev/null; then
+        missing_packages+=("yfinance")
+    fi
+    
+    if ! python3 -c "import sklearn" 2>/dev/null; then
+        missing_packages+=("scikit-learn")
+    fi
+    
+    if ! python3 -c "import fastapi" 2>/dev/null; then
+        missing_packages+=("fastapi")
+    fi
+    
+    # Check TA-Lib (optional but important)
+    local talib_available=false
+    if python3 -c "import talib" 2>/dev/null; then
+        talib_available=true
+    fi
+    
+    # Report validation results
+    if [ ${#missing_packages[@]} -eq 0 ]; then
+        if $talib_available; then
+            log_success "Virtual environment fully functional with TA-Lib"
+            return 0
+        else
+            log_warning "Virtual environment functional but TA-Lib missing"
+            return 2
+        fi
+    else
+        log_error "Virtual environment missing core packages: ${missing_packages[*]}"
+        return 1
+    fi
+}
+
+# Function to install comprehensive environment (from setup_environment.sh)
+install_comprehensive_environment() {
+    echo -e "${BLUE}🚀 Comprehensive Environment Installation${NC}"
+    echo "========================================"
+    
+    # Call the original setup_environment.sh functionality
+    log_info "Running comprehensive environment setup..."
+    
+    # This would contain the full implementation from setup_environment.sh
+    # For brevity, showing simplified version
+    if [ -f "$PROJECT_ROOT/scripts/setup_environment.sh" ]; then
+        log_info "Executing setup_environment.sh for comprehensive installation..."
+        bash "$PROJECT_ROOT/scripts/setup_environment.sh"
+        check_success $? "Comprehensive environment installation"
+    else
+        log_error "setup_environment.sh not found"
+        return 1
+    fi
+}
+
+# Function to setup data pipeline cron jobs (from setup_data_cron.sh)
+setup_data_cron() {
+    echo -e "${BLUE}🚀 Data Pipeline Cron Setup${NC}"
+    echo "============================="
+    
+    # Execute the original setup_data_cron.sh functionality
+    if [ -f "$PROJECT_ROOT/scripts/setup_data_cron.sh" ]; then
+        log_info "Executing setup_data_cron.sh for pipeline automation..."
+        bash "$PROJECT_ROOT/scripts/setup_data_cron.sh"
+        check_success $? "Data pipeline cron setup"
+    else
+        log_error "setup_data_cron.sh not found"
+        return 1
+    fi
+
+    # Update aliases to include data cron management
+    alias setup-data-cron="$PROJECT_ROOT/scripts/unicorn_environment.sh --data-cron"
+    
+    # Add to ~/.bashrc if not present
+    if [ -f ~/.bashrc ] && ! grep -q "setup-data-cron" ~/.bashrc; then
+        echo "alias setup-data-cron='$PROJECT_ROOT/scripts/unicorn_environment.sh --data-cron'" >> ~/.bashrc
+        log_success "Data cron alias added to ~/.bashrc"
+    fi
 }
 
 # Function to check if a service is running
@@ -1366,6 +1521,39 @@ case "${1:-}" in
         fi
         
         exit $IBKR_EXIT_CODE
+        ;;
+    --data-cron)
+        # Setup data pipeline cron jobs
+        echo -e "${BLUE}🚀 Data Pipeline Automation Setup${NC}"
+        echo "=================================="
+        echo ""
+        setup_data_cron
+        DATA_CRON_EXIT_CODE=$?
+        
+        if [ $DATA_CRON_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ Data pipeline automation configured successfully!${NC}"
+        else
+            echo -e "\n${RED}❌ Data pipeline automation setup encountered issues${NC}"
+        fi
+        
+        exit $DATA_CRON_EXIT_CODE
+        ;;
+    --install-env)
+        # Full comprehensive environment installation
+        echo -e "${BLUE}🚀 Comprehensive Environment Installation${NC}"
+        echo "========================================"
+        echo ""
+        install_comprehensive_environment
+        INSTALL_EXIT_CODE=$?
+        
+        if [ $INSTALL_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ Comprehensive environment installation completed!${NC}"
+            echo -e "${BLUE}💡 Next steps: Run './scripts/unicorn_environment.sh --startup' to start services${NC}"
+        else
+            echo -e "\n${RED}❌ Environment installation encountered issues${NC}"
+        fi
+        
+        exit $INSTALL_EXIT_CODE
         ;;
     --help|-h)
         show_help

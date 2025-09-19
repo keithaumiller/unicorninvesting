@@ -38,8 +38,10 @@ Note when you have re-read the instructions file.
 **After codespace restart or pause:**
 - Run: `./scripts/unicorn_environment.sh` (comprehensive setup + health check)
 - Or use: `unicorn-env` (after initial setup)
-- Start services: `drupal-start` or `scripts/startup_drupal.sh`
-- Available aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`, `unicorn-env`
+- Start services: `drupal-start` or `./scripts/unicorn_environment.sh --startup`
+- Setup data pipeline: `setup-data-cron` or `./scripts/unicorn_environment.sh --data-cron`
+- Full environment install: `install-env` or `./scripts/unicorn_environment.sh --install-env`
+- Available aliases: `drupal-start`, `drupal-status`, `drupal-logs`, `drupal-restart`, `drupal-cd`, `unicorn-root`, `unicorn-env`, `ibkr-start`, `setup-data-cron`, `install-env`
 
 ## 📦 CRITICAL - Package Installation & Environment Check
 
@@ -146,14 +148,47 @@ do not create validation or testing directories outside of the tests directory
 
 ### **Available Aliases** (after setup)
 ```bash
-unicorn-env        # Run unicorn_environment.sh
-drupal-start       # Start Drupal services
+unicorn-env        # Run comprehensive unicorn_environment.sh
+drupal-start       # Start Drupal services and run full platform validation
 drupal-status      # Check Drupal status
 drupal-logs        # View Drupal logs
 drupal-restart     # Restart Drupal services
 drupal-cd          # Change to Drupal directory
 unicorn-root       # Change to root directory
+ibkr-start         # Start IBKR Gateway only (critical for trading)
+setup-data-cron    # Setup data pipeline automation
+install-env        # Full comprehensive environment installation
 ```
+
+### **Comprehensive Environment Script** (`unicorn_environment.sh`)
+**Enhanced September 2025** - Now includes consolidated functionality:
+
+```bash
+# Full environment setup + health check (default)
+./scripts/unicorn_environment.sh
+
+# Environment variables and aliases only
+./scripts/unicorn_environment.sh --setup-only
+
+# Health checks only
+./scripts/unicorn_environment.sh --check-only
+
+# Full startup (Drupal + IBKR + validation)
+./scripts/unicorn_environment.sh --startup
+
+# IBKR Gateway only
+./scripts/unicorn_environment.sh --ibkr-only
+
+# Data pipeline automation setup
+./scripts/unicorn_environment.sh --data-cron
+
+# Comprehensive environment installation
+./scripts/unicorn_environment.sh --install-env
+```
+
+**Replaces:**
+- `setup_environment.sh` → Use `--install-env`
+- `setup_data_cron.sh` → Use `--data-cron`
 
 
 ### Portfolio Algorithm Development
