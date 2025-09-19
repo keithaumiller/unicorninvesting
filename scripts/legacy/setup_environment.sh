@@ -339,7 +339,7 @@ else
 
     # Install testing framework packages
     log_info "Installing testing framework packages..."
-    pip install pytest pytest-cov pytest-xdist pytest-timeout pytest-mock pytest-html
+    pip install pytest pytest-cov pytest-xdist pytest-timeout pytest-mock pytest-html pytest-asyncio
 
     # Install API and web framework packages
     log_info "Installing API and web framework packages..."

@@ -13,6 +13,12 @@
   - *Coverage*: Portfolio construction, risk management, algorithm integration
   - *Status*: Primary integration test for Myportolio functionality
 
+- **`test_enhanced_orchestration.py`** - ✅ **ACTIVE** - Enhanced Portfolio Orchestrator comprehensive testing
+  - *Purpose*: Validates complete Enhanced Portfolio-Level Orchestration workflow coordination
+  - *Coverage*: Multi-timeframe execution, algorithm template management, workflow state persistence
+  - *Status*: Primary orchestration test for enhanced portfolio workflow management
+  - *Features*: Complete workflow testing, performance benchmarks, integration scenarios
+
 #### **Data Validation Testing Suite**
 This comprehensive testing suite validates frontend-backend data integrity with multiple approaches:
 
@@ -476,6 +482,116 @@ All validation scripts generate timestamped JSON result files:
 3. **Documentation Generation**:
    - Automated API documentation from validation results
    - Data lineage documentation
+
+## 🎯 **Enhanced Portfolio Orchestration Testing**
+
+### **Overview**
+The Enhanced Portfolio Orchestration testing framework (`test_enhanced_orchestration.py`) provides comprehensive validation of the EnhancedPortfolioOrchestrator implementation, ensuring reliable workflow coordination across all stages of the trading pipeline.
+
+### **Test Categories**
+
+#### **1. Core Orchestrator Testing (`TestEnhancedPortfolioOrchestrator`)**
+- **Initialization Testing**: Validates orchestrator setup and configuration
+- **Complete Workflow Execution**: Tests end-to-end workflow coordination across all stages
+- **Multi-timeframe Coordination**: Validates execution across different timeframes (1m, 5m, 15m, 1h)
+- **Algorithm Template Management**: Tests registration and management of algorithm templates
+- **Status Monitoring**: Validates comprehensive workflow status reporting
+- **Error Handling**: Tests system resilience and graceful error handling
+- **Performance Benchmarks**: Measures execution timing and success rates
+
+#### **2. Integration Scenario Testing (`TestIntegrationScenarios`)**
+- **High-frequency Execution**: Simulates rapid trading scenarios
+- **Mixed Timeframe Coordination**: Tests complex multi-timeframe workflows
+- **State Persistence Management**: Validates workflow state persistence and tracking
+
+### **Key Testing Features**
+
+#### **Workflow Stage Validation**
+Tests complete execution through all required stages:
+- **Data Acquisition**: Real-time market data collection and validation
+- **Alpha Generation**: Trading signal generation and alpha model execution
+- **Risk Assessment**: Risk metric calculation and limit validation
+- **Portfolio Construction**: Position sizing and allocation optimization
+- **Execution Planning**: Trade execution preparation and coordination
+
+#### **Performance Constraints**
+- **Execution Time**: < 30 seconds average for complete workflow
+- **Success Rate**: ≥ 50% success rate under normal conditions
+- **Error Recovery**: Graceful handling of component failures
+
+#### **Multi-timeframe Support**
+Validates coordination across:
+- **1-minute**: High-frequency execution scenarios
+- **5-minute**: Standard algorithmic trading intervals
+- **15-minute**: Medium-term strategy coordination
+- **1-hour**: Long-term strategic positioning
+
+### **Execution Methods**
+
+#### **1. Pytest Framework Execution**
+```bash
+# Run specific orchestration tests
+pytest tests/unicorn/4_portfolios/Myportolio/test_enhanced_orchestration.py -v
+
+# Run with detailed output
+pytest tests/unicorn/4_portfolios/Myportolio/test_enhanced_orchestration.py -v -s
+
+# Run specific test classes
+pytest tests/unicorn/4_portfolios/Myportolio/test_enhanced_orchestration.py::TestEnhancedPortfolioOrchestrator -v
+```
+
+#### **2. Standalone Execution**
+```bash
+# Run complete test suite manually
+cd /workspaces/unicorninvesting
+python tests/unicorn/4_portfolios/Myportolio/test_enhanced_orchestration.py
+```
+
+### **Test Output Interpretation**
+
+#### **Successful Execution Example**
+```
+🦄 Enhanced Portfolio Orchestrator Test Suite
+============================================================
+✅ Complete Workflow: True
+✅ Multi-timeframe: All timeframes tested  
+✅ Template Registration: 2 templates registered
+✅ Status Monitoring: Comprehensive status available
+✅ Error Handling: Graceful error handling verified
+✅ Performance: Average 8.45s execution time
+============================================================
+```
+
+#### **Stage Execution Details**
+```
+📋 STAGE EXECUTION DETAILS:
+✅ data_acquisition: 2.34s
+✅ alpha_generation: 1.87s  
+✅ risk_assessment: 1.23s
+✅ portfolio_construction: 2.45s
+✅ execution_planning: 0.56s
+```
+
+### **Dependencies and Setup**
+
+#### **Required Components**
+- **EnhancedPortfolioOrchestrator**: Main orchestration engine
+- **ExecutionTimeframe**: Timeframe coordination enums
+- **AlgorithmTemplate**: Algorithm template management
+- **WorkflowStage**: Workflow stage definitions
+
+#### **Path Resolution**
+The test framework automatically resolves paths following testing patterns:
+- **TEST_ROOT**: `/workspaces/unicorninvesting/tests`
+- **BACKEND_ROOT**: `/workspaces/unicorninvesting/BackendPython/unicorn`
+- **UTILITIES_ROOT**: `/workspaces/unicorninvesting/BackendPython/unicorn/4_portfolios/utilities`
+
+### **Integration with CI/CD**
+The orchestration tests are designed for integration with continuous integration:
+- **Fast Execution**: Optimized for rapid feedback cycles
+- **Comprehensive Coverage**: Validates all critical orchestration paths
+- **Clear Reporting**: Detailed success/failure reporting for debugging
+- **Isolated Testing**: Tests can run independently without external dependencies
 
 ## Contributing
 

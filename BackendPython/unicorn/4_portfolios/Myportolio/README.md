@@ -170,7 +170,305 @@ Forecasting Pipeline:
 - **Cross-asset Signals**: Portfolio-level alpha generation
 - **Alternative Data**: Integration of sentiment and macro indicators
 
-## 🔬 Technical Implementationnd 5-minute interval trading. Features equal value allocation across 9 assets with automated rebalancing and risk/reward evaluation.
+## 🔬 Technical Implementation
+
+Advanced multi-asset trading system with 5-minute interval trading. Features equal value allocation across 9 assets with automated rebalancing and risk/reward evaluation.
+
+## 🏗️ **Enhanced Portfolio-Level Orchestration Architecture**
+
+### **📋 Overview**
+
+The Enhanced Portfolio-Level Orchestration extends the current proven 5-minute scheduler and risk/reward engine to provide formal workflow coordination across all LEAN framework layers while maintaining the operational stability of the existing system.
+
+### **🎯 Design Philosophy**
+
+- **Build Upon Success**: Extend the proven 5-minute scheduler rather than rebuild
+- **Maintain Simplicity**: Enhance existing components rather than add complexity
+- **LEAN Compliance**: Provide framework compatibility through algorithm templates
+- **Production Stability**: Minimize disruption to operational trading systems
+
+### **📊 Current Foundation Components**
+
+#### **Existing Orchestration Infrastructure** ✅ **OPERATIONAL**
+- **5-Minute Trading Scheduler** (`five_minute_trading_scheduler.py`) - Coordinates trading cycles
+- **Risk/Reward Decision Engine** (`risk_reward_decision_engine.py`) - Integrates alpha + risk
+- **Enhanced Portfolio Manager** (`utilities/EnhancedPortfolioManager.py`) - Portfolio construction
+- **Live Market Data Feed** (`live_market_data_feed.py`) - Real-time data coordination
+
+### **🔄 Enhanced Orchestration Process Flow**
+
+#### **Primary Orchestration Cycle (Every 5 Minutes)**
+```
+🔄 Enhanced 5-Minute Orchestration Cycle:
+├── 1. Data Layer Coordination (Layer 1)
+│   ├── Trigger silver layer data refresh
+│   ├── Validate data quality and completeness
+│   ├── Coordinate multi-timeframe data availability
+│   └── Ensure economic indicators updated
+│
+├── 2. Alpha Model Coordination (Layer 2)
+│   ├── Generate ensemble forecasts for all 9 assets
+│   ├── Read latest alpha signals from silver layer
+│   ├── Validate forecast confidence scores
+│   ├── Aggregate multi-timeframe predictions
+│   └── Apply alpha signal filtering
+│
+├── 3. Risk Management Coordination (Layer 3)
+│   ├── Calculate portfolio-level risk metrics
+│   ├── Assess individual asset risk profiles
+│   ├── Evaluate cross-asset correlations
+│   ├── Apply volatility-based position adjustments
+│   └── Validate risk constraint compliance
+│
+├── 4. Portfolio Construction Coordination (Layer 4)
+│   ├── Integrate alpha signals with risk constraints
+│   ├── Calculate optimal position sizes (Kelly Criterion)
+│   ├── Evaluate equal allocation drift (>5% threshold)
+│   ├── Determine rebalancing requirements
+│   ├── Apply confidence thresholding (65% minimum)
+│   └── Generate trade recommendations
+│
+├── 5. Execution Coordination (Layer 5)
+│   ├── Validate IBKR gateway connectivity
+│   ├── Calculate transaction costs and slippage
+│   ├── Execute approved trades through IBKR
+│   ├── Monitor execution quality
+│   └── Update portfolio state
+│
+└── 6. Performance Attribution & Monitoring
+    ├── Log detailed workflow execution metrics
+    ├── Track component-level performance attribution
+    ├── Monitor system health across all layers
+    ├── Generate orchestration performance reports
+    └── Update SQLite performance databases
+```
+
+### **🏗️ Integration Points & Data Flow**
+
+#### **Layer 1: Data Sources Integration**
+```python
+# Data coordination workflow
+class DataLayerCoordinator:
+    def coordinate_data_refresh(self):
+        # Trigger silver layer updates
+        # Validate data completeness across assets
+        # Ensure economic indicators current
+        # Coordinate multi-timeframe availability
+```
+
+**Integration Points**:
+- **Silver Layer Data Sources**: `/BackendPython/unicorn/1_data_sources/3_silver/`
+- **Yahoo Finance Assets**: Real-time crypto + forex data
+- **Economic Indicators**: FRED/BEA integration for enhanced models
+- **Data Quality Validation**: Completeness and integrity checks
+
+#### **Layer 2: Alpha Models Integration**
+```python
+# Alpha coordination workflow  
+class AlphaModelsCoordinator:
+    def coordinate_alpha_generation(self):
+        # Read forecasts from silver layer
+        # Aggregate ensemble predictions
+        # Apply confidence filtering
+        # Generate portfolio-level alpha signals
+```
+
+**Integration Points**:
+- **Alpha Models Framework**: `/BackendPython/unicorn/2_alpha_models/`
+- **Ensemble Models**: 336 trained models (CRYPTO: 288, FOREX: 0, Multi-asset: 48)
+- **Silver Layer Forecasts**: Standardized JSON forecast files
+- **Confidence Scoring**: Statistical validation of predictions
+
+#### **Layer 3: Risk Management Integration**
+```python
+# Risk coordination workflow
+class RiskManagementCoordinator:
+    def coordinate_risk_assessment(self):
+        # Calculate portfolio VaR and volatility
+        # Assess cross-asset correlations
+        # Apply position sizing constraints
+        # Validate risk/reward ratios (1.5:1 minimum)
+```
+
+**Integration Points**:
+- **Risk Algorithms**: `risk_algorithms/` - Pure risk calculations
+- **Portfolio Risk Metrics**: VaR, Sharpe, correlation analysis
+- **Kelly Criterion**: Mathematical position sizing optimization
+- **Risk/Reward Engine**: Integrated alpha and risk evaluation
+
+#### **Layer 4: Portfolio Construction Integration**
+```python
+# Portfolio coordination workflow (CURRENT IMPLEMENTATION EXTENDED)
+class EnhancedPortfolioOrchestrator:
+    def coordinate_portfolio_construction(self):
+        # Integrate alpha signals + risk constraints
+        # Apply equal value allocation targeting
+        # Calculate Kelly-optimized position sizes
+        # Generate trade execution orders
+```
+
+**Integration Points**:
+- **Enhanced Portfolio Manager**: Existing `utilities/EnhancedPortfolioManager.py`
+- **Equal Value Allocation**: 11.11% target per asset with 5% drift tolerance
+- **Kelly Optimization**: Mathematical position sizing based on edge/odds
+- **Multi-Asset Coordination**: Cross-asset correlation and allocation
+
+#### **Layer 5: Execution Models Integration**
+```python
+# Execution coordination workflow
+class ExecutionCoordinator:
+    def coordinate_trade_execution(self):
+        # Validate IBKR gateway connectivity
+        # Execute trades through Interactive Brokers
+        # Monitor execution quality and slippage
+        # Update portfolio state post-execution
+```
+
+**Integration Points**:
+- **IBKR Gateway**: `/BackendPython/unicorn/1_data_sources/1_raw/connectors/interactive_brokers/`
+- **Live Market Data**: Real-time pricing and execution feeds
+- **Transaction Cost Management**: Slippage and fee optimization
+- **Execution Quality**: Trade performance monitoring
+
+### **🎯 Multi-Timeframe Strategy Coordination**
+
+#### **Timeframe Integration Architecture**
+```
+Multi-Timeframe Coordination:
+├── 1-Minute Signals (High Frequency)
+│   ├── Real-time momentum detection
+│   ├── Scalping opportunity identification
+│   └── Emergency position adjustments
+│
+├── 5-Minute Coordination (Primary Cycle)
+│   ├── Main orchestration heartbeat
+│   ├── Portfolio rebalancing decisions
+│   └── Risk/reward evaluation cycle
+│
+├── 1-Hour Strategic Signals
+│   ├── Medium-term trend analysis
+│   ├── Cross-asset correlation shifts
+│   └── Economic indicator integration
+│
+└── Daily Strategic Oversight
+    ├── Portfolio performance attribution
+    ├── Long-term trend validation
+    └── Strategic allocation adjustments
+```
+
+#### **Signal Aggregation Framework**
+```python
+class MultiTimeframeCoordinator:
+    def aggregate_timeframe_signals(self):
+        # Weight signals by timeframe importance
+        # Resolve conflicting timeframe signals
+        # Apply timeframe-specific confidence scores
+        # Generate consolidated trading decisions
+```
+
+### **🔄 Algorithm Lifecycle Management**
+
+#### **Algorithm Deployment Process**
+```
+Algorithm Lifecycle:
+├── 1. Initialization
+│   ├── Load configuration parameters
+│   ├── Establish layer connections
+│   ├── Validate system dependencies
+│   └── Initialize performance tracking
+│
+├── 2. Runtime Operations
+│   ├── Execute 5-minute orchestration cycles
+│   ├── Monitor component health
+│   ├── Handle error conditions gracefully
+│   └── Maintain performance attribution
+│
+├── 3. Performance Monitoring
+│   ├── Track orchestration metrics
+│   ├── Monitor layer-specific performance
+│   ├── Generate health status reports
+│   └── Alert on performance degradation
+│
+└── 4. Shutdown & Cleanup
+    ├── Complete pending operations
+    ├── Close market data connections
+    ├── Finalize performance logs
+    └── Safely shutdown all components
+```
+
+### **📊 LEAN Framework Compliance Strategy**
+
+#### **Layer 6: Algorithm Templates** (NEW)
+```python
+# LEAN-compliant algorithm wrapper
+class MyportolioEnhancedAlgorithm:
+    def Initialize(self):
+        self.portfolio_orchestrator = EnhancedPortfolioOrchestrator()
+        self.SetStartDate(2024, 1, 1)
+        self.SetCash(100000)
+    
+    def OnData(self, data):
+        # Delegate to portfolio-level orchestration
+        return self.portfolio_orchestrator.process_trading_cycle(data)
+    
+    def OnEndOfDay(self):
+        # Daily performance attribution
+        return self.portfolio_orchestrator.generate_daily_report()
+```
+
+**LEAN Integration Benefits**:
+- **Framework Compliance**: Satisfies QuantConnect architecture requirements
+- **Backtesting Support**: Compatible with LEAN backtesting engine
+- **Algorithm Isolation**: Multiple algorithm strategies can run independently
+- **Template Reusability**: Common orchestration logic shared across algorithms
+
+### **🚀 Implementation Strategy**
+
+#### **Phase 1: Extend Current Components (2 weeks)**
+- **Enhance 5-Minute Scheduler**: Add formal layer coordination
+- **Extend Risk/Reward Engine**: Add multi-timeframe support
+- **Upgrade Portfolio Manager**: Add orchestration capabilities
+- **Add Performance Attribution**: Component-level tracking
+
+#### **Phase 2: LEAN Template Integration (1 week)**
+- **Create Algorithm Templates**: Layer 6 LEAN-compliant wrappers
+- **Backtesting Integration**: Connect templates to orchestration
+- **Template Validation**: Ensure LEAN framework compatibility
+- **Documentation Updates**: Algorithm template usage guides
+
+#### **Phase 3: Testing & Validation (1 week)**
+- **End-to-End Testing**: Complete workflow validation
+- **Performance Testing**: Orchestration overhead measurement
+- **Integration Testing**: Cross-layer coordination validation
+- **Production Readiness**: Final deployment preparation
+
+### **📋 Success Metrics**
+
+#### **Orchestration Performance**
+- **Cycle Completion**: 95%+ successful 5-minute cycles
+- **Latency**: <10 seconds per orchestration cycle
+- **Component Integration**: 100% layer connectivity
+- **Error Recovery**: Graceful handling of component failures
+
+#### **Trading Performance**
+- **Signal Integration**: Alpha + risk signals properly combined
+- **Position Accuracy**: Correct Kelly-optimized position sizes
+- **Execution Quality**: Minimal slippage and transaction costs
+- **Portfolio Allocation**: Maintained equal value allocation within 5% drift
+
+#### **System Reliability**
+- **Uptime**: 99%+ orchestration availability
+- **Data Quality**: 100% data validation success
+- **Performance Attribution**: Complete component-level tracking
+- **LEAN Compatibility**: Full framework integration operational
+
+### **🎯 Business Benefits**
+
+- **Enhanced Reliability**: Formal workflow coordination reduces failure points
+- **Improved Performance**: Better integration of alpha signals and risk management
+- **Framework Compliance**: LEAN integration enables institutional deployment
+- **Operational Visibility**: Complete performance attribution across all components
+- **Scalability**: Foundation for multiple algorithm strategies and additional assets
 
 ## 🌐 Multi-Asset Portfolio Configuration
 

@@ -58,6 +58,124 @@ Note when you have re-read the instructions file.
   - Service startup (Apache, MySQL, IBKR Gateway)
   - Complete health validation
 
+**Rule:** If you encounter ANY package/import error, verify environment setup first.
+
+## 📋 **PACKAGE INSTALLATION PROTOCOL**
+
+### **🚨 CRITICAL RULE: NEVER INSTALL PACKAGES DIRECTLY**
+
+**❌ DO NOT RUN:**
+- `pip install package-name`
+- `conda install package-name`
+- Any direct package installation commands
+
+**✅ ALWAYS UPDATE UNICORN_ENVIRONMENT.SH INSTEAD:**
+
+#### **Step 1: Identify Package Category**
+Determine where the package should be installed in the environment script:
+
+**Location**: `/workspaces/unicorninvesting/scripts/legacy/setup_environment.sh`
+
+**Package Categories** (around line 335-400):
+- **Core packages**: pandas, numpy, scipy, scikit-learn
+- **Testing framework**: pytest, pytest-cov, pytest-xdist, pytest-asyncio, etc.
+- **API/Web framework**: fastapi, uvicorn, requests
+- **Financial/Trading**: yfinance, quantlib, alpha_vantage
+- **ML/AI**: tensorflow, keras, xgboost
+- **Database**: SQLAlchemy, PyMySQL
+- **Visualization**: matplotlib, plotly, seaborn
+- **Technical Analysis**: TA-Lib (special system-level installation)
+
+#### **Step 2: Update Environment Script**
+Add package to appropriate category in `setup_environment.sh`:
+
+```bash
+# Example: Adding new testing package
+pip install pytest pytest-cov pytest-xdist pytest-timeout pytest-mock pytest-html pytest-asyncio new-testing-package
+
+# Example: Adding new ML package  
+pip install scikit-learn tensorflow keras xgboost new-ml-package
+```
+
+#### **Step 3: Test Environment Update**
+```bash
+# Test the updated environment script
+./scripts/unicorn_environment.sh --install-env
+
+# Verify package is available
+source .venv/bin/activate
+python -c "import new_package"
+```
+
+#### **Step 4: Document in Instructions**
+Update this instructions file to document:
+- **What package was added**
+- **Why it was needed**
+- **Which category it belongs to**
+- **Any special installation requirements**
+
+### **Environment Variables Protocol**
+
+#### **For Environment Variables, Update:**
+1. **Primary Script**: `/workspaces/unicorninvesting/scripts/unicorn_environment.sh`
+2. **Legacy Script**: `/workspaces/unicorninvesting/scripts/legacy/setup_environment.sh` (if needed)
+
+#### **Variable Categories:**
+- **Path Variables**: `PATH`, `PYTHONPATH`, `TA_INCLUDE_PATH`, `TA_LIBRARY_PATH`
+- **Service Configuration**: Database connections, API endpoints
+- **Development Settings**: Debug flags, logging levels
+- **Trading Configuration**: IBKR settings, portfolio configs
+
+#### **Adding Environment Variables:**
+```bash
+# In unicorn_environment.sh (around line 180-220)
+export NEW_VARIABLE="value"
+log_success "NEW_VARIABLE set to: $NEW_VARIABLE"
+
+# For persistent variables, add to ~/.bashrc check
+if [ -f ~/.bashrc ] && ! grep -q "NEW_VARIABLE" ~/.bashrc; then
+    echo "export NEW_VARIABLE='value'" >> ~/.bashrc
+fi
+```
+
+### **Validation Requirements**
+
+After any package or environment variable addition:
+
+1. **Test Environment Setup**:
+   ```bash
+   ./scripts/unicorn_environment.sh --install-env
+   ```
+
+2. **Verify Package Import**:
+   ```bash
+   source .venv/bin/activate
+   python -c "import new_package; print('✅ Package available')"
+   ```
+
+3. **Run Health Checks**:
+   ```bash
+   ./scripts/unicorn_environment.sh --check-only
+   ```
+
+4. **Test in Multiple Scenarios**:
+   - Fresh codespace restart
+   - After environment reset
+   - Both development and production contexts
+
+### **Special Cases**
+
+#### **System-Level Packages** (like TA-Lib)
+- Update both system dependency installation AND Python package installation
+- Test compilation from source as fallback
+- Document any required system libraries
+
+#### **Development vs Production Packages**
+- **Development only**: pytest, debugging tools, development servers
+- **Production**: Core trading, data processing, web framework packages
+- **Both**: Data analysis, ML/AI, database, API packages
+
+**Rule:** When in doubt, add to both development and production categories.
 
 **Rule:** If you encounter ANY package/import error, verify environment setup first.
 
