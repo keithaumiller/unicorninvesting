@@ -246,12 +246,12 @@ install_comprehensive_environment() {
     
     # This would contain the full implementation from setup_environment.sh
     # For brevity, showing simplified version
-    if [ -f "$PROJECT_ROOT/scripts/setup_environment.sh" ]; then
-        log_info "Executing setup_environment.sh for comprehensive installation..."
-        bash "$PROJECT_ROOT/scripts/setup_environment.sh"
+    if [ -f "$PROJECT_ROOT/scripts/legacy/setup_environment.sh" ]; then
+        log_info "Executing legacy setup_environment.sh for comprehensive installation..."
+        bash "$PROJECT_ROOT/scripts/legacy/setup_environment.sh"
         check_success $? "Comprehensive environment installation"
     else
-        log_error "setup_environment.sh not found"
+        log_error "legacy setup_environment.sh not found"
         return 1
     fi
 }
@@ -261,13 +261,13 @@ setup_data_cron() {
     echo -e "${BLUE}🚀 Data Pipeline Cron Setup${NC}"
     echo "============================="
     
-    # Execute the original setup_data_cron.sh functionality
-    if [ -f "$PROJECT_ROOT/scripts/setup_data_cron.sh" ]; then
-        log_info "Executing setup_data_cron.sh for pipeline automation..."
-        bash "$PROJECT_ROOT/scripts/setup_data_cron.sh"
+    # Execute the legacy setup_data_cron.sh functionality
+    if [ -f "$PROJECT_ROOT/scripts/legacy/setup_data_cron.sh" ]; then
+        log_info "Executing legacy setup_data_cron.sh for pipeline automation..."
+        bash "$PROJECT_ROOT/scripts/legacy/setup_data_cron.sh"
         check_success $? "Data pipeline cron setup"
     else
-        log_error "setup_data_cron.sh not found"
+        log_error "legacy setup_data_cron.sh not found"
         return 1
     fi
 
