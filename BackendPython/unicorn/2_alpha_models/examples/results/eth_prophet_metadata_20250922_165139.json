@@ -1,0 +1,13 @@
+{
+  "model_type": "Prophet",
+  "asset": "ETH",
+  "training_data_points": 180,
+  "training_period": "2025-03-16 00:00:00 to 2025-09-11 00:00:00",
+  "forecast_period": "2025-09-12 to 2025-10-11",
+  "current_price": 4414.10009765625,
+  "forecast_price_30d": 5191.747592959857,
+  "expected_change_30d_pct": 17.617350719266955,
+  "confidence_interval_30d": "$4674.20 - $5702.52",
+  "created_timestamp": "2025-09-22T16:51:39.272143",
+  "data_source": "silver_layer"
+}
