@@ -82,12 +82,13 @@ show_help() {
     echo "Options:"
     echo "  --setup-only      Setup environment variables and aliases only"
     echo "  --check-only      Run health checks only (skip environment setup)"
+    echo "  --quick           Quick setup: environment variables + IBKR Gateway + health checks (skip installation)"
     echo "  --startup         Start Drupal services and run full validation"
     echo "  --ibkr-only       Start IBKR Gateway only and wait for authentication"
     echo "  --data-cron       Setup comprehensive data pipeline cron jobs"
     echo "  --install-env     Full environment installation (Python, packages, services)"
     echo "  --help, -h        Show this help message"
-    echo "  (no options)      Setup environment, start IBKR Gateway first, then run health checks"
+    echo "  (no options)      COMPREHENSIVE: Full environment installation + IBKR Gateway + health checks"
     echo ""
     echo "Available aliases after setup:"
     echo "  drupal-start      - Start Drupal services and run full platform validation"
@@ -241,17 +242,51 @@ install_comprehensive_environment() {
     echo -e "${BLUE}🚀 Comprehensive Environment Installation${NC}"
     echo "========================================"
     
-    # Call the original setup_environment.sh functionality
     log_info "Running comprehensive environment setup..."
     
-    # This would contain the full implementation from setup_environment.sh
-    # For brevity, showing simplified version
+    # First run the legacy script for basic setup
     if [ -f "$PROJECT_ROOT/scripts/legacy/setup_environment.sh" ]; then
-        log_info "Executing legacy setup_environment.sh for comprehensive installation..."
+        log_info "Executing legacy setup_environment.sh for basic installation..."
         bash "$PROJECT_ROOT/scripts/legacy/setup_environment.sh"
-        check_success $? "Comprehensive environment installation"
+        legacy_result=$?
     else
         log_error "legacy setup_environment.sh not found"
+        legacy_result=1
+    fi
+    
+    # Ensure critical packages are installed regardless of legacy script status
+    log_info "Ensuring critical Python packages are installed..."
+    
+    # Activate virtual environment if it exists
+    if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
+        source "$PROJECT_ROOT/.venv/bin/activate"
+        log_info "Activated virtual environment"
+    else
+        log_warning "Virtual environment not found, using system Python"
+    fi
+    
+    # Install critical packages for alpha models
+    log_info "Installing alpha model dependencies..."
+    pip install prophet 2>/dev/null || log_warning "Prophet installation failed"
+    pip install xgboost 2>/dev/null || log_warning "XGBoost installation failed"
+    pip install scikit-learn 2>/dev/null || log_warning "Scikit-learn installation failed"
+    pip install pandas numpy 2>/dev/null || log_warning "Core data packages installation failed"
+    pip install yfinance 2>/dev/null || log_warning "Yahoo Finance installation failed"
+    
+    # Verify Prophet installation specifically
+    if python -c "import prophet" 2>/dev/null; then
+        log_success "Prophet successfully installed and importable"
+    else
+        log_warning "Prophet not importable, attempting alternative installation..."
+        pip install --upgrade prophet 2>/dev/null || pip install fbprophet 2>/dev/null || log_error "Prophet installation failed completely"
+    fi
+    
+    # Return success if either legacy script succeeded OR critical packages are available
+    if [ $legacy_result -eq 0 ] || python -c "import prophet, pandas, numpy" 2>/dev/null; then
+        log_success "Comprehensive environment installation completed successfully"
+        return 0
+    else
+        log_error "Comprehensive environment installation encountered issues"
         return 1
     fi
 }
@@ -1486,6 +1521,40 @@ case "${1:-}" in
         run_health_checks
         exit $?
         ;;
+    --quick)
+        # Quick setup sequence: environment variables, IBKR gateway, health checks (original default behavior)
+        echo -e "${BLUE}⚡ Quick Unicorn Environment Setup${NC}"
+        echo "=================================="
+        echo ""
+        setup_environment
+        echo ""
+        
+        # IBKR Gateway startup is critical for live trading - start first
+        echo -e "${BLUE}🔥 CRITICAL PATH: Starting IBKR Gateway First${NC}"
+        echo -e "${YELLOW}   IBKR authentication is required for live trading operations${NC}"
+        echo ""
+        start_ibkr_gateway
+        IBKR_EXIT_CODE=$?
+        
+        if [ $IBKR_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ IBKR Gateway startup successful - proceeding with health checks${NC}"
+        else
+            echo -e "\n${YELLOW}⚠️  IBKR Gateway startup had issues - continuing with other checks${NC}"
+        fi
+        
+        echo ""
+        run_health_checks
+        HEALTH_EXIT_CODE=$?
+        
+        echo -e "\n${BLUE}📖 For more information:${NC}"
+        echo -e "   • INSTALLATION.md - Complete installation guide"
+        echo -e "   • docs/README.md - Documentation overview"
+        echo -e "   • README.md - Project overview"
+        echo ""
+        echo -e "${GREEN}🦄 Unicorn Environment Ready!${NC}"
+        
+        exit $HEALTH_EXIT_CODE
+        ;;
     --startup)
         # Full startup sequence: setup environment, start services, run health checks
         setup_environment
@@ -1559,12 +1628,33 @@ case "${1:-}" in
         show_help
         ;;
     "")
-        # Enhanced startup sequence: setup environment, start IBKR gateway first, wait for auth, then health check
+        # Enhanced startup sequence: comprehensive environment setup, start IBKR gateway first, wait for auth, then health check
+        echo -e "${BLUE}🚀 UNICORN ENVIRONMENT COMPREHENSIVE SETUP${NC}"
+        echo "=============================================="
+        echo ""
+        
+        # Step 1: Comprehensive environment installation (including Prophet and all packages)
+        echo -e "${BLUE}📦 Step 1: Comprehensive Environment Installation${NC}"
+        echo -e "${YELLOW}   Installing Python packages, Prophet, XGBoost, and all dependencies${NC}"
+        echo ""
+        install_comprehensive_environment
+        INSTALL_EXIT_CODE=$?
+        
+        if [ $INSTALL_EXIT_CODE -eq 0 ]; then
+            echo -e "\n${GREEN}✅ Comprehensive environment installation completed!${NC}"
+        else
+            echo -e "\n${YELLOW}⚠️  Environment installation had issues - continuing with setup${NC}"
+        fi
+        
+        echo ""
+        
+        # Step 2: Setup environment variables and aliases
+        echo -e "${BLUE}🔧 Step 2: Environment Variables & Aliases Setup${NC}"
         setup_environment
         echo ""
         
-        # IBKR Gateway startup is critical for live trading - start first
-        echo -e "${BLUE}🔥 CRITICAL PATH: Starting IBKR Gateway First${NC}"
+        # Step 3: IBKR Gateway startup is critical for live trading - start first
+        echo -e "${BLUE}🔥 Step 3: CRITICAL PATH - Starting IBKR Gateway First${NC}"
         echo -e "${YELLOW}   IBKR authentication is required for live trading operations${NC}"
         echo ""
         start_ibkr_gateway
@@ -1577,6 +1667,9 @@ case "${1:-}" in
         fi
         
         echo ""
+        
+        # Step 4: Comprehensive health checks
+        echo -e "${BLUE}🏥 Step 4: Comprehensive System Health Checks${NC}"
         run_health_checks
         HEALTH_EXIT_CODE=$?
         

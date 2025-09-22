@@ -299,8 +299,8 @@ class MyportolioStatusChecker:
         model_types = ['eth_prophet', 'eth_xgboost', 'eth_ensemble']
         
         for model_type in model_types:
-            model_file = self.alpha_models_dir / f"{model_type}_framework.py"
-            db_file = self.alpha_models_dir / f"{model_type}_comparison.db"
+            model_file = self.alpha_models_dir / "CRYPTO" / "ETH" / f"{model_type}_framework.py"
+            db_file = self.alpha_models_dir / "CRYPTO" / "ETH" / f"{model_type}_comparison.db"
             
             model_available = model_file.exists()
             db_available = db_file.exists()
@@ -320,6 +320,10 @@ class MyportolioStatusChecker:
                     perf_metrics = self._get_model_performance(db_file, model_type)
                     results['performance_metrics'][model_type] = perf_metrics
                     
+                    # Check for actual stored model files
+                    stored_models_count = self._check_stored_models(model_type)
+                    results['models_available'][model_type]['stored_models_count'] = stored_models_count
+                    
                     if perf_metrics:
                         # Display available metrics with safe formatting
                         if perf_metrics.get('r2_score') is not None:
@@ -330,6 +334,8 @@ class MyportolioStatusChecker:
                             print(f"   📊 Sharpe Ratio: {perf_metrics['sharpe_ratio']:.4f}")
                         if perf_metrics.get('rmse') is not None:
                             print(f"   📊 RMSE: {perf_metrics['rmse']:.4f}")
+                        
+                    print(f"   💾 Stored Models: {stored_models_count} files")
                         
                 except Exception as e:
                     logger.warning(f"Error getting performance for {model_type}: {e}")
@@ -413,6 +419,40 @@ class MyportolioStatusChecker:
         
         return None
     
+    def _check_stored_models(self, model_type: str) -> int:
+        """Check for actual stored model files for a given model type."""
+        try:
+            # Extract methodology from model_type (e.g., 'eth_prophet' -> 'prophet')
+            methodology = model_type.split('_')[-1]  # prophet, xgboost, ensemble
+            
+            # Check the model storage metadata database
+            model_storage_db = self.alpha_models_dir / "CRYPTO" / "ETH" / "model_storage" / "model_metadata.db"
+            
+            if model_storage_db.exists():
+                conn = sqlite3.connect(model_storage_db)
+                cursor = conn.execute(
+                    "SELECT COUNT(*) FROM model_metadata WHERE methodology = ?",
+                    (methodology,)
+                )
+                count = cursor.fetchone()[0]
+                conn.close()
+                
+                # Also verify if the actual files exist
+                storage_dir = self.alpha_models_dir / "CRYPTO" / "ETH" / "model_storage" / methodology
+                if storage_dir.exists():
+                    actual_files = len(list(storage_dir.glob("*.pkl")))
+                    # Return the minimum of database records and actual files
+                    return min(count, actual_files)
+                else:
+                    # Database has records but no files exist
+                    return 0
+            
+            return 0
+            
+        except Exception as e:
+            logger.warning(f"Error checking stored models for {model_type}: {e}")
+            return 0
+    
     def check_production_models_status(self) -> Dict[str, Any]:
         """Check production models availability across asset classes - UNIFIED SYSTEM."""
         self.print_header("PRODUCTION MODELS STATUS (UNIFIED SYSTEM)", 2)
@@ -458,10 +498,10 @@ class MyportolioStatusChecker:
             
             print(f"\n📊 {asset_dir.upper()} Asset Class:")
             
-            # Count different model file types
+            # Count different model file types (excluding validation reports)
             model_types = {
                 'joblib_models': list(asset_path.rglob("*.joblib")),
-                'json_models': list(asset_path.rglob("*.json")),
+                'json_models': [f for f in asset_path.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name],
                 'pkl_models': list(asset_path.rglob("*.pkl")),
                 'h5_models': list(asset_path.rglob("*.h5"))
             }
@@ -530,31 +570,42 @@ class MyportolioStatusChecker:
             # CRYPTO Models
             crypto_dir = alpha_models_root / "CRYPTO"
             if crypto_dir.exists():
-                crypto_models = len(list(crypto_dir.rglob("*.joblib"))) + len(list(crypto_dir.rglob("*.json"))) + len(list(crypto_dir.rglob("*.pkl")))
+                crypto_models = len(list(crypto_dir.rglob("*.joblib"))) + len(list(crypto_dir.rglob("*.pkl"))) + len(list(crypto_dir.rglob("*.h5")))
+                # Count only actual model files, exclude validation reports
+                json_models = [f for f in crypto_dir.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name]
+                crypto_models += len(json_models)
                 counts['breakdown']['CRYPTO Models'] = crypto_models
             
             # FOREX Models
             forex_dir = alpha_models_root / "FOREX"
             if forex_dir.exists():
-                forex_models = len(list(forex_dir.rglob("*.joblib"))) + len(list(forex_dir.rglob("*.json"))) + len(list(forex_dir.rglob("*.pkl")))
+                forex_models = len(list(forex_dir.rglob("*.joblib"))) + len(list(forex_dir.rglob("*.pkl"))) + len(list(forex_dir.rglob("*.h5")))
+                json_models = [f for f in forex_dir.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name]
+                forex_models += len(json_models)
                 counts['breakdown']['FOREX Models'] = forex_models
             
             # EQUITIES Models
             equities_dir = alpha_models_root / "EQUITIES"
             if equities_dir.exists():
-                equities_models = len(list(equities_dir.rglob("*.joblib"))) + len(list(equities_dir.rglob("*.json"))) + len(list(equities_dir.rglob("*.pkl")))
+                equities_models = len(list(equities_dir.rglob("*.joblib"))) + len(list(equities_dir.rglob("*.pkl"))) + len(list(equities_dir.rglob("*.h5")))
+                json_models = [f for f in equities_dir.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name]
+                equities_models += len(json_models)
                 counts['breakdown']['EQUITIES Models'] = equities_models
             
             # Fixed Multi-Asset Models
             fixed_multi_dir = alpha_models_root / "fixed_multi_asset_models"
             if fixed_multi_dir.exists():
-                fixed_multi_models = len(list(fixed_multi_dir.rglob("*.joblib"))) + len(list(fixed_multi_dir.rglob("*.json"))) + len(list(fixed_multi_dir.rglob("*.pkl")))
+                fixed_multi_models = len(list(fixed_multi_dir.rglob("*.joblib"))) + len(list(fixed_multi_dir.rglob("*.pkl"))) + len(list(fixed_multi_dir.rglob("*.h5")))
+                json_models = [f for f in fixed_multi_dir.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name]
+                fixed_multi_models += len(json_models)
                 counts['breakdown']['Fixed Multi-Asset Models'] = fixed_multi_models
             
             # Multi-Asset Models
             multi_asset_dir = alpha_models_root / "multi_asset_models"
             if multi_asset_dir.exists():
-                multi_asset_models = len(list(multi_asset_dir.rglob("*.joblib"))) + len(list(multi_asset_dir.rglob("*.json"))) + len(list(multi_asset_dir.rglob("*.pkl")))
+                multi_asset_models = len(list(multi_asset_dir.rglob("*.joblib"))) + len(list(multi_asset_dir.rglob("*.pkl"))) + len(list(multi_asset_dir.rglob("*.h5")))
+                json_models = [f for f in multi_asset_dir.rglob("*.json") if "validation_report" not in f.name and "config" not in f.name]
+                multi_asset_models += len(json_models)
                 counts['breakdown']['Multi-Asset Models'] = multi_asset_models
             
             # Calculate total

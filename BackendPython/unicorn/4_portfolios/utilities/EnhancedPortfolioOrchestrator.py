@@ -3,10 +3,10 @@
 🎯 Enhanced Portfolio-Level Orchestration Engine
 
 Extends the proven 5-minute scheduler with formal workflow coordination
-across all LEAN framework layers (Data → Alpha → Risk → Portfolio → Execution)
+across all trading platform layers (Data → Alpha → Risk → Portfolio → Execution)
 while maintaining the operational foundation that currently works.
 
-Architecture: Portfolio-Level Orchestration (Layer 4) with LEAN Algorithm Templates (Layer 6)
+Architecture: Portfolio-Level Orchestration (Layer 4) with Algorithm Templates (Layer 6)
 """
 
 import asyncio
@@ -70,7 +70,7 @@ class ExecutionTimeframe(Enum):
 
 @dataclass
 class AlgorithmTemplate:
-    """LEAN-compliant algorithm template"""
+    """Standardized algorithm template"""
     name: str
     timeframe: ExecutionTimeframe
     symbols: List[str]
@@ -832,27 +832,27 @@ class EnhancedPortfolioOrchestrator:
 
 
 # =============================================================================
-# LEAN ALGORITHM TEMPLATE INTEGRATION
+# ALGORITHM TEMPLATE INTEGRATION
 # =============================================================================
 
-class LEANAlgorithmTemplate:
+class StandardAlgorithmTemplate:
     """
-    LEAN Framework compliant algorithm template that serves as a wrapper
+    Standardized algorithm template that serves as a wrapper
     around the Enhanced Portfolio Orchestrator for framework compliance
     """
     
     def __init__(self):
-        """Initialize LEAN algorithm template"""
+        """Initialize algorithm template"""
         self.orchestrator = EnhancedPortfolioOrchestrator()
         self.is_initialized = False
     
     def Initialize(self):
-        """LEAN Initialize method"""
+        """Algorithm Initialize method"""
         self.orchestrator.start_orchestration()
         self.is_initialized = True
     
     def OnData(self, data):
-        """LEAN OnData method - called on new market data"""
+        """Algorithm OnData method - called on new market data"""
         if not self.is_initialized:
             return
         
@@ -862,5 +862,5 @@ class LEANAlgorithmTemplate:
         return result
     
     def OnEndOfAlgorithm(self):
-        """LEAN OnEndOfAlgorithm method"""
+        """Algorithm OnEndOfAlgorithm method"""
         self.orchestrator.stop_orchestration()

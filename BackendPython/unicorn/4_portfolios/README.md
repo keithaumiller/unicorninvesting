@@ -25,6 +25,7 @@ This directory contains the portfolio construction framework with separated risk
 └── utilities/                   # 🔧 Framework-level shared components
     ├── README.md               # Utilities documentation
     ├── EnhancedPortfolioManager.py # Portfolio management framework
+    ├── EnhancedPortfolioOrchestrator.py # 🚀 Complete workflow orchestration engine
     ├── PortfolioConfigManager.py   # Configuration management
     └── UnicornRiskIntegratedPortfolioConstruction.py # Risk-integrated construction
 ```
@@ -49,8 +50,38 @@ This directory implements **Layer 4** of the 6-layer Unicorninvesting architectu
 
 ### Workflow Integration
 ```
-ETH Alpha Models → Risk Assessment → Portfolio Construction → Position Targets → Execution
+Data → Alpha → Risk → Portfolio → Execution (Orchestrated by Enhanced Portfolio Orchestrator)
 ```
+
+## 🚀 **Enhanced Portfolio Orchestration Engine**
+
+### **Complete Workflow Coordination**
+The `utilities/EnhancedPortfolioOrchestrator.py` provides comprehensive orchestration across all system layers:
+
+- **🔄 End-to-End Workflow**: Coordinates Data → Alpha → Risk → Portfolio → Execution pipeline
+- **⏰ Multi-Timeframe Execution**: Supports 1m, 5m, 15m, 1h, 4h, daily coordination
+- **🎯 Async/Sync Processing**: Real-time workflow coordination with proper scheduling
+- **📊 Performance Monitoring**: Built-in metrics tracking and performance analytics
+- **🏗️ Algorithm Templates**: Framework-compliant algorithm templates ready
+
+### **Orchestration Architecture**
+```python
+# Complete workflow orchestration
+from utilities.EnhancedPortfolioOrchestrator import EnhancedPortfolioOrchestrator
+
+orchestrator = EnhancedPortfolioOrchestrator("Myportolio")
+workflow_result = await orchestrator.execute_complete_workflow(
+    timeframe=ExecutionTimeframe.MINUTE_5
+)
+```
+
+### **Multi-Stage Coordination**
+1. **Data Acquisition**: Multi-asset, multi-timeframe data collection
+2. **Alpha Generation**: Signal generation and ensemble coordination  
+3. **Risk Assessment**: Portfolio risk evaluation and constraint validation
+4. **Portfolio Construction**: Risk-integrated position sizing and allocation
+5. **Execution Planning**: Trade planning and execution preparation
+6. **Execution**: Coordinated trade execution with performance tracking
 
 ## 🚀 Development Workflow
 
@@ -72,15 +103,35 @@ from utilities.PortfolioConfigManager import PortfolioConfigManager
 config_manager = PortfolioConfigManager("Myportolio/config.json")
 portfolio_config = config_manager.load_portfolio_config()
 risk_params = config_manager.load_risk_parameters()
+
+# Initialize enhanced orchestration  
+orchestrator = EnhancedPortfolioOrchestrator("Myportolio")
+```
+
+### 3. Complete Workflow Orchestration
+```python
+# Execute complete orchestrated workflow
+workflow_result = await orchestrator.execute_complete_workflow(
+    timeframe=ExecutionTimeframe.MINUTE_5,
+    force_execution=True
+)
+
+# Monitor orchestration status
+status = orchestrator.get_workflow_status()
+print(f"Success Rate: {status['success_rate']:.1f}%")
 ```
 
 ### 3. Integration Testing
 ```python
-# Test algorithm integration
+# Test algorithm integration with orchestration
 risk = ETHBasicRisk()
 strategy = ETHMomentumStrategy()
 
-# Portfolio construction with both components
+# Complete orchestrated portfolio construction
+orchestrator = EnhancedPortfolioOrchestrator("Myportolio") 
+workflow_results = await orchestrator.execute_complete_workflow()
+
+# Traditional portfolio manager integration
 portfolio_manager = EnhancedPortfolioManager(config_manager)
 portfolio_targets = portfolio_manager.construct_portfolio(strategy, risk)
 ```

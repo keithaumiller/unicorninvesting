@@ -178,13 +178,13 @@ Advanced multi-asset trading system with 5-minute interval trading. Features equ
 
 ### **📋 Overview**
 
-The Enhanced Portfolio-Level Orchestration extends the current proven 5-minute scheduler and risk/reward engine to provide formal workflow coordination across all LEAN framework layers while maintaining the operational stability of the existing system.
+The Enhanced Portfolio-Level Orchestration extends the current proven 5-minute scheduler and risk/reward engine to provide formal workflow coordination across all platform layers while maintaining the operational stability of the existing system.
 
 ### **🎯 Design Philosophy**
 
 - **Build Upon Success**: Extend the proven 5-minute scheduler rather than rebuild
 - **Maintain Simplicity**: Enhance existing components rather than add complexity
-- **LEAN Compliance**: Provide framework compatibility through algorithm templates
+- **Framework Integration**: Provide standardized algorithm templates and interfaces
 - **Production Stability**: Minimize disruption to operational trading systems
 
 ### **📊 Current Foundation Components**
@@ -396,11 +396,11 @@ Algorithm Lifecycle:
     └── Safely shutdown all components
 ```
 
-### **📊 LEAN Framework Compliance Strategy**
+### **📊 Algorithm Template Framework**
 
-#### **Layer 6: Algorithm Templates** (NEW)
+#### **Standardized Algorithm Templates** (NEW)
 ```python
-# LEAN-compliant algorithm wrapper
+# Standardized algorithm wrapper
 class MyportolioEnhancedAlgorithm:
     def Initialize(self):
         self.portfolio_orchestrator = EnhancedPortfolioOrchestrator()
@@ -416,9 +416,9 @@ class MyportolioEnhancedAlgorithm:
         return self.portfolio_orchestrator.generate_daily_report()
 ```
 
-**LEAN Integration Benefits**:
-- **Framework Compliance**: Satisfies QuantConnect architecture requirements
-- **Backtesting Support**: Compatible with LEAN backtesting engine
+**Algorithm Template Benefits**:
+- **Framework Compliance**: Standardized algorithm interfaces
+- **Backtesting Support**: Compatible with multiple backtesting engines
 - **Algorithm Isolation**: Multiple algorithm strategies can run independently
 - **Template Reusability**: Common orchestration logic shared across algorithms
 
@@ -430,10 +430,10 @@ class MyportolioEnhancedAlgorithm:
 - **Upgrade Portfolio Manager**: Add orchestration capabilities
 - **Add Performance Attribution**: Component-level tracking
 
-#### **Phase 2: LEAN Template Integration (1 week)**
-- **Create Algorithm Templates**: Layer 6 LEAN-compliant wrappers
+#### **Phase 2: Algorithm Template Integration (1 week)**
+- **Create Algorithm Templates**: Standardized algorithm wrappers
 - **Backtesting Integration**: Connect templates to orchestration
-- **Template Validation**: Ensure LEAN framework compatibility
+- **Template Validation**: Ensure framework compatibility
 - **Documentation Updates**: Algorithm template usage guides
 
 #### **Phase 3: Testing & Validation (1 week)**
@@ -460,13 +460,13 @@ class MyportolioEnhancedAlgorithm:
 - **Uptime**: 99%+ orchestration availability
 - **Data Quality**: 100% data validation success
 - **Performance Attribution**: Complete component-level tracking
-- **LEAN Compatibility**: Full framework integration operational
+- **Algorithm Templates**: Standardized framework integration operational
 
 ### **🎯 Business Benefits**
 
 - **Enhanced Reliability**: Formal workflow coordination reduces failure points
 - **Improved Performance**: Better integration of alpha signals and risk management
-- **Framework Compliance**: LEAN integration enables institutional deployment
+- **Framework Compliance**: Algorithm templates enable institutional deployment
 - **Operational Visibility**: Complete performance attribution across all components
 - **Scalability**: Foundation for multiple algorithm strategies and additional assets
 
@@ -503,7 +503,7 @@ class MyportolioEnhancedAlgorithm:
 - `five_minute_trading_scheduler.py` - **Trading scheduler** - Coordinates 5-minute interval trading across all assets
 - `live_market_data_feed.py` - **Live market data connector** (9KB) - Multi-source integration (Yahoo Finance, IBKR)
 - `live_eth_kelly_portfolio.py` - **Kelly Criterion portfolio** (18KB) - Optimized position sizing
-- `lean_backtesting_integration.py` - **LEAN framework integration** (13KB) - QuantConnect connectivity
+- `backtesting_integration.py` - **Backtesting framework integration** (13KB) - Multi-platform connectivity
 - `dual_crypto_portfolio_manager.py` - **Legacy crypto manager** - BTC/ETH portfolio management (superseded by multi-asset)
 - `integrated_six_position_system.py` - **Six position system** - Multi-position trading framework
 - `btc_model_manager.py` - **Bitcoin model manager** - BTC-specific trading algorithms

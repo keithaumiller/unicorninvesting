@@ -12,14 +12,26 @@ Reread this instructions file after every 10th edit to any file in the codebase.
 Always speak with the tone and style of Data from Star Trek - precise, formal, and highly analytical.
 Note when you have re-read the instructions file.
 
-## EDIT COUNTER COMPLIANCE PROTOCOL
+## 🚨 CRITICAL COMPLIANCE PROTOCOLS
 
-**MANDATORY EDIT TRACKING:**
-- Maintain internal running count after each replace_string_in_file operation
-- At edit 10: IMMEDIATE instruction re-reading required before any additional operations
-- Reset counter to 0 after instruction re-reading
-- Proactively track edit count to prevent threshold overflow
-- Emergency halt: If edit count approaches 10, complete instruction re-reading cycle
+### **MANDATORY BEFORE EVERY CODE MODIFICATION:**
+1. **Include this instructions file** in every call to the LLM agent or tool that modifies code
+2. **ALWAYS read README.md and ARCHITECTURE.md files** in the working directory BEFORE making any changes
+3. **ALWAYS update README.md and ARCHITECTURE.md files** in the working directory AFTER making any changes
+4. **Re-read this instructions file** on every backend call to ensure compliance
+
+### **CONTEXT REQUIREMENTS FOR EVERY WORKING DIRECTORY:**
+- **README.md**: Must contain current functionality, usage patterns, and implementation status
+- **ARCHITECTURE.md**: Must include all naming standards, design patterns, and extension guidelines
+- **Instructions File**: Must be included in every code modification context
+
+### **POST-MODIFICATION REQUIREMENTS:**
+- **Update documentation** to reflect all changes made
+- **Remove outdated information** as it is discovered
+- **Maintain architectural consistency** across all components
+
+**This protocol ensures consistency, prevents architectural drift, and maintains comprehensive documentation standards.**
+
 
 ## 🚨 CRITICAL SECURITY RULE - DO NOT TOUCH SECRETS.JSON
 
@@ -201,16 +213,16 @@ do not create validation or testing directories outside of the tests directory
 ```
 /workspaces/unicorninvesting/
 ├── BackendPython/unicorn/
-│   ├── 1_data_sources/           # LEAN Layer 1: Market data collectors
-│   ├── 2_alpha_models/           # LEAN Layer 2: ETH models and signals
-│   ├── 3_risk_management/        # LEAN Layer 3: Risk controls
-│   ├── 4_portfolios/             # LEAN Layer 4: Portfolio construction
+│   ├── 1_data_sources/           #  Layer 1: Market data collectors
+│   ├── 2_alpha_models/           #  Layer 2: ETH models and signals
+│   ├── 3_risk_management/        #  Layer 3: Risk controls
+│   ├── 4_portfolios/             #  Layer 4: Portfolio construction
 │   │   ├── Myportolio/          # ✅ SINGLE portfolio implementation
 │   │   │   ├── risk_algorithms/ # Pure risk calculations
 │   │   │   └── trading_algorithms/ # Pure trading strategies
 │   │   └── utilities/           # Framework-level shared components
-│   ├── 5_execution_models/       # LEAN Layer 5: Order execution
-│   ├── 6_algorithms/             # LEAN Layer 6: Complete algorithms
+│   ├── 5_execution_models/       #  Layer 5: Order execution
+│   ├── 6_algorithms/             #  Layer 6: Complete algorithms
 │   └── README.md                # Main backend documentation
 ├── WebFrontend/                  # Drupal 11 frontend
 ├── scripts/                      # ✅ ALL setup and utility scripts
@@ -233,7 +245,7 @@ do not create validation or testing directories outside of the tests directory
 
 ### Core Technologies
 - **Frontend**: Drupal 11 (PHP 8.2+)
-- **Backend**: Python 3.9+ with LEAN framework integration
+- **Backend**: Python 3.9+ with framework integration
 - **Database**: MySQL 8.0+
 - **Web Server**: Apache/Nginx
 - **Trading Framework**: Unicorninvesting (6-layer architecture)
@@ -457,9 +469,30 @@ feat: Consolidate health_check.sh and setup_environment.sh scripts
 - Success rate: 86% system validation with minor issues identified
 ```
 
-## README.md Context
-When working on any part of this codebase, always consider:
-- Always review and update README.md in the same directory before and after any file change.
+## README.md Context Protocol
+
+**CRITICAL REQUIREMENT - ENFORCED ON EVERY BACKEND CALL:**
+
+When working on any part of this codebase, you MUST:
+
+### **PRE-WORK CHECKLIST:**
+1. ✅ **Read README.md** in the current working directory
+2. ✅ **Read ARCHITECTURE.md** in the current working directory  
+3. ✅ **Include this instructions file** in the modification context
+4. ✅ **Understand existing patterns** before implementing changes
+
+### **POST-WORK CHECKLIST:**
+1. ✅ **Update README.md** with all new functionality and changes
+2. ✅ **Update ARCHITECTURE.md** with any new patterns or standards
+3. ✅ **Remove outdated information** discovered during work
+4. ✅ **Ensure documentation accuracy** reflects current implementation
+
+### **BACKEND CALL REQUIREMENTS:**
+- **Instructions file re-read**: MANDATORY on every backend interaction
+- **Context inclusion**: README.md + ARCHITECTURE.md + instructions file
+- **Documentation updates**: Required after every modification session
+
+**Failure to follow this protocol results in architectural inconsistency and technical debt.**
 
 ## 🎯 **GitHub Issues Management Strategy**
 
@@ -474,7 +507,7 @@ When working on any part of this codebase, always consider:
 #### **Epic Issues** (`epic` label)
 - **Purpose**: Major architectural components requiring multiple sub-issues
 - **Scope**: Multi-week initiatives (4+ weeks)
-- **Examples**: "Epic: LEAN Integration", "Epic: Advanced ETH Algorithms"
+- **Examples**: "Epic: Integration", "Epic: Advanced ETH Algorithms"
 - **When to Create**: High-level architecture documented but not implemented
 
 #### **Feature Issues** (`feature` label)  
