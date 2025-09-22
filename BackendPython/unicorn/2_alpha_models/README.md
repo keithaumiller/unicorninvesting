@@ -110,6 +110,40 @@ This represents the **first successful production forecast** using the methodolo
   - Cross-validation and performance metrics
   - **Results**: Current $4,414 → 30-day forecast $5,192 (+17.62%)
 
+### **✅ ETH 6-Month Daily Forecast - XGBoost Methodology**
+- **Access**: `from methodologies.xgboost.core.xgboost_methodology import XGBoostMethodology`
+- **Description**: Complete XGBoost implementation for 6-month daily ETH price forecasting
+- **Status**: ✅ Working - **NEWLY IMPLEMENTED** with comprehensive crypto features
+- **Features**: 
+  - 100+ crypto-specific engineered features across 7 categories
+  - Technical indicators: RSI, MACD, Bollinger Bands, Williams %R, Stochastic
+  - Lag features for time series prediction (up to 21 days)
+  - Cross-validation and hyperparameter tuning
+  - 180-day (6-month) daily predictions with iterative forecasting
+
+### **✅ ETH 6-Month Daily Forecast - Ensemble Methodology**
+- **Access**: `from methodologies.ensemble.core.ensemble_methodology import EnsembleMethodology`
+- **Description**: Advanced ensemble combining Prophet and XGBoost with dynamic weighting
+- **Status**: ✅ Working - **NEWLY IMPLEMENTED** with performance-based optimization
+- **Features**: 
+  - Prophet + XGBoost combination with 4 ensemble strategies
+  - Dynamic weight adjustment based on recent performance
+  - Linear regression weight optimization
+  - Performance comparison and methodology ranking
+  - 180-day ensemble forecasts with component analysis
+
+### **✅ ETH 6-Month Forecast Comparison System**
+- **Access**: `python examples/eth_6month_forecast_comparison.py`
+- **Description**: Comprehensive comparison of Prophet, XGBoost, and Ensemble methodologies for 6-month forecasting
+- **Status**: ✅ Working - **PRODUCTION READY** complete implementation
+- **Features**: 
+  - Prophet extended from 30-day to 180-day forecasting
+  - XGBoost with 100+ crypto-specific features
+  - Ensemble with dynamic weighting and optimization
+  - Real silver layer data integration with fallback generation
+  - Cross-validation and performance ranking
+  - Production CSV/JSON outputs with comprehensive metadata
+
 ### **✅ Enhanced Prophet Methodology**
 - **Access**: `from methodologies.prophet.prophet_methodology import ProphetMethodology`
 - **Description**: 655 lines of enhanced functionality with leak-free features and overfitting detection
