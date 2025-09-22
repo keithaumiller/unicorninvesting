@@ -25,10 +25,18 @@ Note when you have re-read the instructions file.
 - **ARCHITECTURE.md**: Must include all naming standards, design patterns, and extension guidelines
 - **Instructions File**: Must be included in every code modification context
 
+### **MANDATORY README.md SECTION REQUIREMENTS:**
+- **Features Section**: Every README.md MUST include a "Features" section that clearly outlines:
+  - Current implemented features with brief descriptions
+  - How to access/use each feature (commands, scripts, APIs)
+  - Feature status (✅ Working, 🚧 In Progress, 📋 Planned)
+  - Example usage or quick start for key features
+
 ### **POST-MODIFICATION REQUIREMENTS:**
 - **Update documentation** to reflect all changes made
 - **Remove outdated information** as it is discovered
 - **Maintain architectural consistency** across all components
+- **Update Features section** when functionality is added, modified, or removed
 
 **This protocol ensures consistency, prevents architectural drift, and maintains comprehensive documentation standards.**
 
