@@ -1,0 +1,1 @@
+This directory should not be utilized for processing data.  We utilize the silver layer in the 1_data_sources directory for our data.  Any transformations required should be done in the data sources directory.  Any required updates to the datasets to be used should be done in the pieline, not within the alpha models directory.

@@ -1,0 +1,22 @@
+{
+    "methodology_name": "ensemble",
+    "version": "1.0.0",
+    "parameters": {
+        "combination_method": "weighted_average",
+        "weight_optimization": "variance_minimization",
+        "rebalance_frequency": "daily",
+        "min_models": 2,
+        "max_models": 5
+    },
+    "constituent_methodologies": ["prophet", "xgboost"],
+    "weighting_schemes": {
+        "equal_weight": {"prophet": 0.5, "xgboost": 0.5},
+        "performance_weighted": {"lookback_days": 30, "metric": "sharpe_ratio"},
+        "volatility_adjusted": {"vol_lookback": 20, "target_vol": 0.15}
+    },
+    "validation": {
+        "out_of_sample_period": 0.2,
+        "walk_forward_analysis": true,
+        "ensemble_metrics": ["ensemble_sharpe", "diversification_ratio", "model_correlation"]
+    }
+}

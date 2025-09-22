@@ -1,0 +1,13 @@
+{
+    "forex_specific": {
+        "seasonality_mode": "multiplicative",
+        "market_hours_seasonality": true,
+        "economic_calendar_integration": true,
+        "central_bank_policy_weight": 0.3
+    },
+    "feature_engineering": {
+        "forex_features": ["carry_trade", "purchasing_power_parity", "real_exchange_rate"],
+        "economic_indicators": ["interest_rate_differential", "inflation_differential", "gdp_growth"],
+        "market_microstructure": ["bid_ask_spread", "order_flow", "position_of_traders"]
+    }
+}

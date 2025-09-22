@@ -1,0 +1,14 @@
+{
+    "crypto_specific": {
+        "seasonality_mode": "additive",
+        "changepoint_prior_scale": 0.01,
+        "holidays_prior_scale": 0.1,
+        "volatility_adjustment": true,
+        "24h_seasonality": true
+    },
+    "feature_engineering": {
+        "crypto_features": ["volatility", "volume_profile", "market_cap_rank"],
+        "defi_indicators": ["tvl", "yield_farming_apy"],
+        "sentiment_features": ["fear_greed_index", "social_volume"]
+    }
+}

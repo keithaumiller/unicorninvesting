@@ -1,0 +1,1 @@
+# Forex Asset Adapters
