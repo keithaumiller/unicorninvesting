@@ -432,6 +432,14 @@ class ETHProphetFramework:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             
+            # Convert config to dict if it's a ModelConfig object
+            if hasattr(config, 'config'):
+                config_dict = config.config
+            elif hasattr(config, '__dict__'):
+                config_dict = config.__dict__
+            else:
+                config_dict = config
+            
             cursor.execute("""
                 INSERT INTO model_comparisons (
                     experiment_id, model_variant, training_date,
@@ -443,7 +451,7 @@ class ETHProphetFramework:
                 metrics['mape'], metrics['mae'], metrics['rmse'], metrics['r2'],
                 metrics['directional_accuracy'], metrics['sharpe_pred'],
                 metrics['max_drawdown_pred'], metrics['volatility_pred'],
-                json.dumps(config)
+                json.dumps(config_dict)
             ))
             
             conn.commit()

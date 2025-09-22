@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "model_id": "63cdb4986efb",
+    "asset": "ETH",
+    "timeframe": "1hour",
+    "method": "prophet",
+    "created_timestamp": "2025-09-22T14:01:41.753745",
+    "training_data_points": 337,
+    "training_mape": 0.18452419151071758,
+    "training_mae": 5.600562410763567,
+    "training_r2": 0.9816123437745927,
+    "status": "evaluating",
+    "production_start": null,
+    "production_predictions": 0,
+    "production_mape": 0.0,
+    "production_mae": 0.0,
+    "production_r2": 0.0,
+    "production_score": 0.0
+  },
+  "training_metrics": {
+    "mape": 0.18452419151071758,
+    "mae": 5.600562410763567,
+    "r2_score": 0.9816123437745927,
+    "model_type": "prophet"
+  },
+  "model_data": null
+}
