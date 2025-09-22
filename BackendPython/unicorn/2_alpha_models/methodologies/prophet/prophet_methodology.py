@@ -34,10 +34,10 @@ except ImportError:
     print("⚠️ Warning: Prophet not installed. Install with: pip install prophet")
     Prophet = None
 
-from ...core.interfaces import AlphaMethodology
-from ...core.configuration import MethodologyConfig
-from ...storage.metadata.model_registry import ModelRegistry
-from ...storage.performance.performance_tracker import PerformanceTracker
+from core.interfaces import AlphaMethodology
+from core.configuration import MethodologyConfig
+from storage.metadata.model_registry import ModelRegistry
+from storage.performance.performance_tracker import PerformanceTracker
 
 warnings.filterwarnings('ignore')
 

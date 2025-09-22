@@ -21,8 +21,8 @@ import numpy as np
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional, Union
 
-from ...core.interfaces import AssetAdapter
-from ...core.configuration import AssetConfig
+from core.interfaces import AssetAdapter
+from core.configuration import AssetConfig
 
 
 class CryptoAdapter(AssetAdapter):

@@ -14,8 +14,8 @@ from datetime import datetime, timedelta
 import pickle
 import joblib
 
-from ...core.interfaces.model_interface import TrainedModel
-from ...core.interfaces.data_interfaces import PerformanceMetrics
+from core.interfaces.model_interface import TrainedModel
+from core.interfaces.data_interfaces import PerformanceMetrics
 
 logger = logging.getLogger(__name__)
 
