@@ -17,6 +17,39 @@
 > 
 > **By using this software, you acknowledge reading and accepting all terms and risks.**
 
+---
+
+> ## 🚧 **WORK IN PROGRESS - NOT FOR AMATEURS**
+> 
+> **🎯 THIS IS AN ADVANCED RESEARCH PLATFORM**
+> 
+> **⚠️ DAY TRADING IS ESSENTIALLY GAMBLING**
+> - 🎲 **Statistical Reality**: 80-90% of day traders lose money
+> - 💸 **Financial Destruction**: Most day traders lose their entire capital
+> - 🧠 **Psychological Trap**: Short-term price movements are largely random noise
+> - 🎰 **Casino Economics**: Transaction costs and emotional trading destroy returns
+> 
+> **🎓 REAL INVESTMENT STRATEGY REQUIRES:**
+> - 📊 **Economic Modeling**: Complex macroeconomic analysis and prediction
+> - 🌍 **Political Intelligence**: Geopolitical risk assessment and policy impact analysis
+> - 🏛️ **Institutional Framework**: Understanding of central bank policies, regulatory changes
+> - 📈 **Long-term Perspective**: Multi-year investment horizons, not minute-to-minute gambling
+> - 🔬 **Quantitative Research**: Statistical modeling, backtesting, risk management
+> 
+> **🚀 OUR DEVELOPMENT PATH:**
+> We are working toward sophisticated economic and political prediction modeling that considers:
+> - Federal Reserve policy impacts and interest rate cycles
+> - Global economic indicators and cross-market correlations  
+> - Political stability, election outcomes, and regulatory changes
+> - Currency flows, trade relationships, and geopolitical tensions
+> - Sector rotation patterns and institutional investor behavior
+> 
+> **🎯 TARGET AUDIENCE**: Quantitative researchers, institutional developers, academic institutions
+> 
+> **❌ NOT SUITABLE FOR**: Retail day traders, get-rich-quick schemes, gambling mentalities
+> 
+> **If you're looking for day trading signals or quick profits, this platform is NOT for you.**
+
 ## 📋 Table of Contents
 
 - [📊 Production Status](#-production-status-enhanced-pipeline-architecture)
@@ -79,7 +112,15 @@
 
 ## 🏗️ Architecture Overview
 
-An advanced algorithmic trading platform that combines machine learning forecasting with Unicorninvesting framework integration for institutional-grade algorithmic trading execution. ✨ **Enhanced with complete ensemble trading system featuring 11 production models, Kelly Criterion optimization, and real-time multi-asset execution.**
+An advanced quantitative research platform for sophisticated economic and political prediction modeling. This is **NOT a day trading platform** - we are developing institutional-grade analytical frameworks that incorporate complex macroeconomic modeling, geopolitical risk assessment, and long-term investment strategy development.
+
+**🎯 Research Focus Areas:**
+- **Economic Prediction Modeling**: Federal Reserve policy analysis, interest rate cycle modeling, inflation prediction
+- **Political Intelligence Framework**: Election outcome modeling, regulatory change prediction, policy impact analysis  
+- **Cross-Market Correlation Analysis**: Currency flows, commodity cycles, sector rotation patterns
+- **Institutional Behavior Modeling**: Understanding large-scale capital movements and market structure
+
+**⚠️ This platform requires deep quantitative finance knowledge and is intended for researchers, not retail traders.**
 
 ## 📊 **Complete Model Overfitting Elimination (September 2025)**
 
